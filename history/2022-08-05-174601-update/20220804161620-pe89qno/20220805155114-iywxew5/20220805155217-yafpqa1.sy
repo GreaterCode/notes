@@ -1,0 +1,790 @@
+{
+	"ID": "20220805155217-yafpqa1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220805155217-yafpqa1",
+		"title": "(2)etcd集群",
+		"updated": "20220805174523"
+	},
+	"Children": [
+		{
+			"ID": "20220805155217-1zglxyw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805155217-1zglxyw",
+				"updated": "20220805155356"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本章主要介绍etcd集群搭建方式"
+				}
+			]
+		},
+		{
+			"ID": "20220805155418-hvqiqvx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220805155418-hvqiqvx",
+				"updated": "20220805155424"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 介绍"
+				}
+			]
+		},
+		{
+			"ID": "20220805155453-ucvrrdp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805155453-ucvrrdp",
+				"updated": "20220805155733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在生产环境中，为了整个集群的高可用，etcd正常都会以集群方式部署，避免单点故障，etcd正常都会以集群方式部署，避免单点故障。引导etcd集群启动的方式有以下三种机制："
+				}
+			]
+		},
+		{
+			"ID": "20220805155737-rtajh61",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220805155737-rtajh61",
+				"updated": "20220805155738"
+			},
+			"Children": [
+				{
+					"ID": "20220805155738-gtuy3lm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805155738-gtuy3lm",
+						"updated": "20220805155738"
+					},
+					"Children": [
+						{
+							"ID": "20220805155738-p2y0bo1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805155738-p2y0bo1",
+								"updated": "20220805155744"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "静态"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805155744-0zpwkrp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805155744-0zpwkrp"
+					},
+					"Children": [
+						{
+							"ID": "20220805155744-79wr9ej",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805155744-79wr9ej",
+								"updated": "20220805155749"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd动态发现"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805160025-xij4ft5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805160025-xij4ft5"
+					},
+					"Children": [
+						{
+							"ID": "20220805160025-whgbiou",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805160025-whgbiou"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "DNS发现"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220805160011-irmcdmc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805160011-irmcdmc",
+				"updated": "20220805160034"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t静态启动etcd集群要求每个成员都知道集群中另一个成员。在许多情况下，集群成员的IP可能未知在这些情况下，可以在服务发现的服务的帮助下引导etcd集群。"
+				}
+			]
+		},
+		{
+			"ID": "20220805160804-sfol9xq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805160804-sfol9xq",
+				"updated": "20220805160928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t生成etcd集群配置： http://play.etcd.io/install"
+				}
+			]
+		},
+		{
+			"ID": "20220805155425-dzi7e4c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220805155425-dzi7e4c",
+				"updated": "20220805161036"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 安装"
+				}
+			]
+		},
+		{
+			"ID": "20220805161041-fcuwvyk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805161041-fcuwvyk",
+				"updated": "20220805161250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t由于etcd是基于raft分布式协议的集群，所以如果要组成一个集群，集群的数量需要奇数台。如果只有一个节点，也可以通过不同的端口进行模拟。下面示例是在一台机器上安装三节点的etcd伪集群，对应配置如下："
+				}
+			]
+		},
+		{
+			"ID": "20220805164921-xhmjnpm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805164921-xhmjnpm"
+			}
+		},
+		{
+			"ID": "20220805164827-2jx19ru",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805164827-2jx19ru",
+				"updated": "20220805164921"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etc安装完成后，启动三个终端分别执行下面3个命令来启动整个etcd集群"
+				}
+			]
+		},
+		{
+			"ID": "20220805164533-sq4iip8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220805164533-sq4iip8",
+				"updated": "20220805165134"
+			},
+			"Children": [
+				{
+					"ID": "20220805164541-f9px57g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805164541-f9px57g",
+						"updated": "20220805165134"
+					},
+					"Children": [
+						{
+							"ID": "20220805164541-2wcb6xj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805164541-2wcb6xj",
+								"updated": "20220805164541"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "s1配置："
+								}
+							]
+						},
+						{
+							"ID": "20220805164528-yrr1o39",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20220805164528-yrr1o39",
+								"updated": "20220805165134"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "/tmp/test-etcd/etcd --name s1 \\\n  --data-dir /tmp/etcd/s1 \\\n  --listen-client-urls http://127.0.0.1:2379 \\\n  --advertise-client-urls http://127.0.0.1:2379 \\\n  --listen-peer-urls http://127.0.0.1:2380 \\\n  --initial-advertise-peer-urls http://127.0.0.1:2380 \\\n  --initial-cluster s1=http://127.0.0.1:2380,s2=http://127.0.0.1:22380,s3=http://127.0.0.1:32380 \\\n  --initial-cluster-token tkn \\\n  --initial-cluster-state new\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220805164544-7a2w7g9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220805164544-7a2w7g9",
+				"updated": "20220805165209"
+			},
+			"Children": [
+				{
+					"ID": "20220805164546-h064bvp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805164546-h064bvp",
+						"updated": "20220805165155"
+					},
+					"Children": [
+						{
+							"ID": "20220805164546-1zo0ppz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805164546-1zo0ppz",
+								"updated": "20220805164557"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "s2上配置"
+								}
+							]
+						},
+						{
+							"ID": "20220805164614-zizybod",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20220805164614-zizybod",
+								"updated": "20220805165155"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "/tmp/test-etcd/etcd --name s2 \\\n  --data-dir /tmp/etcd/s2 \\\n  --listen-client-urls http://127.0.0.1:22379 \\\n  --advertise-client-urls http://127.0.0.1:22379 \\\n  --listen-peer-urls http://127.0.0.1:22380 \\\n  --initial-advertise-peer-urls http://127.0.0.1:22380 \\\n  --initial-cluster s1=http://127.0.0.1:2380,s2=http://127.0.0.1:22380,s3=http://127.0.0.1:32380 \\\n  --initial-cluster-token tkn \\\n  --initial-cluster-state new\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805164559-ltuaua7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805164559-ltuaua7",
+						"updated": "20220805165209"
+					},
+					"Children": [
+						{
+							"ID": "20220805164559-soe2l7q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805164559-soe2l7q",
+								"updated": "20220805164603"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "s3配置"
+								}
+							]
+						},
+						{
+							"ID": "20220805164623-8a64ns4",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20220805164623-8a64ns4",
+								"updated": "20220805165209"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "/tmp/test-etcd/etcd --name s3 \\\n  --data-dir /tmp/etcd/s3 \\\n  --listen-client-urls http://127.0.0.1:32379 \\\n  --advertise-client-urls http://127.0.0.1:32379 \\\n  --listen-peer-urls http://127.0.0.1:32380 \\\n  --initial-advertise-peer-urls http://127.0.0.1:32380 \\\n  --initial-cluster s1=http://127.0.0.1:2380,s2=http://127.0.0.1:22380,s3=http://127.0.0.1:32380 \\\n  --initial-cluster-token tkn \\\n  --initial-cluster-state new\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220805164640-d1lpfra",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220805164640-d1lpfra",
+				"updated": "20220805165311"
+			},
+			"Children": [
+				{
+					"ID": "20220805164643-7emttfv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805164643-7emttfv",
+						"updated": "20220805165311"
+					},
+					"Children": [
+						{
+							"ID": "20220805164643-lfmz7gk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805164643-lfmz7gk",
+								"updated": "20220805164651"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "check status:"
+								}
+							]
+						},
+						{
+							"ID": "20220805164652-iud846d",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20220805164652-iud846d",
+								"updated": "20220805165311"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "ETCDCTL_API=3 /tmp/test-etcd/etcdctl \\\n  --endpoints 127.0.0.1:2379,127.0.0.1:22379,127.0.0.1:32379 \\\n  endpoint health\n\n\nETCDCTL_API=3 /tmp/test-etcd/etcdctl \\\n  --endpoints 127.0.0.1:2379,127.0.0.1:22379,127.0.0.1:32379 \\\n  endpoint status --write-out=table\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220805155432-lgg95a2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220805155432-lgg95a2",
+				"updated": "20220805155438"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.参数说明"
+				}
+			]
+		},
+		{
+			"ID": "20220805165841-l01hj09",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220805165841-l01hj09",
+				"updated": "20220805174523"
+			},
+			"Children": [
+				{
+					"ID": "20220805165843-dg9v8f0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805165843-dg9v8f0",
+						"updated": "20220805165843"
+					},
+					"Children": [
+						{
+							"ID": "20220805165843-pkmw1a8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805165843-pkmw1a8",
+								"updated": "20220805170238"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--name：节点名称，默认值：default，环境变量：ETCD_NAME，这个值和--initial-cluster参数中的key值一一对应，如果在集群环境中，name必须是唯一的，建议用主机名或者机器ID"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805170240-13i3qm6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805170240-13i3qm6"
+					},
+					"Children": [
+						{
+							"ID": "20220805170240-tc63rnt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805170240-tc63rnt",
+								"updated": "20220805170333"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "  --data-dir：数据存储目录，默认值：${name}.etcd，环境变量：ETCD_DATA_DIR"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805170335-nzh6o4c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805170335-nzh6o4c"
+					},
+					"Children": [
+						{
+							"ID": "20220805170335-1p10xvh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805170335-1p10xvh",
+								"updated": "20220805170514"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--wal-dir：存放预写日志目录，默认值：”“，环境变量：ETCD_WAL_DIR，最大的作用是记录了整个数据变化的全部历程，如果未配置则共用--data-dir文件所在目录。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805170515-kms7yi1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805170515-kms7yi1"
+					},
+					"Children": [
+						{
+							"ID": "20220805170515-33r5ein",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805170515-33r5ein",
+								"updated": "20220805170918"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--snapshot-count：数据快照触发数量，默认值：100000，环境变量：ETCD_SNAPSHORT_COUNT，etcd处理指定次数事务提交后，生成数据快照。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805170920-3frt9zx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805170920-3frt9zx"
+					},
+					"Children": [
+						{
+							"ID": "20220805170920-rzazia6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805170920-rzazia6",
+								"updated": "20220805174158"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--heartbeat-interval：客户端连接后心跳间隔时间（毫秒），默认值：100，环境变量：ETCD_HEARTBEAT_INTERVAL"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805174229-ut3vpct",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805174229-ut3vpct"
+					},
+					"Children": [
+						{
+							"ID": "20220805174229-c6ouxvc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805174229-c6ouxvc",
+								"updated": "20220805174310"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--election-timeout：集群选举的超时时间，默认值：10000，"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805174311-s0bbrdn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805174311-s0bbrdn",
+						"updated": "20220805174523"
+					},
+					"Children": [
+						{
+							"ID": "20220805174311-3m7twhh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805174311-3m7twhh",
+								"updated": "20220805174523"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--max-snapshots：最大快照数量，0表示不限制，默认值：5，环境变量：ETCD_MAX_SNAPSHOTS"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220805174447-lstyu26",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220805174447-lstyu26"
+					},
+					"Children": [
+						{
+							"ID": "20220805174447-qokkb8e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220805174447-qokkb8e"
+							},
+							"Children": [
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --listen-client-urls http://127.0.0.1:22379 "
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --advertise-client-urls http://127.0.0.1:22379 "
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --listen-peer-urls http://127.0.0.1:22380 "
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --initial-advertise-peer-urls http://127.0.0.1:22380 "
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --initial-cluster s1=http://127.0.0.1:2380,s2=http://127.0.0.1:22380,s3=http://127.0.0.1:32380 "
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --initial-cluster-token tkn "
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "  --initial-cluster-state new"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220805155438-gxj6nmo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220805155438-gxj6nmo",
+				"updated": "20220805155450"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 在kubernetes集群中部署"
+				}
+			]
+		},
+		{
+			"ID": "20220805160801-kydyv8x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220805160801-kydyv8x"
+			}
+		}
+	]
+}
