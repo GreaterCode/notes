@@ -1,0 +1,440 @@
+{
+	"ID": "20220811145028-ut6ope1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220811145028-ut6ope1",
+		"title": "controller-runtime原理之manager",
+		"updated": "20220811150832"
+	},
+	"Children": [
+		{
+			"ID": "20220811145028-sx49pjj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145028-sx49pjj",
+				"updated": "20220811145038"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本节主要介绍controller-runtime框架如何将Manager与Controller进行关联以及如何启动控制器"
+				}
+			]
+		},
+		{
+			"ID": "20220811145046-ugs4l8i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220811145046-ugs4l8i",
+				"updated": "20220811145046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. Manager如何使用"
+				}
+			]
+		},
+		{
+			"ID": "20220811145141-a2yhns3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145141-a2yhns3",
+				"updated": "20220811145142"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t上文我们介绍了controller-runtime中的Controller的实现，这个控制器的实现和我们自定义控制器的流程基本一致，那么controller-runtime是如何来使用这个ontroller"
+				}
+			]
+		},
+		{
+			"ID": "20220811145142-89rk5iq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145142-89rk5iq",
+				"updated": "20220811145142"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 在controller-runtime中使用了一个Manager的接口来管理Controller，除了控制器其实还可以管理Admission Webhook，也包括访问资源对象的client、cache、schema等，如下图所示："
+				}
+			]
+		},
+		{
+			"ID": "20220811145047-gta05w5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145047-gta05w5",
+				"updated": "20220811145212"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220811145212-sj1w3kj.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220811145228-iyrcrdx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220811145228-iyrcrdx",
+				"updated": "20220811145228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.Manager实例化"
+				}
+			]
+		},
+		{
+			"ID": "20220811145228-hulkhwq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145228-hulkhwq",
+				"updated": "20220811145228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先我们先来查看下controller-runtime种的Manager是如何使用的，查看controller-runtime代码仓库中的示例，位于"
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "https://kubernetes-sigs/controller-runtime/tree/master/examples/crd"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，示例中的关于Manager的使用步骤为："
+				}
+			]
+		},
+		{
+			"ID": "20220811145228-xsap8k8",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220811145228-xsap8k8",
+				"updated": "20220811145228"
+			},
+			"Children": [
+				{
+					"ID": "20220811145228-o4sp1qb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20220811145228-o4sp1qb"
+					},
+					"Children": [
+						{
+							"ID": "20220811145228-rst5ber",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811145228-rst5ber"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "实例化Manager，参数config"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220811145228-m9ss3hf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20220811145228-m9ss3hf"
+					},
+					"Children": [
+						{
+							"ID": "20220811145228-4bvbiq5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811145228-4bvbiq5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "向manager添加schema"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220811145228-dh7ux2s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20220811145228-dh7ux2s"
+					},
+					"Children": [
+						{
+							"ID": "20220811145228-22bo9ug",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811145228-22bo9ug"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "向manager添加controller，该controller包含一个reconciler结构体，我们需要再reconciler结构体实现逻辑处理"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220811145228-2ij2o1n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20220811145228-2ij2o1n"
+					},
+					"Children": [
+						{
+							"ID": "20220811145228-rda642n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811145228-rda642n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "向manager添加webhook，同样需要实现逻辑处理"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220811145228-wsdp8yc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20220811145228-wsdp8yc"
+					},
+					"Children": [
+						{
+							"ID": "20220811145228-3t52ss7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811145228-3t52ss7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动manager.start()"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220811145228-g9aq4e9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145228-g9aq4e9",
+				"updated": "20220811145228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20220811145238-i9d4xjv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220811145238-i9d4xjv",
+				"updated": "20220811150832"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\tctrl.SetLogger(zap.New())\n    // 根据config创建manager\n    // GetConfigOrDie() 默认使用的配置就是~/.kube/config\n\tmgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{})\n\tif err != nil {\n\t\tsetupLog.Error(err, \"unable to start manager\")\n\t\tos.Exit(1)\n\t}\n\n\t// in a real controller, we'd create a new scheme for this\n\t// 将api注册到Scheme，Scheme提供了GVK到go type的映射，如果多个crd，需要多次调用AddToScheme()\n\terr = api.AddToScheme(mgr.GetScheme())\n\tif err != nil {\n\t\tsetupLog.Error(err, \"unable to add scheme\")\n\t\tos.Exit(1)\n\t}\n\n\t// 注册controller到manager\n\t// For：监控的资源，相当于调用Watcher(\u0026source.Kind{Type: apiType}, \u0026handler.EnqueueRequest),\n\t// Owns: 拥有的下属资源，如果corev1.Pod{}属于api.ChaosPod{},也将会被监控，相当于Watcher\n\t// reconciler结构体实现Reconciler接口\n\terr = ctrl.NewControllerManagedBy(mgr).\n\t\tFor(\u0026api.ChaosPod{}).\n\t\tOwns(\u0026corev1.Pod{}).\n\t\tComplete(\u0026reconciler{\n\t\t\tClient: mgr.GetClient(),\n\t\t\tscheme: mgr.GetScheme(),\n\t\t})\n\tif err != nil {\n\t\tsetupLog.Error(err, \"unable to create controller\")\n\t\tos.Exit(1)\n\t}\n\n\t// 构建admission webhook\n\terr = ctrl.NewWebhookManagedBy(mgr).\n\t\tFor(\u0026api.ChaosPod{}).\n\t\tComplete()\n\tif err != nil {\n\t\tsetupLog.Error(err, \"unable to create webhook\")\n\t\tos.Exit(1)\n\t}\n\n\tsetupLog.Info(\"starting manager\")\n\n\t// 启动manager，实际上是启动注册到 manager中的controller\n\tif err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {\n\t\tsetupLog.Error(err, \"problem running manager\")\n\t\tos.Exit(1)\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220811145249-qii394e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220811145249-qii394e",
+				"updated": "20220811145338"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.启动Manager"
+				}
+			]
+		},
+		{
+			"ID": "20220811145342-kzfs8m5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145342-kzfs8m5",
+				"updated": "20220811145436"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220811145435-52jgi7f.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220811145328-1sm3xx1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145328-1sm3xx1",
+				"updated": "20220811145328"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t可以看到最终还是去调用Runnable的Start()来启动，其实也就是Controller的Start()，之前介绍过这个函数相当于启动一个控制循环不断从工作队列中消费数据，然后给到一个Reconciler接口进行处理，也就是我们需要实现的Reconciler(Request)(Request,error)这个业务逻辑函数"
+				}
+			]
+		},
+		{
+			"ID": "20220811145318-pw67sdp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811145318-pw67sdp",
+				"updated": "20220811145318"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t到这里我们就完成了整个Manager的整个启动过程，包括Manager的如何初始化，如何和Controller进行关联以及如何启动Controller的，了解了整个controller-runtime的原理过后，我们再去使用kubebuilder来编写Operator就更加容易"
+				}
+			]
+		}
+	]
+}
