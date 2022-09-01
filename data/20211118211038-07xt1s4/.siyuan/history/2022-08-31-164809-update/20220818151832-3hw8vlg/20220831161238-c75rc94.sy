@@ -1,0 +1,271 @@
+{
+	"ID": "20220831161238-c75rc94",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220831161238-c75rc94",
+		"title": "kubelet Resources QoS Classes介绍",
+		"updated": "20220831164748"
+	},
+	"Children": [
+		{
+			"ID": "20220831161238-a8g9m71",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220831161238-a8g9m71",
+				"updated": "20220831161845"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 基本概念 "
+				}
+			]
+		},
+		{
+			"ID": "20220831161846-mw9ho5q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831161846-mw9ho5q",
+				"updated": "20220831163800"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tKubernetes根据Pod中Containers Resource的request和limit的值来定义Pod的"
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "QoS Class"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。其中，指定容器request，代表系统确保能够提供的资源下限值。指定容器limit，代表系统允许提供的资源上限值。"
+				}
+			]
+		},
+		{
+			"ID": "20220831164113-3nlzfyg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164113-3nlzfyg",
+				"updated": "20220831164347"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tQoS(Quality of Service) 即服务质量，是 Kubernetes 中的一种控制机制，其会对运行在 Kubernetes 中的 Pod 进行一个质量划分，根据 Pod 中 container 的 Limit 和 request 将 Pod 分为 "
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "Guaranteed，Burstable，BestEffort"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 三类并对所有 Pod 进行一个打分，它们的QoS级别依次递减。在资源尤其是内存这种不可压缩资源不够时，为保证整体质量的稳定，Kubernetes 就会根据 QoS 的不同优先级，对 Pod 进行资源回收。这也是有时集群中的 Pod 突然被 kill 掉的原因。"
+				}
+			]
+		},
+		{
+			"ID": "20220831163846-bypf93f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831163846-bypf93f",
+				"updated": "20220831164546"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t通常，Kubernetes通过设置request和limit的值来指定超卖比例，进而提升资源利用率。"
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "K8S的调度基于request，而不是limit。"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "Borg通过使用“non-guranteed”的资源，提升了20%的资源利用率。"
+				}
+			]
+		},
+		{
+			"ID": "20220831164659-z1lfa9j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164659-z1lfa9j",
+				"updated": "20220831164659"
+			},
+			"Children": [
+				{
+					"Type": "NodeEmphasis",
+					"Data": "em",
+					"Children": [
+						{
+							"Type": "NodeEmA6kOpenMarker",
+							"Data": "*"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "\tGuaranteed 如果Pod中所有Container的所有Resource的limit和request都相等且不为0，则这个Pod的QoS Class就是Guaranteed。"
+						},
+						{
+							"Type": "NodeEmA6kCloseMarker",
+							"Data": "*"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831163846-jd5189d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831163846-jd5189d",
+				"updated": "20220831164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "\t注意："
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831164208-b8lbfwn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164208-b8lbfwn",
+				"updated": "20220831164208"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t如果一个容器只指明了limit，而未指明request，则表明request的值等于limit的值。"
+				}
+			]
+		},
+		{
+			"ID": "20220831164621-fdx886z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164621-fdx886z",
+				"updated": "20220831164622"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220831164622-a8m0qhx.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831163859-1brljra",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831163859-1brljra",
+				"updated": "20220831163859"
+			}
+		},
+		{
+			"ID": "20220831164743-l8g1mje",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220831164743-l8g1mje",
+				"updated": "20220831164748"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}
