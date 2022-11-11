@@ -4,7 +4,7 @@
 	"Properties": {
 		"id": "20220816174409-m10yrva",
 		"title": "便捷操作",
-		"updated": "20220816174445"
+		"updated": "20220920164301"
 	},
 	"Children": [
 		{
@@ -407,6 +407,301 @@
 				"id": "20220816194206-4e4cr8l",
 				"updated": "20220816194206"
 			}
+		},
+		{
+			"ID": "20220915144632-eybt8pz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220915144632-eybt8pz",
+				"updated": "20220915144659"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10. 静态IP设置"
+				}
+			]
+		},
+		{
+			"ID": "20220915144632-ylmosyv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220915144632-ylmosyv",
+				"updated": "20220915144635"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nnmcli connection modify ens33 ipv4.address  10.253.15.80/25\nnmcli con mod ens33 ipv4.gateway 10.253.15.1\nnmcli con mod ens33 ipv4.method manual\nnmcli con mod ens33 ipv4.dns \"10.253.15.8\"\nnmcli con down ens33\nnmcli con up ens33\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220915200750-equrhxv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220915200750-equrhxv",
+				"updated": "20220915200806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "11. dmesg格式化脚本"
+				}
+			]
+		},
+		{
+			"ID": "20220915200756-xo91ukh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220915200756-xo91ukh",
+				"updated": "20220915200756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n#! /bin/sh\nuptime_ts=`cat /proc/uptime | awk '{ print $1}'`\ndmesg | awk -v uptime_ts=$uptime_ts 'BEGIN {\n    now_ts = systime();\n    start_ts = now_ts - uptime_ts;\n}\n{\n    print strftime(\"[%Y/%m/%d %H:%M:%S]\", start_ts + substr($1, 2, length($1) - 2)), $0\n}'\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220920163020-94vcqj0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220920163020-94vcqj0",
+				"updated": "20220920163122"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "12. 常用的清理 Kubernetes 集群资源命令"
+				}
+			]
+		},
+		{
+			"ID": "20220920163232-9vd91j8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220920163232-9vd91j8",
+				"updated": "20220920163233"
+			},
+			"Children": [
+				{
+					"ID": "20220920163233-cnci823",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220920163233-cnci823"
+					},
+					"Children": [
+						{
+							"ID": "20220920163233-ve36l9i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220920163233-ve36l9i"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubernetes 基础对象清理"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220920163217-87pwklj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220920163217-87pwklj",
+				"updated": "20220920163250"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n清理 Evicted 状态的 Pod\nsudo kubectl get pods --all-namespaces -o wide | grep Evicted | awk '{print $1,$2}' | sudo xargs -L1 kubectl delete pod -n\n\n清理 Error 状态的 Pod\nsudo kubectl get pods --all-namespaces -o wide | grep Error | awk '{print $1,$2}' | sudo xargs -L1 kubectl delete pod -n\n\n清理 Completed 状态的 Pod\nsudo kubectl get pods --all-namespaces -o wide | grep Completed | awk '{print $1,$2}' | sudo xargs -L1 kubectl delete pod -n\n\n清理没有被使用的 PV\nsudo kubectl describe -A pvc | grep -E \"^Name:.*$|^Namespace:.*$|^Used By:.*$\" | grep -B 2 \"\u003cnone\u003e\" | grep -E \"^Name:.*$|^Namespace:.*$\" | cut -f2 -d: | paste -d \" \" - - | sudo xargs -n2 bash -c 'kubectl -n ${1} delete pvc ${0}'\n\n清理没有被绑定的 PVC\nsudo kubectl get pvc --all-namespaces | tail -n +2 | grep -v Bound | awk '{print $1,$2}' | sudo xargs -L1 kubectl delete pvc -n\n\n清理没有被绑定的 PV\nsudo kubectl get pv | tail -n +2 | grep -v Bound | awk '{print $1}' | sudo xargs -L1 kubectl delete pv\n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220920163251-qs5ey23",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220920163251-qs5ey23",
+				"updated": "20220920163856"
+			},
+			"Children": [
+				{
+					"ID": "20220920163851-2ab867d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220920163851-2ab867d",
+						"updated": "20220920163856"
+					},
+					"Children": [
+						{
+							"ID": "20220920163856-577pff4",
+							"Type": "NodeHeading",
+							"HeadingLevel": 2,
+							"Properties": {
+								"id": "20220920163856-577pff4",
+								"updated": "20220920163856"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Linux 清理"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220920163910-f0litrf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220920163910-f0litrf",
+				"updated": "20220920164002"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "看磁盘全部空间\nsudo df -hl /\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda2       100G   47G   54G  47% /\n\n查看指定目录占用\nsudo du -sh .\n24G\t.\n\n删除指定前缀的文件夹\ncd /nfsdata\nls | grep archived- |xargs -L1 rm -r\n\n清理僵尸进程\nsudo ps -A -ostat,ppid | grep -e '^[Zz]' | awk '{print }' | xargs kill -HUP \u003e /\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220920164009-wys19rg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220920164009-wys19rg",
+				"updated": "20220920164010"
+			},
+			"Children": [
+				{
+					"ID": "20220920164010-rt7upuj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220920164010-rt7upuj"
+					},
+					"Children": [
+						{
+							"ID": "20220920164010-fqm51c0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220920164010-fqm51c0",
+								"updated": "20220920164015"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Docker镜像"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220920164024-l8rzblw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220920164024-l8rzblw",
+				"updated": "20220920164301"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "查看磁盘使用情况\nsudo docker system df\n\nTYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE\nImages              361                 23                  178.5GB             173.8GB (97%)\nContainers          29                  9                   6.682GB             6.212GB (92%)\nLocal Volumes       4                   0                   3.139MB             3.139MB (100%)\nBuild Cache         0                   0                   0B                  0B\n\n清理 none 镜像\nsudo docker images | grep none | awk '{print $3}' | sudo xargs docker rmi\n\n清理不再使用的数据卷\nsudo docker volume rm $(docker volume ls -q)   或者  sudo docker volume prune\n\n\n清理缓存\nsudo docker builder prune\n\n全面清理: 删除关闭的容器、无用的存储卷、无用的网络、dangling 镜像（无 tag 镜像）\ndocker system prune -f\n\n清理正则匹配上的镜像\nsudo docker images |grep -E \"([0-9a-z]*[-]){3,}[0-9]{9}\" |awk '{print $3}' | sudo \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
 		}
 	]
 }
