@@ -1,0 +1,987 @@
+{
+	"ID": "20221113102242-zulvpp9",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221113102242-zulvpp9",
+		"title": "007 容器应用备份与恢复",
+		"updated": "20221113113403"
+	},
+	"Children": [
+		{
+			"ID": "20221113102242-n0y6uk4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221113102242-n0y6uk4",
+				"updated": "20221113102317"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.  OpenShift API Data Protection(OADP)"
+				}
+			]
+		},
+		{
+			"ID": "20221113102333-u0o42x0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113102333-u0o42x0",
+				"updated": "20221113112042"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t数据保护可能包括按需备份、计划备份和恢复等操作。这些操作允许集群内的对象被备份到本地或公共云上的存储提供商，并在发生故障或计划维护时从备份中恢复该集群。Red Hat 为此提供了 OpenShift API Data Protection，即"
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "OADP"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。OADP 基于 Velero 开源项目，它为 OpenShift 容器的应用提供了一个灾难恢复和数据保护解决方案。"
+				}
+			]
+		},
+		{
+			"ID": "20221113112044-eguays1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221113112044-eguays1",
+				"updated": "20221113112057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 部署测试应用"
+				}
+			]
+		},
+		{
+			"ID": "20221113112105-2qtemm1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112105-2qtemm1",
+				"updated": "20221113112127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 部署 parkmap应用"
+				}
+			]
+		},
+		{
+			"ID": "20221113102347-b2fb0f6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113102347-b2fb0f6",
+				"updated": "20221113112144"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$ oc apply -f https://raw.githubusercontent.com/liuxiaoyu-git/oadp-operator/master/tests/e2e/sample-applications/parks-app/manifest4.8.yaml"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112147-u7r9hku",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112147-u7r9hku",
+				"updated": "20221113112157"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 如果 OpenShift 中有空余的 PV 可用，可执行以下命令。"
+				}
+			]
+		},
+		{
+			"ID": "20221113112245-mgec60g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112245-mgec60g",
+				"updated": "20221113112301"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$ oc apply -f https://raw.githubusercontent.com/liuxiaoyu-git/oadp-operator/master/tests/e2e/sample-applications/mssql-persistent/mssql-persistent-template.yaml"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "如果 OpenShift 中配有 StorageClass，可执行以下命令。注意，请使用已有的 StorageClass 替换下文中的“ "
+				},
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "storageClassName: gp2-csi"
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”。"
+				}
+			]
+		},
+		{
+			"ID": "20221113112332-dwbzxkq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112332-dwbzxkq",
+				"updated": "20221113112359"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$ oc apply -f https://raw.githubusercontent.com/liuxiaoyu-git/oadp-operator/master/tests/e2e/sample-applications/mssql-persistent/mssql-persistent-csi-template.yaml"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112251-tice17q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221113112251-tice17q",
+				"updated": "20221113112507"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 安装环境"
+				}
+			]
+		},
+		{
+			"ID": "20221113112507-z4hqlcw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112507-z4hqlcw",
+				"updated": "20221113112513"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 安装 velero 客户端"
+				}
+			]
+		},
+		{
+			"ID": "20221113112540-m0wk08n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112540-m0wk08n",
+				"updated": "20221113112542"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在 https://"
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "github"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://so.csdn.net/so/search?q=github\u0026spm=1001.2101.3001.7020"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ".com/vmware-tanzu/velero/releases 查看当前 velero 最新版本"
+				}
+			]
+		},
+		{
+			"ID": "20221113112550-8j1x9xh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113112550-8j1x9xh",
+				"updated": "20221113112602"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "VERSION=v1.7.1\ncd ~/ \u0026\u0026 curl -OL https://github.com/vmware-tanzu/velero/releases/download/${VERSION}/velero-${VERSION}-linux-amd64.tar.gz\ntar -xvf velero-${VERSION}-linux-amd64.tar.gz\nPATH=$PATH:~/velero-${VERSION}-linux-amd64\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113112500-r2np0r7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112500-r2np0r7",
+				"updated": "20221113112629"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 安装Minio "
+				}
+			]
+		},
+		{
+			"ID": "20221113112640-il4tyw4",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113112640-il4tyw4",
+				"updated": "20221113112640"
+			},
+			"Children": [
+				{
+					"ID": "20221113112640-1utrsah",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113112640-1utrsah"
+					},
+					"Children": [
+						{
+							"ID": "20221113112640-6jgzimr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113112640-6jgzimr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据《"
+								},
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "OpenShift 4 - 部署运行 MinIO 对象存储"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://blog.csdn.net/weixin_43902588/article/details/122308770"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "》在“ "
+								},
+								{
+									"Type": "NodeStrong",
+									"Data": "strong",
+									"Children": [
+										{
+											"Type": "NodeStrongA6kOpenMarker",
+											"Data": "**"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "my-minio"
+										},
+										{
+											"Type": "NodeStrongA6kCloseMarker",
+											"Data": "**"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ”\n项目中安装 MinIO 服务，并创建名为“ocp-backup”的 Bucket。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112653-vi9ir1g",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113112653-vi9ir1g",
+				"updated": "20221113112717"
+			},
+			"Children": [
+				{
+					"ID": "20221113112658-2du3aha",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113112658-2du3aha",
+						"updated": "20221113112717"
+					},
+					"Children": [
+						{
+							"ID": "20221113112658-idvmdp1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113112658-idvmdp1",
+								"updated": "20221113112717"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，在 minio-client 项目中一个 Pod 作为运行 minio-client 的环境。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112730-n7s8mti",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113112730-n7s8mti",
+				"updated": "20221113112744"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project minio-client\n$ oc apply -f - \u003c\u003c EOF\napiVersion: v1\nkind: Pod\nmetadata:\n  name: minio-client\n  namespace: minio-client\nspec:\n  containers:\n    - name: minio-client\n      image: busybox\n      command: [ \"/bin/sh\", \"-c\", \"while true ; do date; sleep 1; done;\" ]\n  restartPolicy: Never\nEOF\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113112758-zysfvy3",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113112758-zysfvy3",
+				"updated": "20221113112815"
+			},
+			"Children": [
+				{
+					"ID": "20221113112758-pabpjic",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221113112758-pabpjic",
+						"updated": "20221113112815"
+					},
+					"Children": [
+						{
+							"ID": "20221113112758-u39g1jm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113112758-u39g1jm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "进入部署好的名为 minio-client 的 Pod"
+								}
+							]
+						},
+						{
+							"ID": "20221113112809-tn80pt0",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221113112809-tn80pt0",
+								"updated": "20221113112815"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "c2hlbGw="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc rsh minio-client\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112826-4qtyt9u",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113112826-4qtyt9u",
+				"updated": "20221113113029"
+			},
+			"Children": [
+				{
+					"ID": "20221113112826-9lankbo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221113112826-9lankbo",
+						"updated": "20221113113029"
+					},
+					"Children": [
+						{
+							"ID": "20221113112826-5eftghj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113112826-5eftghj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在 minio-client 中安装 mc，并确认可以通过 http://minio.minio.svc 访问到前面部署的 MinIO 服务。"
+								}
+							]
+						},
+						{
+							"ID": "20221113113017-37pgjj3",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221113113017-37pgjj3",
+								"updated": "20221113113029"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "c2hlbGw="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "/ # cd ~\n~ # wget https://dl.min.io/client/mc/release/linux-amd64/mc\n~ # chmod +x mc\n~ # ./mc alias set my-minio http://minio.minio.svc minio minio123\nmc: Configuration written to `/root/.mc/config.json`. Please update your access credentials.\nmc: Successfully created `/root/.mc/share`.\nmc: Initialized share uploads `/root/.mc/share/uploads.json` file.\nmc: Initialized share downloads `/root/.mc/share/downloads.json` file.\nAdded `my-minio` successfully.\n~ # ./mc ls my-minio/\n[2022-01-07 13:02:41 UTC]     0B ocp-backup/\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112834-qju8nz2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112834-qju8nz2",
+				"updated": "20221113113058"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 安装OADP"
+				}
+			]
+		},
+		{
+			"ID": "20221113113058-faiw7c5",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113113058-faiw7c5",
+				"updated": "20221113113227"
+			},
+			"Children": [
+				{
+					"ID": "20221113113121-za6rmci",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113113121-za6rmci"
+					},
+					"Children": [
+						{
+							"ID": "20221113113121-xu3xtw9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113113121-xu3xtw9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用默认配置安装 OADP "
+								},
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "Operator"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://so.csdn.net/so/search?q=Operator\u0026spm=1001.2101.3001.7020"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，Opeartor 会安装到 openshift-adp 项目中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221113113140-p4vtdfz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113113140-p4vtdfz",
+						"updated": "20221113113227"
+					},
+					"Children": [
+						{
+							"ID": "20221113113150-q8birgc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113113150-q8birgc",
+								"updated": "20221113113211"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在 openshift-adp 项目中创建名为 “ "
+								},
+								{
+									"Type": "NodeStrong",
+									"Data": "strong",
+									"Children": [
+										{
+											"Type": "NodeStrongA6kOpenMarker",
+											"Data": "**"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "cloud-credentials"
+										},
+										{
+											"Type": "NodeStrongA6kCloseMarker",
+											"Data": "**"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ” 的 Secret，其中 "
+								},
+								{
+									"Type": "NodeStrong",
+									"Data": "strong",
+									"Children": [
+										{
+											"Type": "NodeStrongA6kOpenMarker",
+											"Data": "**"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "Key"
+										},
+										{
+											"Type": "NodeStrongA6kCloseMarker",
+											"Data": "**"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeStrong",
+									"Data": "strong",
+									"Children": [
+										{
+											"Type": "NodeStrongA6kOpenMarker",
+											"Data": "**"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "Value"
+										},
+										{
+											"Type": "NodeStrongA6kCloseMarker",
+											"Data": "**"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 参照以下内容："
+								}
+							]
+						},
+						{
+							"ID": "20221113113221-h9xvhf3",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221113113221-h9xvhf3",
+								"updated": "20221113113227"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "c2hlbGw="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "[default]\naws_access_key_id=minio\naws_secret_access_key=minio123\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113113252-u11r7kq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113113252-u11r7kq",
+				"updated": "20221113113254"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221113113254-2q0nsys.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113113316-pfawijn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113113316-pfawijn",
+				"updated": "20221113113316"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "或执行以下命令创建 cloud-credentials（需要先将 Secret 的 Value 保存到 “ "
+				},
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "CREDENTIALS_FILE"
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ” 中）。"
+				}
+			]
+		},
+		{
+			"ID": "20221113113331-rghnslp",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113113331-rghnslp",
+				"updated": "20221113113403"
+			},
+			"Children": [
+				{
+					"ID": "20221113113334-uktqw9p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221113113334-uktqw9p",
+						"updated": "20221113113403"
+					},
+					"Children": [
+						{
+							"ID": "20221113113334-d96n9an",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113113334-d96n9an"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据以下 YAML 内容在 openshift-adp 项目中创建 DataProtectionApplication 对象。"
+								}
+							]
+						},
+						{
+							"ID": "20221113113349-favunle",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221113113349-favunle",
+								"updated": "20221113113403"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "c2hlbGw="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "apiVersion: oadp.openshift.io/v1alpha1\nkind: DataProtectionApplication\nmetadata:\n  name: example-dpa\n  namespace: openshift-adp\nspec:\n  backupLocations:\n    - velero:\n        backupSyncPeriod: 2m0s\n        config:\n          profile: default\n          region: minio\n          s3ForcePathStyle: 'true'\n          s3Url: 'http://minio.minio.svc/'\n        credential:\n          key: minio\n          name: cloud-credentials\n        default: true\n        objectStorage:\n          bucket: ocp-backup\n          prefix: velero\n        provider: aws\n  configuration:\n    restic:\n      enable: true\n    velero:\n      defaultPlugins:\n        - openshift\n        - aws\n      featureFlags:\n        - EnableCSI\n  snapshotLocations:\n    - velero:\n        config:\n          profile: default\n          region: minio\n        provider: aws\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113113348-2swclnh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113113348-2swclnh",
+				"updated": "20221113113348"
+			}
+		}
+	]
+}

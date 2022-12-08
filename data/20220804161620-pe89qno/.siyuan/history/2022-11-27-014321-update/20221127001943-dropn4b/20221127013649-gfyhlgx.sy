@@ -1,0 +1,886 @@
+{
+	"ID": "20221127013649-gfyhlgx",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221127013649-gfyhlgx",
+		"title": "kube-ovn安装",
+		"updated": "20221127014319"
+	},
+	"Children": [
+		{
+			"ID": "20221127013649-ysantuv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127013649-ysantuv",
+				"updated": "20221127014310"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "环境准备\t"
+				}
+			]
+		},
+		{
+			"ID": "20221127014313-nxy9j0c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127014313-nxy9j0c",
+				"updated": "20221127014319"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.Kube-OVN 是一个符合 CNI 规范的网络组件，其运行需要依赖 Kubernetes 环境及对应的内核网络模块。 以下是通过测试的操作系统和软件版本，环境配置和所需要开放的端口信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221127013804-oxznb3z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127013804-oxznb3z",
+				"updated": "20221127013813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 软件版本"
+				}
+			]
+		},
+		{
+			"ID": "20221127013827-8i4n2xg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127013827-8i4n2xg",
+				"updated": "20221127013827"
+			},
+			"Children": [
+				{
+					"ID": "20221127013827-g8kywpz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-g8kywpz"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-1be3zoe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-1be3zoe"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubernetes \u003e= 1.16 且 \u003c 1.24，推荐 1.19 以上版本。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013827-lfen03b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-lfen03b"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-jpywtms",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-jpywtms"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Docker \u003e= 1.12.6, Containerd \u003e= 1.3.4。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013827-s8y3zip",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-s8y3zip"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-6f3hyub",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-6f3hyub"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "操作系统: CentOS 7/8, Ubuntu 16.04/18.04/20.04。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013827-v7gzfdp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-v7gzfdp"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-y40ytm1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-y40ytm1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "其他 Linux 发行版，需要检查一下内核模块是否存在 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "geneve"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": ", "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "openvswitch"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": ", "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "ip_tables"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "iptable_nat"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，Kube-OVN 正常工作依赖上述模块"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127013856-9sfkjka",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127013856-9sfkjka",
+				"updated": "20221127013903"
+			},
+			"Children": [
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "注意："
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127013910-ww2cnt1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127013910-ww2cnt1",
+				"updated": "20221127013910"
+			},
+			"Children": [
+				{
+					"ID": "20221127013910-iji4x07",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127013910-iji4x07"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-hxigp9l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-hxigp9l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果内核版本为 3.10.0-862 内核 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "netfilter"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 模块存在 bug 会导致 Kube-OVN 内置负载均衡器无法工作，需要对内核升级，建议使用 CentOS 官方对应版本最新内核保证系统的安全。相关内核 bug 参考 "
+								},
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "Floating IPs broken after kernel upgrade to Centos/RHEL 7.5 - DNAT not working"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://bugs.launchpad.net/neutron/+bug/1776778"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013910-jarwr7x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127013910-jarwr7x"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-rel7q72",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-rel7q72"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Rocky Linux 8.6 的内核 4.18.0-372.9.1.el8.x86_64 存在 TCP 通信问题 "
+								},
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "TCP connection failed in Rocky Linux 8.6"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://github.com/kubeovn/kube-ovn/issues/1647"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，请升级内核至 4.18.0-372.13.1.el8_6.x86_64 或更高版本。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013910-7izak3j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127013910-7izak3j"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-flu40c7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-flu40c7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果内核版本为 4.4 则对应的内核 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "openvswitch"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 模块存在问题，建议升级或手动编译 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "openvswitch"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 新版本模块进行更新"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013910-p70j7cy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221127013910-p70j7cy"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-a45cl67",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-a45cl67"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Geneve 隧道建立需要检查 IPv6，可通过 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "cat /proc/cmdline"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 检查内核启动参数， 相关内核 bug 请参考 "
+								},
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "Geneve tunnels don"
+										},
+										{
+											"Type": "NodeCodeSpan",
+											"Data": "code",
+											"Children": [
+												{
+													"Type": "NodeCodeSpanOpenMarker"
+												},
+												{
+													"Type": "NodeCodeSpanContent",
+													"Data": "\u0026#39;'"
+												},
+												{
+													"Type": "NodeCodeSpanCloseMarker"
+												}
+											]
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "t work when ipv6 is disabled"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1794232"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127013814-1c4xwl4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127013814-1c4xwl4",
+				"updated": "20221127014110"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.环境配置"
+				}
+			]
+		},
+		{
+			"ID": "20221127014120-k7f3fj4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127014120-k7f3fj4",
+				"updated": "20221127014120"
+			},
+			"Children": [
+				{
+					"ID": "20221127014120-5d79yd8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-5d79yd8"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-zgljzo8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-zgljzo8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kernel 启动需要开启 ipv6, 如果 kernel 启动参数包含 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "ipv6.disable=1"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 需要将其设置为 0。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127014120-5k0tpuf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-5k0tpuf"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-oql3h21",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-oql3h21"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "kube-proxy"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 正常工作，Kube-OVN 可以通过 SVC IP 访问到 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "kube-apiserver"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127014120-agrp0hu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-agrp0hu"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-j0ds8ga",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-j0ds8ga"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认 kubelet 配置参数开启了 CNI，并且配置在标准路径下, kubelet 启动时应包含如下参数 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "--network-plugin=cni --cni-bin-dir=/opt/cni/bin --cni-conf-dir=/etc/cni/net.d"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127014120-pp1cb6f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-pp1cb6f"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-3dh2t7z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-3dh2t7z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认未安装其他网络插件，或者其他网络插件已经被清除，检查 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "/etc/cni/net.d/"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 路径下无其他网络插件配置文件。如果之前安装过其他网络插件，建议删除后重启机器清理残留网络资源。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127014149-7seyjse",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127014149-7seyjse",
+				"updated": "20221127014154"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.端口信息"
+				}
+			]
+		},
+		{
+			"ID": "20221127014155-ypvnxlg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014155-ypvnxlg",
+				"updated": "20221127014157"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " \t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127014157-ktbbb9w.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127014159-hiog5z2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014159-hiog5z2",
+				"updated": "20221127014159"
+			}
+		}
+	]
+}

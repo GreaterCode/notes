@@ -1,0 +1,318 @@
+{
+	"ID": "20221113102242-zulvpp9",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221113102242-zulvpp9",
+		"title": "007 容器应用备份与恢复",
+		"updated": "20221113112602"
+	},
+	"Children": [
+		{
+			"ID": "20221113102242-n0y6uk4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221113102242-n0y6uk4",
+				"updated": "20221113102317"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.  OpenShift API Data Protection(OADP)"
+				}
+			]
+		},
+		{
+			"ID": "20221113102333-u0o42x0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113102333-u0o42x0",
+				"updated": "20221113112042"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t数据保护可能包括按需备份、计划备份和恢复等操作。这些操作允许集群内的对象被备份到本地或公共云上的存储提供商，并在发生故障或计划维护时从备份中恢复该集群。Red Hat 为此提供了 OpenShift API Data Protection，即"
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "OADP"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。OADP 基于 Velero 开源项目，它为 OpenShift 容器的应用提供了一个灾难恢复和数据保护解决方案。"
+				}
+			]
+		},
+		{
+			"ID": "20221113112044-eguays1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221113112044-eguays1",
+				"updated": "20221113112057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 部署测试应用"
+				}
+			]
+		},
+		{
+			"ID": "20221113112105-2qtemm1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112105-2qtemm1",
+				"updated": "20221113112127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 部署 parkmap应用"
+				}
+			]
+		},
+		{
+			"ID": "20221113102347-b2fb0f6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113102347-b2fb0f6",
+				"updated": "20221113112144"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$ oc apply -f https://raw.githubusercontent.com/liuxiaoyu-git/oadp-operator/master/tests/e2e/sample-applications/parks-app/manifest4.8.yaml"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112147-u7r9hku",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112147-u7r9hku",
+				"updated": "20221113112157"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 如果 OpenShift 中有空余的 PV 可用，可执行以下命令。"
+				}
+			]
+		},
+		{
+			"ID": "20221113112245-mgec60g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112245-mgec60g",
+				"updated": "20221113112301"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$ oc apply -f https://raw.githubusercontent.com/liuxiaoyu-git/oadp-operator/master/tests/e2e/sample-applications/mssql-persistent/mssql-persistent-template.yaml"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "如果 OpenShift 中配有 StorageClass，可执行以下命令。注意，请使用已有的 StorageClass 替换下文中的“ "
+				},
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "storageClassName: gp2-csi"
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”。"
+				}
+			]
+		},
+		{
+			"ID": "20221113112332-dwbzxkq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112332-dwbzxkq",
+				"updated": "20221113112359"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$ oc apply -f https://raw.githubusercontent.com/liuxiaoyu-git/oadp-operator/master/tests/e2e/sample-applications/mssql-persistent/mssql-persistent-csi-template.yaml"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113112251-tice17q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221113112251-tice17q",
+				"updated": "20221113112507"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 安装环境"
+				}
+			]
+		},
+		{
+			"ID": "20221113112507-z4hqlcw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113112507-z4hqlcw",
+				"updated": "20221113112513"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 安装 velero 客户端"
+				}
+			]
+		},
+		{
+			"ID": "20221113112540-m0wk08n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112540-m0wk08n",
+				"updated": "20221113112542"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在 https://"
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "github"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://so.csdn.net/so/search?q=github\u0026spm=1001.2101.3001.7020"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ".com/vmware-tanzu/velero/releases 查看当前 velero 最新版本"
+				}
+			]
+		},
+		{
+			"ID": "20221113112550-8j1x9xh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113112550-8j1x9xh",
+				"updated": "20221113112602"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "VERSION=v1.7.1\ncd ~/ \u0026\u0026 curl -OL https://github.com/vmware-tanzu/velero/releases/download/${VERSION}/velero-${VERSION}-linux-amd64.tar.gz\ntar -xvf velero-${VERSION}-linux-amd64.tar.gz\nPATH=$PATH:~/velero-${VERSION}-linux-amd64\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113112500-r2np0r7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113112500-r2np0r7",
+				"updated": "20221113112500"
+			}
+		}
+	]
+}
