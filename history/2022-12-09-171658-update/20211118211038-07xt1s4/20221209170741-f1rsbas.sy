@@ -1,0 +1,697 @@
+{
+	"ID": "20221209170741-f1rsbas",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221209170741-f1rsbas",
+		"title": "Kubernetes针对资源紧缺处理方式的配置",
+		"updated": "20221209171554"
+	},
+	"Children": [
+		{
+			"ID": "20221209170741-9bltj3b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209170741-9bltj3b",
+				"updated": "20221209170816"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如何在资源紧缺的情况下，保证 Node 的稳定性，是 Kubelet 需要面对的一个重要的问题。尤其对于内存和磁盘这种不可压缩的资源，紧缺就相当于不稳定。"
+				}
+			]
+		},
+		{
+			"ID": "20221209170947-pvp4hr3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221209170947-pvp4hr3",
+				"updated": "20221209170959"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 驱逐策略"
+				}
+			]
+		},
+		{
+			"ID": "20221209171014-1bst9m1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171014-1bst9m1",
+				"updated": "20221209171014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubelet 能够监控资源消耗，来防止计算资源被耗尽。一旦出现资源紧缺的迹象，Kubelet 就会主动终止一或多个 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "Pod"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://www.kubernetes.org.cn/tags/pod"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的运行，以回收紧俏资源。当一个 Pod 被终止时，其中的容器会全部停止，Pod 状态会被置为 Failed。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171054-qy1i0qx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221209171054-qy1i0qx",
+				"updated": "20221209171105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 驱逐信号"
+				}
+			]
+		},
+		{
+			"ID": "20221209171117-ecpndzd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171117-ecpndzd",
+				"updated": "20221209171118"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下文中提到了一些信号，kubelet 能够利用这些信号作为决策依据来触发驱逐行为。描述列中的内容来自于 Kubelet summary API。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171203-hi44w4l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171203-hi44w4l",
+				"updated": "20221209171204"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221209171204-083e0z1.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221209171250-wcxezso",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171250-wcxezso",
+				"updated": "20221209171250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的每个信号都支持整数值或者百分比。百分比的分母部分就是各个信号的总量。kubelet 支持两种文件系统分区。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171250-hkcqcbl",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221209171250-hkcqcbl",
+				"updated": "20221209171257"
+			},
+			"Children": [
+				{
+					"ID": "20221209171250-6uie07a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221209171250-6uie07a",
+						"updated": "20221209171250"
+					},
+					"Children": [
+						{
+							"ID": "20221209171250-xqb8xsl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171250-xqb8xsl",
+								"updated": "20221209171250"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "nodefs：保存 kubelet 的卷和守护进程日志等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221209171250-td4ud7e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221209171250-td4ud7e",
+						"updated": "20221209171257"
+					},
+					"Children": [
+						{
+							"ID": "20221209171250-f8dv4jl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171250-f8dv4jl",
+								"updated": "20221209171257"
+							},
+							"Children": [
+								{
+									"Type": "NodeTag",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeTagOpenMarker"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "imagefs"
+										},
+										{
+											"Type": "NodeTagCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：在容器运行时，用于保存镜像以及可写入层。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221209171250-9s6cotm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171250-9s6cotm",
+				"updated": "20221209171250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "imagefs 是可选的。Kubelet 能够利用 cAdvisor 自动发现这些文件系统。Kubelet 不关注其他的文件系统。所有其他类型的配置，例如保存在独立文件系统的卷和日志，都不被支持。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171250-dbgvi34",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171250-dbgvi34",
+				"updated": "20221209171250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为磁盘压力已经被驱逐策略接管，因此未来将会停止对现有 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "垃圾收集"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "http://kubernetes.io/docs/admin/garbage-collection/"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 方式的支持。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171317-4wrbesq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221209171317-4wrbesq",
+				"updated": "20221209171326"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 驱逐阈值"
+				}
+			]
+		},
+		{
+			"ID": "20221209171328-1fzb5cf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171328-1fzb5cf",
+				"updated": "20221209171328"
+			}
+		},
+		{
+			"ID": "20221209171336-jkcn2jj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171336-jkcn2jj",
+				"updated": "20221209171336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一旦超出阈值，就会触发 kubelet 进行资源回收的动作。阈值的定义方式如下："
+				}
+			]
+		},
+		{
+			"ID": "20221209171336-6qnqfuf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221209171336-6qnqfuf",
+				"updated": "20221209171336"
+			},
+			"Children": [
+				{
+					"ID": "20221209171336-j6zqon4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171336-j6zqon4",
+						"updated": "20221209171336"
+					},
+					"Children": [
+						{
+							"ID": "20221209171336-tnb6i2z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171336-tnb6i2z",
+								"updated": "20221209171336"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "上面的表格中列出了可用的 eviction-signal."
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221209171336-f0a0ide",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171336-f0a0ide",
+						"updated": "20221209171336"
+					},
+					"Children": [
+						{
+							"ID": "20221209171336-3jqsgcd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171336-3jqsgcd",
+								"updated": "20221209171336"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "仅有一个 operator 可用：\u003c"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221209171336-ot0y25u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171336-ot0y25u",
+						"updated": "20221209171336"
+					},
+					"Children": [
+						{
+							"ID": "20221209171336-4s6ivf2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171336-4s6ivf2",
+								"updated": "20221209171336"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "quantity 需要符合 Kubernetes 中的描述方式"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221209171349-tcs1qmr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171349-tcs1qmr",
+				"updated": "20221209171349"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例如如果一个 Node 有 10Gi 内存，我们希望在可用内存不足 1Gi 时进行驱逐，就可以选取下面的一种方式来定义驱逐阈值："
+				}
+			]
+		},
+		{
+			"ID": "20221209171349-urkyrzg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221209171349-urkyrzg",
+				"updated": "20221209171349"
+			},
+			"Children": [
+				{
+					"ID": "20221209171349-py98sx7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171349-py98sx7",
+						"updated": "20221209171349"
+					},
+					"Children": [
+						{
+							"ID": "20221209171349-dgeti14",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171349-dgeti14",
+								"updated": "20221209171349"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "memory.available\u003c10%"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221209171349-ay76im6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171349-ay76im6",
+						"updated": "20221209171349"
+					},
+					"Children": [
+						{
+							"ID": "20221209171349-g06vht6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171349-g06vht6",
+								"updated": "20221209171349"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "memory.available\u003c1Gi"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221209171412-ii5aso8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221209171412-ii5aso8",
+				"updated": "20221209171420"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 驱逐软阈值"
+				}
+			]
+		},
+		{
+			"ID": "20221209171554-f0plwmq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171554-f0plwmq",
+				"updated": "20221209171554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "软阈值需要和一个宽限期参数协同工作。当系统资源消耗达到软阈值时，这一状况的持续时间超过了宽限期之前，Kubelet 不会触发任何动作。如果没有定义宽限期，Kubelet 会拒绝启动。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171554-avcfpl0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171554-avcfpl0",
+				"updated": "20221209171554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外还可以定义一个 Pod 结束的宽限期。如果定义了这一宽限期，那么 Kubelet 会使用pod.Spec.TerminationGracePeriodSeconds 和最大宽限期这两个值之间较小的那个（进行宽限），如果没有指定的话，kubelet 会不留宽限立即杀死 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20221209171554-437dcbi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221209171554-437dcbi",
+				"updated": "20221209171554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "软阈值的定义包括以下几个参数："
+				}
+			]
+		},
+		{
+			"ID": "20221209171554-0i2y18e",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221209171554-0i2y18e",
+				"updated": "20221209171554"
+			},
+			"Children": [
+				{
+					"ID": "20221209171554-y141imo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171554-y141imo",
+						"updated": "20221209171554"
+					},
+					"Children": [
+						{
+							"ID": "20221209171554-i7d9e2a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171554-i7d9e2a",
+								"updated": "20221209171554"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "eviction-soft：描述一套驱逐阈值（例如 memory.available\u003c1.5Gi ），如果满足这一条件的持续时间超过宽限期，就会触发对 Pod 的驱逐动作。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221209171554-qnnlevq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171554-qnnlevq",
+						"updated": "20221209171554"
+					},
+					"Children": [
+						{
+							"ID": "20221209171554-qyk3yck",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171554-qyk3yck",
+								"updated": "20221209171554"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "eviction-soft-grace-period：包含一套驱逐宽限期（例如 memory.available=1m30s），用于定义达到软阈值之后，持续时间超过多久才进行驱逐。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221209171554-6pqee1m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221209171554-6pqee1m",
+						"updated": "20221209171554"
+					},
+					"Children": [
+						{
+							"ID": "20221209171554-wlyjy1w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221209171554-wlyjy1w",
+								"updated": "20221209171554"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "eviction-max-pod-grace-period：在因为达到软阈值之后，到驱逐一个 Pod 之前的最大宽限时间（单位是秒），"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221209171421-is08kwr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221209171421-is08kwr",
+				"updated": "20221209171433"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 驱逐硬阈值"
+				}
+			]
+		}
+	]
+}
