@@ -1,0 +1,2094 @@
+{
+	"ID": "20221219002423-dezxwa1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221219002423-dezxwa1",
+		"title": "containerd-shim原理解读",
+		"updated": "20221219004223"
+	},
+	"Children": [
+		{
+			"ID": "20221219003150-f55tcdx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221219003150-f55tcdx",
+				"updated": "20221219003203"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20221219002559-23svcyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219002559-23svcyy",
+				"updated": "20221219002559"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 1.20 版开始废除了对 dockershim 的支持，改用 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "Containerd"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://containerd.io/"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 作为默认的容器运行时。本文将介绍 Containerd 中的 “shim” 接口。"
+				}
+			]
+		},
+		{
+			"ID": "20221219002559-71a9940",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219002559-71a9940",
+				"updated": "20221219003125"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每一个 Containerd 或 Docker 容器都有一个相应的 “shim” 守护进程，这个守护进程会提供一个 API，Containerd 使用该 API 来管理容器基本的生命周期（启动/停止），在容器中执行新的进程、调整 TTY 的大小以及与特定平台相关的其他操作。shim 还有一个作用是向 Containerd 报告容器的退出状态，在容器退出状态被 Containerd 收集之前，shim 会一直存在。这一点和僵尸进程很像，僵尸进程在被父进程回收之前会一直存在，只不过僵尸进程不会占用资源，而 "
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "shim 会占用资源"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221219002559-8jxdpre",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219002559-8jxdpre",
+				"updated": "20221219003143"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "shim 将 Containerd 进程从容器的生命周期中分离出来，具体的做法是 runc 在创建和运行容器之后退出，并将 shim 作为容器的父进程，"
+				},
+				{
+					"Type": "NodeMark",
+					"Data": "mark",
+					"Children": [
+						{
+							"Type": "NodeMark2OpenMarker"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "即使 Containerd 进程挂掉或者重启，也不会对容器造成任何影响"
+						},
+						{
+							"Type": "NodeMark2CloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。这样做的好处很明显，你可以高枕无忧地升级或者重启 Containerd，不会对运行中的容器产生任何影响。Docker 的 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "–live-restore"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://docs.docker.com/config/containers/live-restore/"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 特征也实现了类似的功能。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003206-7868siy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221219003206-7868siy",
+				"updated": "20221219003215"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. containerd支持的shim"
+				}
+			]
+		},
+		{
+			"ID": "20221219003229-4uhtag4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003229-4uhtag4",
+				"updated": "20221219003229"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Containerd 目前官方支持的 shim 清单："
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-sp6si7t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221219003242-sp6si7t",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "io.containerd.runtime.v1.linux"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-dfm872h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003242-dfm872h",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "io.containerd.runtime.v1.linux"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 是最原始的 shim API 和实现的 v1 版本，在 Containerd 1.0 之前被设计出来。该 shim 使用 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "runc"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 来执行容器，并且只支持 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "cgroup v1"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。目前 v1 版 shim API 已被废弃，并将于 Containerd 2.0 被删除。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-9u6weqq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221219003242-9u6weqq",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "io.containerd.runc.v1"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-hmelhh1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003242-hmelhh1",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "io.containerd.runc.v1"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 与 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "io.containerd.runtime.v1.linux"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的实现类似，唯一的区别是它使用了 v2 版本 shim API。该 shim 仍然只支持 cgroup v1。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-y09tvsn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221219003242-y09tvsn",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "io.containerd.runc.v2"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-mb940vs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003242-mb940vs",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该 shim 与 "
+				},
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "v1"
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 采用了完全不同的实现，并且使用了 v2 版本 shim API，同时支持 cgroup v1 和 v2。该 shim 进程以运行多个容器，用于 Kubernetes 的 CRI 实现，可以在一个 Pod 中运行多个容器。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-ck1pzjv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221219003242-ck1pzjv",
+				"updated": "20221219003242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "io.containerd.runhcs.v1"
+				}
+			]
+		},
+		{
+			"ID": "20221219003242-65h65e0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003242-65h65e0",
+				"updated": "20221219003554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这是 Windows 平台的 shim，使用 Window 的 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "HCSv2 API"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 来管理容器。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003554-xqd8kpl",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221219003554-xqd8kpl"
+			}
+		},
+		{
+			"ID": "20221219003556-plgsf35",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221219003556-plgsf35",
+				"updated": "20221219003635"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "自定义shim"
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-898uxg9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003520-898uxg9",
+				"updated": "20221219003621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " Containerd 在调用时会将 shim 的名称解析为二进制文件，并在 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "$PATH"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中查找这个二进制文件。例如 io.containerd.runc.v2 会被解析成二进制文件 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "containerd-shim-runc-v2"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，"
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "io.containerd.runhcs.v1"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 会被解析成二进制文件 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "containerd-shim-runhcs-v1.exe"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。客户端在创建容器时可以指定使用哪个 shim，如果不指定就使用默认的 shim。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-e590qzn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003520-e590qzn",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面是一个示例，用来指定将要使用的 shim："
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-9ickekv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221219003520-9ickekv",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"context\"\n\n    \"github.com/containerd/containerd\"\n    \"github.com/containerd/containerd/namespaces\"\n    \"github.com/containerd/containerd/oci\"\n    v1opts \"github.com/containerd/containerd/pkg/runtimeoptions/v1\"\n)\n\nfunc main() {\n    ctx := namespaces.WithNamespace(context.TODO(), \"default\")\n\n    // Create containerd client\n    client, err := containerd.New(\"/run/containerd/containerd.sock\")\n    if err != nil {\n        panic(err)\n    }\n\n    // Get the image ref to create the container for\n    img, err := client.GetImage(ctx, \"docker.io/library/busybox:latest\")\n    if err != nil {\n        panic(err)\n    }\n\n    // set options we will pass to the shim (not really setting anything here, but we could)\n    var opts v1opts.Options\n\n    // Create a container object in containerd\n    cntr, err := client.NewContainer(ctx, \"myContainer\",\n        // All the basic things needed to create the container\n        containerd.WithSnapshotter(\"overlayfs\"),\n        containerd.WithNewSnapshot(\"myContainer-snapshot\", img),\n        containerd.WithImage(img),\n        containerd.WithNewSpec(oci.WithImageConfig(img)),\n\n        // Set the option for the shim we want\n        containerd.WithRuntime(\"io.containerd.runc.v1\", \u0026opts),\n    )\n    if err != nil {\n        panic(err)\n    }\n\n    // cleanup\n    cntr.Delete(ctx)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-8hzerqg",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221219003520-8hzerqg",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221219003520-gw2euj3",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221219003520-gw2euj3",
+						"updated": "20221219003520"
+					},
+					"Children": [
+						{
+							"Type": "NodeStrong",
+							"Data": "strong",
+							"Children": [
+								{
+									"Type": "NodeStrongA6kOpenMarker",
+									"Data": "**"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "⚠️注意"
+								},
+								{
+									"Type": "NodeStrongA6kCloseMarker",
+									"Data": "**"
+								}
+							]
+						},
+						{
+							"Type": "NodeText",
+							"Data": " ："
+						},
+						{
+							"Type": "NodeCodeSpan",
+							"Data": "code",
+							"Children": [
+								{
+									"Type": "NodeCodeSpanOpenMarker"
+								},
+								{
+									"Type": "NodeCodeSpanContent",
+									"Data": "WithRuntime"
+								},
+								{
+									"Type": "NodeCodeSpanCloseMarker"
+								}
+							]
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 将 "
+						},
+						{
+							"Type": "NodeCodeSpan",
+							"Data": "code",
+							"Children": [
+								{
+									"Type": "NodeCodeSpanOpenMarker"
+								},
+								{
+									"Type": "NodeCodeSpanContent",
+									"Data": "interface{}"
+								},
+								{
+									"Type": "NodeCodeSpanCloseMarker"
+								}
+							]
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 作为第二个参数，可以传递任何类型给 shim。只要确保你的 shim 能够识别这个类型的数据，并在 typeurl 包中注册这个类型，以便它能被正确编码。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-hpt2sh9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003520-hpt2sh9",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每个 shim 都有自己支持的一组配置选项，可以单独针对每个容器进行配置。例如 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "io.containerd.runc.v2"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 可以将容器的 stdout/stderr 转发到一个单独的进程，为 shim 的运行设置自定义的 cgroup 等等。你可以创建自定义的 shim，在容器运行时添加自定义的选项。总的来说，shim 的 API 包含了 RPC 和一些二进制调用用于创建/删除 shim，以及到 Containerd 进程的反向通道。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-dzpilqd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003520-dzpilqd",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你想实现自己的 shim，下面是相关参考资料："
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-mnthvbn",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221219003520-mnthvbn",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"ID": "20221219003520-fs0e0w6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221219003520-fs0e0w6",
+						"updated": "20221219003520"
+					},
+					"Children": [
+						{
+							"ID": "20221219003520-u8xhwa6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003520-u8xhwa6",
+								"updated": "20221219003520"
+							},
+							"Children": [
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "(v2) shim RPC API 的详细定义"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://github.com/containerd/containerd/blob/v1.5.8/runtime/v2/task/shim.proto"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003520-t3qhsm3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221219003520-t3qhsm3",
+						"updated": "20221219003520"
+					},
+					"Children": [
+						{
+							"ID": "20221219003520-dlv5kj7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003520-dlv5kj7",
+								"updated": "20221219003520"
+							},
+							"Children": [
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "实现 shim 二进制和RPC API的辅助工具"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://github.com/containerd/containerd/blob/89370122089d9cba9875f468db525f03eaf61e96/runtime/v2/shim/shim.go#L181-L194"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003520-oihwnrp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221219003520-oihwnrp",
+						"updated": "20221219003520"
+					},
+					"Children": [
+						{
+							"ID": "20221219003520-y8mz7kc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003520-y8mz7kc",
+								"updated": "20221219003520"
+							},
+							"Children": [
+								{
+									"Type": "NodeLink",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "shim 的使用方式"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "https://github.com/containerd/containerd/blob/v1.5.8/cmd/containerd-shim-runc-v2/main.go"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221219003520-1xhoibw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003520-1xhoibw",
+				"updated": "20221219003520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你只需要实现一个接口，"
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "shim.Run"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 会处理剩下的事情。shim 需要重点关注的是内存使用，因为每个容器都有一个 shim 进程，随着容器数量的增加，shim 的内存使用会急剧上升。shim 的 API 是在 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "protobuf"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中定义的，看起来有点像 "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "gRPC"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的 API，但实际上 shim 使用的是一个叫做 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "ttrpc"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://github.com/containerd/ttrpc"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的自定义协议，与 gRPC 并不兼容。ttrpc 是一个原 RPC 协议，专为降低内存使用而设计。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003918-38ezjiq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221219003918-38ezjiq",
+				"updated": "20221219003931"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 创建容器的RPC调用流程"
+				}
+			]
+		},
+		{
+			"ID": "20221219003943-upa9xr4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003943-upa9xr4",
+				"updated": "20221219003943"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Containerd 中有一个 container 对象，当你创建一个 container 对象，只是创建了一些与容器相关的数据，并将这些数据存储到本地数据库中，并不会在系统中启动任何容器。container 对象创建成功后，客户端会从 container 对象中创建一个 task，接下来是调用 shim API。"
+				}
+			]
+		},
+		{
+			"ID": "20221219003943-wvyw8uq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003943-wvyw8uq",
+				"updated": "20221219003943"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下是 RPC 调用的总体流程："
+				}
+			]
+		},
+		{
+			"ID": "20221219003943-1kml1t9",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221219003943-1kml1t9",
+				"updated": "20221219003943"
+			},
+			"Children": [
+				{
+					"ID": "20221219003943-qbblk9f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221219003943-qbblk9f",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-qzkpfse",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-qzkpfse",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "客户端调用 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "container.NewTask(…)"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，containerd 根据指定或默认的运行时名称解析 shim 二进制文件，例如："
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "io.containerd.runc.v2"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -\u003e "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "containerd-shim-runc-v2"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-eha2ryf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221219003943-eha2ryf",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-9z72h0q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-9z72h0q",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "containerd 通过 "
+								},
+								{
+									"Type": "NodeStrong",
+									"Data": "strong",
+									"Children": [
+										{
+											"Type": "NodeStrongA6kOpenMarker",
+											"Data": "**"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "start"
+										},
+										{
+											"Type": "NodeStrongA6kCloseMarker",
+											"Data": "**"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 命令启动 shim 二进制文件，并加上一些额外的参数，用于定义命名空间、OCI bundle 路径、调试模式、返回给 containerd 的 unix socket 路径等。在这一步调用中，当前工作目录设置为 shim 的工作路径。\n此时，新创建的 shim 进程会向 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "stdout"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 写一个连接字符串，以允许 containerd 连接到 shim ，进行 API 调用。一旦连接字符串初始化完成，shim 开始监听之后，start 命令就会返回。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-92pl52t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221219003943-92pl52t",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-c9r8n66",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-c9r8n66",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "containerd 使用 shim start 命令返回的连接字符串，打开一个与 shim API 的连接。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-waahwe7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221219003943-waahwe7",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-b88iftk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-b88iftk",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "containerd 使用 OCI bundle 路径和其他选项，调用 Create shim RPC。这一步会创建所有必要的 沙箱，并返回沙箱进程的 pid。以 runc 为例，我们使用 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "runc create --pid-file=\u003cpath\u003e"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 命令创建容器，runc 会分叉出一个新进程（"
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "runc init"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）用来设置沙箱，然后等待调用 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "runc start"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，所有这些都准备好后，runc create 命令就会返回结果。在 runc create 返回结果之前，runc 会将 runc-init 进程的 pid 写入定义的 pid 文件中，客户端可以使用这个 pid 来做一些操作，比如在沙箱中设置网络（网络命名空间可以在 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "/proc/\u003cpid\u003e/ns/net"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中设置）。\ncreate 调用还会提供一个挂载列表以构建 rootfs，还包含 checkpoint 信息。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-bd4dg66",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221219003943-bd4dg66",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-y0a9xqe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-y0a9xqe",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下一步客户端调用 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "task.Wait"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，触发 containerd 调用 shim "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "Wait"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " API。这是一个持久化的请求，只有在容器退出后才会返回。到这一步仍然不会启动容器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-nuu8kk2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221219003943-nuu8kk2",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-1w17fts",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-1w17fts",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "客户端继续调用 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "task.Start"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，触发 containerd 调用 Start shim RPC。 "
+								},
+								{
+									"Type": "NodeStrong",
+									"Data": "strong",
+									"Children": [
+										{
+											"Type": "NodeStrongA6kOpenMarker",
+											"Data": "**"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "这一步才会真正启动容器"
+										},
+										{
+											"Type": "NodeStrongA6kCloseMarker",
+											"Data": "**"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ，并返回容器进程的 pid。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-im8004z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20221219003943-im8004z",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-8k82ktb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-8k82ktb",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "这一步，客户端就可以针对 task 进行一些额外的调用请求。例如，如果 task 包含 TTY，会请求 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "task.ResizePTY"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，或者请求 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "task.Kill"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 来发送一个信号等等。\n"
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "task.Exec"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 比较特殊，它会调用 shim Exec RPC，但并没有在容器中执行某个进程，只是在 shim 中注册了 exec，后面会使用 exec ID 来调用 shim "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "Start"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " RPC。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-u23c4ib",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OC4=",
+						"Num": 8
+					},
+					"Properties": {
+						"id": "20221219003943-u23c4ib",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-ewhnflz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-ewhnflz",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在容器或 exec 进程退出后，containerd 将会调用 shim "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "Delete"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " RPC，清理 exec 进程或容器的所有资源。例如，对于runc shim， 这一步会调用 runc delete。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221219003943-2q142dm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OS4=",
+						"Num": 9
+					},
+					"Properties": {
+						"id": "20221219003943-2q142dm",
+						"updated": "20221219003943"
+					},
+					"Children": [
+						{
+							"ID": "20221219003943-wlqx5rw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221219003943-wlqx5rw",
+								"updated": "20221219003943"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "containerd 调用 "
+								},
+								{
+									"Type": "NodeCodeSpan",
+									"Data": "code",
+									"Children": [
+										{
+											"Type": "NodeCodeSpanOpenMarker"
+										},
+										{
+											"Type": "NodeCodeSpanContent",
+											"Data": "Shutdown"
+										},
+										{
+											"Type": "NodeCodeSpanCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": " RPC，此时 shim 将会退出。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221219003943-5reh3yw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219003943-5reh3yw",
+				"updated": "20221219003943"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "shim 的另一个重要部分是将容器的生命周期事件返回给 containerd ，包括： "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskCreate"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskStart"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskDelete"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskExit"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskOOM"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskExecAdded"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskExecStarted"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskPaused"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskResumed"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeCodeSpan",
+					"Data": "code",
+					"Children": [
+						{
+							"Type": "NodeCodeSpanOpenMarker"
+						},
+						{
+							"Type": "NodeCodeSpanContent",
+							"Data": "TaskCheckpointed"
+						},
+						{
+							"Type": "NodeCodeSpanCloseMarker"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。可参考 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "task 的详细定义"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://github.com/containerd/containerd/blob/v1.5.6/api/events/task.proto"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221219004200-7032ayj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221219004200-7032ayj",
+				"updated": "20221219004209"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 总结"
+				}
+			]
+		},
+		{
+			"ID": "20221219004222-m12c9ar",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219004222-m12c9ar",
+				"updated": "20221219004223"
+			},
+			"Children": [
+				{
+					"Type": "NodeStrong",
+					"Data": "strong",
+					"Children": [
+						{
+							"Type": "NodeStrongA6kOpenMarker",
+							"Data": "**"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "Containerd 通过 shim 为底层的容器运行时提供了可插拔能力"
+						},
+						{
+							"Type": "NodeStrongA6kCloseMarker",
+							"Data": "**"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。虽然这不是使用 Containerd 管理容器的唯一手段，但目前内置的 TaskService 使用了该方式，Kubernetes 通过调用 CRI 来创建 Pod 也是使用的 shim。由此可见 shim 这种方式很受欢迎，它不但增强了 Containerd 的扩展能力，以支持更多平台和基于虚拟机的运行时（ "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "firecracker"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://github.com/firecracker-microvm/firecracker-containerd/tree/main/runtime"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "kata"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://github.com/kata-containers/kata-containers/tree/2.3.0/src/runtime"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "），而且允许尝试其他 shim 实现（ "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "systemd"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://github.com/cpuguy83/containerd-shim-systemd-v1"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）。"
+				}
+			]
+		}
+	]
+}

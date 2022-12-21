@@ -1,0 +1,113 @@
+{
+	"ID": "20221219002423-dezxwa1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221219002423-dezxwa1",
+		"title": "containerd-shim原理解读",
+		"updated": "20221219002559"
+	},
+	"Children": [
+		{
+			"ID": "20221219002559-23svcyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219002559-23svcyy",
+				"updated": "20221219002559"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 1.20 版开始废除了对 dockershim 的支持，改用 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "Containerd"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://containerd.io/"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 作为默认的容器运行时。本文将介绍 Containerd 中的 “shim” 接口。"
+				}
+			]
+		},
+		{
+			"ID": "20221219002559-71a9940",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219002559-71a9940",
+				"updated": "20221219002559"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每一个 Containerd 或 Docker 容器都有一个相应的 “shim” 守护进程，这个守护进程会提供一个 API，Containerd 使用该 API 来管理容器基本的生命周期（启动/停止），在容器中执行新的进程、调整 TTY 的大小以及与特定平台相关的其他操作。shim 还有一个作用是向 Containerd 报告容器的退出状态，在容器退出状态被 Containerd 收集之前，shim 会一直存在。这一点和僵尸进程很像，僵尸进程在被父进程回收之前会一直存在，只不过僵尸进程不会占用资源，而 shim 会占用资源。"
+				}
+			]
+		},
+		{
+			"ID": "20221219002559-8jxdpre",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221219002559-8jxdpre",
+				"updated": "20221219002559"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "shim 将 Containerd 进程从容器的生命周期中分离出来，具体的做法是 runc 在创建和运行容器之后退出，并将 shim 作为容器的父进程，即使 Containerd 进程挂掉或者重启，也不会对容器造成任何影响。这样做的好处很明显，你可以高枕无忧地升级或者重启 Containerd，不会对运行中的容器产生任何影响。Docker 的 "
+				},
+				{
+					"Type": "NodeLink",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "–live-restore"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://docs.docker.com/config/containers/live-restore/"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 特征也实现了类似的功能。"
+				}
+			]
+		}
+	]
+}
