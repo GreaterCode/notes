@@ -1,0 +1,583 @@
+{
+	"ID": "20230419170613-n3w8fpz",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230419170613-n3w8fpz",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230419170613-6m64jyi\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230419170613-xanjyay\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230419170613-t4wiznj\u0026quot;,\u0026quot;focusStart\u0026quot;:2,\u0026quot;focusEnd\u0026quot;:2}",
+		"title": "snmp_exporter配置文件手动生成及更新",
+		"updated": "20230419174331"
+	},
+	"Children": [
+		{
+			"ID": "20230419170613-6m64jyi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-6m64jyi",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "我们使用社区提供的配置生成器工具"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/prometheus/snmp_exporter/tree/main/generator",
+					"TextMarkTextContent": "generator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "生成snmp exporter的配置文件，该配置生成器使用NetSNMP解析mib，并生成snmp_exporter可用的配置文件。配置文件的生成步骤如下。"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-rhlupqt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419170613-rhlupqt",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "构建生成器工具"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-j7lbddc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-j7lbddc",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "下载安装必要依赖"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-1k2tfpc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-1k2tfpc",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "由于对NetSNMP的动态依赖，必须自己构建生成器。"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-q58s662",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419170613-q58s662",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nsudo apt-get install unzip build-essential libsnmp-dev p7zip-full\n\nsudo yum install gcc gcc-g++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-t4wiznj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-t4wiznj",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "构建"
+				}
+			]
+		},
+		{
+			"ID": "20230419174056-wu21cqp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419174056-wu21cqp",
+				"updated": "20230419174108"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "git clone https://github.com/prometheus/snmp_exporter.git\ncd snmp_exporter/generator\n# 构建generator可执行文件\ngo build\n# 查看构建结果\nls -alh generator \n-rwxr-xr-x 1 root root 6.4M 12月  1 13:55 generator\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-5sad9vw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419170613-5sad9vw",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取mib文件"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-65rsbn8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-65rsbn8",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "snmp_exporter提供了默认的mib文件，通过以下方式获取。"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-67sx5hn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419170613-67sx5hn",
+				"updated": "20230419174125"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cd snmp_exporter/generator\n# 下载mib文件\nmake mibs # 该命令会创建mibs目录，并将下载的mib文件放置于其中\n此外，还需要下载以下额外的mib文件并将其添加至mibs目录中。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-g03bhsh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-g03bhsh",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "此外，还需要下载以下额外的mib文件并将其添加至mibs目录中。"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-9irlts3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230419170613-9irlts3",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"ID": "20230419170613-ifl0e2s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230419170613-ifl0e2s",
+						"updated": "20230419170613"
+					},
+					"Children": [
+						{
+							"ID": "20230419170613-geecmyj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419170613-geecmyj",
+								"updated": "20230419170613"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/librenms/librenms/blob/master/mibs/RFC1213-MIB",
+									"TextMarkTextContent": "RFC1213-MIB"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419170613-oh33tns",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230419170613-oh33tns",
+						"updated": "20230419170613"
+					},
+					"Children": [
+						{
+							"ID": "20230419170613-818vlh5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419170613-818vlh5",
+								"updated": "20230419170613"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/librenms/librenms/blob/master/mibs/RFC-1212",
+									"TextMarkTextContent": "RFC-1212"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419170613-8yg3kb2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230419170613-8yg3kb2",
+						"updated": "20230419170613"
+					},
+					"Children": [
+						{
+							"ID": "20230419170613-v9hxzx7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419170613-v9hxzx7",
+								"updated": "20230419170613"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/librenms/librenms/blob/master/mibs/RFC1155-SMI",
+									"TextMarkTextContent": "RFC1155-SMI"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-yx9qfti",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419170613-yx9qfti",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-x043swc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-x043swc",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "generator工具从"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "generator.yml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​读取数据。并将生成的结果写入"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "snmp.yml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-m5isr58",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-m5isr58",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "编辑generator.yml文件"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-8kst4f3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-8kst4f3",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "我们需要根据需求先编辑"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "generator.yml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​文件的内容，更多配置选项请参考"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/prometheus/snmp_exporter/tree/main/generator#file-format",
+					"TextMarkTextContent": "generator.yml配置格式"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-4n37t0o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419170613-4n37t0o",
+				"updated": "20230419174331"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cd snmp_exporter/generator\ncat generator.yml\n# 以下为编辑好的示例文件内容\nmodules:\n  if_mib:\n    walk: # walk字段保持该默认值即可\n    - sysUpTime\n    - sysDescr\n    - sysContact\n    - sysName\n    - sysLocation\n    - interfaces\n    - ifNumber\n    - ifEntry\n    - ifIndex\n    - ifDescr\n    - ifType\n    - ifTable\n    - system\n    - tcp\n    - ip\n    - transmission\n    version: 3 # snmp版本，默认为2\n    auth: # 认证信息\n      username: xuxing\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-igka2ia",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-igka2ia",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "执行编译过程"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-fyb0iee",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419170613-fyb0iee",
+				"updated": "20230419174309"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cd snmp_exporter/generator\nexport MIBDIRS=mibs\n# 生成snmp.yml\n./generator generate\nlevel=info ts=2021-12-01T07:29:06.597Z caller=net_snmp.go:144 msg=\"Loading MIBs\" from=mibs\nlevel=warn ts=2021-12-01T07:29:06.631Z caller=main.go:120 msg=\"NetSNMP reported parse error(s)\" errors=55\nlevel=info ts=2021-12-01T07:29:06.668Z caller=main.go:52 msg=\"Generating config for module\" module=if_mib\nlevel=info ts=2021-12-01T07:29:06.685Z caller=main.go:67 msg=\"Generated metrics\" module=if_mib metrics=123\nlevel=info ts=2021-12-01T07:29:06.694Z caller=main.go:92 msg=\"Config written\" file=/home/xxx/Tmp/test/snmp_exporter/generator/snmp.yml\n# 查看生成结果\nwc -l snmp.yml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-4g589re",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419170613-4g589re",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "更新配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-6h52q08",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-6h52q08",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "进入k8s集群，更新snmp_exporter的configMap，使用以上生成的snmp.yml中的内容替换configMap中data字段下snmp.yml对应的内容即可"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-1yonp4u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419170613-1yonp4u",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl edit cm coc-monitor-snmp-exporter -n product-coc-monitor\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-ww6w25z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419170613-ww6w25z",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "配置文件更新后，重启应用使配置文件生效"
+				}
+			]
+		},
+		{
+			"ID": "20230419170613-xanjyay",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419170613-xanjyay",
+				"updated": "20230419170613"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl delete pod -n product-coc-monitor coc-monitor-snmp-exporter-xxx-xxx\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

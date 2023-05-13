@@ -1,0 +1,5031 @@
+{
+	"ID": "20220817095900-i11gwfc",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220817095900-i11gwfc",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220817095900-y5gf7h8\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20220817095900-16vkxrx\u0026quot;,\u0026quot;scrollTop\u0026quot;:0}",
+		"title": "etcd 问题、调优、监控  ",
+		"updated": "20230421152335"
+	},
+	"Children": [
+		{
+			"ID": "20220817095900-y5gf7h8",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220817095900-y5gf7h8"
+			}
+		},
+		{
+			"ID": "20220817095900-kohb8v1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-kohb8v1"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-54fk31i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-54fk31i"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-e06us3n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-e06us3n"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "http://www.xuyasong.com/?p=1983",
+									"TextMarkTextContent": "http://www.xuyasong.com/?p=1983"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-we1oy8x",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220817095900-we1oy8x"
+			}
+		},
+		{
+			"ID": "20220817095900-a3u9utk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-a3u9utk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.xuyasong.com/?p=1706",
+					"TextMarkTextContent": "etcd 原理解析：读《etcd 技术内幕》"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "这篇文章主要是原理性的内容，本文主要是实践角度，谈谈平时用到的一些操作和监控"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-kcrl7h7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-kcrl7h7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "高可用"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-audvu8k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-audvu8k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 是基于 raft算法的分布式键值数据库，生来就为集群化而设计的，由于Raft算法在做决策时需要超半数节点的投票，所以etcd集群一般推荐奇数节点，如3、5或者7个节点构成一个集群。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-7ckr3l6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-7ckr3l6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上是etcd集群部署的基础概念，但是还需要注意以下问题："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-k0dji66",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-k0dji66"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "选主过程"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-vbtcenz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-vbtcenz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 是高可用的，允许部分机器故障，以标准的3 节点etcd 集群，最大容忍1台机器宕机，下面以最简单的leader宕机来演示raft 的投票逻辑，以实际的运行日志来验证并理解。更多的场景可以看之前的原理解析"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ix09uuf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ix09uuf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "场景：正常运行的三台etcd：100、101、102。当前任期为 7，leader 为 101机器。现在使101 宕机"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-pxg7qjh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-pxg7qjh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "宕机前：101 为 leader，3 个 member"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ommt1og",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ommt1og"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/e499ffd0-d3c2-495e-9c79-614f88f01d83-20220817095900-hujpu7s.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-49sm4e6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-49sm4e6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "宕机后：102 成为新 leader，2 个 member"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-rsgsftc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-rsgsftc"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/712e2738-7224-4333-8673-b4dabdf39f64-20220817095900-pq0p3j6.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ik8mhj3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ik8mhj3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "过程："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-s93c6ap",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-s93c6ap"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将 101 机器的 etcd 停止，此时只剩 2 台，但总数为 3"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-74g0ge6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-74g0ge6"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-h6juuy5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-h6juuy5"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-w06h4e5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-w06h4e5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "101停止etcd 的运行"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-c2amdc4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-c2amdc4"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-98bnhji",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-98bnhji"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "102(91d63231b87fadda) 收到消息，发现101(8a4bb0af2f19bd46)心跳超时，于是发起了新一轮选举，任期为 7+1=8"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-apfr2kx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-apfr2kx"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-r4r3y7g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-r4r3y7g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "102(91d63231b87fadda)成为新一任的候选人，然后自己投给了自己，获得 1 票"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-1zzdv87",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-1zzdv87"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-0bs3gv7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-0bs3gv7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "102(91d63231b87fadda)发送给 挂掉的101 和 另一个100，希望他们也投给自己"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-478mqyf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-478mqyf"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-ram78ve",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-ram78ve"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "102 肯定收不到 101 的回应，因为 101 已经挂掉"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-2xk5loa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-2xk5loa"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-y58hn8e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-y58hn8e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "100 (9feab580a25dd270)收到了 102 的拉票消息，因为任期 8 大于当前100机器所处的 7，于是知道是发起了新的一轮选举，因此回应 101，我给你投票。这里任期term是关键，也就是说，100 和 102 谁先感受到 101 宕机，发起投票，谁就是新的 leader，这个也和进程初始的启动时间有关。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-qp1qiqx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-qp1qiqx"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-6mqetm6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-6mqetm6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "102 获得了 2 票，一票是自己，一票是 100，超过半数，成为新的 leader。任期为 8"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-gp1npsl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-gp1npsl"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-2p0kfci",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-2p0kfci"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "更换完成"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-eldko1p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-eldko1p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "必须是奇数节点吗"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-9s3qzcs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-9s3qzcs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd官方推荐3、5、7个节点，虽然raft算法也是半数以上投票才能有 leader，但奇数只是推荐，其实偶数也是可以的。如 2、4、8个节点。分情况说明："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-fhekfjc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-fhekfjc"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-m9ne3ja",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-m9ne3ja"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-wsvoohg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-wsvoohg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1 个节点：就是单实例，没有集群概念，不做讨论"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-y5wlzku",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-y5wlzku"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-edgsqcs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-edgsqcs"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2 个节点：是集群，但没人会这么配，这里说点废话：双节点的etcd能启动，启动时也能有主，可以正常提供服务，但是一台挂掉之后，就选不出主了，因为他只能拿到1票，剩下的那台也无法提供服务，也就是双节点无容错能力，不要使用。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-677u63b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-677u63b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2节点正常运行："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-6earbf6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-6earbf6"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/4394dbe0-79c0-4802-b23b-0d507b559ad4-20220817095900-9ennhdj.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-j49cc19",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-j49cc19"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1台宕机后："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-3c757tx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-3c757tx"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/6e57234f-cf0f-4b36-bea7-f98786bd7595-20220817095900-88rjaub.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-vikmkm9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-vikmkm9"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-2h86322",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-2h86322"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-x6ytws1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-x6ytws1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "3 节点：标准的3 节点etcd 集群只能容忍1台机器宕机，挂掉 1 台的逻辑上边已经演示过，如果再挂 1 台，就和 2节点的情形一致了，一直选，一直增加任期，但就是选不出来，服务也就不可用了"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-zeqf1zz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-zeqf1zz"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-kguktif",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-kguktif"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "4 节点：最大容忍1 台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-de0phod",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-de0phod"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-tlx02ih",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-tlx02ih"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5 节点：最大容忍 2 台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-sk2hwwg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-sk2hwwg"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-e8ki7bd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-e8ki7bd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "6 节点：最大容忍 2 台"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-dvecpij",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-dvecpij"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/73631734-1d5e-4af7-88a6-25eb3162e375-20220817095900-qsjsi9k.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-1ogtq2a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-1ogtq2a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你会发现偶数节点虽然多了一台机器，但是容错能力是一样的，也就是说，你可以设置偶数节点，但没增加什么能力，还浪费了一台机器。同时etcd 是通过复制数据给所有节点来达到一致性，因此偶数的多一台机器增加不了性能，反而会拉低写入速度。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-2i2zbtn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-2i2zbtn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "机器越多越好吗"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-jjegdf4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-jjegdf4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 集群是一个 Raft Group，没有 shared。所以它的极限有两部分，一是单机的容量限制，内存和磁盘；二是网络开销，每次 Raft 操作需要所有节点参与，每一次写操作需要集群中大多数节点将日志落盘成功后，Leader 节点才能修改内部状态机，并将结果返回给客户端。因此节点越多性能越低，所以扩展很多 etcd 节点是没有意义的，一般是 3、5、7， 7 个也足够了。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-s7v0vwv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-s7v0vwv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 k8s 中一般是3*master机器做高可用，也就是 3节点的 etcd。也有人将 etcd独立于 k8s集群之外，来更好地扩展 etcd 集群，或者根据 k8s 的资源来拆分 etcd，如 events 放在单独的 etcd 集群中。不同的副本数视业务规模而定，3，5，7 都可以。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-9twkjfo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-9twkjfo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "脑裂问题"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-2ypjc3j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-2ypjc3j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "集群化的软件总会提到脑裂问题，如ElasticSearch、Zookeeper集群，脑裂就是同一个集群中的不同节点，对于集群的状态有了不一样的理解。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-myod52c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-myod52c"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 中有没有脑裂问题？答案是： 没有"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-zovy6kt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-zovy6kt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以网络分区导致脑裂为例，一开始有5个节点, Node 5 为 Leader"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-sm9lo8n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-sm9lo8n"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/3944b217-12ba-48b3-8e7b-f3ff12d5d40b-20220817095900-vg94agp.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-90fl2q3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-90fl2q3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于出现网络故障，124 成为一个分区，35 成为一个分区， Node 5 的 leader 任期还没结束的一段时间内，仍然认为自己是当前leader，但是此时另外一边的分区，因为124无法连接 5，于是选出了新的leader 1，网络分区形成。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ngcke0j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ngcke0j"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/e52364d2-45e8-47b8-80d4-db2608fe6ec1-20220817095900-5rr2ovl.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-wz2fmhw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-wz2fmhw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "35分区是否可用？如果写入了1而读取了 5，是否会读取旧数据(stale read)?"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-v5m643t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-v5m643t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "答：35分区属于少数派，被认为是异常节点，无法执行写操作。写入 1 的可以成功，并在网络分区恢复后，35 因为任期旧，会自动成为 follower，异常期间的新数据也会从 1 同步给 35。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-7p7itny",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-7p7itny"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "而 5 的读请求也会失败，etcd 通过ReadIndex、Lease read保证线性一致读，即节点5在处理读请求时，首先需要与集群多数节点确认自己依然是Leader并查询 commit index，5做不到多数节点确认，因此读失败。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-bb4pkvn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-bb4pkvn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因此 etcd 不存在脑裂问题。线性一致读的内容下面会提到。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-686qj8q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-686qj8q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 是强一致性吗"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-9ue5w11",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-9ue5w11"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "是强一致性，读和写都可以保证线性一致，关于一致性的分析可以看 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.xuyasong.com/?p=1970",
+					"TextMarkTextContent": "这篇文章"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-tze5sq3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20220817095900-tze5sq3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "线性一致读"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-qhaeox8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-qhaeox8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "线性一致性读需要在所有节点走一遍确认，查询速度会有所降低，要开启线性一致性读，在不同的 client是有所区别的:"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-k8jsv47",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-k8jsv47"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-t9b93wl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-t9b93wl"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-02l2aia",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-02l2aia"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "v2 版本：通过 sdk访问时，quorum=true 的时候读取是线性一致的，通过etcdctl访问时，该参数默认为true。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-ei65yot",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-ei65yot"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-nvsoezp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-nvsoezp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "v3 版本：通过 sdk访问时，WithSerializable=true 的时候读取是线性一致的，通过etcdctl访问时consistency=“l”表示线性（默认为 l，非线性为 s）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-al8an8f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-al8an8f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了保证线性一致性读，早期的 etcd（_etcd v3.0 _）对所有的读写请求都会走一遍 Raft 协议来满足强一致性。然而通常在现实使用中，读请求占了 etcd 所有请求中的绝大部分，如果每次读请求都要走一遍 raft 协议落盘，etcd 性能将非常差。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-xxsn5sr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-xxsn5sr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因此在 etcd v3.1 版本中优化了读请求（PR#6275），使用的方法满足一个简单的策略：每次读操作时记录此时集群的 commit index，当状态机的 apply index 大于或者等于 commit index 时即可返回数据。由于此时状态机已经把读请求所要读的 commit index 对应的日志进行了 apply 操作，符合线性一致读的要求，便可返回此时读到的结果。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-2myvh44",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-2myvh44"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-5weluvf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-5weluvf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "介绍下 etcd 的完整安装过程。下载 etcd3.4 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/etcd-io/etcd/releases",
+					"TextMarkTextContent": "release 包"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ut7t5x8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-ut7t5x8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成证书"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-kmrjr5o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-kmrjr5o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.ca-config.json"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-oozvea2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-oozvea2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建用来生成 CA 文件的 JSON 配置文件，这个文件后面会被各种组件使用，包括了证书过期时间的配置，expiry字段"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-djdbulg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-djdbulg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.ca-csr.json"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-k4xxeed",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-k4xxeed"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建用来生成 CA 证书签名请求（CSR）的 JSON 配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-zfbc2g1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-zfbc2g1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.生成基础 ca 证书"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-rdgyq5o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-rdgyq5o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行后会生成三个文件："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-1fh45s2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-1fh45s2"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-b5kft72",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-b5kft72"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-j7df7t5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-j7df7t5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ca.csr：证书签名请求，一般用于提供给证书颁发机构，自签就不需要了"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-m6hjaxb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-m6hjaxb"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-au5shcy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-au5shcy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ca.pem：证书，公共证书"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-06zkjao",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-06zkjao"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-hzxwqua",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-hzxwqua"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ca-key.pem：CA密钥"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ikgfyk5",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220817095900-ikgfyk5"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-3zuases",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20220817095900-3zuases"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-vx6op7z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-vx6op7z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "生成 etcd 证书"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-a9ozloe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-a9ozloe"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "增加etcd-csr.json文件，ip 需要填写三台 etcd 机器的 ip"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-upahdco",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-upahdco"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里的hosts字段中指定了授权使用该证书的IP和域名列表，因为现在要生成的证书需要被etcd集群各个节点使用，所以这里指定了各个节点的IP"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-oco18ea",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-oco18ea"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成证书:"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-c02wyf0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-c02wyf0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建etcd 的 CA 证书：这里需要4 个文件"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-3axs94i",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-3axs94i"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-0tt31oa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-0tt31oa"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-a8a6bt3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-a8a6bt3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd-csr.json：etcd的证书配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-c4pvcy3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-c4pvcy3"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-q1tdyg5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-q1tdyg5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ca.pem：基础公钥"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-8mltlpw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-8mltlpw"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-c5t5bxd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-c5t5bxd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ca-key.pem：基础私钥"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-s5nefni",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-s5nefni"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-y3hq73h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-y3hq73h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ca-config.json：配置文件，如过期时间"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ybiyamw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ybiyamw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行后会生成三个文件："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-pskkz1s",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-pskkz1s"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-9zwpoms",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-9zwpoms"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-wemewse",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-wemewse"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd.csr"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-otaa888",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-otaa888"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-txku13e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-txku13e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd.pem"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-4yp3vyu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-4yp3vyu"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-rr7x4k0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-rr7x4k0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd-key.pem"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-mtdgh6u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-mtdgh6u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在一台机器上做证书生成，生成后将这三个文件拷贝到其他几台机器。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-aiv2vus",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-aiv2vus"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署集群"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-8xzj1p5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-8xzj1p5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 启动配置示例"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-jfz6d6r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-jfz6d6r"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcdctl 命令"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-xv64bsl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-xv64bsl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为我们的 etcd 配置了证书，所有的命令都要带上证书访问，如："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-dsb6ie6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-dsb6ie6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 版本为 3.4，可以ETCDCTL_API=3，或ETCDCTL_API=2，默认情况下用的就是v3了，可以不用声明ETCDCTL_API"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-yuf7mgs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-yuf7mgs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "证书太长就不写了，以下命令均为无证书版："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-9uxognf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-9uxognf"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-6wmsxik",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-6wmsxik"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-8dwzwre",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-8dwzwre"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "version: 查看版本"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-uxbyigp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-uxbyigp"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-qfook61",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-qfook61"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "member list: 查看节点状态，learner 情况"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-33t05d7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-33t05d7"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-otl0eqa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-otl0eqa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "endpoint status: 节点状态，leader 情况"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-zpk5rta",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-zpk5rta"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-hkoq6ut",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-hkoq6ut"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "endpoint health: 健康状态与耗时"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-55nre8h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-55nre8h"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-v7ejeei",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-v7ejeei"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "alarm list: 查看警告，如存储满时会切换为只读，产生 alarm"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-rqiqv3i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-rqiqv3i"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-1fgxdbq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-1fgxdbq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "alarm disarm：清除所有警告"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-uklfhxs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-uklfhxs"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-7i6hr83",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-7i6hr83"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "set app demo: 写入"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-2imq7f9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-2imq7f9"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-pgbxzar",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-pgbxzar"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "get app: 获取"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-mbhrq0r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-mbhrq0r"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-jbqvir6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-jbqvir6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "update app demo1:更新"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-j2s74vo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-j2s74vo"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-gjvoz9w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-gjvoz9w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rm app: 删除"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-k3y46ej",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-k3y46ej"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-x32gza0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-x32gza0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "mkdir demo 创建文件夹"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-6vz74k6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-6vz74k6"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-55cv18l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-55cv18l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rmdir dir 删除文件夹"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-2id258g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-2id258g"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-c32hpft",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-c32hpft"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "backup 备份"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-o57vmor",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-o57vmor"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-ulri0fg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-ulri0fg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "compaction： 压缩"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-qpy9ods",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-qpy9ods"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-itc4dzu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-itc4dzu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "defrag：整理碎片"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-dtb5myp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-dtb5myp"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-42wihhj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-42wihhj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "watch key 监测 key 变化"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-q3m0vfp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-q3m0vfp"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-thjh743",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-thjh743"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "get / –prefix –keys-only: 查看所有 key"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-0zbxjy5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-0zbxjy5"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-qr5kyy8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-qr5kyy8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–write-out= tables，可以用表格形式输出更清晰，注意有些输出并不支持tables"
+								}
+							]
+						},
+						{
+							"ID": "20220817095900-u8s8s5r",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-u8s8s5r"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/90a1fa9d-53d4-4447-9655-7519bac5bb2c-20220817095900-9c3ix4u.jpg"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-181lwfy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-181lwfy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意，member list并没有展示 leader 信息，展示的是 learner，learner的含义后面会解释"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-3tspd2w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-3tspd2w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参数配置"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-7u0bgvo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-7u0bgvo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "版本建议使用 3.4 及以上，3.4存储容量做了提升，降低了读写延迟。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-az9vhtv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-az9vhtv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 的配置参数有很多，如果你觉得自己的etcd遇到了瓶颈，先不要急着提 issue 改代码，先看下这些参数的含义，也许调一下配置就能解决。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-d7mm513",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-d7mm513"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 的配置遇到按照功能来划分："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-3uqmuge",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-3uqmuge"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代理功能"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-25czgub",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-25czgub"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-f69zpm8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-f69zpm8"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-kve7ru5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-kve7ru5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd gateway"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-2zvveid",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-2zvveid"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-hh1ksq1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-hh1ksq1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd grpc-proxy"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-0k6jrqc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-0k6jrqc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每个访问 etcd 的应用都要有 etcd 集群的 endpoints。如果在同一台服务器上的多个应用访问同一个 etcd 集群，大家都得配置一样的endpoints。如果这个时候 etcd 集群更换了集群或者 ip，每个应用都需要更新它的终端列表，这种重新配置是繁琐且容易出错的。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-f45g3id",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-f45g3id"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里提一下，etcd 的 client 使用的是 grpc 访问，client会根据传入的 endpoints 做客户端负载均衡。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-dih2ydp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-dih2ydp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd gateway就是一个典型的转发代理，屏蔽掉后面的endpoints 信息。不过需要注意的是，etcd gateway在 TCP 层，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/etcd-io/etcd/issues/7522",
+					"TextMarkTextContent": "不支持 https 类型的 endpoints"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-1igp6zj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-1igp6zj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "成员配置"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-426bxzm",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-426bxzm"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-s4e0cwr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-s4e0cwr"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-u1w90oy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-u1w90oy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–data-dir:  数据目录"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-jiil2jk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-jiil2jk"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-zrekq5h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-zrekq5h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–snapshot-count:  最大快照次数，默认10万"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-g1ymo81",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-g1ymo81"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-2nzll57",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-2nzll57"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–heartbeat-interval:  心跳周期默认 100ms"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-3h0xoru",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-3h0xoru"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-g2vc70b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-g2vc70b"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–election-timeout: 选举超时1s"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-b93h1qm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-b93h1qm"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-rz8e8i4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-rz8e8i4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–max-snapshots: 最大保留快照数，默认 5 个"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-sbfnevs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-sbfnevs"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-mrshg1u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-mrshg1u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–quota-backend-bytes: DB 数据大小，比如 10G，50G。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-g3lsfy6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-g3lsfy6"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-mmfcktw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-mmfcktw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–auto-compaction-retention: 自动压缩，默认为 0 不开启，k8s中 apiserver会开启这个压缩，5 分钟一次。如果你的 etcd 还被其他人使用，这里也可以设置下时间"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-z7v1zjr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-z7v1zjr"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-1azaeig",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-1azaeig"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–enable-pprof: 开启pprof分析"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-woydhv7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-woydhv7"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-lqafuqv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-lqafuqv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–metrics: 默认为basic模式，extensive代表暴露histogram类型 metric"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-7bytjwb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-7bytjwb"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-mfaxetj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-mfaxetj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–log-level: 日志等级。info, warn, error, panic, or fatal"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-gid07b5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-gid07b5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "证书配置"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ika1cmp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-ika1cmp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "集群配置"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-g08roeb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-g08roeb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置调优"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-1prlznd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-1prlznd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一般情况下，etcd 默认模式不会有什么问题，影响 etcd 的因素一般是网络和存储延时，尤其是跨地域、跨机房的集群。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-16vkxrx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-16vkxrx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "网络延迟"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-uzon4wz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-uzon4wz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为 leader 和 member 之间有频繁的心跳和数据复制，因此网络拥塞影响会很大，当然长时间失败会无响应会导致 etcd 集群不可用。一般是将 etcd 集群规划在一个地域或一个机房内，并且使用tc提高带宽和优先级。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-fgdzwid",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-fgdzwid"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "心跳间隔"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-9rjqw3o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-9rjqw3o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 的一致性协议依赖两个时间参数。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-xv32b0t",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-xv32b0t"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-j0w9ju4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-j0w9ju4"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-85m5ypt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-85m5ypt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–heartbeat-interval：心跳间隔，即 leader 通知member 并保证自己 leader 地位的心跳，默认是 100ms，这个应该设置为节点间的 RTT 时间。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-io4vrif",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-io4vrif"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-03uf7d9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-03uf7d9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–election-timeout：选举超时时间，即 member 多久没有收到 leader 的回应，就开始自己竞选 leader，默认超时时间为 1s"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-uogzp18",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-uogzp18"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认值有可能不满足你的需求，如你的网络延迟较高，RTT 大于 100，就应该按真实延迟来，比如这个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/etcd-io/etcd/issues/656",
+					"TextMarkTextContent": "issue"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，官方文档也对心跳的设置给了详细的解释和配置建议：https://github.com/etcd-io/etcd/blob/master/Documentation/tuning.md"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-cz4stee",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-cz4stee"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果心跳间隔太短，则 etcd 将发送不必要的消息，从而增加 CPU 和网络资源的使用。另一方面，心跳间隔过长会导致选举超时。较高的选举超时时间需要更长的时间来检测领导者失败。测量往返时间（RTT）的最简单方法是使用PING。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-deap2nd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-deap2nd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "磁盘 IO"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-vakfjna",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-vakfjna"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "除了网络延迟，磁盘 IO 也严重影响 etcd 的稳定性， etcd需要持久化数据，对磁盘速度很敏感，强烈建议对 ETCD 的数据挂 SSD。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-nciha73",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-nciha73"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外，要确认机器上没有其他高 IO 操作，否则会影响 etcd 的 fsync，导致 etcd 丢失心跳，leader更换等。一般磁盘有问题时，报错的关键字类似于："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-qn48ms9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-qn48ms9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "磁盘 IO 可以通过监控手段提前发现，并预防这类问题的出现"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-afevcvp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-afevcvp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "快照"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-6xgxlg0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-6xgxlg0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd的存储分为内存存储和持久化（硬盘）存储两部分，内存中的存储除了顺序化的记录下所有用户对节点数据变更的记录外，还会对用户数据进行索引、建堆等方便查询的操作。而持久化则使用预写式日志（WAL：Write Ahead Log）进行记录存储。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-1uin6pe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-1uin6pe"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在WAL的体系中，所有的数据在提交之前都会进行日志记录。在etcd的持久化存储目录中，有两个子目录。一个是WAL，存储着所有事务的变化记录；另一个则是snapshot，用于存储某一个时刻etcd所有目录的数据。通过WAL和snapshot相结合的方式，etcd可以有效的进行数据存储和节点故障恢复等操作。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-pzvx622",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-pzvx622"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "既然有了WAL实时存储了所有的变更，为什么还需要snapshot呢？随着使用量的增加，WAL存储的数据会暴增，为了防止磁盘很快就爆满，etcd默认每10000条记录做一次snapshot，经过snapshot以后的WAL文件就可以删除。而通过API可以查询的历史etcd操作默认为1000条。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-zj8wmar",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-zj8wmar"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "客户端优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-z05mvf1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-z05mvf1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 的客户端应该避免一些频繁操作或者大对象操作，如："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-xpkn7k4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-xpkn7k4"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-65r93n0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-65r93n0"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-uc44r92",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-uc44r92"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "put 时避免大 value，精简再精简（例如 k8s 中 crd 使用）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-795174e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-795174e"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-nra1ucu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-nra1ucu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "避免创建频繁变化的 kv（例如 k8s 中 node 信息汇报），如 node-lease"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-mk6vdzw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-mk6vdzw"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-h1wx7t3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-h1wx7t3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "避免创建大量 lease，尽量选择复用（例如 k8s 中 event 数据管理）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-nddlqxt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-nddlqxt"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-1eh9gvq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-1eh9gvq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "合理利用 apiserver 中的缓存，避免大量请求打到 etcd上，如集群异常恢复后大量 pod同步"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230419223646-jjl33bi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419223646-jjl33bi",
+				"updated": "20230419223652"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "性能检测"
+				}
+			]
+		},
+		{
+			"ID": "20230419223652-nnben8t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419223652-nnben8t",
+				"updated": "20230419223711"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明：重点检查 etcd 所在磁盘的读写性能，etcd 所在分区不能与存储的数据盘在一起，否则可能导致部署时间非常长"
+				}
+			]
+		},
+		{
+			"ID": "20230419223705-ic12wtz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419223705-ic12wtz",
+				"updated": "20230419223743"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 磁盘检测，每两秒统计一次磁盘信息\n iostat -xz 2\n \n# 参数详情：\n# rrqm/s: 每秒进行 merge 的读操作数目。即 rmerge/s\n# wrqm/s: 每秒进行 merge 的写操作数目。即 wmerge/s\n# r/s: 每秒完成的读 I/O 设备次数。即 rio/s\n# w/s: 每秒完成的写 I/O 设备次数。即 wio/s\n# rkB/s: 每秒读K字节数。是 rsect/s 的一半，因为每扇区大小为512字节。\n# wkB/s: 每秒写K字节数。是 wsect/s 的一半。\n# avgrq-sz: 平均每次设备I/O操作的数据大小 (扇区)。 每个请求平均大小，单位是扇区数，一般在200~400之间算是正常和理想的状态，如果这个值比较小，比方说只在100左右，说明太多的IO请求没有被合并，或者大的IO请求被“打散”，在写操作时，过多小的请求会造成磁盘磁头的频繁移动，降低IO性能。\n# avgqu-sz平均请求队列长度，这个值在正常的系统中不应超过113太多，如果在200左右，甚至上千那说明发生了IO拥塞，而系统还在向IO请求队列中放请求（有一个例外是在执行sync,fsync操作时，该值到达最大值8192是正常的）\n# rsec/s: 每秒读扇区数。即 rsect/s\n# wsec/s: 每秒写扇区数。即 wsect/s\n# r_await:每个读操作平均所需的时间不仅包括硬盘设备读操作的时间，还包括了在kernel队列中等待的时间。\n# w_await:每个写操作平均所需的时间不仅包括硬盘设备写操作的时间，还包括了在kernel队列中等待的时间。\n# await: 平均每次设备I/O操作的等待时间 (毫秒)。（主要看这个，重点）\n# svctm: 平均每次设备I/O操作的服务时间 (毫秒)。\n# %util: 一秒中有百分之多少的时间用于 I/O 操作，即被io消耗的cpu百分比\n \n# 备注：\n# %util表示该设备有i/o非空闲的时间比率，不考虑i/o有多少，由于硬盘设备有并行处理多个i/o请求的能力，所以%util即使达到100%也不意味着设备饱和了。\n# svctm一般要小于await(因为同时等待的请求的等待时间被重复计算了)，svctm的大小一般和磁盘性能有关，CPU/内存的负荷也会对其有影响，请求过多也会间接导致svctm的增加。\n# await的大小一般取决于服务时间(svctm)以及I/O队列的长度和I/O请求的发出模式。\n# 如果svctm比较接近await，说明I/O几乎没有等待时间；如果await远大于svctm，说明I/O队列太长，应用得到的响应时间变慢，如果响应时间超过了用户可以容许的范围，这时可以考虑更换更快的磁盘，md调整内核elevator算法，优化应用，或者升级CPU\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230419223806-5rqzkuh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419223806-5rqzkuh",
+				"updated": "20230419223806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 性能检测"
+				}
+			]
+		},
+		{
+			"ID": "20230419223824-yb2znc6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419223824-yb2znc6",
+				"updated": "20230419223826"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 在一个master 上执行，查询 etcd 集群磁盘,网络,同步及 leader 选举指标，注意:\\|之后不能有空格，不然无法合并结果\ncurl -s --cacert  /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt \\\n--key /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).key \\\n--cert /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).crt https://127.0.0.1:2379/metrics | \\\ngrep \"etcd_disk_backend_commit_duration_seconds\\|etcd_disk_wal_fsync_duration_seconds\\|etcd_network_peer_round_trip_time_seconds_bucket\\|etcd_server_leader\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-o5ui9ii",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-o5ui9ii"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其他"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-tddd4c7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-tddd4c7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你可能还看到过lease revoke 、boltdb、内存优化等方式，这些已经合入了最新的 etcd3.4版本，因此选择最新的 release 版本也是提高稳定性的一种方式。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-n8bed9y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-n8bed9y"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "压缩机制"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-rb0d70q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-rb0d70q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd作为 KV 存储，会为每个 key 都保留历史版本，比如用于发布回滚、配置历史等。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-6s0jq3f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-6s0jq3f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对 demo 写入值为 101，然后更为为 102，103。-w json 可以输出这次写入的 revision"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-j3bcd18",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-j3bcd18"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "取值："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-cb0rkir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-cb0rkir"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "观察 key的变化:"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-jpp3a5f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-jpp3a5f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "历史版本越多，存储空间越大，性能越差，直到etcd到达空间配额限制的时候，etcd的写入将会被禁止变为只读，影响线上服务，因此这些历史版本需要进行压缩。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-4hmnejo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-4hmnejo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "数据压缩并不是清理现有数据，只是对给定版本之前的历史版本进行清理，清理后数据的历史版本将不能访问，但不会影响现有最新数据的访问。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-micgspi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-micgspi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "手动压缩"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-r4idqj5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-r4idqj5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "手动操作毕竟繁琐，Etcd提供了启动参数 “–auto-compaction-retention” 支持自动压缩 key 的历史版本，以小时为单位"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-6egw4y7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-6egw4y7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "v3.3之上的版本有这样一个规则："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-evsj3pn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-evsj3pn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果配置的值小于1小时，那么就严格按照这个时间来执行压缩；如果配置的值大于1小时，会每小时执行压缩，但是采样还是按照保留的版本窗口依然按照用户指定的时间周期来定。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-xdgwk3w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-xdgwk3w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "k8s api-server支持定期执行压缩操作，其参数里面有这样的配置："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-nm3synx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-nm3synx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你可以在 etcd 中看到这样的压缩日志，5 分钟一次："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-5khe260",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-5khe260"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "碎片整理"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-wpalpd5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-wpalpd5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "进行压缩操作之后，旧的revision被清理，会产生内部的碎片，内部碎片是指空闲状态的，能被etcd使用但是仍然消耗存储空间的磁盘空间，去碎片化实际上是将存储空间还给文件系统。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-uv4w3xc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-uv4w3xc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果etcd没有运行，可以直接整理目录中db的碎片"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-0ynnwre",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-0ynnwre"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "碎片整理会阻塞对etcd的读写操作，因此偶尔一次大量数据的defrag最好逐台进行，以免影响集群稳定性。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-cbf2v2q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-cbf2v2q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcdctl执行后的返回 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Finished defragmenting etcd member[https://127.0.0.1:2379]"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ceqqnxz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-ceqqnxz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "存储空间"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-m7exoqh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-m7exoqh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd 的存储配额可保证集群操作的可靠性。如果没有存储配额，那么 Etcd 的性能就会因为存储空间的持续增长而严重下降，甚至有耗完集群磁盘空间导致不可预测集群行为的风险。一旦其中一个节点的后台数据库的存储空间超出了存储配额，Etcd 就会触发集群范围的告警，并将集群置于接受读 key 和删除 key 的维护模式。只有在释放足够的空间和消除后端数据库的碎片之后，清除存储配额告警，集群才能恢复正常操作。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-6bydzge",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-6bydzge"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "启动 etcd 时。–quota-backend-bytes 默认为 2G，2G 一般情况下是不够用的，"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-t2u9b3g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-t2u9b3g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你可以通过 etcdctl endpoint status 命令来查看当前的存储使用量"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ugyme93",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ugyme93"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/ff969719-cf57-4844-9bdd-e07cfb229347-20220817095900-j4ggycs.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-w59e6q3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-w59e6q3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 3.4 版本中，etcd 的存储容量得到了提高，你可以设置 100G 的存储空间，当然并不是越大越好，key 存储过多性能也会变差，根据集群规模适当调整。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-vjnxgiz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-vjnxgiz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外，–max-request-bytes 限制了请求的大小，默认值是1572864，即1.5M。在某些场景可能会出现请求过大导致无法写入的情况，可以调大到10485760即10M。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-s9wmxvj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-s9wmxvj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果遇到空间不足，可以这样操作："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-339gbw0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-339gbw0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "快照备份"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-n67isok",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-n67isok"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd可以定期做备份、以保证数据更好的持久化。通过加载备份数据，etcd可以将集群恢复到具有已知良好状态的时间点。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-341cqkn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-341cqkn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用命令etcdctl："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-b7ilf1p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-b7ilf1p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "learner 角色"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-9r56w68",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-9r56w68"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "learner 是 etcd 3.4 版本中增加的新角色，类似于 zookeeper 的 observer, 不参与 raft 投票选举。通过这个新角色的引入，降低了加入新节点时给老集群的额外压力，增强了集群的稳定性。除此之外还可以使用它作为集群的热备或服务一些读请求。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-bbuauzf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-bbuauzf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "举例，如果 etcd集群需要加入一个新节点，新加入的 etcd 成员因为没有任何数据，因此需要从 leader 那里同步数据，直到赶上领导者的日志为止。这样就会导致 leader 的网络过载，导致 leader 和 member 之间的心跳可能阻塞。然后就开始了新的leader选举，也就是说，具有新成员的集群更容易受到领导人选举的影响。领导者的选举以及随后向新成员的更新都容易导致一段时间的群集不可用，这种是不符合预期，风险也是很大的。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-w43josi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-w43josi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因此为了解决这个问题，raft 4.2.1 论文中介绍了一种新的节点角色：Learner。加入集群的节点不参与投票选举，只接收 leader 的 replication message，直到与 leader 保持同步为止。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-2oqag2l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-2oqag2l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "learner 在网络分区等场景下的处理，可以详细参考：https://etcd.io/docs/v3.3.12/learning/learner/"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-66uuw9u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-66uuw9u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体操作："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-n23ymu8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-n23ymu8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在提升之前，learner仅充当备用节点，leader无法转移给learner。learner拒绝客户端读写（客户端平衡器不应将请求路由到learner）"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-1z481zo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-1z481zo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外，etcd限制了集群可以拥有的learner总数，并避免了日志复制导致领导者过载。learner永远不会自我提升。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-gyqp3b2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-gyqp3b2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd client v3"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-qpyjol3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-qpyjol3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd client v3是基于grpc实现的，而grpc又是基于http2.0实现的，借用了很多 http2的优势如二进制通讯、多路复用等，因此整体上借用grpc的框架做地址管理、连接管理、负载均衡等，而底层对每个Etcd的server只需维持一个http2.0连接。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-pdyefk0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-pdyefk0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd client v3实现了grpc中的Resolver接口，用于Etcd server地址管理。当client初始化或者server集群地址发生变更（可以配置定时刷新地址）时，Resolver解析出新的连接地址，通知grpc ClientConn来响应变更。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-v9hei8e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-v9hei8e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "client v3的原理解析可以看这篇文章：https://www.jianshu.com/p/281b80ae619b"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-x2j0ya6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-x2j0ya6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们是用etcd client做应用的选主操作，可以看下"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.xuyasong.com/?p=1789",
+					"TextMarkTextContent": "这篇"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-vts9vm3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-vts9vm3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里提一下，最早的时候以为 kubernetes 中的 scheduler、controller-manager是基于 etcd 做选主的，client拿来直接用很方便。后来发现不是，kubernetes 是用抢占 endpoint 资源的方式实现选主逻辑，不依赖外部 etcd，这么想来也合理，严格来讲，etcd 不是kubernetes的东西，不应该有太多依赖。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-oyu042g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-oyu042g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "k8s 中 scheduler 的选主逻辑可以看这篇"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.xuyasong.com/?p=2037",
+					"TextMarkTextContent": "文章"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-7iem6dn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-7iem6dn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "问题排查"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-qwyt3dx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-qwyt3dx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "列几个常遇到的 etcd 问题，后面监控部分会提到如何监测、预防这类问题"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-jzg6lpq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-jzg6lpq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一个节点宕机"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-dk8re9m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-dk8re9m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一个节点宕机，并不会影响整个集群的正常工作，慢慢修复。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-qpd7b7k",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220817095900-qpd7b7k"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-jaq5dao",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20220817095900-jaq5dao"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-4m3v1bv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-4m3v1bv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "移出该节点：etcdctl member remove xx"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-99t8j92",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20220817095900-99t8j92"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-jft3201",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-jft3201"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "修复机器问题，删除旧的数据目录，重新启动 etcd 服务"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-cdd3isd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20220817095900-cdd3isd"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-16i09fv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-16i09fv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "因为 etcd 的证书需要签入所有节点 ip，因此这里的节点不能更改 ip，否则要全部重签证书，重启服务"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-cjtlfwm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20220817095900-cjtlfwm"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-48n53it",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-48n53it"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重启启动 etcd 时，需要将配置中的 cluster_state改为：existing，因为是加入已有集群，不能用 new"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-xq00bq1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20220817095900-xq00bq1"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-28k4bl5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-28k4bl5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "加入 memeber： etcdctl member add xxx –peer-urls=https://x.x.x.x:2380"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-1b6fbn8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20220817095900-1b6fbn8"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-zbo59ot",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-zbo59ot"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "验证：etcdctl endpoint status"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-hjo3i4z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-hjo3i4z"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "迁移数据"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-szjmk8e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-szjmk8e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你的集群需要更换所有的机器，包括更换 IP，那就得通过快照恢复的方式了"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-vk3rj5q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-vk3rj5q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 etcdctl snapshot save 来保存现有数据，新集群更换后，使用 restore 命令恢复数据，在执行快照时会产生一个 hash 值，来标记快照内容后面恢复时用于校验，如果你是直接复制的数据文件，可以–skip-hash-check 跳过这个检查。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-new9jx8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-new9jx8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "迁移集群会更换证书和端点，因此一定会影响上层服务，在迁移之前一定要做好新旧切换，如 apiserver 分批升级（会有部分数据不一致）、避免服务宕机时间过长等"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-k9sxgo9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-k9sxgo9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "failed to send out heartbeat on time"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-auzmubd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-auzmubd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个前面已经提过，大概率是因为磁盘性能不足，导致心跳失败，更换 SSD 或者排查机器上高 IO 的进程"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-v71419t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-v71419t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "详细可以查看这个：https://github.com/etcd-io/etcd/blob/master/Documentation/faq.md#what-does-the-etcd-warning-failed-to-send-out-heartbeat-on-time-mean"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-azjhwwa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-azjhwwa"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "request ... took too long to execute"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 这类报错也是同理"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-fppmzix",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-fppmzix"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "mvcc: database space exceeded"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-15ywry5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-15ywry5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "存储空间不足，参考上面提到的清理和恢复步骤，或者提高存储空间"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ccr7uuw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220817095900-ccr7uuw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "endpoints问题"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-zhbyret",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-zhbyret"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "尽量不要使用lb 作为 etcd endpoints 配置，etcd client 是 grpc 访问，请使用默认的 全量list ,客户端做负载均衡的方式。详细内容可以参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.xuyasong.com/?p=2033",
+					"TextMarkTextContent": "grpc 负载均衡场景解析"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-3pzwpkh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-3pzwpkh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "监控"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-ydycd4v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-ydycd4v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 默认以/metrics的 path 暴露了监控数据，数据为 prometheus 标准格式。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-kqor19t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-kqor19t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 metric 数据可以配置出如下面板，一般我们关心的数据，或者说需要配置报警的内容："
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-b6m3y0w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-b6m3y0w"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-1gmxcj6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-1gmxcj6"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-6atco61",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-6atco61"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "是否有 leader：集群就不可用了"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-jzmf7nr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-jzmf7nr"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-rb7nqye",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-rb7nqye"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "leader 更换次数：一定时间内频率过高一般是有问题，且leader 更换会影响到上层服务"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-jo3zwp0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-jo3zwp0"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-hk6swa0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-hk6swa0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rpc 请求速率：即 qps，可以评估当前负载"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-qhed4pk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-qhed4pk"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-r36ji6c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-r36ji6c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "db 总大小：用于评估数据量、压缩策略等"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-rpj97ao",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-rpj97ao"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-o3ge7q8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-o3ge7q8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "磁盘读写延迟：这个很关键，延迟过高会导致集群出现问题"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-5c25nq8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-5c25nq8"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20289b7a-a47b-46f2-beda-2f6fef8a44ba-20220817095900-7tglinw.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-btacgbs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-btacgbs"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/b7c3bd34-c120-46b1-8df5-c3ef08851d44-20220817095900-qgijlap.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-o0rudpq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-o0rudpq"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/cb6ddb81-ba6f-44d9-8ebc-3ac4304c7808-20220817095900-vw57mdl.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-r13jab9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-r13jab9"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/36ada26f-9f2a-47c8-a021-5f6044007a67-20220817095900-g0xkbgb.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-8fgbsvp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-8fgbsvp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "后记"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-q3q8ozk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095900-q3q8ozk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 可以很简单，毕竟只是 KV 存储，也可以很复杂，代表了云原生时代分布式存储的基石，本文中的内容只是工作中的问题描述，浅尝辄止，不足之处，欢迎指正。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-oqu2o97",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095900-oqu2o97"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20220817095900-tlb6gl8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095900-tlb6gl8"
+			},
+			"Children": [
+				{
+					"ID": "20220817095900-1si0cgv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-1si0cgv"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-yc4fj78",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-yc4fj78"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://ms2008.github.io/2019/12/04/etcd-rumor/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-vlxgpre",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-vlxgpre"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-47fea9t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-47fea9t"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ReadIndex：https://zhuanlan.zhihu.com/p/31050303"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-qaye163",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-qaye163"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-xniabm0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-xniabm0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "LeaseRead：https://zhuanlan.zhihu.com/p/31118381"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-9ay1h5o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-9ay1h5o"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-89hngo1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-89hngo1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "线性一致读：https://zhengyinyong.com/post/etcd-linearizable-read-implementation/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-zq0b2rh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-zq0b2rh"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-a6hmx7d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-a6hmx7d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://juejin.im/post/5d843b995188257e8e46e25d"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-82vszty",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-82vszty"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-pp9w7pb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-pp9w7pb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://skyao.io/learning-etcd3/documentation/op-guide/gateway.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-r6e1kbv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-r6e1kbv"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-2p187id",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-2p187id"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://github.com/etcd-io/etcd/issues/7522"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095900-ksc1m99",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095900-ksc1m99"
+					},
+					"Children": [
+						{
+							"ID": "20220817095900-uqet188",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095900-uqet188"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://github.com/etcd-io/etcd/blob/master/Documentation/learning/design-learner.md"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

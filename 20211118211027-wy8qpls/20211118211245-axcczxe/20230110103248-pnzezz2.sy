@@ -1,0 +1,192 @@
+{
+	"ID": "20230110103248-pnzezz2",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230110103248-pnzezz2",
+		"title": "go语言开发技巧",
+		"updated": "20230110103829"
+	},
+	"Children": [
+		{
+			"ID": "20230110103248-4b2pyvv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230110103248-4b2pyvv",
+				"updated": "20230110103312"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 不要使用Logrus"
+				}
+			]
+		},
+		{
+			"ID": "20230110103355-oe8swh5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103355-oe8swh5",
+				"updated": "20230110103537"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Go语言是一门强类型的静态语言，所以你不可能像NodeJS或者PHP那样绕过数据类型。那如果我们还需要使用通用的类型，如Loger，或者ORM，因为只有使用了通用的类型，才能编写出通用的代码，只能用反射。"
+				}
+			]
+		},
+		{
+			"ID": "20230110103541-wl6cquq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103541-wl6cquq",
+				"updated": "20230110103544"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  Logrus 大量使用反射，这导致大量分配计数。虽然通常不是一个大问题（取决于代码），但性能很重要，尤其是在大规模、高并发的项目中。虽然这听起来像是一个非常小的优化，但避免反射很重要。如果你看到一些可以不考虑类型而使用结构的代码，它会使用反射并且会对性能产生影响"
+				}
+			]
+		},
+		{
+			"ID": "20230110103448-dor3dyo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103448-dor3dyo",
+				"updated": "20230110103600"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "推荐使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "zerolog、zap"
+				}
+			]
+		},
+		{
+			"ID": "20230110103601-h3x6kv0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230110103601-h3x6kv0",
+				"updated": "20230110103608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 不要使用encoding/json"
+				}
+			]
+		},
+		{
+			"ID": "20230110103428-hesy73w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103428-hesy73w",
+				"updated": "20230110103638"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "标准库中的encoding/json模块，使用反射，这会导致性能不高，并且在编写返回 json 响应的 API 、或者微服务时会造成损失。"
+				}
+			]
+		},
+		{
+			"ID": "20230110103648-tkgecn2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103648-tkgecn2",
+				"updated": "20230110103714"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "Easyjson"
+				}
+			]
+		},
+		{
+			"ID": "20230110103711-m8ncylf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230110103711-m8ncylf",
+				"updated": "20230110103722"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 尽可能不要在goroutine中使用闭包"
+				}
+			]
+		},
+		{
+			"ID": "20230110103754-uozrq9w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230110103754-uozrq9w",
+				"updated": "20230110103759"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for i:=0;i\u003c10;i++ {\n  go func() {\n     fmt.Println(i)\n  }()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230110103815-wvfggwe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103815-wvfggwe",
+				"updated": "20230110103827"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "大多数人可能期望这会打印数字 0 到 9，就像将任务委托给 goroutine 时那样。但是实际结果：根据系统，你将得到一两个数字和许多 10。"
+				}
+			]
+		},
+		{
+			"ID": "20230110103829-6c073a0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230110103829-6c073a0",
+				"updated": "20230110103829"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为什么会这样？闭包可以访问父作用域，因此可以直接使用变量。尽管更新的 linters 可能会警告你“变量闭包捕获”，但并不会要求你重新声明该变量。"
+				}
+			]
+		}
+	]
+}

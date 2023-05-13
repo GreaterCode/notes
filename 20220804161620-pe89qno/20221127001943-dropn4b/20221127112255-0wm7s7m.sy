@@ -1,0 +1,763 @@
+{
+	"ID": "20221127112255-0wm7s7m",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221127112255-0wm7s7m",
+		"title": "2-固定（静态)地址",
+		"updated": "20221127113205"
+	},
+	"Children": [
+		{
+			"ID": "20221127112255-yr1hm0d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112255-yr1hm0d",
+				"updated": "20221127112333"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-OVN 默认会根据 Pod 所在 Namespace 所属的子网中随机分配 IP 和 Mac。 针对工作负载需要固定地址的情况，Kube-OVN 根据不同的场景，提供了多种固定地址的方法："
+				}
+			]
+		},
+		{
+			"ID": "20221127112357-i7bdpj1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127112357-i7bdpj1",
+				"updated": "20221127112357"
+			},
+			"Children": [
+				{
+					"ID": "20221127112357-o6t1et2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127112357-o6t1et2"
+					},
+					"Children": [
+						{
+							"ID": "20221127112357-lwg8x1o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112357-lwg8x1o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "单个 Pod 固定 IP/Mac。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112357-hjoufcv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127112357-hjoufcv"
+					},
+					"Children": [
+						{
+							"ID": "20221127112357-t9ac7a6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112357-t9ac7a6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Workload 通用 IP Pool 方式指定固定地址范围。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112357-halcvbb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127112357-halcvbb"
+					},
+					"Children": [
+						{
+							"ID": "20221127112357-m18kxhy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112357-m18kxhy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "StatefulSet 固定地址。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112357-xs8t8w3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127112357-xs8t8w3"
+					},
+					"Children": [
+						{
+							"ID": "20221127112357-4g726cr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112357-4g726cr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubevirt VM 固定地址。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127112405-ulu46n2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127112405-ulu46n2",
+				"updated": "20221127112415"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 单个 Pod 固定 IP 和 Mac"
+				}
+			]
+		},
+		{
+			"ID": "20221127112432-ggwu7uw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112432-ggwu7uw",
+				"updated": "20221127112433"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在创建 Pod 时通过 annotation 来指定 Pod 运行时所需的 IP/Mac, "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ovn-controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 运行时将会跳过地址随机分配阶段，经过冲突检测后直接使用指定地址，如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221127112441-3np8cte",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127112441-3np8cte",
+				"updated": "20221127112445"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Pod\nmetadata:\n  name: static-ip\n  namespace: ls1\n  annotations:\n    ovn.kubernetes.io/ip_address: 10.16.0.15\n    ovn.kubernetes.io/mac_address: 00:00:00:53:6B:B6\nspec:\n  containers:\n  - name: static-ip\n    image: nginx:alpine\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127112457-617juqo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112457-617juqo",
+				"updated": "20221127112458"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在使用 annotation 定义单个 Pod IP/Mac 时需要注意以下几点："
+				}
+			]
+		},
+		{
+			"ID": "20221127112505-1gndyby",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127112505-1gndyby",
+				"updated": "20221127112505"
+			},
+			"Children": [
+				{
+					"ID": "20221127112505-x9b804e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127112505-x9b804e"
+					},
+					"Children": [
+						{
+							"ID": "20221127112505-anrvk1d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112505-anrvk1d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "所使用的 IP/Mac 不能和已有的 IP/Mac 冲突。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112505-dujsezu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127112505-dujsezu"
+					},
+					"Children": [
+						{
+							"ID": "20221127112505-39pzwej",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112505-39pzwej"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "IP 必须在所属子网的 CIDR 内。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112505-zchsfzj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127112505-zchsfzj"
+					},
+					"Children": [
+						{
+							"ID": "20221127112505-qg6d0yu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112505-qg6d0yu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "可以只指定 IP 或 Mac，只指定一个时，另一个会随机分配。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127112511-aq0091p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127112511-aq0091p",
+				"updated": "20221127112544"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Workload 通用 IP Pool 固定地址¶"
+				}
+			]
+		},
+		{
+			"ID": "20221127112559-qe2ny2i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112559-qe2ny2i",
+				"updated": "20221127112622"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-OVN 支持通过 annotation "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 给 Workload（Deployment/StatefulSet/DaemonSet/Job/CronJob）设置固定 IP。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ovn-controllerr"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 会自动选择 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中指定的 IP 并进行冲突检测。"
+				}
+			]
+		},
+		{
+			"ID": "20221127112617-a4t5lka",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112617-a4t5lka",
+				"updated": "20221127112617"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "IP Pool 的 Annotation 需要加在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "template"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 内的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "annotation"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段，除了 Kubernetes 内置的 Workload 类型， 其他用户自定义的 Workload 也可以使用同样的方式进行固定地址分配。"
+				}
+			]
+		},
+		{
+			"ID": "20221127112625-osudn13",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127112625-osudn13",
+				"updated": "20221127112708"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: ls1\n  name: starter-backend\n  labels:\n    app: starter-backend\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: starter-backend\n  template:\n    metadata:\n      labels:\n        app: starter-backend\n      annotations:\n        ovn.kubernetes.io/ip_pool: 10.16.0.15,10.16.0.16,10.16.0.17\n    spec:\n      containers:\n      - name: backend\n        image: nginx:alpine\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127112716-vxkogi9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112716-vxkogi9",
+				"updated": "20221127112724"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				}
+			]
+		},
+		{
+			"ID": "20221127112738-m2b54kb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127112738-m2b54kb",
+				"updated": "20221127112738"
+			},
+			"Children": [
+				{
+					"ID": "20221127112738-uhwwzng",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127112738-uhwwzng"
+					},
+					"Children": [
+						{
+							"ID": "20221127112738-31l6u1k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112738-31l6u1k"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的 IP 应该属于所在子网的 CIDR 内。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112738-zimsc8k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127112738-zimsc8k"
+					},
+					"Children": [
+						{
+							"ID": "20221127112738-6l5gp07",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112738-6l5gp07"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的 IP 不能和已使用的 IP 冲突。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127112738-efoxhj1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127112738-efoxhj1"
+					},
+					"Children": [
+						{
+							"ID": "20221127112738-ru65vbt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127112738-ru65vbt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的 IP 数量小于 replicas 数量时，多出的 Pod 将无法创建。你需要根据 Workload 的更新策略以及扩容规划调整 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中 IP 的数量。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127112806-rvox16z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127112806-rvox16z",
+				"updated": "20221127112813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. StatefulSet 固定地址"
+				}
+			]
+		},
+		{
+			"ID": "20221127112911-9jbq0ig",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112911-9jbq0ig",
+				"updated": "20221127113015"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-OVN针对StatefulSet有状态服务，做了特殊强化："
+				}
+			]
+		},
+		{
+			"ID": "20221127113016-7t2uq8p",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127113016-7t2uq8p",
+				"updated": "20221127113016"
+			},
+			"Children": [
+				{
+					"ID": "20221127113016-jsh68k1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127113016-jsh68k1"
+					},
+					"Children": [
+						{
+							"ID": "20221127113016-4vdvqq2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127113016-4vdvqq2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Pod 会按顺序分配 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的 IP。例如 StatefulSet 的名字为 web，则 web-0 会使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的第一个 IP， web-1 会使用第二个 IP，以此类推。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127113016-shmp6vz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127113016-shmp6vz"
+					},
+					"Children": [
+						{
+							"ID": "20221127113016-mps5ykh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127113016-mps5ykh"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "StatefulSet Pod 在更新或删除的过程中 OVN 中的 logical_switch_port 不会删除，新生成的 Pod 直接复用旧的 interface 信息。因此 Pod 可以复用 IP/Mac 及其他网络信息，达到和 StatefulSet Volume 类似的状态保留功能。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127113016-opm7puj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127113016-opm7puj"
+					},
+					"Children": [
+						{
+							"ID": "20221127113016-hmf1iyz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127113016-hmf1iyz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "基于 2 的能力，对于没有 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/ip_pool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 注解的 StatefulSet，Pod 第一次生成时会随机分配 IP/Mac，之后在整个 StatefulSet 的生命周期内，网络信息都会保持固定。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127113008-z5o6h2j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127113008-z5o6h2j",
+				"updated": "20221127113134"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. Kubevirt VM 固定地址"
+				}
+			]
+		},
+		{
+			"ID": "20221127112803-tdns8sq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127112803-tdns8sq",
+				"updated": "20221127113205"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "针对 Kubevirt 创建的 VM 实例，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ovn-controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 可以按照类似 StatefulSet Pod 的方式进行 IP 地址分配和管理。 以达到 VM 实例在生命周期内启停，升级，迁移等操作过程中地址固定不变。"
+				}
+			]
+		}
+	]
+}

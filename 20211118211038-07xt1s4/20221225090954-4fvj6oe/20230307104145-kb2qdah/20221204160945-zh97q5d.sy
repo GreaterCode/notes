@@ -1,0 +1,187 @@
+{
+	"ID": "20221204160945-zh97q5d",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221204160945-zh97q5d",
+		"title": "docker导致节点NotReady",
+		"updated": "20230307104354"
+	},
+	"Children": [
+		{
+			"ID": "20221204161014-qaubp6h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-qaubp6h",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1，docker本身出现问题"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-ytn3m22",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-ytn3m22",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现象1：docker ps命令卡住      解决方法：dockerd出现异常，重启docker"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-vh1o222",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-vh1o222",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现象2：docker ps命令，响应是dockerd是不是在运行     解决方法：找到dockerd进程，kill即可"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-beob7ew",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-beob7ew",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2，docker 容器死锁导致（kubelet的日志会报pleg的错误）"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-hb0gntw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-hb0gntw",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用这个命令可以找到某个容器docker inspect 卡住，根据容器id   ps aux |grep id|grep shim 找到shim进程，将这个shim进程kill即可（重复使用下面这个命令，直到没有容器inspect卡住为止）"
+				}
+			]
+		},
+		{
+			"ID": "20221204161125-tmuq5oh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221204161125-tmuq5oh",
+				"updated": "20221204161129"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker ps | grep -v NAME | awk '{print $1}' | while read cid; do echo $cid; docker inspect -f {{.State.Pid}} $cid; done\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-l5cmtoa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-l5cmtoa",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意：有时重启docker服务一直处于starting状态"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-r0njyft",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-r0njyft",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方法："
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-79ulxdb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-79ulxdb",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1，查看有没有shim进程残留，有的话kill这些shim进程可以恢复"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-clgr8eq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-clgr8eq",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2，如果没有shim进程，重启一下containerd（有可能dockerd跟containerd通信有问题）"
+				}
+			]
+		},
+		{
+			"ID": "20221204161014-23n2cix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204161014-23n2cix",
+				"updated": "20221204161014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3，最后可以将dockerd的进程kill掉，重新restart docker"
+				}
+			]
+		},
+		{
+			"ID": "20230307104354-s6le8p6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230307104354-s6le8p6",
+				"updated": "20230307104354"
+			}
+		}
+	]
+}

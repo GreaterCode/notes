@@ -1,0 +1,802 @@
+{
+	"ID": "20230302171712-uj9ovbd",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230302171712-uj9ovbd",
+		"title": "修改docker镜像默认存储位置",
+		"updated": "20230302173148"
+	},
+	"Children": [
+		{
+			"ID": "20230302171712-qfhe4z2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230302171712-qfhe4z2",
+				"updated": "20230302171758"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 使用软连接"
+				}
+			]
+		},
+		{
+			"ID": "20230302171900-bjfa11n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302171900-bjfa11n",
+				"updated": "20230302171914"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认情况下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 容器的存放位置在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/var/lib/docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录下面，可以通过下面命令查看具体位置。"
+				}
+			]
+		},
+		{
+			"ID": "20230302171915-ye6hky2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302171915-ye6hky2",
+				"updated": "20230302171957"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 默认存放位置\n$ sudo docker info | grep \"Docker Root Dir\"\n\n# 停掉Docker服务\n$ systemctl restart docker\n\n# 停掉Docker服务\n$ service docker stop\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302172013-ug6jsm1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302172013-ug6jsm1",
+				"updated": "20230302172013"
+			},
+			"Children": [
+				{
+					"ID": "20230302172013-vc3ukw5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302172013-vc3ukw5"
+					},
+					"Children": [
+						{
+							"ID": "20230302172013-nxw0zkb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302172013-nxw0zkb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "然后移动整个 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/var/lib/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 目录到空间不较大的目的路径。这时候启动 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 时发现存储目录依旧是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/var/lib/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 目录，但是实际上是存储在数据盘 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/data/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 上了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302172021-xay9ud3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302172021-xay9ud3",
+				"updated": "20230302172029"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 移动原有的内容\n$ mv /var/lib/docker /data/docker\n\n# 进行链接\n$ ln -sf /data/docker /var/lib/docker\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302171758-4cpuuww",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230302171758-4cpuuww",
+				"updated": "20230302172120"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 指定容器启动参数"
+				}
+			]
+		},
+		{
+			"ID": "20230302172149-dtdy2t9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302172149-dtdy2t9",
+				"updated": "20230302172321"
+			},
+			"Children": [
+				{
+					"ID": "20230302172149-e8wdah3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302172149-e8wdah3"
+					},
+					"Children": [
+						{
+							"ID": "20230302172149-o66v2qd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302172149-o66v2qd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在配置文件中指定容器启动的参数 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--graph=/var/lib/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 来指定镜像和容器存放路径。"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的配置文件可以设置大部分的后台进程参数，在各个操作系统中的存放位置不一致。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302172159-63cjm9r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302172159-63cjm9r",
+						"updated": "20230302172321"
+					},
+					"Children": [
+						{
+							"ID": "20230302172159-dbcxrfq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302172159-dbcxrfq",
+								"updated": "20230302172213"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Ubuntu"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的位置是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/default/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 文件，在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CentOS"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的位置是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/sysconfig/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 文件。"
+								}
+							]
+						},
+						{
+							"ID": "20230302172213-uuk8ssu",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230302172213-uuk8ssu",
+								"updated": "20230302172214"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# CentOS6\n# 因为Ubuntu默认开启了selinux机制\nOPTIONS=--graph=\"/data/docker\" --selinux-enabled -H fd://\n\n# CentOS7\n# 修改docker.service文件，使用-g参数指定存储位置\n$ vi /usr/lib/systemd/system/docker.service\nExecStart=/usr/bin/dockerd --graph /new-path/docker\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20230302172302-duc1xqf",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230302172302-duc1xqf",
+								"updated": "20230302172321"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# Ubuntu\n# 因为Ubuntu默认没开启selinux机制\nOPTIONS=--graph=\"/data/docker\" -H fd://\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302172329-yujya3n",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302172329-yujya3n",
+				"updated": "20230302172329"
+			},
+			"Children": [
+				{
+					"ID": "20230302172329-j9dw7ri",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302172329-j9dw7ri"
+					},
+					"Children": [
+						{
+							"ID": "20230302172329-ujsqp9w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302172329-ujsqp9w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重新启动之后，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的路径就改成 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/data/docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302172327-tejx2hi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302172327-tejx2hi",
+				"updated": "20230302172339"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " 重新reload配置文件\n$ sudo systemctl daemon-reload\n\n# 重启docker服务\n$ sudo systemctl restart docker.service\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302172359-dsau2tc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302172359-dsau2tc",
+				"updated": "20230302172412"
+			},
+			"Children": [
+				{
+					"ID": "20230302172359-sekbfgr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302172359-sekbfgr",
+						"updated": "20230302172412"
+					},
+					"Children": [
+						{
+							"ID": "20230302172359-h5pfh9z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302172359-h5pfh9z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的版本是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "1.12"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 或以上的，可以修改或新建 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "daemon.json"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 文件。修改后会立即生效，不需重启 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Docker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 服务。"
+								}
+							]
+						},
+						{
+							"ID": "20230302172409-pddxpc7",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230302172409-pddxpc7",
+								"updated": "20230302172412"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# 修改配置文件\n$ vim /etc/docker/daemon.json\n{\n    \"registry-mirrors\":\n        [\"http://7e61f7f9.m.daocloud.io\"],\n    \"graph\": \"/new-path/docker\"\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302172327-e4o84z1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302172327-e4o84z1",
+				"updated": "20230302172327"
+			}
+		},
+		{
+			"ID": "20230302171814-nmc1ouw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230302171814-nmc1ouw",
+				"updated": "20230302171829"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. System 下创建配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230302172541-krlj6uq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302172541-krlj6uq",
+				"updated": "20230302172541"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/systemd/system/docker.service.d"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录下创建一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Drop-In"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，默认 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker.service.d"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件夹不存在，必须先创建它。创建 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Drop-In"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件的原因，是我们希望 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "服务使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件中提到的特定参数，将默认服务所使用的位于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/lib/systemd/system/docker.service"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件中的参数进行覆盖。"
+				}
+			]
+		},
+		{
+			"ID": "20230302173012-ujvqec2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302173012-ujvqec2",
+				"updated": "20230302173016"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 定义新的存储位置\n$ sudo vi /etc/systemd/system/docker.service.d/docker.conf\n[Service]\nExecStart=/usr/bin/dockerd --graph=\"/data/docker\" --storage-driver=devicemapper\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302173114-4zdh5mq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302173114-4zdh5mq",
+				"updated": "20230302173128"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/data/docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 就是新的存储位置，而 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "devicemapper"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 是当前 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 所使用的存储驱动。"
+				}
+			]
+		},
+		{
+			"ID": "20230302173139-ouaypmw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302173139-ouaypmw",
+				"updated": "20230302173139"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重新加载服务守护程序，并启动 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 服务了，这将改变新的镜像和容器的存储位置。为了确认一切顺利，运行 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker info"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令检查 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的根目录。"
+				}
+			]
+		},
+		{
+			"ID": "20230302173146-nxx3z1o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302173146-nxx3z1o",
+				"updated": "20230302173148"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 重新reload配置文件\n$ sudo systemctl daemon-reload\n\n# 重启docker服务\n$ sudo systemctl start docker\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,4016 @@
+{
+	"ID": "20230302001318-wamrfyw",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230302001318-wamrfyw",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230302001318-t46ci5f\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230302001318-ox27zvg\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230302001318-t46ci5f\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "Pod 原地垂直伸缩 - 一个四年的KEP和两年的PR",
+		"updated": "20230315231057"
+	},
+	"Children": [
+		{
+			"ID": "20230302001318-t46ci5f",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230302001318-t46ci5f"
+			}
+		},
+		{
+			"ID": "20230302001318-tjtlk0e",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-tjtlk0e"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-x834qem",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-x834qem"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-7hiw6a6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-7hiw6a6"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s/Vw3e0dWwqZGpO2pzKvdmKA",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s/Vw3e0dWwqZGpO2pzKvdmKA - 微信公众平台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-pyhti1f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-pyhti1f"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-lpp2jm5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-lpp2jm5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "该特性允许 Pod 资源 requests 和 limits 的原地更新，而不需要重新启动 Pod 或其容器，该方案的核心思想是让 PodSpec 的 Resources 是可变的，然后让 PodStatus 来反映分配给 Pod 的资源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-41h6j2e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-41h6j2e"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-uzvj0kf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-uzvj0kf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2023-03-02 00:13:18"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-aqixk7p",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230302001318-aqixk7p"
+			}
+		},
+		{
+			"ID": "20230302001318-df9tgvg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-df9tgvg",
+				"updated": "20230315231057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该提案旨在允许 Pod 资源 requests 和 limits 的原地更新，而不需要重新启动 Pod 或其容器，该方案的核心思想是让 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PodSpec"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的 Resources 是可变的，表示所需的资源，此外 扩展 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PodStatus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 来反映分配给 Pod 的资源，并提供有关应用于 Pod 及其容器的实际资源信息"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-gq28ofr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-gq28ofr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此外该提案还提出了改进容器运行时接口（CRI）API，以便在运行时管理容器的 CPU 和内存资源配置，尝试扩展 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "UpdateContainerResources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 这个 CRI API，使其适用于 Windows 和除 Linux 之外的其他未来的运行时。它还需求扩展 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ContainerStatus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " CRI API，以允许 Kubelet 能够发现当前配置在容器上的资源。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-yqoqrkp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230302001318-yqoqrkp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "原因"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-obx8da8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-obx8da8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于各种原因，分配给 Pod 的容器资源可能需要变更比，这种场景有很多："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-6h8bqk5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-6h8bqk5"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-5zubpkx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-5zubpkx"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-ek8die2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-ek8die2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如 Pod 处理的负载大幅增加，而目前的资源不足了"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-k9okgko",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-k9okgko"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-2zmghvs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-2zmghvs"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "又或者说负载大幅减少了，而分配的资源未被使用"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-gfn5mx3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-gfn5mx3"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-g7kkfle",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-g7kkfle"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "资源配置不合理"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-4ac57kv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-4ac57kv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目前，更改资源分配是需要重新创建 Pod 的，因为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PodSpec"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的容器资源是不可改变的。\n虽然许多无状态的工作负载被设计成可以承受这样的中断，但有些工作负载更加敏感，特别是在使用低数量的 Pod 副本时。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-acyywof",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-acyywof"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此外，对于有状态或批处理的工作负载，Pod 重启是一个严重的破坏行为，会导致工作负载可用性降低或运行成本提高。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-xjd3fm4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-xjd3fm4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "允许在不重新创建 Pod 或重新启动容器的情况下改变资源，可以直接解决这个问题。此外，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "原地 Pod 垂直伸缩"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "功能依赖于容器运行时接口（CRI）来更新 Pod 容器的 CPU 和/或内存的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "requests/limits"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-nghagpj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-nghagpj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当前的 CRI API 有一些需要解决的缺点："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-ttbh4ni",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-ttbh4ni"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-35j3qhj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-35j3qhj"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-1j3oedf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-1j3oedf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "UpdateContainerResources CRI API 需要一个参数来描述要为 Linux 容器更新的容器资源，这在未来可能无法适用于 Windows 容器或其他潜在的非 Linux 运行时。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-9spz3tf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-9spz3tf"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-fuwxf8b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-fuwxf8b"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "没有 CRI 机制可以让 Kubelet 从容器运行时查询和发现容器上配置的 CPU 和内存限制。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-0vj3jsj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-0vj3jsj"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-w2y9s76",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-w2y9s76"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "处理 UpdateContainerResources CRI API 的运行时的预期行为没有很好地定义或记录。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-erjzh98",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-erjzh98"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目标"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-7je4bxf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-7je4bxf"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-wa38gyt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-wa38gyt"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-g12lv5k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-g12lv5k"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "主要：允许更改容器的资源请求（requests）和限制（limits），而不必重新启动容器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-ku14w3r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-ku14w3r"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-m4lg7q4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-m4lg7q4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "次要：允许参与者（用户、VPA、StatefulSet、JobController）决定在无法进行原地资源调整的情况下如何进行。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-4esezza",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-4esezza"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-z2pz6cx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-z2pz6cx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "次要：允许用户指定哪些容器可以在不重启的情况下调整资源大小。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-eeee5gq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-eeee5gq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此外，该提案对 CRI API 还有两个实现目标："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-w8gryk3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-w8gryk3"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-ncfpgxu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-ncfpgxu"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-64hi9ca",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-64hi9ca"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "修改 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "UpdateContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 以使其适用于 Windows 容器，以及 Linux 以外的其他运行时管理的容器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-78utfp4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-78utfp4"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-qj7s877",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-qj7s877"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "提供 CRI API 机制，以查询容器运行时当前应用于容器的 CPU 和内存资源配置。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-dhggghw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-dhggghw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该提案的另一个目标是更好地定义和记录容器运行时在处理资源更新时的预期行为。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-kgwrnqw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230302001318-kgwrnqw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提案"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-qwok1o4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-qwok1o4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "API 变化"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-8r7vf8a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-8r7vf8a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "PodSpec 在容器资源请求和限制方面是可变的，PodStatus 被扩展以显示分配给 Pod 和其容器的资源。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-qlv8gji",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-qlv8gji"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-6mhs0zs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-6mhs0zs"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-zs9yi7t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-zs9yi7t"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod.Spec.Containers[i].Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 成为一个纯粹的声明，表示 Pod 资源的期望状态。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-s6wyl76",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-s6wyl76"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-qi83mqg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-qi83mqg"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod.Status.ContainerStatuses[i].ResourcesAllocated"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "（新字段，类型 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "v1.ResourceList"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）表示分配给 Pod 及其容器的节点资源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-4t7zdwy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-4t7zdwy"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-nzj0cya",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-nzj0cya"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod.Status.ContainerStatuses[i].Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "（新字段，类型为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "v1.ResourceRequirements"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）显示 Pod 及其容器所持有的实际资源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-330i5wg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-330i5wg"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-2t98afc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-2t98afc"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod.Status.Resize"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "（新字段，类型为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "map[string]string"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）解释了指定容器上的指定资源正在发生什么事情。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-m6bwsg8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-m6bwsg8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "新的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段表示正在进行中的大小调整操作，并由保存在节点检查点的状态驱动。在考虑节点上的可用空间时，调度器应该使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Spec.Containers[i].Resources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status.ContainerStatuses[i].ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中较大的那个。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-ayyktol",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-ayyktol"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子资源"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-ox27zvg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-ox27zvg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于 alpha 版，资源的变化将通过更新 pod 规范（spec）来实现。对于 beta（或者可能是 alpha 的后续版本），将定义一个新的子资源 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/resize"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，该子资源最终可以应用于其他使用了 PodTemplates 的资源，例如 Deployments、ReplicaSets、Jobs 和 StatefulSets。这将允许用户对 VPA 等控制器授予 RBAC 访问权限，而不允许对 pod specs 进行完全写入访问。这里的具体 API 待确定。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-i0k6119",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-i0k6119"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器调整策略"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-vkyyhpz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-vkyyhpz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了提供细粒度的用户控制，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PodSpec.Containers"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 扩展了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResizePolicy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " - 一个支持 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cpu"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "memory"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 作为名称的命名子对象（新对象）列表。它支持以下策略值："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-sv2nupr",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-sv2nupr"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-87b6vlv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-87b6vlv"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-0pooick",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-0pooick"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "RestartNotRequired"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " - 默认值；如果可能，尝试在不重启容器的情况下调整它的大小。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-g2hbxgm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-g2hbxgm"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-6pef9i2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-6pef9i2"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Restart"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " - 容器需要重新启动才能应用新的资源值（例如，Java 进程需要更改其 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Xmx"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 标志），通过使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ResizePolicy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，用户可以将容器标记为安全（或不安全）的原地资源更新。 Kubelet 使用它来确定所需的操作。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-rfp6ak7",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230302001318-rfp6ak7"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230302001318-4mceete",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230302001318-4mceete"
+					},
+					"Children": [
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "strong",
+							"TextMarkTextContent": "注意"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " ："
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "RestartNotRequired"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 并不能保证容器不会重新启动，如果不这样做就无法应用新的资源，那么运行时可能会选择停止该容器。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-lskg5df",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-lskg5df"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置标志来单独控制 CPU 和内存是由于观察到通常 CPU 可以被添加/删除而没有什么问题，而对可用内存的更改更有可能需要重新启动。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-jb8r320",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-jb8r320"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果同时更新具有不同策略的多种资源类型，则任何重新启动策略都优先于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RestartNotRequired"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 策略。如果 pod 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RestartPolicy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 为 Never，则必须将 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResizePolicy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段设置为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RestartNotRequired"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 才能通过验证。也就是说，如果系统无法原地执行调整大小，则任何原地调整大小都可能导致容器停止而不重新启动。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-np7r8fk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-np7r8fk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调整状态"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-43y329e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-43y329e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "除了上述内容之外，还将添加一个新字段 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Pod.Status.Resize[]"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，该字段表面 kubelet 是否接受或拒绝了针对指定资源的建议调整操作。每当 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Pod.Spec.Containers[i].Resources.Requests"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段与 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Pod.Status.ContainerStatuses[i].Resources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段不同时，这个新字段就会解释原因。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-sqwheqd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-sqwheqd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该字段可以设置为以下值之一："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-1i2chs2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-1i2chs2"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-ogu3vs5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-ogu3vs5"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-m2f4gsw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-m2f4gsw"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Proposed"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " - 提议的调整大小（在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Spec...Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中）尚未被接受或拒绝。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-jsr87sb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-jsr87sb"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-xq6u6jk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-xq6u6jk"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "InProgress"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " - 建议的调整大小已被接受并正在执行中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-v8xtzic",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-v8xtzic"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-n42g9ts",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-n42g9ts"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Deferred"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " - 提议的调整大小在理论上是可行的（它适合在这个节点上）但现在不能；它将被重新评估。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-g7sg73a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-g7sg73a"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-gny8ag5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-gny8ag5"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Infeasible"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " - 提议的调整大小不可行并被拒绝；它不会被重新评估。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-xneq5mc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-xneq5mc"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-fbnnczb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-fbnnczb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "没有值 - 没有建议的大小调整"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-10vd4n0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-10vd4n0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "任何时候 apiserver watch 到建议的调整大小（对 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Spec...Resources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段的修改），它都会自动将此字段设置为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Proposed"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。为了使该字段未来是安全的，消费者应该假设任何未知值都与 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Deferred"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 相同。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-3agfqpo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-3agfqpo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CRI 变更"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-m00tocu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-m00tocu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubelet 调用 UpdateContainerResources CRI API，该 API 目前使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "runtimeapi.LinuxContainerResources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 参数，适用于 Docker 和 Kata，但不适用于 Windows。将这个参数改为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "runtimeapi.ContainerResources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，它与运行时无关，并将包含特定平台的信息。这将使 UpdateContainerResources API 适用于 Windows，以及未来除 Linux 之外的任何其他运行时，方法是使 API 中传递的资源参数特定于目标运行时。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-ow0sgyk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-ow0sgyk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此外，ContainerStatus CRI API 被扩展为持有 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "runtimeapi.ContainerResources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 数据，这样它就允许 Kubelet 从运行时查询 Container 的 CPU 和内存限制配置。这就要求运行时响应当前应用于容器的 CPU 和内存资源值。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-2mxzsu7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-2mxzsu7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这些 CRI 的变化是一项单独的工作，并不影响本 KEP 中提出的设计。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-116xpg9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-116xpg9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要完成上述 CRI 更改："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-q0rpiw6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-q0rpiw6"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-p6v2v5o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-p6v2v5o"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-tthcvko",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-tthcvko"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下面介绍一个新的名为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的 protobuf 消息对象，它封装了 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "LinuxContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "WindowsContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						},
+						{
+							"ID": "20230302001318-6yylvsg",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230302001318-6yylvsg"
+							},
+							"Children": [
+								{
+									"ID": "20230302001318-pvfv815",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230302001318-pvfv815"
+									},
+									"Children": [
+										{
+											"ID": "20230302001318-546lg8u",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230302001318-546lg8u"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "通过简单地向 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "message ContainerResources"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 添加新的特定于运行时的资源结构，可以轻松地为未来的运行时扩展此消息。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-rmcvcc8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-rmcvcc8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// ContainerResource 保存容器的资源配置\nmessage ContainerResources {\n    // 特定于Linux容器的资源配置\n    LinuxContainerResources linux = 1;\n    // 特定于Windows容器的资源配置\n    WindowsContainerResources windows = 2;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-pg648mk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-pg648mk"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-23z8si3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-23z8si3"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-4a14nco",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-4a14nco"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "message UpdateContainerResourcesRequest"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 被扩展为携带 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 字段，如下所示。"
+								}
+							]
+						},
+						{
+							"ID": "20230302001318-2hl6amt",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230302001318-2hl6amt"
+							},
+							"Children": [
+								{
+									"ID": "20230302001318-13diyoe",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230302001318-13diyoe"
+									},
+									"Children": [
+										{
+											"ID": "20230302001318-s5vkwfr",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230302001318-s5vkwfr"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "这通过让依赖当前 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "LinuxContainerResources"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 的运行时继续工作，同时使更新的运行时版本能够使用 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "UpdateContainerResourcesRequest.Resources.Linux"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 来保持向后兼容性，"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230302001318-2ywjm7x",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230302001318-2ywjm7x"
+									},
+									"Children": [
+										{
+											"ID": "20230302001318-x4fel33",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230302001318-x4fel33"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "它开启了 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "UpdateContainerResourcesRequest.Linux"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 字段的 deprecation。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230302001318-71q0c4o",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230302001318-71q0c4o"
+									},
+									"Children": [
+										{
+											"ID": "20230302001318-wjntd77",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230302001318-wjntd77"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "对于 Linux 运行时，Kubelet 除了 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "UpdateContainerResourcesRequest.Resources.Linux"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 字段外填充 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "UpdateContainerResourcesRequest.Linux"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 字段。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-7pzbm16",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-7pzbm16"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "message UpdateContainerResourcesRequest {\n    // ID of the container to update.\n    string container_id = 1;\n    // Resource configuration specific to Linux container.\n    LinuxContainerResources linux = 2;\n    // Resource configuration for the container.\n    ContainerResources resources = 3;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-1gk5ud1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-1gk5ud1"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-1awdhav",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-1awdhav"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-jvzdxbd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-jvzdxbd"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "message ContainerStatus"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 被扩展为返回 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，如下所示。"
+								}
+							]
+						},
+						{
+							"ID": "20230302001318-m4g5lle",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230302001318-m4g5lle"
+							},
+							"Children": [
+								{
+									"ID": "20230302001318-g4cmomi",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230302001318-g4cmomi"
+									},
+									"Children": [
+										{
+											"ID": "20230302001318-8vjbrp5",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230302001318-8vjbrp5"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "这使 Kubelet 能够使用 ContainerStatus CRI API 查询运行时并发现当前应用于容器的资源。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-7q0cgug",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-7q0cgug"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "@@ -914,6 +912,8 @@ message ContainerStatus {\n     repeated Mount mounts = 14;\n     // Log path of container.\n     string log_path = 15;\n+    // Resource configuration of the container.\n+    ContainerResources resources = 16;\n }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-ctoad6o",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-ctoad6o"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-tdo1l7e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-tdo1l7e"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-s86x2wf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-s86x2wf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ContainerManager CRI API 服务接口修改如下。"
+								}
+							]
+						},
+						{
+							"ID": "20230302001318-3rnqu1b",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230302001318-3rnqu1b"
+							},
+							"Children": [
+								{
+									"ID": "20230302001318-c3wh1te",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230302001318-c3wh1te"
+									},
+									"Children": [
+										{
+											"ID": "20230302001318-q70cuye",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230302001318-q70cuye"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "UpdateContainerResources"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 采用 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "ContainerResources"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 参数而不是 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "LinuxContainerResources"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-dp9uala",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-dp9uala"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--- a/staging/src/k8s.io/cri-api/pkg/apis/services.go\n+++ b/staging/src/k8s.io/cri-api/pkg/apis/services.go\n@@ -43,8 +43,10 @@ type ContainerManager interface {\n        ListContainers(filter *runtimeapi.ContainerFilter) ([]*runtimeapi.Container, error)\n        // ContainerStatus returns the status of the container.\n        ContainerStatus(containerID string) (*runtimeapi.ContainerStatus, error)\n-       // UpdateContainerResources updates the cgroup resources for the container.\n-       UpdateContainerResources(containerID string, resources *runtimeapi.LinuxContainerResources) error\n+       // UpdateContainerResources updates resource configuration for the container.\n+       UpdateContainerResources(containerID string, resources *runtimeapi.ContainerResources) error\n        // ExecSync executes a command in the container, and returns the stdout output.\n        // If command exits with a non-zero exit code, an error is returned.\n        ExecSync(containerID string, cmd []string, timeout time.Duration) (stdout []byte, stderr []byte, err error)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-g0t8gd4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-g0t8gd4"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-5wgiunw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-5wgiunw"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-5ke2pjh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-5ke2pjh"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "修改 Kubelet 代码适配上面的 CRI 变更。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-wdy43jq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-wdy43jq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "风险"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-jnk4p6k",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230302001318-jnk4p6k"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-h7q80nw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230302001318-h7q80nw"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-uhvfwwa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-uhvfwwa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "向后兼容：当 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod.Spec.Containers[i].Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 成为期望状态的代表时，Pod 的真实资源分配在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod.Status.ContainerStatuses[i].ResourcesAllocated"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中被跟踪，查询 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "PodSpec"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 并依赖 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "PodSpec"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 来确定资源分配的应用程序将看到可能不代表实际分配的值。这一变化需要在发行说明和顶级 Kubernetes 文档中加以记录和强调。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-v22wzyu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230302001318-v22wzyu"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-uxxhfxz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-uxxhfxz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "降低内存大小：降低 cgroup 的内存限制可能不起作用，因为 pages 可能正在使用中，可能需要采取一些措施，如在当前使用量附近设置限制。这个问题需要进一步调查。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-l7109xj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230302001318-l7109xj"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-0ycvcne",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-0ycvcne"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "旧的客户端版本：以前版本的客户端不知道新的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ResourcesAllocated"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ResizePolicy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 字段，会把它们设置为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nil"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。为了保持兼容性，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "PodResourceAllocation"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 准入控制器通过将非零值旧 Pod 复制到当前 Pod 来改变这种更新。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-1pabkf7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230302001318-1pabkf7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设计细节"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-lmz6kei",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-lmz6kei"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubelet 与 APIServer 的交互"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-e7nd38a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-e7nd38a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当一个新的 Pod 被创建时，Scheduler 负责选择一个合适的 Node 来容纳这个 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-sxbpa68",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-sxbpa68"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于新创建的 Pod，apiserver 将设置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段以匹配每个容器的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Resources.Requests"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。当 Kubelet 接纳 Pod 时，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中的值用于确定是否有足够的空间接纳 Pod。 Kubelet 在接纳 Pod 时不会设置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-rbh49xg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-rbh49xg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当请求调整 Pod 大小时，Kubelet 会尝试更新分配给 Pod 及其容器的资源。 Kubelet 首先通过计算节点中所有 Pod 分配的资源总和 ("
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Pod.Spec.Containers[i].ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ") 来检查新的所需资源是否适合节点可分配资源，除了被调整大小的 Pod。对于正在调整大小的 Pod，它将新的所需资源（即 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Spec.Containers[i].Resources.Requests"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）添加到总和中。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-6ltps6q",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-6ltps6q"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-vl8usth",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-vl8usth"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-ao3oagj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-ao3oagj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果新的所需资源适合，Kubelet 通过更新 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status...ResourcesAllocated"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 字段并将 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status.Resize"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 设置为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "InProgress"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 来接受大小调整。然后调用 UpdateContainerResources CRI API 来更新容器资源限制。成功更新所有容器后，它会更新 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status...Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 以反映新的资源值并取消设置 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status.Resize"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-7q6d32i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-7q6d32i"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-8q5lqbq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-8q5lqbq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果新的所需资源不适合，Kubelet 会将 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status.Resize"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 字段更新为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Infeasible"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 并且不会对大小调整进行操作。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-d76pjr4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-d76pjr4"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-a3jv1d6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-a3jv1d6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果新的所需资源适合但目前正在使用中，Kubelet 会将 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status.Resize"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 字段更新为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Deferred"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-i9gre7i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-i9gre7i"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "除了上述内容之外，每当调整大小被接受或拒绝时，kubelet 将在 Pod 上生成事件，如果可能的话，记录在调整大小过程中的关键步骤，这将使人们知道正在取得进展。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-kew9417",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-kew9417"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果有多个 Pod 需要调整大小，它们将按照 Kubelet 定义的顺序依次处理（例如按照出现的顺序）。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-fw3admx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-fw3admx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调度器可能会并行地将一个新的 Pod 分配给节点，因为它使用缓存的 Pod 来计算节点的可分配值。如果发生这种竞争情况，如果节点在 Pod 调整大小后没有空间，Kubelet 会通过拒绝新 Pod 来解决它。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-bxwjrcx",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230302001318-bxwjrcx"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230302001318-e9elf6k",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230302001318-e9elf6k"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "注意：在 Pod 被拒绝后，调度器可以尝试在刚拒绝它的同一节点上重新调度替换 Pod。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-bheiyyg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-bheiyyg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Kubelet 重启容错"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-x8sgyev",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-x8sgyev"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果 Kubelet 在处理 Pod 大小调整的过程中重新启动，那么在重新启动时，所有 Pod 都会以其当前 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status...ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 值被接纳，并且在添加所有现有 Pod 后处理大小调整。这可确保调整大小不会影响之前已接纳的现有 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-vhylxix",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-vhylxix"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调度器和 APIServer 交互"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-y6h8ere",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-y6h8ere"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Scheduler 继续使用 Pod 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Spec.Containers[i].Resources.Requests"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 来调度新的 Pod，并继续 watch Pod 更新，并更新其缓存。为了计算分配给 Pod 的节点资源，它必须考虑 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status.Resize"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 所描述的未决的调整。。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-x966siq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-x966siq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status.Resize = \u0026quot;InProgress\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 或 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026quot;Infeasible\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的容器，它可以简单地使用  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status.ContainerStatus[i].ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-jlj4vge",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-jlj4vge"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status.Resize = \u0026quot;Proposed\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的容器，它必须是悲观的，并假设调整大小将立即被接受。因此它必须使用 Pod 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Spec...Resources.Requests 和 Status...ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 值中较大的一个"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-k82bu4x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230302001318-k82bu4x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "流程控制"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-l7e8k5e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-l7e8k5e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下步骤表示了一个 Pod 的一系列原地调整大小操作的流程，该 Pod 的所有容器的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResizePolicy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 设置为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RestartNotRequired"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，这样可以针对各种边缘情况进行演示。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-on6sx37",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-on6sx37"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "T=0: 一个新的 Pod 被创建\n    - `spec.containers[0].resources.requests[cpu]` = 1\n    - 所有状态都未设置T=1: 应用 apiserver 默认值\n    - `spec.containers[0].resources.requests[cpu]` = 1\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1\n    - `status.resize[cpu]` = unsetT=2: kubelet 运行 pod 并更新 API\n    - `spec.containers[0].resources.requests[cpu]` = 1\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1\n    - `status.resize[cpu]` = unset\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1T=3: Resize #1: cpu = 1.5 (通过 PUT 或者 PATCH 或者 /resize 调整)\n    - apiserver 验证请求（例如 limits 不低于 requests，不超过 ResourceQuota 等）并接受操作\n    - apiserver 设置 `resize[cpu]` 为 \"Proposed\"\n    - `spec.containers[0].resources.requests[cpu]` = 1.5\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1\n    - `status.resize[cpu]` = \"Proposed\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1T=4: Kubelet watching pod 发现大小调整 #1 并接受它\n    - kubelet 发送 patch 操作 {\n        `resourceVersion` = `\u003cprevious value\u003e` # 启用冲突检测\n        `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.5\n        `status.resize[cpu]` = \"InProgress\"\n      }\n    - `spec.containers[0].resources.requests[cpu]` = 1.5\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.5\n    - `status.resize[cpu]` = \"InProgress\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1T=5: Resize #2: cpu = 2  # 此时又来进行 Resize 操作\n    - apiserver 验证请求并接受操作\n    - apiserver 设置 `resize[cpu]` 为 \"Proposed\"\n    - `spec.containers[0].resources.requests[cpu]` = 2\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.5\n    - `status.resize[cpu]` = \"Proposed\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1T=6: 容器运行时应用 cpu=1.5\n    - kubelet 发送 patch 操作 {\n        `resourceVersion` = `\u003cprevious value\u003e` #  启用冲突检测\n        `status.containerStatuses[0].resources.requests[cpu]` = 1.5\n        `status.resize[cpu]` = unset\n      }\n    - apiserver操作失败，出现“冲突”错误T=7: kubelet刷新并查看到大小调整 #2 (cpu = 2)\n    - kubelet 认为这是可行的，但现在不行\n    - kubelet sends patch {\n        `resourceVersion` = `\u003cupdated value\u003e` # enable conflict detection\n        `status.containerStatuses[0].resources.requests[cpu]` = 1.5\n        `status.resize[cpu]` = \"Deferred\"  # 标记为延迟\n      }\n    - `spec.containers[0].resources.requests[cpu]` = 2\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.5\n    - `status.resize[cpu]` = \"Deferred\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1.5T=8: Resize #3: cpu = 1.6\n    - apiserver 验证请求并接受请求\n    - apiserver 设置 `resize[cpu]` 为 \"Proposed\"\n    - `spec.containers[0].resources.requests[cpu]` = 1.6\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.5\n    - `status.resize[cpu]` = \"Proposed\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1.5T=9: Kubelet 观测到 pod 第三次 resize 操作 #3 并接受它\n    - kubelet sends patch {\n        `resourceVersion` = `\u003cprevious value\u003e` # enable conflict detection\n        `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.6\n        `status.resize[cpu]` = \"InProgress\"  # 标记为调整中\n      }\n    - `spec.containers[0].resources.requests[cpu]` = 1.6\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.6\n    - `status.resize[cpu]` = \"InProgress\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1.5T=10: 容器运行时应用 cpu=1.6\n    - kubelet sends patch {\n        `resourceVersion` = `\u003cprevious value\u003e` # enable conflict detection\n        `status.containerStatuses[0].resources.requests[cpu]` = 1.6\n        `status.resize[cpu]` = unset\n      }\n    - `spec.containers[0].resources.requests[cpu]` = 1.6\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.6\n    - `status.resize[cpu]` = unset\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1.6T=11: Resize #4: cpu = 100\n    - apiserver 验证请求和接受操作\n    - apiserver 设置 `resize[cpu]` 为 \"Proposed\"\n    - `spec.containers[0].resources.requests[cpu]` = 100\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.6\n    - `status.resize[cpu]` = \"Proposed\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1.6T=12: Kubelet 观测到pod第四次调整 resize #4\n    - 这个节点没有 100 CPUs, 所以 kubelet 不接受\n    - kubelet sends patch {\n        `resourceVersion` = `\u003cprevious value\u003e` # enable conflict detection\n        `status.resize[cpu]` = \"Infeasible\"  # 标记为拒绝\n      }\n    - `spec.containers[0].resources.requests[cpu]` = 100\n    - `status.containerStatuses[0].resourcesAllocated[cpu]` = 1.6\n    - `status.resize[cpu]` = \"Infeasible\"\n    - `status.containerStatuses[0].resources.requests[cpu]` = 1.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-mdctksz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230302001318-mdctksz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器资源限制更新顺序"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-geo0f0w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-geo0f0w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当一个 Pod 中的多个容器请求原地调整大小时，Kubelet 通过以下方式更新 Pod 及其容器的资源限制："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-lx4a7lg",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230302001318-lx4a7lg"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-w5m6vv7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230302001318-w5m6vv7"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-946m5ky",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-946m5ky"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果资源调整导致资源类型（CPU 或内存）净增加，Kubelet 首先更新该资源类型的 Pod 级 cgroup 限制，然后更新 Container 资源限制。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-2s1f05s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230302001318-2s1f05s"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-syxox3d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-syxox3d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果资源调整导致资源类型净减少，Kubelet 首先更新 Container 资源限制，然后更新 Pod 级别的 cgroup 限制。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-nxitena",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230302001318-nxitena"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-6hze8p5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-6hze8p5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果资源更新导致资源类型没有净变化，则仅更新容器资源限制。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-sxpvbaa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-sxpvbaa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在上述所有情况下，Kubelet 在应用限制增加之前应用容器资源限制减少。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-q6gxdqr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230302001318-q6gxdqr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器资源限制更新失败处理"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-ubr1pmz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-ubr1pmz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果 Pod 中的多个容器正在被更新，并且任何容器的 UpdateContainerResources CRI API 都失败，Kubelet 将回退并在稍后进行重试。 Kubelet 不会尝试更新在失败容器之后排队等待更新的容器的限制。这确保容器限制的总和在任何时候都不会超过 Pod 级别的 cgroup 限制。成功更新所有容器限制后，Kubelet 会更新 Pod 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Status.ContainerStatuses[i].Resources"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 以匹配所需的限制值。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-5qtns88",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230302001318-5qtns88"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CRI 变化流程"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-dx43bs8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-dx43bs8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下图是 Kubelet 使用 UpdateContainerResources 和 ContainerStatus CRI APIs 来设置新的容器资源限制，并在用户改变 Pod Spec 中的所需资源时更新 Pod 状态的概述。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-695b3kg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-695b3kg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "   +-----------+                   +-----------+                  +-----------+\n   |           |                   |           |                  |           |\n   | apiserver |                   |  kubelet  |                  |  runtime  |\n   |           |                   |           |                  |           |\n   +-----+-----+                   +-----+-----+                  +-----+-----+\n         |                               |                              |\n         |       watch (pod update)      |                              |\n         |------------------------------\u003e|                              |\n         |     [Containers.Resources]    |                              |\n         |                               |                              |\n         |                            (admit)                           |\n         |                               |                              |\n         |                               |  UpdateContainerResources()  |\n         |                               |-----------------------------\u003e|\n         |                               |                         (set limits)\n         |                               |\u003c- - - - - - - - - - - - - - -|\n         |                               |                              |\n         |                               |      ContainerStatus()       |\n         |                               |-----------------------------\u003e|\n         |                               |                              |\n         |                               |     [ContainerResources]     |\n         |                               |\u003c- - - - - - - - - - - - - - -|\n         |                               |                              |\n         |      update (pod status)      |                              |\n         |\u003c------------------------------|                              |\n         | [ContainerStatuses.Resources] |                              |\n         |                               |                              |\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-8s80e46",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-8s80e46"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-37y6kxm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-37y6kxm"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-3uwat26",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-3uwat26"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubelet 调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerManager"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 接口中的 UpdateContainerResources() CRI API，通过在 API 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerResources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 参数中指定这些值来为容器配置新的 CPU 和内存限制。Kubelet 在调用此 CRI API 时，Kubelet 会根据目标运行时平台来设置 ContainerResources 参数。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-wnp32jb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-wnp32jb"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-8c5z6te",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-8c5z6te"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubelet 在 ContainerManager 接口中调用 ContainerStatus() CRI API 以获取应用于 Container 的 CPU 和内存限制。它使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerStatus.Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 中返回的值来更新 Pod 状态中该容器的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ContainerStatuses[i].Resources.Limits"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-l4s454k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230302001318-l4s454k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意事项"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-h1q2iak",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230302001318-h1q2iak"
+			},
+			"Children": [
+				{
+					"ID": "20230302001318-62i6umy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-62i6umy"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-or36pp1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-or36pp1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果一个节点的 CPU Manager 策略被设置为 \"static\"，则仅允许 CPU 调整大小的整数值。如果在 CPU Manager 策略为 \"static\" 的节点上请求非整数的 CPU 调整，该调整将被拒绝，并在 Events 中记录一个错误信息。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-hl70o8f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-hl70o8f"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-ptiwoyc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-ptiwoyc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为了避免竞争状况，在计算 Pod 使用的资源时，所有组件将使用 Pod 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status.ContainerStatuses[i].ResourcesAllocated"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-0sz49ej",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-0sz49ej"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-qe4h10o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-qe4h10o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果在 Pod 被调整大小时有额外的调整请求到达，这些请求将在正在进行的调整完成后处理。而调整大小是朝着最新的期望状态驱动的。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-ip6gvos",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-ip6gvos"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-p8vajsa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-p8vajsa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果应用程序一直占用页面，降低内存限制可能并不总是会很快就生效。Kubelet 将使用一个控制循环来设置接近使用的内存限制，以便强制回收，并且只有在限制达到预期值时才更新 Pod 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Status.ContainerStatuses[i].Resources"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230302001318-zqe8vxd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230302001318-zqe8vxd"
+					},
+					"Children": [
+						{
+							"ID": "20230302001318-ae25d5n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230302001318-ae25d5n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Pod Overhead 的影响，Kubelet 将 Pod Overhead 添加到调整大小的请求中，以确定是否可以在原地调整大小。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-cc7ld8s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230302001318-cc7ld8s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "实现"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-hstjioz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-hstjioz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其实该 KEP 草案第一次创建是在 2018 年了，到现在接近 5 年了。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-fx6d4hn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-fx6d4hn"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230302001318-g4ymmmq"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-fut0p0t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-fut0p0t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该 KEP 对应的 PR "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "# In-place Pod Vertical Scaling feature #102884"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "(https://github.com/kubernetes/kubernetes/pull/102884) 第一次也是2021年，到现在也两年左右时间了，这不得不佩服 Kubernetes 社区的严谨，毕竟该 PR 改动较大，不过幸运的时该 PR 已于昨天合并了，真是不容易，总共涉及160多个文件变更，虽然很大一部分是用于测试的代码。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-t0b8n8l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-t0b8n8l"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230302001318-mxfa57v"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-3u3ho8z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-3u3ho8z"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面我们来看下要怎么使用这个新的特性。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-4qf884n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-4qf884n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在有一个如下所示的测试 Pod："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-gtpelz0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-gtpelz0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 2pod.yaml \napiVersion: v1\nkind: Pod\nmetadata:\n  name: 2pod\nspec:\n  containers:\n  - name: stress\n    image: skiibum/ubuntu-stress:18.10\n    resources:\n      limits:\n        cpu: \"500m\"\n        memory: \"500Mi\"\n      requests:\n        cpu: \"500m\"\n        memory: \"500Mi\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-i3aecb6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-i3aecb6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "直接创建该 Pod 即可："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-48niz9i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-48niz9i"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl apply -f 2pod.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-mfl98bp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-mfl98bp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建后我们查看下该资源清单的详细数据："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-1cgtry6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-1cgtry6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl get po 2pod -oyaml \napiVersion: v1\nkind: Pod\nmetadata:\n  name: 2pod\n  namespace: default\nspec:\n  containers:\n  - image: skiibum/ubuntu-stress:18.10\n    name: stress\n    resizePolicy:\n    - policy: RestartNotRequired  # 默认值：如果可能，尝试在不重启容器的情况下调整它的大小。\n      resourceName: cpu\n    - policy: RestartNotRequired\n      resourceName: memory\n    resources:\n      limits:\n        cpu: 500m\n        memory: 500Mi\n      requests:\n        cpu: 500m\n        memory: 500Mi\n...\n...\nstatus:\n  conditions:\n...\n  containerStatuses:\n  - containerID: docker://015b2d8605c732329129a8d61894ef5438b5a8ed09da0b5e56dad82d3b57a789\n    image: skiibum/ubuntu-stress:18.10\n    name: stress\n    ready: true\n    resources:\n      limits:\n        cpu: 500m\n        memory: 500Mi\n      requests:\n        cpu: 500m\n        memory: 500Mi\n    resourcesAllocated:\n      cpu: 500m\n      memory: 500Mi\n    restartCount: 0\n    started: true\n...\n  qosClass: Guaranteed\n  startTime: \"2021-06-27T02:06:56Z\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-9dmdsyw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-9dmdsyw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以看到最大的一个变化就是现在的 Pod 资源清单中新增了一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "resizePolicy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 属性，下面自动配置的 cpu 和 memory 两种资源的 resize 策略为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RestartNotRequired"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，这也是默认值，表示如果可能，尝试在不重启容器的情况下调整它的大小。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-1h7q8zx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-1h7q8zx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外在 Status 下面出现了一个新的自动 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ResourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，表示分配给 Pod 及其容器的节点资源。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-sa41ph1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-sa41ph1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在修改该 Pod 的容器资源大小："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-pzz66go",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-pzz66go"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl patch pod 2pod --patch '{\"spec\":{\"containers\":[{\"name\":\"stress\", \"resources\":{\"requests\":{\"cpu\":\"650m\"}, \"limits\":{\"cpu\":\"650m\"}}}]}}'\npod/2pod patched\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-lecrxkk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-lecrxkk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改后再次查看详细的 Pod 资源清单："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-oyvbzo6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-oyvbzo6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl get po 2pod -oyaml \napiVersion: v1\nkind: Pod\nmetadata:\n  name: 2pod\n  namespace: default\nspec:\n  containers:\n  - image: skiibum/ubuntu-stress:18.10\n    name: stress\n    resizePolicy:\n    - policy: RestartNotRequired\n      resourceName: cpu\n    - policy: RestartNotRequired\n      resourceName: memory\n    resources:\n      limits:\n        cpu: 650m\n        memory: 500Mi\n      requests:\n        cpu: 650m\n        memory: 500Mi\n...\n...\nstatus:\n  conditions:\n...\n  containerStatuses:\n  - containerID: docker://015b2d8605c732329129a8d61894ef5438b5a8ed09da0b5e56dad82d3b57a789\n    image: skiibum/ubuntu-stress:18.10\n    name: stress\n    ready: true\n    resources:\n      limits:\n        cpu: 500m\n        memory: 500Mi\n      requests:\n        cpu: 500m\n        memory: 500Mi\n    resourcesAllocated:\n      cpu: 650m\n      memory: 500Mi\n    restartCount: 0\n    started: true\n...\n  qosClass: Guaranteed\n  resize: InProgress\n  startTime: \"2021-06-27T02:06:56Z\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-dons6ux",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-dons6ux"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以看到原本 PodSpec 下面的 resources 资源大小已经变化了，重点还是在 Status 中，可以发现多了一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "resize: InProgress"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的字段，表示接受调整并正在执行资源大小调整。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-srit2e3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-srit2e3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果现在再次调整资源大小："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-k17zoi9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-k17zoi9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl patch pod 2pod --patch '{\"spec\":{\"containers\":[{\"name\":\"stress\", \"resources\":{\"requests\":{\"cpu\":\"3950m\"}, \"limits\":{\"cpu\":\"3950m\"}}}]}}'\npod/2pod patched\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-u8j9f67",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-u8j9f67"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调整后查看 Pod 详细数据："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-b1b7icv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-b1b7icv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl get po 2pod -oyaml \napiVersion: v1\nkind: Pod\nmetadata:\n  name: 2pod\n  namespace: default\nspec:\n  containers:\n  - image: skiibum/ubuntu-stress:18.10\n    name: stress\n    resizePolicy:\n    - policy: RestartNotRequired\n      resourceName: cpu\n    - policy: RestartNotRequired\n      resourceName: memory\n    resources:\n      limits:\n        cpu: 3950m\n        memory: 500Mi\n      requests:\n        cpu: 3950m\n        memory: 500Mi\n...\n...\nstatus:\n  conditions:\n...\n  containerStatuses:\n  - containerID: docker://015b2d8605c732329129a8d61894ef5438b5a8ed09da0b5e56dad82d3b57a789\n    image: skiibum/ubuntu-stress:18.10\n    name: stress\n    ready: true\n    resources:\n      limits:\n        cpu: 500m\n        memory: 500Mi\n      requests:\n        cpu: 500m\n        memory: 500Mi\n    resourcesAllocated:\n      cpu: 650m\n      memory: 500Mi\n    restartCount: 0\n    started: true\n...\n  qosClass: Guaranteed\n  resize: Deferred\n  startTime: \"2021-06-27T02:06:56Z\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-6h9sooq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-6h9sooq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时 Status 中的 resize 变成了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Deferred"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 状态，表示提议的调整大小在理论上是可行的（它适合在这个节点上）但现在还不能，它将被重新评估，注意 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "resourcesAllocated"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 还是上一次变更成功后的大小。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-v7spaye",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-v7spaye"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果再次调整资源到节点不能满足的情况下："
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-5ms4gvk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230302001318-5ms4gvk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl patch pod 2pod --patch '{\"spec\":{\"containers\":[{\"name\":\"stress\", \"resources\":{\"requests\":{\"cpu\":\"4650m\"}, \"limits\":{\"cpu\":\"4650m\"}}}]}}'\npod/2pod patched\n$ kubectl get po 2pod -oyaml \napiVersion: v1\nkind: Pod\nmetadata:\n  name: 2pod\n  namespace: default\nspec:\n  containers:\n  - image: skiibum/ubuntu-stress:18.10\n    name: stress\n    resizePolicy:\n    - policy: RestartNotRequired\n      resourceName: cpu\n    - policy: RestartNotRequired\n      resourceName: memory\n    resources:\n      limits:\n        cpu: 4650m\n        memory: 500Mi\n      requests:\n        cpu: 4650m\n        memory: 500Mi\n...\n...\nstatus:\n  conditions:\n...\n  containerStatuses:\n  - containerID: docker://015b2d8605c732329129a8d61894ef5438b5a8ed09da0b5e56dad82d3b57a789\n    image: skiibum/ubuntu-stress:18.10\n...\n    name: stress\n    ready: true\n    resources:\n      limits:\n        cpu: 500m\n        memory: 500Mi\n      requests:\n        cpu: 500m\n        memory: 500Mi\n    resourcesAllocated:\n      cpu: 650m\n      memory: 500Mi\n    restartCount: 0\n...\n  qosClass: Guaranteed\n  resize: Infeasible\n  startTime: \"2021-06-27T02:06:56Z\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-vtg5w0j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-vtg5w0j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在 resize 状态变成了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Infeasible"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，表示不能满足资源条件，拒绝调整。"
+				}
+			]
+		},
+		{
+			"ID": "20230302001318-09wfgq9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230302001318-09wfgq9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以后当我们的 Pod 资源不足的时候，可以放心大胆去调整资源了，不用担心容器被重启了。"
+				}
+			]
+		}
+	]
+}

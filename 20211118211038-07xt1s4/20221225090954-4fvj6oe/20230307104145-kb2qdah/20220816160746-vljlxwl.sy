@@ -1,0 +1,819 @@
+{
+	"ID": "20220816160746-vljlxwl",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220816160746-vljlxwl",
+		"title": "分析 ExitCode 定位程序退出原因",
+		"updated": "20220816160937"
+	},
+	"Children": [
+		{
+			"ID": "20220816160746-yfbfhmc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220816160746-yfbfhmc",
+				"updated": "20220816160831"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl describe pod"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 查看异常的 pod 的状态，在容器列表里看 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "State"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段，其中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ExitCode"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 即程序退出时的状态码，正常退出时为0。如果不为0，表示异常退出，我们可以分析下原因。"
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-wv69exn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220816160841-wv69exn",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "退出状态码的区间"
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-61v2mz1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220816160841-61v2mz1",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"ID": "20220816160841-o6q8aua",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160841-o6q8aua"
+					},
+					"Children": [
+						{
+							"ID": "20220816160841-kzzfrp3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160841-kzzfrp3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "必须在 0-255 之间"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220816160841-46vpyu4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160841-46vpyu4"
+					},
+					"Children": [
+						{
+							"ID": "20220816160841-20a1f76",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160841-20a1f76"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0 表示正常退出"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220816160841-7zwx1jz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160841-7zwx1jz"
+					},
+					"Children": [
+						{
+							"ID": "20220816160841-ohqtcu5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160841-ohqtcu5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "外界中断将程序退出的时候状态码区间在 129-255，(操作系统给程序发送中断信号，比如 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kill -9"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SIGKILL"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ctrl+c"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SIGINT"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220816160841-cmq87s4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160841-cmq87s4"
+					},
+					"Children": [
+						{
+							"ID": "20220816160841-zq2vgzb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160841-zq2vgzb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一般程序自身原因导致的异常退出状态区间在 1-128 (这只是一般约定，程序如果一定要用129-255的状态码也是可以的)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-z4e76h6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220816160841-z4e76h6",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "假如写代码指定的退出状态码时不在 0-255 之间，例如: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "exit(-1)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，这时会自动做一个转换，最终呈现的状态码还是会在 0-255 之间。我们把状态码记为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "code"
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-lnhwalm",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220816160841-lnhwalm",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"ID": "20220816160841-ae06gsh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160841-ae06gsh"
+					},
+					"Children": [
+						{
+							"ID": "20220816160841-nt8g1ev",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160841-nt8g1ev"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当指定的退出时状态码为负数，那么转换公式如下:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-bkhoqwh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220816160841-bkhoqwh",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "256 - (|code| % 256)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-4gkbnqc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220816160841-4gkbnqc",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"ID": "20220816160841-dprwxr2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160841-dprwxr2"
+					},
+					"Children": [
+						{
+							"ID": "20220816160841-5o6q33f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160841-5o6q33f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当指定的退出时状态码为正数，那么转换公式如下:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220816160841-df81ei1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220816160841-df81ei1",
+				"updated": "20220816160841"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "code % 256\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220816160908-4f8iqxb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220816160908-4f8iqxb",
+				"updated": "20220816160908"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见异常状态码"
+				}
+			]
+		},
+		{
+			"ID": "20220816160908-ej4csk9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220816160908-ej4csk9",
+				"updated": "20220816160908"
+			},
+			"Children": [
+				{
+					"ID": "20220816160908-5mzgviu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160908-5mzgviu"
+					},
+					"Children": [
+						{
+							"ID": "20220816160908-akzye26",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160908-akzye26"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "137"
+								}
+							]
+						},
+						{
+							"ID": "20220816160908-4ke6r8u",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20220816160908-4ke6r8u"
+							},
+							"Children": [
+								{
+									"ID": "20220816160908-ly1nyqx",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220816160908-ly1nyqx"
+									},
+									"Children": [
+										{
+											"ID": "20220816160908-puuxwlv",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220816160908-puuxwlv"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "此状态码一般是因为 pod 中容器内存达到了它的资源限制("
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "resources.limits"
+												},
+												{
+													"Type": "NodeText",
+													"Data": ")，一般是内存溢出(OOM)，CPU达到限制只需要不分时间片给程序就可以。因为限制资源是通过 linux 的 cgroup 实现的，所以 cgroup 会将此容器强制杀掉，类似于 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "kill -9"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220816160908-gc4nyiq",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220816160908-gc4nyiq"
+									},
+									"Children": [
+										{
+											"ID": "20220816160908-biipx06",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220816160908-biipx06"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "还可能是宿主机本身资源不够用了(OOM)，内核会选取一些进程杀掉来释放内存"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220816160908-do7lnlm",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220816160908-do7lnlm"
+									},
+									"Children": [
+										{
+											"ID": "20220816160908-szh1el9",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220816160908-szh1el9"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "不管是 cgroup 限制杀掉进程还是因为节点机器本身资源不够导致进程死掉，都可以从系统日志中找到记录:"
+												}
+											]
+										},
+										{
+											"ID": "20220816160908-osig4ch",
+											"Type": "NodeBlockquote",
+											"Properties": {
+												"id": "20220816160908-osig4ch"
+											},
+											"Children": [
+												{
+													"Type": "NodeBlockquoteMarker",
+													"Data": "\u003e"
+												},
+												{
+													"ID": "20220816160908-9dez9f9",
+													"Type": "NodeParagraph",
+													"Properties": {
+														"id": "20220816160908-9dez9f9"
+													},
+													"Children": [
+														{
+															"Type": "NodeText",
+															"Data": "ubuntu 的系统日志在 "
+														},
+														{
+															"Type": "NodeTextMark",
+															"TextMarkType": "code",
+															"TextMarkTextContent": "/var/log/syslog"
+														},
+														{
+															"Type": "NodeText",
+															"Data": "，centos 的系统日志在 "
+														},
+														{
+															"Type": "NodeTextMark",
+															"TextMarkType": "code",
+															"TextMarkTextContent": "/var/log/messages"
+														},
+														{
+															"Type": "NodeText",
+															"Data": "，都可以用 "
+														},
+														{
+															"Type": "NodeTextMark",
+															"TextMarkType": "code",
+															"TextMarkTextContent": "journalctl -k"
+														},
+														{
+															"Type": "NodeText",
+															"Data": " 来查看系统日志"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220816160908-h5dndjw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220816160908-h5dndjw"
+					},
+					"Children": [
+						{
+							"ID": "20220816160908-c3jvz14",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220816160908-c3jvz14"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1 和 255"
+								}
+							]
+						},
+						{
+							"ID": "20220816160908-7rk6h0i",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20220816160908-7rk6h0i"
+							},
+							"Children": [
+								{
+									"ID": "20220816160908-mz7nyo5",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220816160908-mz7nyo5"
+									},
+									"Children": [
+										{
+											"ID": "20220816160908-3u4kvnt",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220816160908-3u4kvnt"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "这种可能是一般错误，具体错误原因只能看容器日志，因为很多程序员写异常退出时习惯用 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "exit(1)"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 或 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "exit(-1)"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "，-1 会根据转换规则转成 255"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-y5ov9ra",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220816160937-y5ov9ra",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "状态码参考"
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-hi0kxso",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220816160937-hi0kxso",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里罗列了一些状态码的含义："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://tldp.org/LDP/abs/html/exitcodes.html",
+					"TextMarkTextContent": "Appendix E. Exit Codes With Special Meanings"
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-ignrezv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220816160937-ignrezv",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux 标准中断信号"
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-e1yemu1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220816160937-e1yemu1",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux 程序被外界中断时会发送中断信号，程序退出时的状态码就是中断信号值加上 128 得到的，比如 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SIGKILL"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的中断信号值为 9，那么程序退出状态码就为 9+128=137。以下是标准信号值参考："
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-9qufwbv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220816160937-9qufwbv",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Signal     Value     Action   Comment\n──────────────────────────────────────────────────────────────────────\nSIGHUP        1       Term    Hangup detected on controlling terminal\n                                     or death of controlling process\nSIGINT        2       Term    Interrupt from keyboard\nSIGQUIT       3       Core    Quit from keyboard\nSIGILL        4       Core    Illegal Instruction\nSIGABRT       6       Core    Abort signal from abort(3)\nSIGFPE        8       Core    Floating-point exception\nSIGKILL       9       Term    Kill signal\nSIGSEGV      11       Core    Invalid memory reference\nSIGPIPE      13       Term    Broken pipe: write to pipe with no\n                                     readers; see pipe(7)\nSIGALRM      14       Term    Timer signal from alarm(2)\nSIGTERM      15       Term    Termination signal\nSIGUSR1   30,10,16    Term    User-defined signal 1\nSIGUSR2   31,12,17    Term    User-defined signal 2\nSIGCHLD   20,17,18    Ign     Child stopped or terminated\nSIGCONT   19,18,25    Cont    Continue if stopped\nSIGSTOP   17,19,23    Stop    Stop process\nSIGTSTP   18,20,24    Stop    Stop typed at terminal\nSIGTTIN   21,21,26    Stop    Terminal input for background process\nSIGTTOU   22,22,27    Stop    Terminal output for background process\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-mgvt0kk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220816160937-mgvt0kk",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "C/C++ 退出状态码"
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-1ozwy9k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220816160937-1ozwy9k",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/usr/include/sysexits.h"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 试图将退出状态码标准化(仅限 C/C++):"
+				}
+			]
+		},
+		{
+			"ID": "20220816160937-un831vd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220816160937-un831vd",
+				"updated": "20220816160937"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#define EX_OK           0       /* successful termination */\n\n#define EX__BASE        64      /* base value for error messages */\n\n#define EX_USAGE        64      /* command line usage error */\n#define EX_DATAERR      65      /* data format error */\n#define EX_NOINPUT      66      /* cannot open input */\n#define EX_NOUSER       67      /* addressee unknown */\n#define EX_NOHOST       68      /* host name unknown */\n#define EX_UNAVAILABLE  69      /* service unavailable */\n#define EX_SOFTWARE     70      /* internal software error */\n#define EX_OSERR        71      /* system error (e.g., can't fork) */\n#define EX_OSFILE       72      /* critical OS file missing */\n#define EX_CANTCREAT    73      /* can't create (user) output file */\n#define EX_IOERR        74      /* input/output error */\n#define EX_TEMPFAIL     75      /* temp failure; user is invited to retry */\n#define EX_PROTOCOL     76      /* remote error in protocol */\n#define EX_NOPERM       77      /* permission denied */\n#define EX_CONFIG       78      /* configuration error */\n\n#define EX__MAX 78      /* maximum listed value */\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

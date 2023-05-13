@@ -1,0 +1,2467 @@
+{
+	"ID": "20230410161239-9uipb6g",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230410161239-9uipb6g",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230410161239-ousjewr\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230410161239-adwagk9\u0026quot;,\u0026quot;scrollTop\u0026quot;:7000,\u0026quot;focusId\u0026quot;:\u0026quot;20230410161239-ousjewr\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "深入浅出kubernetes之client-go的SharedInformer",
+		"updated": "20230412194744"
+	},
+	"Children": [
+		{
+			"ID": "20230410161239-ousjewr",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230410161239-ousjewr"
+			}
+		},
+		{
+			"ID": "20230410161239-n5oowxx",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230410161239-n5oowxx"
+			},
+			"Children": [
+				{
+					"ID": "20230410161239-6c1ltiq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410161239-6c1ltiq"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-uw65bgn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-uw65bgn"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#comments_22451582%E3%80%81",
+									"TextMarkTextContent": "https://blog.csdn.net/weixin_42663840/article/details/81699303#comments_22451582%E3%80%81"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-y34vd2e",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230410161239-y34vd2e"
+			}
+		},
+		{
+			"ID": "20230410161239-rwrfwz7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-rwrfwz7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "记得大学刚毕业那年看了侯俊杰的《深入浅出MFC》，就对深入浅出这四个字特别偏好，并且成为了自己对技术的要求标准——对于技术的理解要足够的深刻以至于可以用很浅显的道理给别人讲明白。以下内容为个人见解，如有雷同，纯属巧合，如有错误，烦请指正。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-1su7dw1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-1su7dw1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文基于kubernetes1.11版本，后续会根据"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=kubernetes\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "kubernetes"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "版本更新及时更新文档，所有代码引用为了简洁都去掉了日志打印相关的代码，尽量只保留有价值的内容。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-tmr7cme",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-tmr7cme"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在开始本文内容前，请先阅读"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81530606",
+					"TextMarkTextContent": "《深入浅出kubernetes之client-go的indexer》"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81626789",
+					"TextMarkTextContent": "《深入浅出kubernetes之client-go的DeltaFIFO》"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-op8ugud",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230410161239-op8ugud"
+			}
+		},
+		{
+			"ID": "20230410161239-32br9di",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-32br9di"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "目录"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ak0vy14",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-ak0vy14"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t0",
+					"TextMarkTextContent": "SharedInformer概述"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ae0zwtn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-ae0zwtn"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t1",
+					"TextMarkTextContent": "ListerWatcher"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-lapjm4b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-lapjm4b"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t2",
+					"TextMarkTextContent": "Reflector实现"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-bd3a8sj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-bd3a8sj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t3",
+					"TextMarkTextContent": "Controller实现"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-wvzkfkw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-wvzkfkw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t4",
+					"TextMarkTextContent": "SharedInformer分析"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-mi05uwa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-mi05uwa"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t5",
+					"TextMarkTextContent": "SharedInformer的定义"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-vj17n91",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-vj17n91"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t6",
+					"TextMarkTextContent": "CacheMutationDetector"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-toyclq9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-toyclq9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t7",
+					"TextMarkTextContent": "sharedProcessor分析"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-fs25jhj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-fs25jhj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t8",
+					"TextMarkTextContent": "processorListener分析"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-zbl7rbq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-zbl7rbq"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t9",
+					"TextMarkTextContent": "sharedProcessor管理processorListener"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-t1iwzyw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-t1iwzyw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t10",
+					"TextMarkTextContent": "SharedInformer实现"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-1yqhukh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-1yqhukh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_42663840/article/details/81699303#t11",
+					"TextMarkTextContent": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-8c0k680",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230410161239-8c0k680"
+			}
+		},
+		{
+			"ID": "20230410161239-2q7d1b9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-2q7d1b9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Informer(就是SharedInformer)是client-go的重要组成部分，在了解client-go之前，了解一下Informer的实现是很有必要的，下面引用了官方的图，可以看到Informer在client-go中的位置。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-33cavec",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-33cavec"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "                             "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://static.oschina.net/uploads/space/2017/0122/185335_nqsX_2668812.jpeg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-heikght",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-heikght"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前期铺垫了Indexer和DeltaFIFO，为的就是方便本文的理解，也是时候来一个长篇大论了。SharedInformer总名字上直译就是信息提供者，至于Shared是什么意思，我们来看看官方注释："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-3bvjh0s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-3bvjh0s"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// SharedInformer has a shared data cache and is capable of distributing notifications for changes\n// to the cache to multiple listeners who registered via AddEventHandler\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-9fgftrw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-9fgftrw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不难看出Shared指的是多个listeners共享同一个cache，而且资源的变化会同时通知到cache和listeners。这个解释和上面图所展示的内容的是一致的，cache我们在Indexer的介绍中已经分析过了，listerners指的就是OnAdd、OnUpdate、OnDelete这些回调函数背后的对象，本文就要对Informer进行系统性的分析。我们先对上面的图做一些初步的认识："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-6uo731p",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230410161239-6uo731p"
+			},
+			"Children": [
+				{
+					"ID": "20230410161239-j72tyqe",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230410161239-j72tyqe"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-ht9kbtt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-ht9kbtt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "List/Watch：List是列举apiserver中对象的接口，Watch是监控apiserver资源变化的接口；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-0h7n9t9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230410161239-0h7n9t9"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-14jdad6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-14jdad6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Reflector：我习惯成称之为反射器，实现对apiserver指定类型对象的监控，其中反射实现的就是把监控的结果实例化成具体的对象；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-kq16ww2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230410161239-kq16ww2"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-sm0709p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-sm0709p"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "DeltaIFIFO：将Reflector监控的变化的对象形成一个FIFO队列，此处的Delta就是变化，DeltaFIFO我们已经有文章详细介绍了；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-zwl3jgl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230410161239-zwl3jgl"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-9jzs25o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-9jzs25o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "LocalStore：指的就是Indexer的实现cache，这里面缓存的就是apiserver中的对象(其中有一部分可能还在DeltaFIFO中)，此时使用者再查询对象的时候就直接从cache中查找，减少了apiserver的压力；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-iwlnul4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230410161239-iwlnul4"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-rowlkal",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-rowlkal"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Callbacks：通知回调函数，Infomer感知的所有对象变化都是通过回调函数通知使用者(Listener)；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-mvzhk7b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410161239-mvzhk7b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ListerWatcher"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-pg52nka",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-pg52nka"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ListerWatcher是一个interface类型，定义如下："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-dhhll79",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-dhhll79"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/listwatch.go\n// 其中metav1.ListOptions，runtime.Object，watch.Interface都定义在apimachinery这个包中\ntype ListerWatcher interface {\n// 根据选项列举对象\n    List(options metav1.ListOptions) (runtime.Object, error)\n// 根据选项监控对象变化\n    Watch(options metav1.ListOptions) (watch.Interface, error)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-s1xsgqj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-s1xsgqj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 这里面我们不会无限的展开下去，只要知道ListerWatcher是通过apiserver的API来列举和监控的就行了，具体是如何实现的其实当前来看并不重要。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "需要注意一点：ListerWatcher是针对某一类对象的，比如Pod，不是所有对象的，这个在构造ListerWatcher对象的时候由apiserver的client类型决定了。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-kwnrkw1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410161239-kwnrkw1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Reflector实现"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-fzsg2vk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-fzsg2vk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了方便理解，本章节引入资源的概念，其实对于kubernetes资源和对象是同一个东西，只是我更喜欢称之为对象。但是下面需要引入同类对象这个概念，所以采用资源代表同类对象的集合(例如Pod集合)。按照惯例，我们先从类型定义入手："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ac48rnw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-ac48rnw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/reflector.go\ntype Reflector struct {\n    name string                                 // 名字\n    metrics *reflectorMetrics                   // 但凡遇到metrics多半是用于做监控的，可以忽略\n    expectedType reflect.Type                   // 反射的类型，也就是要监控的对象类型，比如Pod\n    store Store                                 // 存储，就是DeltaFIFO，为什么，后面会有代码证明\n    listerWatcher ListerWatcher                 // 这个是用来从apiserver获取资源用的\n    period       time.Duration                  // 反射器在List和Watch的时候理论上是死循环，只有出现错误才会退出\n// 这个变量用在出错后多长时间再执行List和Watch，默认值是1秒钟\n    resyncPeriod time.Duration                  // 重新同步的周期，很多人肯定认为这个同步周期指的是从apiserver的同步周期\n// 其实这里面同步指的是shared_informer使用者需要定期同步全量对象\n    ShouldResync func() bool                    // 如果需要同步，调用这个函数问一下，当然前提是该函数指针不为空\n    clock clock.Clock                           // 时钟\n    lastSyncResourceVersion string              // 最后一次同步的资源版本\n    lastSyncResourceVersionMutex sync.RWMutex   // 还专门为最后一次同步的资源版本弄了个锁\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-z2cjsmb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-z2cjsmb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据上面定义的成员变量，我们可以推导出："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-4sm1k21",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230410161239-4sm1k21"
+			},
+			"Children": [
+				{
+					"ID": "20230410161239-e4yygy2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230410161239-e4yygy2"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-8l9gs4c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-8l9gs4c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "listerWatcher用于获取和监控资源，lister可以获取对象的全量，watcher可以获取对象的增量(变化)；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-voxw3bl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230410161239-voxw3bl"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-jdd1hh3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-jdd1hh3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "系统会周期性的执行list-watch的流程，一旦过程中失败就要重新执行流程，这个重新执行的周期就是period指定的；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-saz2o9d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230410161239-saz2o9d"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-u0vpaba",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-u0vpaba"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "expectedType规定了监控对象的类型，非此类型的对象将会被忽略；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-k6vh050",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230410161239-k6vh050"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-wm8c8mp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-wm8c8mp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "实例化后的expectedType类型的对象会被添加到store中；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-a0cj8zl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230410161239-a0cj8zl"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-detur6u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-detur6u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubernetes资源在apiserver中都是有版本的，对象的任何除了修改(添加、删除、更新)都会造成资源版本更新，所以lastSyncResourceVersion就是指的这个版本；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-qnevexd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20230410161239-qnevexd"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-2396yqt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-2396yqt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果使用者需要定期同步全量对象，那么Reflector就会定期产生全量对象的同步事件给DeltaFIFO;"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-wk4zbos",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-wk4zbos"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "按照上面的推导，基本每个成员变量都涉及到了，仿佛我们已经知道Reflector的工作原理了，下面我们就要通过源码逐一验证上面的推导。Reflector有一个Run()函数，这个是Reflector的核心功能流程，我们可以沿着这个流程分析："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-extck18",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-extck18"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/reflector.go\nfunc (r *Reflector) Run(stopCh \u003c-chan struct{}) {\n// func Until(f func(), period time.Duration, stopCh \u003c-chan struct{})是下面函数的声明\n// 这里面我们不用关心wait.Until是如何实现的，只要知道他调用函数f会被每period周期执行一次\n// 意思就是f()函数执行完毕再等period时间后在执行一次，也就是r.ListAndWatch()会被周期性的调用\n    wait.Until(func() {\nif err := r.ListAndWatch(stopCh); err != nil {\n            utilruntime.HandleError(err)\n        }\n    }, r.period, stopCh)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-agtl700",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-agtl700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从这里看，代码的实现符合推导2，我们继续看ListAndWatch()函数实现："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-vy3yknf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-vy3yknf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/reflector.go\nfunc (r *Reflector) ListAndWatch(stopCh \u003c-chan struct{}) error {\nvar resourceVersion string\n// 很多存储类的系统都是这样设计的，数据采用版本的方式记录，数据每变化(添加、删除、更新)都会触发版本更新，\n// 这样的做法可以避免全量数据访问。以apiserver资源监控为例，只要监控比缓存中资源版本大的对象就可以了，\n// 把变化的部分更新到缓存中就可以达到与apiserver一致的效果，一般资源的初始版本为0，从0版本开始列举就是全量的对象了\n    options := metav1.ListOptions{ResourceVersion: \"0\"}\n// 与监控相关的内容不多解释\n    r.metrics.numberOfLists.Inc()\n    start := r.clock.Now()\n// 列举资源，这部分是apimachery相关的内容，读者感兴趣可以自己了解\n    list, err := r.listerWatcher.List(options)\nif err != nil {\nreturn fmt.Errorf(\"%s: Failed to list %v: %v\", r.name, r.expectedType, err)\n    }\n// 还是监控相关的\n    r.metrics.listDuration.Observe(time.Since(start).Seconds())\n// 下面的代码主要是利用apimachinery相关的函数实现，就是把列举返回的结果转换为对象数组\n// 下面的代码大部分来自apimachinery，此处不做过多说明，读者只要知道实现什么功能就行了\n    listMetaInterface, err := meta.ListAccessor(list)\nif err != nil {\nreturn fmt.Errorf(\"%s: Unable to understand list result %#v: %v\", r.name, list, err)\n    }\n    resourceVersion = listMetaInterface.GetResourceVersion()\n\n    items, err := meta.ExtractList(list)\nif err != nil {\nreturn fmt.Errorf(\"%s: Unable to understand list result %#v (%v)\", r.name, list, err)\n    }\n// 和监控相关的内容\n    r.metrics.numberOfItemsInList.Observe(float64(len(items)))\n// 以上部分都是对象实例化的过程，可以称之为反射，也是Reflector这个名字的主要来源，本文不是讲解反射原理的，\n// 而是作为SharedInformer的前端，所以我们重点介绍的是对象在SharedInformer中流转过程，所以反射原理部分不做为重点讲解\n// 这可是真正从apiserver同步过来的全量对象，所以要同步到DeltaFIFO中\nif err := r.syncWith(items, resourceVersion); err != nil {\nreturn fmt.Errorf(\"%s: Unable to sync list result: %v\", r.name, err)\n    }\n// 设置最新的同步的对象版本\n    r.setLastSyncResourceVersion(resourceVersion)\n// 下面要启动一个后台协程实现定期的同步操作，这个同步就是将SharedInformer里面的对象全量以同步事件的方式通知使用者\n// 我们暂且称之为“后台同步协程”，Run()函数退出需要后台同步协程退出，所以下面的cancelCh就是干这个用的\n// 利用defer close(cancelCh)实现的，而resyncerrc是后台同步协程反向通知Run()函数的报错通道\n// 当后台同步协程出错，Run()函数接收到信号就可以退出了\n    resyncerrc := make(chan error, 1)\n    cancelCh := make(chan struct{})\ndefer close(cancelCh)\n// 下面这个匿名函数就是后台同步协程的函数了\ngo func() {\n// resyncCh返回的就是一个定时器，如果resyncPeriod这个为0那么就会返回一个永久定时器，cleanup函数是用来清理定时器的\n        resyncCh, cleanup := r.resyncChan()\ndefer func() {\n            cleanup() \n        }()\n// 死循环等待各种信号\nfor {\n// 只有定时器有信号才继续处理，其他的都会退出\nselect {\ncase \u003c-resyncCh:\ncase \u003c-stopCh:\nreturn\ncase \u003c-cancelCh:\nreturn\n            }\n// ShouldResync是个函数地址，创建反射器对象的时候传入，即便时间到了，也要通过函数问问是否需要同步\nif r.ShouldResync == nil || r.ShouldResync() {\n// 我们知道这个store是DeltaFIFO，DeltaFIFO.Resync()做了什么，读者自行温习相关的文章~\n// 就在这里实现了我们前面提到的同步，从这里看所谓的同步就是以全量对象同步事件的方式通知使用者\nif err := r.store.Resync(); err != nil {\n                    resyncerrc \u003c- err\nreturn\n                }\n            }\n// 清理掉当前的计时器，获取下一个同步时间定时器\n            cleanup()\n            resyncCh, cleanup = r.resyncChan()\n        }\n    }()\n\n// 前面已经列举了全量对象，接下来就是watch的逻辑了\nfor {\n// 如果有退出信号就立刻返回，否则就会往下走，因为有default.\nselect {\ncase \u003c-stopCh:\nreturn nil\ndefault:\n        }\n\n// 计算watch的超时时间\n        timeoutSeconds := int64(minWatchTimeout.Seconds() * (rand.Float64() + 1.0))\n// 设置watch的选项，因为前期列举了全量对象，从这里只要监听最新版本以后的资源就可以了\n// 如果没有资源变化总不能一直挂着吧？也不知道是卡死了还是怎么了，所以有一个超时会好一点\n        options = metav1.ListOptions{\n            ResourceVersion: resourceVersion,\n            TimeoutSeconds: \u0026timeoutSeconds,\n        }\n// 监控相关\n        r.metrics.numberOfWatches.Inc()\n// 开始监控对象\n        w, err := r.listerWatcher.Watch(options)\n// watch产生错误了，大部分错误就要退出函数然后再重新来一遍流程\nif err != nil {\nswitch err {\ncase io.EOF:\ncase io.ErrUnexpectedEOF:\ndefault:\n                utilruntime.HandleError(fmt.Errorf(\"%s: Failed to watch %v: %v\", r.name, r.expectedType, err))\n            }\n// 类似于网络拒绝连接的错误要等一会儿再试，因为可能网络繁忙\nif urlError, ok := err.(*url.Error); ok {\nif opError, ok := urlError.Err.(*net.OpError); ok {\nif errno, ok := opError.Err.(syscall.Errno); ok \u0026\u0026 errno == syscall.ECONNREFUSED {\n                        time.Sleep(time.Second)\ncontinue\n                    }\n                }\n            }\nreturn nil\n        }\n\n// watch返回是流，apiserver会将变化的资源通过这个流发送出来，client-go最终通过chan实现的\n// 所以watchHandler()是一个需要持续从chan读取数据的流程，所以需要传入resyncerrc和stopCh\n// 用于异步通知退出或者后台同步协程错误\nif err := r.watchHandler(w, \u0026resourceVersion, resyncerrc, stopCh); err != nil {\nif err != errorStopRequested {\n                glog.Warningf(\"%s: watch of %v ended with: %v\", r.name, r.expectedType, err)\n            }\nreturn nil\n        }\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-amaz2pf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-amaz2pf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的函数中，调用了两个私有函数，分别为syncWith()和watchHandler()。syncWith()用于实现一次从apiserver全量对象的同步，这里的同步和我们上面提到的同步不是一回事，这里指的是从apiserver的同步。watchHandler是实现监控apiserver资源变化的处理过程，主要就是把apiserver的资源变化转换为DeltaFIFO调用。我们接下来就看这两个函数的具体实现"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-afdo81h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-afdo81h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来我们就要看看watchHandler做了什么？"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-mzlemf6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-mzlemf6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/reflector.go\n// 实现apiserver全量对象的同步\nfunc (r *Reflector) syncWith(items []runtime.Object, resourceVersion string) error {\n// 做一次slice类型转换\n    found := make([]interface{}, 0, len(items))\nfor _, item := range items {\n        found = append(found, item)\n    }\n// 直接调用了DeltaFIFO的Replace()接口，这个接口就是用于同步全量对象的\nreturn r.store.Replace(found, resourceVersion)\n}\n// 实现从watch返回的chan中持续读取变化的资源，并转换为DeltaFIFO相应的调用\nfunc (r *Reflector) watchHandler(w watch.Interface, resourceVersion *string, errc chan error, stopCh \u003c-chan struct{}) error {\n    start := r.clock.Now()\n    eventCount := 0\n// 监控相关\ndefer func() {\n        r.metrics.numberOfItemsInWatch.Observe(float64(eventCount))\n        r.metrics.watchDuration.Observe(time.Since(start).Seconds())\n    }()\n\n// 这里就开始无限循环的从chan中读取资源的变化，也可以理解为资源的增量变化，同时还要监控各种信号\nloop:\nfor {\nselect {\n// 系统退出信号\ncase \u003c-stopCh:\nreturn errorStopRequested\n// 后台同步协程出错信号\ncase err := \u003c-errc:\nreturn err\n// watch函数返回的是一个chan，通过这个chan持续的读取对象\ncase event, ok := \u003c-w.ResultChan():\n// 如果不OK，说明chan关闭了，就要重新获取，这里面我们可以推测这个chan可能会运行过程中重新创建\n// 否则就应该退出而不是继续循环\nif !ok {\nbreak loop\n            }\n// 看来event可以作为错误的返回值，挺有意思，而不是通过关闭chan，这种方式可以传递错误信息，关闭chan做不到\nif event.Type == watch.Error {\nreturn apierrs.FromObject(event.Object)\n            }\n// 这里面就是利用反射实例化对象了，而且判断了对象类型是我们设定的类型\nif e, a := r.expectedType, reflect.TypeOf(event.Object); e != nil \u0026\u0026 e != a {\n                utilruntime.HandleError(fmt.Errorf(\"%s: expected type %v, but watch event object had type %v\", r.name, e, a))\ncontinue\n            }\n// 和list操作相似，也要获取对象的版本，要更新缓存中的版本，下次watch就可以忽略这些资源了\n            meta, err := meta.Accessor(event.Object)\nif err != nil {\n                utilruntime.HandleError(fmt.Errorf(\"%s: unable to understand watch event %#v\", r.name, event))\ncontinue\n            }\n            newResourceVersion := meta.GetResourceVersion()\n// 根据事件的类型做不同的DeltaFIFO的操作\nswitch event.Type {\n// 向DeltaFIFO添加一个添加的Delta\ncase watch.Added:\n                err := r.store.Add(event.Object)\nif err != nil {\n                    utilruntime.HandleError(fmt.Errorf(\"%s: unable to add watch event object (%#v) to store: %v\", r.name, event.Object, err))\n                }\n// 更新对象，向DeltaFIFO添加一个更新的Delta\ncase watch.Modified:\n                err := r.store.Update(event.Object)\nif err != nil {\n                    utilruntime.HandleError(fmt.Errorf(\"%s: unable to update watch event object (%#v) to store: %v\", r.name, event.Object, err))\n            }\n// 删除对象，向DeltaFIFO添加一个删除的Delta\ncase watch.Deleted:\n                err := r.store.Delete(event.Object)\nif err != nil {\n                    utilruntime.HandleError(fmt.Errorf(\"%s: unable to delete watch event object (%#v) from store: %v\", r.name, event.Object, err))\n            }\n// 其他类型就不知道干什么了，只能报错\ndefault:\n            utilruntime.HandleError(fmt.Errorf(\"%s: unable to understand watch event %#v\", r.name, event))\n            }\n// 更新最新资源版本\n            *resourceVersion = newResourceVersion\n            r.setLastSyncResourceVersion(newResourceVersion)\n            eventCount++\n        }\n    }\n// watch返回时间非常短而且没有任何事件要处理，这个属于异常现象，因为我们watch是设置了超时的\n    watchDuration := r.clock.Now().Sub(start)\nif watchDuration \u003c 1*time.Second \u0026\u0026 eventCount == 0 {\n        r.metrics.numberOfShortWatches.Inc()\nreturn fmt.Errorf(\"very short watch: %s: Unexpected watch close - watch lasted less than a second and no items received\", r.name)\n    }\n\nreturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-7df10jl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-7df10jl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 至此，Reflector的核心功能就算分析完了，我们再把其他的周边函数简单的过一下："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ue2ke9o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-ue2ke9o"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/reflector.go\nfunc (r *Reflector) setLastSyncResourceVersion(v string) {\n// 设置已经获取到资源的最新版本\n    r.lastSyncResourceVersionMutex.Lock()\ndefer r.lastSyncResourceVersionMutex.Unlock()\n    r.lastSyncResourceVersion = v\n\n    rv, err := strconv.Atoi(v)\nif err == nil {\n        r.metrics.lastResourceVersion.Set(float64(rv))\n    }\n}\n\n// 获取resync定时器，叫定时器比较好理解，叫chan很难和定时关联起来\nfunc (r *Reflector) resyncChan() (\u003c-chan time.Time, func() bool) {\n// 如果resyncPeriod说明就不用定时同步，返回的是永久超时的定时器\nif r.resyncPeriod == 0 {\nreturn neverExitWatch, func() bool { return false }\n    }\n// 构建定时起\n    t := r.clock.NewTimer(r.resyncPeriod)\nreturn t.C(), t.Stop\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-e0c2iy1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-e0c2iy1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "再次，我对Reflector做一下总结，其中内容和上面的推导很相似："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-lnv4pbz",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230410161239-lnv4pbz"
+			},
+			"Children": [
+				{
+					"ID": "20230410161239-acrlqvd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230410161239-acrlqvd"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-8a9pqzb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-8a9pqzb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Reflector利用apiserver的client列举全量对象(版本为0以后的对象全部列举出来)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-ek4cv8l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230410161239-ek4cv8l"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-27632gg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-27632gg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将全量对象采用Replace()接口同步到DeltaFIFO中，并且更新资源的版本号，这个版本号后续会用到；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-l82wyxs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230410161239-l82wyxs"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-p7ad7l7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-p7ad7l7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "开启一个协程定时执行resync，如果没有设置定时同步则不会执行，同步就是把全量对象以同步事件的方式通知出去；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-ha5s8i3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230410161239-ha5s8i3"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-v3gr0kk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-v3gr0kk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过apiserver的client监控(watch)资源，监控的当前资源版本号以后的对象，因为之前的都已经获取到了；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-3blw3ye",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230410161239-3blw3ye"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-e8hjfr9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-e8hjfr9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一旦有对象发生变化，那么就会根据变化的类型(新增、更新、删除)调用DeltaFIFO的相应接口，产生一个相应的对象Delta，同时更新当前资源的版本；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-uoy5q6f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410161239-uoy5q6f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Controller实现"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-k9615gz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-k9615gz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此controller非我们比较熟悉的controller-manager管理的各种各样的controller，kubernetes里面controller简直是泛滥啊。这里的controller定义在client-go/tools/cache/controller.go中，目的是用来把Reflector、DeltaFIFO组合起来形成一个相对固定的、标准的处理流程。理解了Controller，基本就算把SharedInfomer差不多搞懂了。话不多说，先上代码："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-yo8yd6z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-yo8yd6z"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/controller.go\n// 这是一个Controller的抽象\ntype Controller interface {\n    Run(stopCh \u003c-chan struct{})      // 核心流程函数\n    HasSynced() bool                 // apiserver中的对象是否已经同步到了Store中\n    LastSyncResourceVersion() string // 最新的资源版本号\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-myvoke7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-myvoke7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面的定义来看，HasSynced()可调用DeltaFIFO. HasSynced()实现，LastSyncResourceVersion()可以通过Reflector实现。因为Controller把多个模块整合起来实现了一套业务逻辑，所以在创建Controller需要提供一些配置："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-pqcf2cm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-pqcf2cm"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/controller.go\ntype Config struct {\n    Queue                          // SharedInformer使用DeltaFIFO\n    ListerWatcher                  // 这个用来构造Reflector\n    Process ProcessFunc            // 这个在调用DeltaFIFO.Pop()使用，弹出对象要如何处理\n    ObjectType runtime.Object      // 对象类型，这个肯定是Reflector使用\n    FullResyncPeriod time.Duration // 全量同步周期，这个在Reflector使用\n    ShouldResync ShouldResyncFunc  // Reflector在全量更新的时候会调用该函数询问\n    RetryOnError bool              // 错误是否需要尝试\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-iuv6kkm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-iuv6kkm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面两个类型的定义我们可以猜测：Controller自己构造Reflector获取对象，Reflector作为DeltaFIFO生产者持续监控apiserver的资源变化并推送到队列中。Controller的Run()应该是队列的消费者，从队列中弹出对象并调用Process()处理。所以Controller相比于Reflector因为队列的加持表现为每次有资源变化就会调用一次使用者定义的处理函数。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-aq5n8lu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-aq5n8lu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们顺着上面的推测看看代码的具体实现："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-tyubv7y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-tyubv7y"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/controller.go\n// controller是Controller的实现类型\ntype controller struct {\n    config         Config       // 配置，上面有讲解\n    reflector      *Reflector   // 反射器\n    reflectorMutex sync.RWMutex // 反射器的锁\n    clock          clock.Clock  // 时钟\n}\n// 核心业务逻辑实现\nfunc (c *controller) Run(stopCh \u003c-chan struct{}) {\ndefer utilruntime.HandleCrash()\n// 创建一个协程，如果收到系统退出的信号就关闭队列，相当于在这里析构的队列\ngo func() {\n        \u003c-stopCh\n        c.config.Queue.Close()\n    }()\n// 创建Reflector，传入的参数都是我们上一个章节解释过的，这里不赘述\n    r := NewReflector(\n        c.config.ListerWatcher,\n        c.config.ObjectType,\n        c.config.Queue,\n        c.config.FullResyncPeriod,\n    )\n// r.ShouldResync的存在就是为了以后使用少些一点代码？否则直接使用c.config.ShouldResync不就完了么？不明白用意\n    r.ShouldResync = c.config.ShouldResync\n    r.clock = c.clock\n// 记录反射器\n    c.reflectorMutex.Lock()\n    c.reflector = r\n    c.reflectorMutex.Unlock()\n// wait.Group不是本章的讲解内容，只要把它理解为类似barrier就行了\n// 被他管理的所有的协程都退出后调用Wait()才会退出，否则就会被阻塞\nvar wg wait.Group\ndefer wg.Wait()\n// StartWithChannel()会启动协程执行Reflector.Run()，同时接收到stopCh信号就会退出协程\n    wg.StartWithChannel(stopCh, r.Run)\n// wait.Until()在前面的章节讲过了，周期性的调用c.processLoop()，这里来看是1秒\n// 不用担心调用频率太高，正常情况下c.processLoop是不会返回的，除非遇到了解决不了的错误，因为他是个循环\n    wait.Until(c.processLoop, time.Second, stopCh)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-qx343nu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-qx343nu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面代码上看，私有函数processLoop()才是核心逻辑的实现："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-n7m375k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-n7m375k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/controller.go\nfunc (c *controller) processLoop() {\nfor {\n// 从队列中弹出一个对象，然后处理它,这才是最主要的部分，这个c.config.Process是构造Controller的时候通过Config传进来的\n// 所以这个读者要特别注意了，这个函数其实是ShareInformer传进来的，所以在分析SharedInformer的时候要重点分析的\n        obj, err := c.config.Queue.Pop(PopProcessFunc(c.config.Process))\nif err != nil {\n// 如果FIFO关闭了那就退出\nif err == FIFOClosedError {\nreturn\n            }\n// 如果错误可以再试试\nif c.config.RetryOnError {\n                c.config.Queue.AddIfNotPresent(obj)\n            }\n        }\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ozjjdjo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-ozjjdjo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的代码是不是很简单？这就对了，因为核心处理逻辑实现在了Process函数中了。这时候是不是很想看看这个Process()函数到底干了什么?后面SharedInformer的实现章节会有详细介绍，我们还得把周边函数过一遍："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-0nlgzyk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-0nlgzyk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/controller.go\n// HasSynced() 调用的就是DeltaFIFO.HasSynced()实现的\nfunc (c *controller) HasSynced() bool {\nreturn c.config.Queue.HasSynced()\n}\n// LastSyncResourceVersion() 是利用Reflector实现的\nfunc (c *controller) LastSyncResourceVersion() string {\nif c.reflector == nil {\nreturn \"\"\n    }\nreturn c.reflector.LastSyncResourceVersion()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-wemztqi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-wemztqi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文之所以长是因为需要前期介绍很多内容，现在才刚刚开始本文的正题，我们来看看源码是怎么定义SharedInformer："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-rl1574t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-rl1574t"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\ntype SharedInformer interface {\n// 添加资源事件处理器，关于ResourceEventHandler的定义在下面\n// 相当于注册回调函数，当有资源变化就会通过回调通知使用者，是不是能和上面介绍的Controller可以联系上了？\n// 为什么是Add不是Reg，说明可以支持多个handler\n    AddEventHandler(handler ResourceEventHandler)\n// 上面添加的是不需要周期同步的处理器，下面的接口添加的是需要周期同步的处理器，周期同步上面提了好多遍了，不赘述\n    AddEventHandlerWithResyncPeriod(handler ResourceEventHandler, resyncPeriod time.Duration)\n// Store这个有专门的文章介绍，这个函数就是获取Store的接口,说明SharedInformer内有Store对象\n    GetStore() Store\n// Controller在上面的章节介绍了，说明SharedInformer内有Controller对象\n    GetController() Controller\n// 这个应该是SharedInformer的核心逻辑实现的地方\n    Run(stopCh \u003c-chan struct{})\n// 因为有Store，这个函数就是告知使用者Store里面是否已经同步了apiserver的资源，这个接口很有用\n// 当创建完SharedInformer后，通过Reflector从apiserver同步全量对象，然后在通过DeltaFIFO一个一个的同志到cache\n// 这个接口就是告知使用者，全量的对象是不是已经同步到了cache，这样就可以从cache列举或者查询了\n    HasSynced() bool\n// 最新同步资源的版本，这个就不多说了，通过Controller(Controller通过Reflector)实现\n    LastSyncResourceVersion() string\n}\n// 扩展了SharedInformer类型，从类型名字上看共享的是Indexer，Indexer也是一种Store的实现\ntype SharedIndexInformer interface {\n// 继承了SharedInformer\n    SharedInformer\n// 扩展了Indexer相关的接口\n    AddIndexers(indexers Indexers) error\n    GetIndexer() Indexer\n}\n// 代码源自client-go/tools/cache/controller.go，SharedInformer使用者如果需要处理资源的事件\n// 那么就要自己实现相应的回调函数\ntype ResourceEventHandler interface {\n// 添加对象回调函数\n    OnAdd(obj interface{})\n// 更新对象回调函数\n    OnUpdate(oldObj, newObj interface{})\n// 删除对象回调函数\n    OnDelete(obj interface{})\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-voyuvjm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-voyuvjm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "相信对Reflector、Controller、Indexer有深入了解的人基本已经把ShareInformer的实现基本猜个差不多了，那么我们来看看SharedInformer的实现类是如何定义的："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-q7ss731",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-q7ss731"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\ntype sharedIndexInformer struct {\n// Indexer也是一种Store，这个我们知道的，Controller负责把Reflector和FIFO逻辑串联起来\n// 所以这两个变量就涵盖了开篇那张图里面的Reflector、DeltaFIFO和LocalStore(cache)\n    indexer    Indexer\n    controller Controller\n// sharedIndexInformer把上面提到的ResourceEventHandler进行了在层封装，并统一由sharedProcessor管理，后面章节专门介绍\n    processor             *sharedProcessor\n// CacheMutationDetector其实没啥用，我理解是开发者自己实现的一个调试工具，用来发现对象突变的\n// 实现方法也比较简单，DeltaFIFO弹出的对象在处理前先备份(深度拷贝)一份，然后定期比对两个对象是否相同\n// 如果不同那就报警，说明处理过程中有人修改过对象，这个功能默认是关闭，所以我说没啥用\n    cacheMutationDetector CacheMutationDetector\n// 这两个变量是给Reflector用的，我们知道Reflector是在Controller创建的\n    listerWatcher ListerWatcher\n    objectType    runtime.Object\n// 定期同步的周期，因为可能存在多个ResourceEventHandler，就有可能存在多个同步周期，sharedIndexInformer采用最小的周期\n// 这个周期值就存储在resyncCheckPeriod中，通过AddEventHandler()添加的处理器都采用defaultEventHandlerResyncPeriod\n    resyncCheckPeriod time.Duration\n    defaultEventHandlerResyncPeriod time.Duration\n// 时钟\n    clock clock.Clock\n// 启动、停止标记，肯定有人会问为啥用两个变量，一个变量不就可以实现启动和停止了么？\n// 其实此处是三个状态，启动前，已启动和已停止，start表示了两个状态，而且为启动标记专门做了个锁\n// 说明启动前和启动后有互斥的资源操作\n    started, stopped bool\n    startedLock      sync.Mutex\n\n// 这个名字起的也是够了，因为DeltaFIFO每次Pop()的时候需要传入一个函数用来处理Deltas\n// 处理Deltas也就意味着要把消息通知给处理器，如果此时调用了AddEventHandler()\n// 就会存在崩溃的问题，所以要有这个锁，阻塞Deltas....细想名字也没毛病~\n    blockDeltas sync.Mutex\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-kgmgd3b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-kgmgd3b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面代码注释中简单介绍了sharedProcessor和CacheMutationDetector，我们下面就要对他们两个类型做详细解析。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-jioxpgd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410161239-jioxpgd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CacheMutationDetector"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-0oj30u4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-0oj30u4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CacheMutationDetector这个就是检测对象在过程中突变的，何所谓突变呢？突变就是莫名其妙的修改了，如何实现突变检测，也是比较简单的。CacheMutationDetector对所有的对象做了一次深度拷贝(DeepCopy)，然后定期比较两个对象是否一致，当发现有不同时说明对象突变了，然后就panic。我认为CacheMutationDetector是用来调试的，因为代码默认是关闭的："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-dxlxceo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-dxlxceo"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/mutation_detector.go\n// 默认关闭突变检测\nvar mutationDetectionEnabled = false\n// 但是可以通过环境变量的KUBE_CACHE_MUTATION_DETECTOR开启\nfunc init() {\n    mutationDetectionEnabled, _ = strconv.ParseBool(os.Getenv(\"KUBE_CACHE_MUTATION_DETECTOR\"))\n}\n\n// 这个是突变检测的类型抽象\ntype CacheMutationDetector interface {\n    AddObject(obj interface{})  // 用于记录所有的对象\n    Run(stopCh \u003c-chan struct{}) // 开启协程定期比对\n}\n// 创建CacheMutationDetector对象\nfunc NewCacheMutationDetector(name string) CacheMutationDetector {\n// 如果没有开启选项就构造一个什么都不做的对象\nif !mutationDetectionEnabled {\nreturn dummyMutationDetector{}\n    }\n// 如果开启了选项，那么就构造一个默认的突变检测器\n    glog.Warningln(\"Mutation detector is enabled, this will result in memory leakage.\")\nreturn \u0026defaultCacheMutationDetector{name: name, period: 1 * time.Second}\n}\n// 这就是什么都不做的突变检测器\ntype dummyMutationDetector struct{}\nfunc (dummyMutationDetector) Run(stopCh \u003c-chan struct{}) {\n}\nfunc (dummyMutationDetector) AddObject(obj interface{}) {\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-0thou09",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-0thou09"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认的突变检测器读者自行分析把，因为比较简单并且默认还不开启，我就省点笔墨了~"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-v3yg8zq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-v3yg8zq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有没有感觉shared这个词被kubernetes玩儿坏了(继controller之后有一个背玩儿坏的单词)，sharedProcessor这又shared啥了？首先需要知道Processor的定义，这里定义的Processor就是处理事件的东西。什么事件，就是SharedInformer向外部通知的事件。因为官方代码没有注释，我猜是shared是同一个SharedInformer，有没有很绕嘴？还有更绕的在后面呢，我们还要了解一个新的类型，那就是processorListener，processor刚说完，又来了个Listener！"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-xhwt1rv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-xhwt1rv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过SharedInformer.AddEventHandler()添加的处理器最终就会封装成processorListener，然后通过sharedProcessor管理起来，通过processorListener的封装就可以达到所谓的有事处理，没事挂起。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-9fmlogj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230410161239-9fmlogj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "processorListener分析"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-7lkwabi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-7lkwabi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "processorListener可以理解为两个核心功能，一个是processor，一个是listener，用一句话概括，有事做事没事挂起。先看看processorListener的定义："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-lmqk04u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-lmqk04u"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自clien-go/tools/cache/shared_informer.go\ntype processorListener struct {\n// nextCh、addCh、handler、pendingNotifications的用法请参看我的《golang的chan有趣用法》里面有相关的例子\n// 总结这四个变量实现了事件的输入、缓冲、处理，事件就是apiserver资源的变化\n    nextCh chan interface{}\n    addCh  chan interface{}\n    handler ResourceEventHandler\n    pendingNotifications buffer.RingGrowing\n// 下面四个变量就是跟定时同步相关的了，requestedResyncPeriod是处理器设定的定时同步周期\n// resyncPeriod是跟sharedIndexInformer对齐的同步时间，因为sharedIndexInformer管理了多个处理器\n// 最终所有的处理器都会对齐到一个周期上，nextResync就是下一次同步的时间点\n    requestedResyncPeriod time.Duration\n    resyncPeriod time.Duration\n    nextResync time.Time\n    resyncLock sync.Mutex\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-6jnr54h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-6jnr54h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们需要知道就是processor如何接收事件(此处事件就是apiserver的资源变化，也就是DeltaFIFO输出的Deltas)？如何通知事件处理器？如何缓冲处理器？如何阻塞处理器进而形成listener的？一系列的问题我们需要沿着处理逻辑的流程逐一解释。第一个问题，事件是如何传入的:"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-7rd50gd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-7rd50gd"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// 对，就这么简单，通过addCh传入，这里面的notification就是我们所谓的事件\nfunc (p *processorListener) add(notification interface{}) {\n    p.addCh \u003c- notification\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-adwagk9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-adwagk9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为addCh是无缓冲chan，调用add()函数的人是事件分发器。意思就是从DeltaFIFO弹出的Deltas要要逐一送到多个处理器，此时如果处理器没有及时处理会造成addCh把分发器阻塞，那别的处理器也就同样无法收到新的事件了。这一点，processorListener利用一个后台协程处理这个问题(相应的原理参看《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://mp.csdn.net/postedit/81743709",
+					"TextMarkTextContent": "golang的chan有趣用法"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》)："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-4c3qqt1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-4c3qqt1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// 这个函数是通过sharedProcessor利用wait.Group启动的，读者可以自行查看wait.Group\nfunc (p *processorListener) pop() {\ndefer utilruntime.HandleCrash()\n// nextCh是在这里，函数退出前析构的\ndefer close(p.nextCh)\n// 临时变量，下面会用到\nvar nextCh chan\u003c- interface{}\nvar notification interface{}\n// 进入死循环啦\nfor {\nselect {\n// 有两种情况，nextCh还没有初始化，这个语句就会被阻塞，这个我在《深入浅出golang之chan》说过\n// nextChan后面会赋值为p.nextCh，因为p.nextCh也是无缓冲的chan，数据不发送成功就阻塞                      \ncase nextCh \u003c- notification:\n// 如果发送成功了，那就从缓冲中再取一个事件出来\nvar ok bool\n            notification, ok = p.pendingNotifications.ReadOne()\nif !ok {\n// 如果没有事件，那就把nextCh再次设置为nil，接下来对于nextCh操作还会被阻塞\n                nextCh = nil\n            }\n// 从p.addCh读取一个事件出来，这回看到消费p.addCh的地方了\ncase notificationToAdd, ok := \u003c-p.addCh:\n// 说明p.addCh关闭了，只能退出\nif !ok {\nreturn\n            }\n// notification为空说明当前还没发送任何事件给处理器\nif notification == nil {\n// 那就把刚刚获取的事件通过p.nextCh发送个处理器\n                notification = notificationToAdd\n                nextCh = p.nextCh\n            } else {\n// 上一个事件还没有发送成功，那就先放到缓存中\n// pendingNotifications可以想象为一个slice，这样方便理解，是一个动态的缓存，\n                p.pendingNotifications.WriteOne(notificationToAdd)\n            }\n        }\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-5ym14tt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-5ym14tt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "pop()函数实现的非常巧妙，利用一个协程就把接收、缓冲、发送全部解决了。它充分的利用了golang的select可以同时操作多个chan的特性，同时从addChd读取数据从nextCh发送数据，这两个chan任何一个完成都可以激活协程。对于C/C++程序猿理解起来有点费劲，但这就是GO的魅力所在。接下来，我们看看从nextCh读取事件后是如何处理的："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-vwin3az",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-vwin3az"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// 这个也是sharedProcessor通过wait.Group启动的\nfunc (p *processorListener) run() {\n// 因为wait.Until需要传入退出信号的chan\n    stopCh := make(chan struct{})\n// wait.Until不多说了，我在前期不点的文章中说过了，只要没有收到退出信号就会周期的执行传入的函数\n    wait.Until(func() {\n// wait.ExponentialBackoff()和wait.Until()类似，wait.Until()是无限循环\n// wait.ExponentialBackoff()是尝试几次，每次等待时间会以指数上涨\n        err := wait.ExponentialBackoff(retry.DefaultRetry, func() (bool, error) {\n// 这也是chan的range用法，可以参看我的《深入浅出golang的chan》了解细节\nfor next := range p.nextCh {\n// 判断事件类型，这里面的handler就是调用SharedInfomer.AddEventHandler()传入的\n// 理论上处理的不是Deltas么？怎么变成了其他类型，这是SharedInformer做的二次封装，后面会看到\nswitch notification := next.(type) {\ncase updateNotification:\n                    p.handler.OnUpdate(notification.oldObj, notification.newObj)\ncase addNotification:\n                    p.handler.OnAdd(notification.newObj)\ncase deleteNotification:\n                    p.handler.OnDelete(notification.oldObj)\ndefault:\n                    utilruntime.HandleError(fmt.Errorf(\"unrecognized notification: %#v\", next))\n                }\n            }\n\nreturn true, nil\n        })\n\n// 执行到这里只能是nextCh已经被关闭了，所以关闭stopCh,通知wait.Until()退出\nif err == nil {\nclose(stopCh)\n        }\n    }, 1*time.Minute, stopCh)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-5mhadel",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-5mhadel"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为processorListener其他函数没啥大用，上面两个函数就就已经把核心功能都实现了。processorListener就是实现了事件的缓冲和处理，此处的处理就是使用者传入的函数。在没有事件的时候可以阻塞处理器，当事件较多是可以把事件缓冲起来，实现了事件分发器与处理器的异步处理。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-rtynjnz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-rtynjnz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "processorListener的run()和pop()函数是sharedProcessor启动的协程调用的，所以下面就要对sharedProcessor进行分析了。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-301k7ge",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230410161239-301k7ge"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sharedProcessor管理processorListener"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-w8l2ci2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-w8l2ci2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sharedProcessor的定义如下："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-uyfntxv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-uyfntxv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// client-go/tools/cache/shared_informer.go\n// sharedProcessor是通过数组组织处理器的，只是分了需要定时同步和不需要要同步两类\ntype sharedProcessor struct {\n    listenersStarted bool                 // 所有处理器是否已经启动的标识\n    listenersLock    sync.RWMutex         // 读写锁\n    listeners        []*processorListener // 通用的处理器\n    syncingListeners []*processorListener // 需要定时同步的处理器\n    clock            clock.Clock          // 时钟\n    wg               wait.Group           // 前面讲过了processorListener每个需要两个协程，\n// 用wait.Group来管理所有处理器的携程，保证他们都能退出\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-2ehdgm9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-2ehdgm9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "在sharedProcessor里面用的都是listener(监听器)，我更倾向于叫处理器，因为我更看重他是处理事件的，所以后面见到listener我叫处理器的时候不要奇怪"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。我们来看看添加一个处理器是如何实现的："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-m6aj7r4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-m6aj7r4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// 添加处理器，sharedIndexInformer.AddEventHandler()就会调用这个函数实现处理器的添加\nfunc (p *sharedProcessor) addListener(listener *processorListener) {\n// 加锁，这个很好理解\n    p.listenersLock.Lock()\ndefer p.listenersLock.Unlock()\n// 把处理器添加到数组中\n    p.addListenerLocked(listener)\n// 通过wait.Group启动两个协程，做的事情我们在processorListener说过了，这里就是我们上面提到的启动两个协程的地方\n// 这个地方判断了listenersStarted，这说明sharedProcessor在启动前、后都可以添加处理器\nif p.listenersStarted {\n        p.wg.Start(listener.run)\n        p.wg.Start(listener.pop)\n    }\n}\n// 把处理器添加到数组中\nfunc (p *sharedProcessor) addListenerLocked(listener *processorListener) {\n// 两类(定时同步和不同步)的处理器数组都添加了，这是因为没有定时同步的也会用默认的时间，后面我们会看到\n// 那么问题来了，那还用两个数组干什么呢？\n    p.listeners = append(p.listeners, listener)\n    p.syncingListeners = append(p.syncingListeners, listener)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-iq925re",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-iq925re"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在SharedInformer的接口中有一个与之对应的接口，就是SharedInformer.AddEventHandler()。因为SharedInformer没有删除处理器的借口，sharedProcessor也没有相应借口。接下来就是sharedProcessor的分发事件的接口："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ckg8f60",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-ckg8f60"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// 通过函数名称也能感觉到分发的感觉~sync表示obj对象是否为同步事件对象\nfunc (p *sharedProcessor) distribute(obj interface{}, sync bool) {\n// 加锁没毛病\n    p.listenersLock.RLock()\ndefer p.listenersLock.RUnlock()\n\n// 无论是否为sync，添加处理器的代码中我们知道两个数组都会被添加，所以判断不判断没啥区别~\n// 所以我的猜测是代码以前实现的是明显区分两类的，但随着代码的更新二者的界限已经没那么明显了\nif sync {\nfor _, listener := range p.syncingListeners {\n            listener.add(obj)\n        }\n    } else {\nfor _, listener := range p.listeners {\n            listener.add(obj)\n        }\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-9l60tpr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-9l60tpr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sharedProcessor运行起来后，唯一需要做的就是等待退出信号然后关闭所有的处理器，来看看具体实现代码："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-ukkdnlw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-ukkdnlw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\nfunc (p *sharedProcessor) run(stopCh \u003c-chan struct{}) {\n// 启动前、后对于添加处理器的逻辑是不同，启动前的处理器是不会立刻启动连个协程执行处理器的pop()和run()函数的\n// 而是在这里统一的启动\nfunc() {\n        p.listenersLock.RLock()\ndefer p.listenersLock.RUnlock()\n// 遍历所有的处理器，然后为处理器启动两个后台协程\nfor _, listener := range p.listeners {\n            p.wg.Start(listener.run)\n            p.wg.Start(listener.pop)\n        }\n        p.listenersStarted = true\n\t}()\n// 等待退出信号\n    \u003c-stopCh\n    p.listenersLock.RLock()\ndefer p.listenersLock.RUnlock()\n// 关闭addCh，processorListener.pop()这个协程就会退出，不明白的可以再次回顾代码\n// 因为processorListener.pop()会关闭processorListener.nextCh，processorListener.run()就会退出\n// 所以这里只要关闭processorListener.addCh就可以自动实现两个协程的退出，不得不说设计的还是挺巧妙的\nfor _, listener := range p.listeners {\nclose(listener.addCh) \n    }\n// 等待所有的协程退出，这里指的所有协程就是所有处理器的那两个协程\n    p.wg.Wait()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-5xd59ao",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-5xd59ao"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "既然已经定性为长篇大论了，那就从创建SharedInformer对象开始一撸到底。client-go实现了两个创建SharedInformer的接口，如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-p47lasj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-p47lasj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// lw:这个是apiserver客户端相关的，用于Reflector从apiserver获取资源，所以需要外部提供\n// objType:这个SharedInformer监控的对象类型\n// resyncPeriod:同步周期，SharedInformer需要多长时间给使用者发送一次全量对象的同步时间\nfunc NewSharedInformer(lw ListerWatcher, objType runtime.Object, resyncPeriod time.Duration) SharedInformer {\n// 还是用SharedIndexInformer实现的\nreturn NewSharedIndexInformer(lw, objType, resyncPeriod, Indexers{})\n}\n// 创建SharedIndexInformer对象，其中大部分参数再上面的函数已经介绍了\n// indexers:需要外部提供计算对象索引键的函数，也就是这里面的对象需要通过什么方式创建索引\nfunc NewSharedIndexInformer(lw ListerWatcher, objType runtime.Object, defaultEventHandlerResyncPeriod time.Duration, indexers Indexers) SharedIndexInformer {\n    realClock := \u0026clock.RealClock{}\n    sharedIndexInformer := \u0026sharedIndexInformer{\n// 管理所有处理器用的，这个上面的章节解释了\n        processor:                       \u0026sharedProcessor{clock: realClock},\n// 其实就是在构造cache，读者可以自行查看NewIndexer()的实现，\n// 在cache中的对象用DeletionHandlingMetaNamespaceKeyFunc计算对象键，用indexers计算索引键\n// 可以想象成每个对象键是Namespace/Name，每个索引键是Namespace，即按照Namesapce分类\n// 因为objType决定了只有一种类型对象，所以Namesapce是最大的分类\n        indexer:                         NewIndexer(DeletionHandlingMetaNamespaceKeyFunc, indexers),\n// 下面这两主要就是给Controller用，确切的说是给Reflector用的\n        listerWatcher:                   lw,\n        objectType:                      objType,\n// 无论是否需要定时同步，SharedInformer都提供了一个默认的同步时间，当然这个是外部设置的\n        resyncCheckPeriod:               defaultEventHandlerResyncPeriod,\n        defaultEventHandlerResyncPeriod: defaultEventHandlerResyncPeriod,\n// 默认没有开启的对象突变检测器，没啥用，也不多介绍\n        cacheMutationDetector:           NewCacheMutationDetector(fmt.Sprintf(\"%T\", objType)),\n        clock: realClock,\n    }\nreturn sharedIndexInformer\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-79wp8vo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-79wp8vo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建完ShareInformer对象，就要添加事件处理器了："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-cewveej",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-cewveej"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// 添加没有指定同步周期的事件处理器\nfunc (s *sharedIndexInformer) AddEventHandler(handler ResourceEventHandler) {\n// defaultEventHandlerResyncPeriod是默认的同步周期，在创建SharedInformer的时候设置的\n    s.AddEventHandlerWithResyncPeriod(handler, s.defaultEventHandlerResyncPeriod)\n}\n// 添加需要定期同步的事件处理器\nfunc (s *sharedIndexInformer) AddEventHandlerWithResyncPeriod(handler ResourceEventHandler, resyncPeriod time.Duration) {\n// 因为是否已经开始对于添加事件处理器的方式不同，后面会有介绍，所以此处加了锁\n    s.startedLock.Lock()\ndefer s.startedLock.Unlock()\n\n// 如果已经结束了，那就可以直接返回了\nif s.stopped {\nreturn\n    }\n// 如果有同步周期，==0就是永远不用同步\nif resyncPeriod \u003e 0 {\n// 同步周期不能太短，太短对于系统来说反而是个负担，大量的无效计算浪费在这上面\nif resyncPeriod \u003c minimumResyncPeriod {\n            resyncPeriod = minimumResyncPeriod\n        }\n// SharedInformer管理了很多处理器，每个处理器都有自己的同步周期，所以此处要统一成一个，称之为对齐\n// SharedInformer会选择所有处理器中最小的那个作为所有处理器的同步周期，称为对齐后的同步周期\n// 此处就要判断是不是比当前对齐后的同步周期还要小\nif resyncPeriod \u003c s.resyncCheckPeriod {\n// 如果已经启动了，那么只能用和大家一样的周期\nif s.started {\n                resyncPeriod = s.resyncCheckPeriod\n// 如果没启动，那就让大家都用最新的对齐同步周期\n            } else {\n                s.resyncCheckPeriod = resyncPeriod\n                s.processor.resyncCheckPeriodChanged(resyncPeriod)\n            }\n        }\n    }\n// 创建处理器，代码一直用listener,可能想强调没事件就挂起把，我反而想用处理器这个名词\n// determineResyncPeriod()这个函数读者自己分析把，非常简单，这里面只要知道创建了处理器就行了\n    listener := newProcessListener(handler, resyncPeriod, determineResyncPeriod(resyncPeriod, s.resyncCheckPeriod), s.clock.Now(), initialBufferSize)\n// 如果没有启动，那么直接添加处理器就可以了\nif !s.started {\n        s.processor.addListener(listener)\nreturn\n    }\n\n// 这个锁就是暂停再想所有的处理器分发事件用的，因为这样会遍历所有的处理器，此时添加会有风险\n    s.blockDeltas.Lock()\ndefer s.blockDeltas.Unlock()\n// 添加处理器\n    s.processor.addListener(listener)\n// 这里有意思啦，遍历缓冲中的所有对象，通知处理器，因为SharedInformer已经启动了，可能很多对象已经让其他的处理器处理过了，\n// 所以这些对象就不会再通知新添加的处理器，此处就是解决这个问题的\nfor _, item := range s.indexer.List() {\n        listener.add(addNotification{newObj: item})\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-e8qcmgb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-e8qcmgb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件处理器添加完了，就要看SharedInformer如何把事件分发给每个处理器的了："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-phauq46",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-phauq46"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\n// sharedIndexInformer的核心逻辑函数\nfunc (s *sharedIndexInformer) Run(stopCh \u003c-chan struct{}) {\ndefer utilruntime.HandleCrash()\n// 在此处构造的DeltaFIFO\n    fifo := NewDeltaFIFO(MetaNamespaceKeyFunc, s.indexer)\n// 这里的Config是我们介绍Reflector时介绍的那个Config\n    cfg := \u0026Config{\n// 我前面一直在说Reflector输入到DeltaFIFO,这里算是直接证明了\n        Queue:            fifo,          \n// 下面这些变量我们在Reflector都说了，这里赘述\n        ListerWatcher:    s.listerWatcher, \n        ObjectType:       s.objectType,\n        FullResyncPeriod: s.resyncCheckPeriod,\n        RetryOnError:     false,\n        ShouldResync:     s.processor.shouldResync,\n// 这个才是重点，Controller调用DeltaFIFO.Pop()接口传入的就是这个回调函数，也是我们后续重点介绍的\n        Process: s.HandleDeltas,\n    }\n// 创建Controller，这个不用多说了\nfunc() {\n        s.startedLock.Lock()\ndefer s.startedLock.Unlock()\n\n        s.controller = New(cfg)\n        s.controller.(*controller).clock = s.clock\n        s.started = true\n    }()\n// 这个processorStopCh 是给sharedProcessor和cacheMutationDetector传递退出信号的\n// 因为这里要创建两个协程运行sharedProcessor和cacheMutationDetector的核心函数\n    processorStopCh := make(chan struct{})\nvar wg wait.Group\ndefer wg.Wait()              // Wait for Processor to stop\ndefer close(processorStopCh) // Tell Processor to stop\n    wg.StartWithChannel(processorStopCh, s.cacheMutationDetector.Run)\n    wg.StartWithChannel(processorStopCh, s.processor.run)\n\n// Run()函数都退出了，也就应该设置结束的标识了\ndefer func() {\n        s.startedLock.Lock()\ndefer s.startedLock.Unlock()\n        s.stopped = true \n    }()\n// 启动Controller，Controller一旦运行，整个流程就开始启动了，所以叫Controller也不为过\n// 毕竟Controller是SharedInformer的发动机嘛\n    s.controller.Run(stopCh)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-v43gfwp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-v43gfwp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sharedIndexInformer通过Run()函数启动了Controller和sharedProcess()，Controller通过DeltaFIFO.Pop()函数弹出Deltas，并调用函数处理，这个处理函数就是sharedIndexInformer.HandleDeltas()，这个函数是衔接Controller和sharedProcess的关键点，他把Deltas转换为sharedProcess需要的各种Notification类型。下面我们就对这个函数进行代码分析："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-e0f7e5k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410161239-e0f7e5k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自client-go/tools/cache/shared_informer.go\nfunc (s *sharedIndexInformer) HandleDeltas(obj interface{}) error {\n// 看到这里就知道为啥起名为blockDeltas了，这是阻塞处理器Deltas啊~因为分发事件到处理器，所以要加锁\n    s.blockDeltas.Lock()\ndefer s.blockDeltas.Unlock()\n\n// Deltas里面包含了一个对象的多个增量操作，所以要从最老的Delta到最先的Delta遍历处理\nfor _, d := range obj.(Deltas) {\n// 根据不同的Delta做不同的操作，但是大致分为对象添加、删除两大类操作\n// 所有的操作都要先同步到cache在通知处理器，这样保持处理器和cache的状态是一致的\nswitch d.Type {\n// 同步、添加、更新都是对象添加类的造作，至于是否是更新还要看cache是否有这个对象\ncase Sync, Added, Updated:\n// 看看对象是不是有定时同步产生的事件\n            isSync := d.Type == Sync\n// 检测突变，没啥用\n            s.cacheMutationDetector.AddObject(d.Object)\n// 如果cache中有的对象，一律看做是更新事件\nif old, exists, err := s.indexer.Get(d.Object); err == nil \u0026\u0026 exists {\n// 把对象更新到cache中\nif err := s.indexer.Update(d.Object); err != nil {\nreturn err\n                }\n// 通知处理器处理事件\n                s.processor.distribute(updateNotification{oldObj: old, newObj: d.Object}, isSync)\n// cache中没有的对象，一律看做是新增事件\n            } else {\n// 把对象添加到cache中\nif err := s.indexer.Add(d.Object); err != nil {\nreturn err\n                }\n// 通知处理器处理器事件\n                s.processor.distribute(addNotification{newObj: d.Object}, isSync)\n            }\n// 对象被删除\ncase Deleted:\n// 从cache中删除对象\nif err := s.indexer.Delete(d.Object); err != nil {\nreturn err\n            }\n// 通知所有的处理器对象被删除了\n            s.processor.distribute(deleteNotification{oldObj: d.Object}, false)\n        }\n    }\nreturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-vp3ydid",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-vp3ydid"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "至此，我们算是把SharedInformer的核心功能全部撸了一遍，以前对他感觉非常复杂，先来来看并不复杂，甚至非常简单。"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-1p2p335",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410161239-1p2p335"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-2mpubyw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-2mpubyw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们对SharedInformer做一下总结："
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-fp142lf",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230410161239-fp142lf"
+			},
+			"Children": [
+				{
+					"ID": "20230410161239-2jvmnve",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230410161239-2jvmnve"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-mrww5fc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-mrww5fc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "利用apiserver的api实现资源的列举和监控(Reflector实现)；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-6k0eqj9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230410161239-6k0eqj9"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-ppyv6vz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-ppyv6vz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "利用cache存储apiserver中的部分对象，通过对象类型进行制定，并在cache中采用Namespace做对象的索引"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-b09iao3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230410161239-b09iao3"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-cwdt0yr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-cwdt0yr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "先通过apiserver的api将对象的全量列举出来存储在cache中，然后再watch资源，一旦有变化就更新cache中；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-vjkr8a7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230410161239-vjkr8a7"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-l8xvscf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-l8xvscf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "更新到cache中的过程通过DeltaFIFO实现的有顺序的更新，因为资源状态是通过全量+增量方式实现同步的，所以顺序错误会造成状态不一致；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-5vqkgbc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230410161239-5vqkgbc"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-4co44rc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-4co44rc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用者可以注册回调函数(类似挂钩子)，在更新到cache的同时通知使用者处理，为了保证回调处理不被某一个处理器阻塞，SharedInformer实现了processorListener异步缓冲处理；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410161239-nvdrj2c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20230410161239-nvdrj2c"
+					},
+					"Children": [
+						{
+							"ID": "20230410161239-pkp3f5v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410161239-pkp3f5v"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "真个过程是Controller是发动机，驱动整个流程运转；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-vo5vb7x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-vo5vb7x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后我们还是用一幅图来总结SharedInformer，绝对的干货(其中Reflector.resync()因为是个匿名函数，所以用斜体，其实是不存在这个函数的)~"
+				}
+			]
+		},
+		{
+			"ID": "20230410161239-4e4yr6b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410161239-4e4yr6b"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20180822171042687-20230410161239-9zhqlnk"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		}
+	]
+}

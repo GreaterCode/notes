@@ -1,0 +1,929 @@
+{
+	"ID": "20230410153052-uex99ok",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230410153052-uex99ok",
+		"title": "tekton构建CICD流水线(二)",
+		"updated": "20230410160241"
+	},
+	"Children": [
+		{
+			"ID": "20230410153052-ffzguzp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410153052-ffzguzp",
+				"updated": "20230410153107"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们是通过创建Pipelinerun来触发"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=%E6%B5%81%E6%B0%B4%E7%BA%BF\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "流水线"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "来进行构建，实际生产中完全自动化的实现需要借助"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "tekton"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "triggers"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。本文是上篇的拓展请先了解这篇"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_45133467/article/details/126475049?spm=1001.2014.3001.5501",
+					"TextMarkTextContent": "文章"
+				}
+			]
+		},
+		{
+			"ID": "20230410153112-10jkeua",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410153112-10jkeua",
+				"updated": "20230410153229"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Tekton Triggers 是一个 Tekton 组件，它允许您从各种来源的事件中检测和提取信息，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a code",
+					"TextMarkAHref": "https://github.com/tektoncd/pipeline/blob/master/docs/taskruns.md",
+					"TextMarkTextContent": "TaskRuns"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a code",
+					"TextMarkAHref": "https://github.com/tektoncd/pipeline/blob/master/docs/pipelineruns.md",
+					"TextMarkTextContent": "PipelineRuns"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 根据该信息确定性地实例化和执行。Tekton "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=%E8%A7%A6%E5%8F%91%E5%99%A8\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "触发器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "还可以将从事件中提取的信息直接传递给"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "TaskRuns"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PipelineRuns"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230410153126-rg8b1ur",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410153126-rg8b1ur",
+				"updated": "20230410153134"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230410153134-gzwhxmn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410153310-bwpgj4b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410153310-bwpgj4b",
+				"updated": "20230410153311"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. Triggers"
+				}
+			]
+		},
+		{
+			"ID": "20230410153317-6oir2yt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410153317-6oir2yt",
+				"updated": "20230410153317"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Tekton Triggers包含下面几个CRD来对tekton进行拓展。"
+				}
+			]
+		},
+		{
+			"ID": "20230410153328-rhwdnug",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230410153328-rhwdnug",
+				"updated": "20230410153357"
+			},
+			"Children": [
+				{
+					"ID": "20230410153329-cjwda7k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410153329-cjwda7k"
+					},
+					"Children": [
+						{
+							"ID": "20230410153329-8vry002",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410153329-8vry002",
+								"updated": "20230410153337"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "EventListener- 在 Kubernetes 集群上的指定端口监听事件。指定一个或多个Triggers。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410153337-dvc42ur",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410153337-dvc42ur"
+					},
+					"Children": [
+						{
+							"ID": "20230410153337-n5tij0a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410153337-n5tij0a",
+								"updated": "20230410153339"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Trigger- 指定当EventListener检测到事件时会发生什么。ATrigger指定 a TriggerTemplate、 aTriggerBinding和可选的 an Interceptor。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410153340-z4tt5xf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410153340-z4tt5xf"
+					},
+					"Children": [
+						{
+							"ID": "20230410153340-1e9tod3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410153340-1e9tod3",
+								"updated": "20230410153342"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "TriggerTemplate- 指定资源的蓝图，例如TaskRun或PipelineRun，当您EventListener检测到事件时要实例化和/或执行该蓝图。它公开了您可以在资源模板中的任何位置使用的参数。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410153343-xr5ez08",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410153343-xr5ez08"
+					},
+					"Children": [
+						{
+							"ID": "20230410153343-8vsvv0d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410153343-8vsvv0d",
+								"updated": "20230410153344"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "TriggerBinding- 指定要从中提取数据的事件有效负载中的字段以及对应的字段TriggerTemplate以填充提取的值。然后，您可以使用 中的填充字段TriggerTemplate来填充关联TaskRun或中的字段PipelineRun。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410153345-3u92g11",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410153345-3u92g11",
+						"updated": "20230410153357"
+					},
+					"Children": [
+						{
+							"ID": "20230410153345-4wyu0vm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410153345-4wyu0vm",
+								"updated": "20230410153357"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ClusterTriggerBinding- 的集群范围版本，TriggerBinding对于在集群中重用特别有用。\nInterceptor- 用于特定平台的“包罗万象”事件处理器，在TriggerBinding您执行有效负载过滤、验证（使用机密）、转换、定义和测试触发条件以及其他有用处理之前运行。一旦事件数据通过拦截器，它就会Trigger在您将有效负载数据传递给TriggerBinding."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410160138-06vuck5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410160138-06vuck5",
+				"updated": "20230410160141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1  git clone --\u003e\u003e make build --\u003e\u003e Kaniko"
+				}
+			]
+		},
+		{
+			"ID": "20230410155318-unf44m6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155318-unf44m6",
+				"updated": "20230410155322"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: tekton.dev/v1beta1\nkind: Task\nmetadata:\n  name: git-clone\n  labels:\n    app.kubernetes.io/version: \"0.6\"\n  annotations:\n    tekton.dev/pipelines.minVersion: \"0.29.0\"\n    tekton.dev/categories: Git\n    tekton.dev/tags: git\n    tekton.dev/displayName: \"git clone\"\n    tekton.dev/platforms: \"linux/amd64,linux/s390x,linux/ppc64le,linux/arm64\"\nspec:\n  description: \u003e-\n    These Tasks are Git tasks to work with repositories used by other tasks\n    in your Pipeline.\n\n    The git-clone Task will clone a repo from the provided url into the\n    output Workspace. By default the repo will be cloned into the root of\n    your Workspace. You can clone into a subdirectory by setting this Task's\n    subdirectory param. This Task also supports sparse checkouts. To perform\n    a sparse checkout, pass a list of comma separated directory patterns to\n    this Task's sparseCheckoutDirectories param.\n  workspaces:\n    - name: output\n      description: The git repo will be cloned onto the volume backing this Workspace.\n    - name: ssh-directory\n      optional: true\n      description: |\n        A .ssh directory with private key, known_hosts, config, etc. Copied to\n        the user's home before git commands are executed. Used to authenticate\n        with the git remote when performing the clone. Binding a Secret to this\n        Workspace is strongly recommended over other volume types.\n    - name: basic-auth\n      optional: true\n      description: |\n        A Workspace containing a .gitconfig and .git-credentials file. These\n        will be copied to the user's home before any git commands are run. Any\n        other files in this Workspace are ignored. It is strongly recommended\n        to use ssh-directory over basic-auth whenever possible and to bind a\n        Secret to this Workspace over other volume types.\n    - name: ssl-ca-directory\n      optional: true\n      description: |\n        A workspace containing CA certificates, this will be used by Git to\n        verify the peer with when fetching or pushing over HTTPS.\n  params:\n    - name: url\n      description: Repository URL to clone from.\n      type: string\n    - name: revision\n      description: Revision to checkout. (branch, tag, sha, ref, etc...)\n      type: string\n      default: \"\"\n    - name: branch\n      description: Branch to use\n      default: \"master\"\n    - name: refspec\n      description: Refspec to fetch before checking out revision.\n      default: \"\"\n    - name: submodules\n      description: Initialize and fetch git submodules.\n      type: string\n      default: \"true\"\n    - name: depth\n      description: Perform a shallow clone, fetching only the most recent N commits.\n      type: string\n      default: \"1\"\n    - name: sslVerify\n      description: Set the `http.sslVerify` global git config. Setting this to `false` is not advised unless you are sure that you trust your git remote.\n      type: string\n      default: \"true\"\n    - name: subdirectory\n      description: Subdirectory inside the `output` Workspace to clone the repo into.\n      type: string\n      default: \"\"\n    - name: sparseCheckoutDirectories\n      description: Define the directory patterns to match or exclude when performing a sparse checkout.\n      type: string\n      default: \"\"\n    - name: deleteExisting\n      description: Clean out the contents of the destination directory if it already exists before cloning.\n      type: string\n      default: \"true\"\n    - name: httpProxy\n      description: HTTP proxy server for non-SSL requests.\n      type: string\n      default: \"\"\n    - name: httpsProxy\n      description: HTTPS proxy server for SSL requests.\n      type: string\n      default: \"\"\n    - name: noProxy\n      description: Opt out of proxying HTTP/HTTPS requests.\n      type: string\n      default: \"\"\n    - name: verbose\n      description: Log the commands that are executed during `git-clone`'s operation.\n      type: string\n      default: \"true\"\n    - name: gitInitImage\n      description: The image providing the git-init binary that this Task runs.\n      type: string\n      default: \"hub.17usoft.com/tekton/tekton-pipeline-git-init:v0.38.2\" \n    - name: userHome\n      description: |\n        Absolute path to the user's home directory. Set this explicitly if you are running the image as a non-root user or have overridden\n        the gitInitImage param with an image containing custom user configuration.\n      type: string\n      default: \"/tekton/home\"\n  results:\n    - name: commit\n      description: The precise commit SHA that was fetched by this Task.\n    - name: url\n      description: The precise URL that was fetched by this Task.\n    - description: The repo name represented by 'service-name' format\n      name: short-branch-name\n      type: string\n  steps:\n    - name: clone\n      image: \"$(params.gitInitImage)\"\n      env:\n      - name: HOME\n        value: \"$(params.userHome)\"\n      - name: PARAM_BRANCH\n        value: $(params.branch)\n      - name: PARAM_URL\n        value: $(params.url)\n      - name: PARAM_REVISION\n        value: $(params.revision)\n      - name: PARAM_REFSPEC\n        value: $(params.refspec)\n      - name: PARAM_SUBMODULES\n        value: $(params.submodules)\n      - name: PARAM_DEPTH\n        value: $(params.depth)\n      - name: PARAM_SSL_VERIFY\n        value: $(params.sslVerify)\n      - name: PARAM_SUBDIRECTORY\n        value: $(params.subdirectory)\n      - name: PARAM_DELETE_EXISTING\n        value: $(params.deleteExisting)\n      - name: PARAM_HTTP_PROXY\n        value: $(params.httpProxy)\n      - name: PARAM_HTTPS_PROXY\n        value: $(params.httpsProxy)\n      - name: PARAM_NO_PROXY\n        value: $(params.noProxy)\n      - name: PARAM_VERBOSE\n        value: $(params.verbose)\n      - name: PARAM_SPARSE_CHECKOUT_DIRECTORIES\n        value: $(params.sparseCheckoutDirectories)\n      - name: PARAM_USER_HOME\n        value: $(params.userHome)\n      - name: WORKSPACE_OUTPUT_PATH\n        value: $(workspaces.output.path)\n      - name: WORKSPACE_SSH_DIRECTORY_BOUND\n        value: $(workspaces.ssh-directory.bound)\n      - name: WORKSPACE_SSH_DIRECTORY_PATH\n        value: $(workspaces.ssh-directory.path)\n      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND\n        value: $(workspaces.basic-auth.bound)\n      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_PATH\n        value: $(workspaces.basic-auth.path)\n      - name: WORKSPACE_SSL_CA_DIRECTORY_BOUND\n        value: $(workspaces.ssl-ca-directory.bound)\n      - name: WORKSPACE_SSL_CA_DIRECTORY_PATH\n        value: $(workspaces.ssl-ca-directory.path)\n      script: |\n        #!/usr/bin/env sh\n        set -eu\n\n        if [ \"${PARAM_VERBOSE}\" = \"true\" ] ; then\n          set -x\n        fi\n\n\n        if [ \"${WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND}\" = \"true\" ] ; then\n          cp \"${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials\" \"${PARAM_USER_HOME}/.git-credentials\"\n          cp \"${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.gitconfig\" \"${PARAM_USER_HOME}/.gitconfig\"\n          chmod 400 \"${PARAM_USER_HOME}/.git-credentials\"\n          chmod 400 \"${PARAM_USER_HOME}/.gitconfig\"\n        fi\n\n        if [ \"${WORKSPACE_SSH_DIRECTORY_BOUND}\" = \"true\" ] ; then\n          cp -R \"${WORKSPACE_SSH_DIRECTORY_PATH}\" \"${PARAM_USER_HOME}\"/.ssh\n          chmod 700 \"${PARAM_USER_HOME}\"/.ssh\n          chmod -R 400 \"${PARAM_USER_HOME}\"/.ssh/*\n        fi\n\n        if [ \"${WORKSPACE_SSL_CA_DIRECTORY_BOUND}\" = \"true\" ] ; then\n           export GIT_SSL_CAPATH=\"${WORKSPACE_SSL_CA_DIRECTORY_PATH}\"\n        fi\n        CHECKOUT_DIR=\"${WORKSPACE_OUTPUT_PATH}/${PARAM_SUBDIRECTORY}\"\n\n        cleandir() {\n          # Delete any existing contents of the repo directory if it exists.\n          #\n          # We don't just \"rm -rf ${CHECKOUT_DIR}\" because ${CHECKOUT_DIR} might be \"/\"\n          # or the root of a mounted volume.\n          if [ -d \"${CHECKOUT_DIR}\" ] ; then\n            # Delete non-hidden files and directories\n            rm -rf \"${CHECKOUT_DIR:?}\"/*\n            # Delete files and directories starting with . but excluding ..\n            rm -rf \"${CHECKOUT_DIR}\"/.[!.]*\n            # Delete files and directories starting with .. plus any other character\n            rm -rf \"${CHECKOUT_DIR}\"/..?*\n          fi\n        }\n\n        if [ \"${PARAM_DELETE_EXISTING}\" = \"true\" ] ; then\n          cleandir\n        fi\n\n        test -z \"${PARAM_HTTP_PROXY}\" || export HTTP_PROXY=\"${PARAM_HTTP_PROXY}\"\n        test -z \"${PARAM_HTTPS_PROXY}\" || export HTTPS_PROXY=\"${PARAM_HTTPS_PROXY}\"\n        test -z \"${PARAM_NO_PROXY}\" || export NO_PROXY=\"${PARAM_NO_PROXY}\"\n\n        /ko-app/git-init \\\n          -url=\"${PARAM_URL}\" \\\n          -revision=\"${PARAM_REVISION}\" \\\n          -refspec=\"${PARAM_REFSPEC}\" \\\n          -path=\"${CHECKOUT_DIR}\" \\\n          -sslVerify=\"${PARAM_SSL_VERIFY}\" \\\n          -submodules=\"${PARAM_SUBMODULES}\" \\\n          -depth=\"${PARAM_DEPTH}\" \\\n          -sparseCheckoutDirectories=\"${PARAM_SPARSE_CHECKOUT_DIRECTORIES}\"\n        cd \"${CHECKOUT_DIR}\"\n        RESULT_SHA=\"$(git rev-parse HEAD)\"\n        EXIT_CODE=\"$?\"\n        if [ \"${EXIT_CODE}\" != 0 ] ; then\n          exit \"${EXIT_CODE}\"\n        fi\n        printf \"%s\" \"${RESULT_SHA}\" \u003e \"$(results.commit.path)\"\n        printf \"%s\" \"${PARAM_URL}\" \u003e \"$(results.url.path)\"\n    - env:\n        - name: PARAM_URL\n          value: $(params.url)\n        - name: PARAM_REVISION\n          value: $(params.revision)\n        - name: PARAM_BRANCH\n          value: $(params.branch)\n        - name: WORKSPACE_OUTPUT_PATH\n          value: $(workspaces.output.path)\n        - name: PARAM_SUBDIRECTORY\n          value: $(params.subdirectory)\n      image: $(params.gitInitImage)\n      name: prepare-outputs\n      resources: {}\n      script: |\n        set -eu\n        git config --global --add safe.directory \"*\" \n        CHECKOUT_DIR=\"${WORKSPACE_OUTPUT_PATH}/${PARAM_SUBDIRECTORY}\"\n        cd \"${CHECKOUT_DIR}\"\n    \n        RESULT_SHORT_BRANCH_NAME=\"$(basename $PARAM_BRANCH)\"\n        RESULT_SHA=\"$(git rev-parse --short HEAD)\"\n \n        echo \"###Results:\"\n        echo \"branch: \" $RESULT_SHORT_BRANCH_NAME\n        echo \"commit: \" $RESULT_SHA\n\n        echo -n $RESULT_SHORT_BRANCH_NAME | tee \u003e \"$(results.short-branch-name.path)\"\n        echo -n $RESULT_SHA | tee \u003e \"$(results.commit.path)\"\n        echo -n $PARAM_URL | tee \u003e \"$(results.url.path)\"\n---\napiVersion: tekton.dev/v1beta1\nkind: Task\nmetadata:\n  name: golang-build\n  labels:\n    app.kubernetes.io/version: \"0.3\"\n  annotations:\n    tekton.dev/pipelines.minVersion: \"0.12.1\"\n    tekton.dev/categories: Build Tools\n    tekton.dev/tags: build-tool\n    tekton.dev/displayName: \"golang build\"\n    tekton.dev/platforms: \"linux/amd64,linux/s390x,linux/ppc64le\"\nspec:\n  description: \u003e-\n    This Task is Golang task to build Go projects.\n\n  params:\n#  - name: package\n#    description: base package to build in\n  - name: packages\n    description: \"packages to build (default: ./cmd/...)\"\n    default: \"./cmd/...\"\n  - name: subdirectory\n    description: subdirectory inside the \"source\"\n    default: \"./\"\n  - name: version\n    description: golang version to use for builds\n    default: \"latest\"\n  - name: flags\n    description: flags to use for the test command\n    default: -v\n  - name: GOOS\n    description: \"running program's operating system target\"\n    default: linux\n  - name: GOARCH\n    description: \"running program's architecture target\"\n    default: amd64\n  - name: GO111MODULE\n    description: \"value of module support\"\n    default: auto\n  - name: GOCACHE\n    description: \"Go caching directory path\"\n    default: \"\"\n  - name: GOMODCACHE\n    description: \"Go mod caching directory path\"\n    default: \"\"\n  - name: CGO_ENABLED\n    description: \"Toggle cgo tool during Go build. Use value '0' to disable cgo (for static builds).\"\n    default: \"\"\n  - name: GOSUMDB\n    description: \"Go checksum database url. Use value 'off' to disable checksum validation.\"\n    default: \"\"\n  workspaces:\n  - name: source\n  steps:\n  - name: build\n    image: hub.17usoft.com/gstrain/golang:v1.18.3\n    workingDir: $(workspaces.source.path)\n    script: |\n      if [ ! -e $GOPATH/src/$(params.subdirectory)/go.mod ];then\n        SRC_PATH=\"$GOPATH/src/$(params.subdirectory)\"\n        mkdir -p $SRC_PATH\n        cp -R \"$(workspaces.source.path)\"/$(params.subdirectory)/* $SRC_PATH\n        cd $SRC_PATH\n      fi\n      go build -tags netgo  $(params.flags) $(params.packages)\n      pwd \u0026\u0026 ls -l\n  \n    env:\n    - name: GOOS\n      value: \"$(params.GOOS)\"\n    - name: GOARCH\n      value: \"$(params.GOARCH)\"\n    - name: GO111MODULE\n      value: \"$(params.GO111MODULE)\"\n    - name: GOCACHE\n      value: \"$(params.GOCACHE)\"\n    - name: GOMODCACHE\n      value: \"$(params.GOMODCACHE)\"\n    - name: CGO_ENABLED\n      value: \"$(params.CGO_ENABLED)\"\n    - name: GOSUMDB\n      value: \"$(params.GOSUMDB)\"\n---\napiVersion: tekton.dev/v1beta1\nkind: Task\nmetadata:\n  name: kaniko\n  labels:\n    app.kubernetes.io/version: \"0.6\"\n  annotations:\n    tekton.dev/pipelines.minVersion: \"0.17.0\"\n    tekton.dev/categories: Image Build\n    tekton.dev/tags: image-build\n    tekton.dev/displayName: \"Build and upload container image using Kaniko\"\n    tekton.dev/platforms: \"linux/amd64\"\nspec:\n  description: \u003e-\n    This Task builds a simple Dockerfile with kaniko and pushes to a registry.\n    This Task stores the image name and digest as results, allowing Tekton Chains to pick up\n    that an image was built \u0026 sign it.\n  params:\n    - name: IMAGE\n      description: Name (reference) of the image to build.\n    - name: DOCKERFILE\n      description: Path to the Dockerfile to build.\n      default: ./Dockerfile\n    - name: CONTEXT\n      description: The build context used by Kaniko.\n      default: ./\n    - name: EXTRA_ARGS\n      type: array\n      default: []\n    - name: BUILDER_IMAGE\n      description: The image on which builds will run (default is v1.5.1)\n      default: hub.17usoft.com/tekton/kaniko-executor:v1.5.1\n  workspaces:\n    - name: source\n      description: Holds the context and Dockerfile\n    - name: dockerconfig\n      description: Includes a docker `config.json`\n      optional: true\n      mountPath: /kaniko/.docker\n  results:\n    - name: IMAGE_DIGEST\n      description: Digest of the image just built.\n    - name: IMAGE_URL\n      description: URL of the image just built.\n  steps:\n    - image: 'docker.io/library/bash:5.1.4@sha256:b208215a4655538be652b2769d82e576bc4d0a2bb132144c060efc5be8c3f5d6'\n      name: check-dockerconfig\n      resources: {}\n      script: |\n        ls -al /kaniko/.docker\n        cat /kaniko/.docker/config.json\n    - name: build-and-push\n      workingDir: $(workspaces.source.path)\n      image: $(params.BUILDER_IMAGE)\n      args:\n        - $(params.EXTRA_ARGS)\n        - --dockerfile=$(params.DOCKERFILE)\n        - --context=$(workspaces.source.path)/$(params.CONTEXT) # The user does not need to care the workspace and the source.\n        - --destination=$(params.IMAGE)\n        - --digest-file=$(results.IMAGE_DIGEST.path)\n      securityContext:\n        runAsUser: 0\n    - name: write-url\n      image: docker.io/library/bash:5.1.4@sha256:b208215a4655538be652b2769d82e576bc4d0a2bb132144c060efc5be8c3f5d6\n      script: |\n        set -e\n        image=\"$(params.IMAGE)\"\n        echo -n \"${image}\" | tee \"$(results.IMAGE_URL.path)\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410160149-xdoopnf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410160149-xdoopnf",
+				"updated": "20230410160155"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 Modify listing"
+				}
+			]
+		},
+		{
+			"ID": "20230410155418-z6x3d0f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155418-z6x3d0f",
+				"updated": "20230410155418"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们会添加一个新的任务。当我们完成镜像推送后自动修改配置仓库中yaml信息。"
+				}
+			]
+		},
+		{
+			"ID": "20230410155428-6cuojsq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155428-6cuojsq",
+				"updated": "20230410155430"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\napiVersion: tekton.dev/v1beta1\nkind: Task\nmetadata:\n  name: modify-listing\n  labels:\n    app.kubernetes.io/version: \"0.4\"\n  annotations:\n    tekton.dev/pipelines.minVersion: \"0.21.0\"\n    tekton.dev/categories: Git\n    tekton.dev/tags: git\n    tekton.dev/displayName: \"git cli\"\n    tekton.dev/platforms: \"linux/amd64,linux/s390x,linux/ppc64le\"\nspec:\n  description: \u003e-\n    This task can be used to perform git operations.\n\n    Git command that needs to be run can be passed as a script to\n    the task. This task needs authentication to git in order to push\n    after the git operation.\n\n  workspaces:\n    - name: source\n      description: A workspace that contains the fetched git repository.\n\n    - name: input\n      optional: true\n      description: |\n        An optional workspace that contains the files that need to be added to git. You can\n        access the workspace from your script using `$(workspaces.input.path)`, for instance:\n\n          cp $(workspaces.input.path)/file_that_i_want .\n          git add file_that_i_want\n          # etc\n\n    - name: ssh-directory\n      optional: true\n      description: |\n        A .ssh directory with private key, known_hosts, config, etc. Copied to\n        the user's home before git commands are executed. Used to authenticate\n        with the git remote when performing the clone. Binding a Secret to this\n        Workspace is strongly recommended over other volume types.\n\n    - name: basic-auth\n      optional: true\n      description: |\n        A Workspace containing a .gitconfig and .git-credentials file. These\n        will be copied to the user's home before any git commands are run. Any\n        other files in this Workspace are ignored. It is strongly recommended\n        to use ssh-directory over basic-auth whenever possible and to bind a\n        Secret to this Workspace over other volume types.\n  params:\n    - name: BASE_IMAGE\n      description: |\n        The base image for the task.\n      type: string\n      default:  \"cnych/helm-kubectl-curl-git-jq-yq \"\n\n    - name: GIT_USER_NAME\n      type: string\n      description: |\n        Git user name for performing git operation.\n      default: \"Administrator\"\n\n    - name: GIT_USER_EMAIL\n      type: string\n      description: |\n        Git user email for performing git operation.\n      default: \"1376252133@qq.com\"\n  \n    - name: subdirectory\n      type: string\n      default: \"\"\n\n    - name: IMAGE_URL\n      type: string\n      description: |\n        The latest build image\n      default: \"$(tasks.kaniko.results.IMAGE_URL)\"\n\n    - name: GIT_SCRIPT\n      description: The git script to run.\n      type: string\n      default: |\n        cd web-service \n        git clone --branch master --depth 1  http://tekton-pipelines:z7FavbPhfEGrghsdCU5h@10.177.9.244:31002/tekton/project.git repo\n        cd \"repo/web-service\"\n        ls -l\n        echo old value:\n        cat 02-deployment.yaml | yq r - 'spec.template.spec.containers[0].image'\n        echo replacing with new value:\n        yq w -i 02-deployment.yaml 'spec.template.spec.containers[0].image' \"${IMAGE_URL}\"\n        echo verifying new value :\n        yq r 02-deployment.yaml spec.template.spec.containers[0].image\n        if ! git diff-index --quiet HEAD --; then\n          git status\n          git add .\n          git commit -m \"auto updated yaml by tekton pipeline\"\n          git push\n        else\n            echo \"no changes, git repository is up to date\"\n        fi\n\n    - name: USER_HOME\n      description: |\n        Absolute path to the user's home directory. Set this explicitly if you are running the image as a non-root user or have overridden\n        the gitInitImage param with an image containing custom user configuration.\n      type: string\n      default: \"/root\"\n\n    - name: VERBOSE\n      description: Log the commands that are executed during `git-clone`'s operation.\n      type: string\n      default: \"true\"\n\n  results:\n    - name: commit\n      description: The precise commit SHA after the git operation.\n\n  steps:\n    - name: git\n      image: $(params.BASE_IMAGE)\n      workingDir: $(workspaces.source.path)\n      env:\n      - name: HOME\n        value: $(params.USER_HOME)\n      - name: PARAM_VERBOSE\n        value: $(params.VERBOSE)\n      - name: PARAM_USER_HOME\n        value: $(params.USER_HOME)\n      - name: WORKSPACE_OUTPUT_PATH\n        value: $(workspaces.output.path)\n      - name: WORKSPACE_SSH_DIRECTORY_BOUND\n        value: $(workspaces.ssh-directory.bound)\n      - name: WORKSPACE_SSH_DIRECTORY_PATH\n        value: $(workspaces.ssh-directory.path)\n      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND\n        value: $(workspaces.basic-auth.bound)\n      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_PATH\n        value: $(workspaces.basic-auth.path)\n      - name: IMAGE_URL\n        value: $(params.IMAGE_URL)\n      script: |\n        #!/usr/bin/env sh\n        set -eu\n\n        # Setting up the config for the git.\n        git config --global user.email \"$(params.GIT_USER_EMAIL)\"\n        git config --global user.name \"$(params.GIT_USER_NAME)\"\n\n        eval '$(params.GIT_SCRIPT)'\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155506-6csqqek",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155506-6csqqek",
+				"updated": "20230410155507"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们这个任务主要的信息定义在$ GIT_SCRIPT ,其实很简单，就是把我们的清单从git上拉去下来通过yq工具来修改image信息，修改成功之后在推送到我们的代码库中。"
+				}
+			]
+		},
+		{
+			"ID": "20230410155514-cx7xkqv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410155514-cx7xkqv",
+				"updated": "20230410160201"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Triggers创建"
+				}
+			]
+		},
+		{
+			"ID": "20230410155523-ii46sku",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155523-ii46sku",
+				"updated": "20230410155525"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们通过 EventListener 指定触发器，文件如下："
+				}
+			]
+		},
+		{
+			"ID": "20230410155526-foknzwf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155526-foknzwf",
+				"updated": "20230410155543"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: triggers.tekton.dev/v1beta1\nkind: EventListener\nmetadata:\n  name: gitlab-listener\nspec:\n  serviceAccountName: tekton-triggers-gstrain-sa\n  resources:\n    kubernetesResource:\n      serviceType: NodePort \n  triggers:\n    - name: gitlab-push-events-trigger\n      bindings:\t\t\t\t\t\t#TriggerBinding 对象\n        - name: gitrevision\n          value: $(body.checkout_sha)\n        - name: gitrepositoryurl\n          value: $(body.repository.git_http_url)  \n        - name: service-name\n          value: $(body.repository.name)\n        - name: gitref\n          value: $(body.ref)\n      interceptors:\n        - name: \"verify-gitlab-payload\"\n          ref:\n            name: \"gitlab\"\n            kind: ClusterInterceptor\n          params:\n            - name: secretRef\n              value:\n                secretName: \"gitlab-secret\"\n                secretKey: \"secretToken\"\n            - name: eventTypes\n              value:\n                - \"Push Hook\" #接收gitlab push 事件\n      template:\n        ref: triggertemplate   #TriggerTemplate 对象\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155548-iqfgbe2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155548-iqfgbe2",
+				"updated": "20230410155548"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为EventListener 创建完成后会生成一个Listener服务，用来接收事件的响应。我是直接选择的NodePort来对外提供服务，使用路由的可忽略。"
+				}
+			]
+		},
+		{
+			"ID": "20230410155600-z06y81q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155600-z06y81q",
+				"updated": "20230410155606"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get svc \nNAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                              AGE\nel-gitlab-listener                  NodePort    10.253.177.9     \u003cnone\u003e        8080:39949/TCP,9000:47734/TCP        3d7h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155548-3jtbmfd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410155548-3jtbmfd",
+				"updated": "20230410160207"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1. secret"
+				}
+			]
+		},
+		{
+			"ID": "20230410155627-2xmad34",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155627-2xmad34",
+				"updated": "20230410155627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过secrets来"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=%E9%85%8D%E7%BD%AEgit\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "配置git"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "lab发送webhook时请求的校验"
+				}
+			]
+		},
+		{
+			"ID": "20230410155627-18to8w2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155627-18to8w2",
+				"updated": "20230410155636"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ``"
+				}
+			]
+		},
+		{
+			"ID": "20230410155627-evybltm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155627-evybltm",
+				"updated": "20230410155653"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Secret\nmetadata:\n  name: github-secret\ntype: Opaque\nstringData:\n  secretToken: \"tekton-pipeline-123\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155611-d9kcuny",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410155611-d9kcuny",
+				"updated": "20230410160218"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2  gitlabToken添加流程"
+				}
+			]
+		},
+		{
+			"ID": "20230410155711-ik6f05o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155711-ik6f05o",
+				"updated": "20230410155712"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "–\u003e\u003e project --\u003e\u003e settings --\u003e\u003e webhooks --\u003e\u003e url(Listener服务URL) --\u003e\u003e secret token(github-secret资源)"
+				}
+			]
+		},
+		{
+			"ID": "20230410155716-bcds8z4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410155716-bcds8z4",
+				"updated": "20230410160223"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3. RBAC"
+				}
+			]
+		},
+		{
+			"ID": "20230410155729-07x5cjt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155729-07x5cjt",
+				"updated": "20230410155729"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "triggers中各个资源的访问，需要声名RBAC"
+				}
+			]
+		},
+		{
+			"ID": "20230410155742-2b6iog3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155742-2b6iog3",
+				"updated": "20230410155744"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: tekton-triggers-gstrain-sa\nsecrets:\n  - name: gitlab-secret\n  - name: gitlab-auth\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  name: triggers-gstrain-eventlistener-binding\nsubjects:\n- kind: ServiceAccount\n  name: tekton-triggers-gstrain-sa\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: tekton-triggers-eventlistener-roles\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRoleBinding\nmetadata:\n  name: triggers-gstrain-eventlistener-clusterbinding\nsubjects:\n- kind: ServiceAccount\n  name: tekton-triggers-gstrain-sa\n  namespace: gstrain-pipeline\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: tekton-triggers-eventlistener-clusterroles\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155729-3405a7t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410155729-3405a7t",
+				"updated": "20230410160228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4. TriggerBinding"
+				}
+			]
+		},
+		{
+			"ID": "20230410155816-iml9k96",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155816-iml9k96",
+				"updated": "20230410155816"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "指定要从中提取数据的事件有效负载中的字段以及对应的字段,具体指的是哪些字段呢。其实这里所说的是gitlab webhook中发送来的请求，这些字段都可以被我们拿来利用。"
+				}
+			]
+		},
+		{
+			"ID": "20230410155816-5v4h5mq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155816-5v4h5mq",
+				"updated": "20230410155835"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "bindings:\t\t\t\t\t\t#TriggerBinding 对象\n  - name: gitrevision\n    value: $(body.checkout_sha)\n  - name: gitrepositoryurl\n    value: $(body.repository.git_http_url)  \n  - name: service-name\n    value: $(body.repository.name)\n  - name: gitref\n    value: $(body.ref)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155816-09s0mz8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155816-09s0mz8",
+				"updated": "20230410155900"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\n  \"object_kind\": \"push\",\n  \"event_name\": \"push\",\n  \"before\": \"68e0d3b62814596f5988d1db668df6da787f6b00\",\n  \"after\": \"6e4977fb359fdde13d3f21ed7ac739102841e4ce\",\n  \"ref\": \"refs/heads/master\",\n  \"checkout_sha\": \"6e4977fb359fdde13d3f21ed7ac739102841e4ce\",\n  \"message\": null,\n  \"user_id\": 1,\n  \"user_name\": \"gstrain\",\n  \"user_username\": \"gstrain\",\n  \"user_email\": \"\",\n  \"user_avatar\": \"https://www.gravatar.com/avatar/5ccc082a1092ca51760a7b3956c04abc?s=80\u0026d=identicon\",\n  \"project_id\": 4,\n  \"project\": {\n    \"id\": 4,\n    \"name\": \"web-service\",\n    \"description\": \"\",\n    \"web_url\": \"http://gitlab-6859ff885-96p66/gstrain/web-service\",\n    \"avatar_url\": null,\n    \"git_ssh_url\": \"git@gitlab-6859ff885-96p66:gstrain/web-service.git\",\n    \"git_http_url\": \"http://10.177.9.244:31002/gstrain/web-service.git\",\n    \"namespace\": \"gstrain\",\n    \"visibility_level\": 20,\n    \"path_with_namespace\": \"gstrain/web-service\",\n    \"default_branch\": \"main\",\n    \"ci_config_path\": null,\n    \"homepage\": \"http://gitlab-6859ff885-96p66/gstrain/web-service\",\n    \"url\": \"git@gitlab-6859ff885-96p66:gstrain/web-service.git\",\n    \"ssh_url\": \"git@gitlab-6859ff885-96p66:gstrain/web-service.git\",\n    \"http_url\": \"http://10.177.9.244:31002/gstrain/web-service.git\"\n  },\n  \"commits\": [\n    {\n      \"id\": \"6e4977fb359fdde13d3f21ed7ac739102841e4ce\",\n      \"message\": \"z\\n\",\n      \"title\": \"z\",\n      \"timestamp\": \"2022-08-22T17:46:04+08:00\",\n      \"url\": \"http://gitlab-6859ff885-96p66/gstrain/web-service/-/commit/6e4977fb359fdde13d3f21ed7ac739102841e4ce\",\n      \"author\": {\n        \"name\": \"Administrator\",\n        \"email\": \"1376252133@qq.com\"\n      },\n      \"added\": [\n\n      ],\n      \"modified\": [\n        \"Jenkinsfile\"\n      ],\n      \"removed\": [\n\n      ]\n    }\n  ],\n  \"total_commits_count\": 1,\n  \"push_options\": {\n  },\n  \"repository\": {\n    \"name\": \"web-service\",\n    \"url\": \"git@gitlab-6859ff885-96p66:gstrain/web-service.git\",\n    \"description\": \"\",\n    \"homepage\": \"http://gitlab-6859ff885-96p66/gstrain/web-service\",\n    \"git_http_url\": \"http://10.177.9.244:31002/gstrain/web-service.git\",\n    \"git_ssh_url\": \"git@gitlab-6859ff885-96p66:gstrain/web-service.git\",\n    \"visibility_level\": 20\n  }\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155718-76g29kz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410155718-76g29kz",
+				"updated": "20230410160237"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.5 TriggerTemplate"
+				}
+			]
+		},
+		{
+			"ID": "20230410155928-579qzmf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155928-579qzmf",
+				"updated": "20230410155928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以通过读取 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "TriggerBinding"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 定义的参数，定义如下TriggerTemplate ，我们这里定义的是一个 PipelineRun 的模板，需要选定一个定义好的pipeline"
+				}
+			]
+		},
+		{
+			"ID": "20230410155930-xjir6si",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155930-xjir6si",
+				"updated": "20230410155938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\napiVersion: triggers.tekton.dev/v1alpha1\nkind: TriggerTemplate\nmetadata:\n  name: triggertemplate\nspec:\n  params:\n    - name: gitrevision\n      description: The git revision\n      default: master\n    - name: gitrepositoryurl\n      description: The git repository url\n    - name: service-name\n      description: The service name\n    - name: gitref\n      description: The branch to checkout\n  resourcetemplates:\n    - apiVersion: tekton.dev/v1beta1\n      kind: PipelineRun\n      metadata:\n        generateName: $(tt.params.service-name)-pipeline-\n        labels:\n          service: $(tt.params.service-name)\n        namespace: gstrain-pipeline\n      spec:\n        params:\n          - name: git-http-url\n            value: $(tt.params.gitrepositoryurl)\n          - name: git-revision\n            value: $(tt.params.gitrevision)\n          - name: service-name\n            value: $(tt.params.service-name)    \n          - name: git-ref\n            value: $(tt.params.gitref)\n          - name: subdirectory\n            value: $(tt.params.service-name)\n#          - name: package\n#            value: $(tt.params.service-name)\n        serviceAccountName: tekton-triggers-gstrain-sa\n        pipelineRef:\n          name: gstrain-pipeline\n        workspaces:\n        - name: shared-data\n          persistentVolumeClaim:\n            claimName: my-app\n        - name: dockerconfig\n          secret:\n            secretName: dockerconfig\n#        - name: git-basic-auth\n#          secret:\n#            secretName: git-basic-auth\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155941-6i8403s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410155941-6i8403s",
+				"updated": "20230410160241"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.结果"
+				}
+			]
+		},
+		{
+			"ID": "20230410160016-ebok7f2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410160016-ebok7f2",
+				"updated": "20230410160016"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们git push来触发我们的triggers，测试下我们的流程是否正常，在kubernetes集群中可查看相应的pod任务。"
+				}
+			]
+		},
+		{
+			"ID": "20230410155956-nfyapas",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410155956-nfyapas",
+				"updated": "20230410160008"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get pod -l triggers.tekton.dev/eventlistener=gitlab-listener\nNAME                                              READY   STATUS      RESTARTS   AGE\nweb-service-pipeline-pcpsl-change-manifests-pod   0/1     Completed   0          4h37m\nweb-service-pipeline-pcpsl-fetch-repo-pod         0/2     Completed   0          4h38m\nweb-service-pipeline-pcpsl-golang-build-pod       0/1     Completed   0          4h38m\nweb-service-pipeline-pcpsl-kaniko-pod             0/3     Completed   0          4h37m\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410155950-p6y2z1a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410155950-p6y2z1a",
+				"updated": "20230410160028"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "到这我们的tekton构建CI/CD就已经全部完成，"
+				}
+			]
+		}
+	]
+}

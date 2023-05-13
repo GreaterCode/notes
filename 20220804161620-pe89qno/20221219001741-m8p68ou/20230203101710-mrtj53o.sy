@@ -1,0 +1,306 @@
+{
+	"ID": "20230203101710-mrtj53o",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230203101710-mrtj53o",
+		"title": "docker imageID计算",
+		"updated": "20230307021431"
+	},
+	"Children": [
+		{
+			"ID": "20230203101710-1cdpiiv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203101710-1cdpiiv",
+				"updated": "20230203101809"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong strong",
+					"TextMarkTextContent": "Image ID是在本地由Docker根据镜像的描述文件计算的，并用于imagedb的目录名称"
+				}
+			]
+		},
+		{
+			"ID": "20230203101820-pxxhcna",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203101820-pxxhcna",
+				"updated": "20230203101821"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "docker镜像id都保存在/var/lib/docker/image/overlay2/imagedb/content/sha256下面，都是一些以sha256sum计算文件内容得出的哈希值的文件。"
+				}
+			]
+		},
+		{
+			"ID": "20230203101859-mqloru1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203101859-mqloru1",
+				"updated": "20230203102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n#ls /var/lib/docker/image/overlay2/imagedb/content/sha256/f9499facb1e8c3c907d82f50441b8da45115c4314a9c175c8b3797e489c1cf1e  -al\n-rw------- 1 root root 1784 Mar 27  2021 /var/lib/docker/image/overlay2/imagedb/content/sha256/f9499facb1e8c3c907d82f50441b8da45115c4314a9c175c8b3797e489c1cf1e\n\n#docker images| grep f94\nxxx/library/k8s.gcr.io/metrics-server-noarch   v0.3.6                                                           f9499facb1e8        3 years ago         38.3MB\n\n对比上面可以发现/xxx/sha256值和镜像Id一样\n\n计算imageID的值\n#sha256sum   /var/lib/docker/image/overlay2/imagedb/content/sha256/f9499facb1e8c3c907d82f50441b8da45115c4314a9c175c8b3797e489c1cf1e \nf9499facb1e8c3c907d82f50441b8da45115c4314a9c175c8b3797e489c1cf1e  /var/lib/docker/image/overlay2/imagedb/content/sha256/f9499facb1e8c3c907d82f50441b8da45115c4314a9c175c8b3797e489c1cf1e\n\n查看镜像信息\n#cat    /var/lib/docker/image/overlay2/imagedb/content/sha256/f9499facb1e8c3c907d82f50441b8da45115c4314a9c175c8b3797e489c1cf1e | jq\n上面的命令和docker inspect \u003cimageID\u003e的输出内容是一致的\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203105909-x25r7l2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203105909-x25r7l2",
+				"updated": "20230203105916"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "docker inspect信息保存在了/var/lib/docker/image/overlay2/layerdb/mounts下："
+				}
+			]
+		},
+		{
+			"ID": "20230203105922-lbjpwk0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203105922-lbjpwk0",
+				"updated": "20230203110012"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cd /var/lib/docker/image/overlay2/layerdb/mounts\n# cd \u003ccontainer-id\u003e     //某个容器的id\n# ls\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203105909-2agchzb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203105909-2agchzb",
+				"updated": "20230203105909"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "发现里面有init-id、mount-id、parent三个文件。"
+				}
+			]
+		},
+		{
+			"ID": "20230203105909-5v6adic",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203105909-5v6adic",
+				"updated": "20230203110019"
+			},
+			"Children": [
+				{
+					"ID": "20230203110017-6uyy4lh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203110017-6uyy4lh",
+						"updated": "20230203110019"
+					},
+					"Children": [
+						{
+							"ID": "20230203110017-0g99gen",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203110017-0g99gen",
+								"updated": "20230203110019"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "init-id存储了init层的编号，和mount-id一致。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203105909-dwtwwx4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203105909-dwtwwx4",
+				"updated": "20230203110022"
+			},
+			"Children": [
+				{
+					"ID": "20230203110022-685e6n9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203110022-685e6n9"
+					},
+					"Children": [
+						{
+							"ID": "20230203110022-53v048d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203110022-53v048d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "parent包含了最高层的chainID，也就是说通过最高层的chainID，再找其真正的cache-id，"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203105909-txm9s8z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203105909-txm9s8z",
+				"updated": "20230203105909"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3dd8c8d4fd5b59d543c8f75a67cdfaab30aef5a6d99aea3fe74d8cc69d4e7bf2   chainID ，也就是说chainID为逻辑上的，实际使用的为cache-id."
+				}
+			]
+		},
+		{
+			"ID": "20230203110027-atrmef8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203110027-atrmef8",
+				"updated": "20230203110106"
+			},
+			"Children": [
+				{
+					"ID": "20230203110033-ajqrcx6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203110033-ajqrcx6",
+						"updated": "20230203110106"
+					},
+					"Children": [
+						{
+							"ID": "20230203110033-k99z0lo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203110033-k99z0lo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "mount-id"
+								}
+							]
+						},
+						{
+							"ID": "20230203110037-q2jcqew",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230203110037-q2jcqew",
+								"updated": "20230203110106"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# cat mount-id // 查看mount id号\n# mount | grep overlay\n# cd /var/lib/docker/overlay2/\u003cmount-id\u003e\n包含了一个文件lower，它指定了他的底层（父层），diff文件夹也是存储了这个层的具体内容，merged文件夹包含了它和它的底(父)层的合并内容这就是镜像+容器的所有内容，work文件夹提供Overlay内部使用\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203102005-1zm0kir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203102005-1zm0kir",
+				"updated": "20230203102812"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "镜像ID的生成过程参考："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/distribution/distribution/blob/main/docs/spec/api.md",
+					"TextMarkTextContent": "https://github.com/distribution/distribution/blob/main/docs/spec/api.md"
+				}
+			]
+		},
+		{
+			"ID": "20230307021431-uzovo2h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230307021431-uzovo2h",
+				"updated": "20230307021431"
+			}
+		}
+	]
+}

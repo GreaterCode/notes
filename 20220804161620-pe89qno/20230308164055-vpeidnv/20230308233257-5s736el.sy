@@ -1,0 +1,1688 @@
+{
+	"ID": "20230308233257-5s736el",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230308233257-5s736el",
+		"title": "03.基于kube-ipam与Multus实现Web和数据库分层网络安全访问架构",
+		"updated": "20230309002507"
+	},
+	"Children": [
+		{
+			"ID": "20230308233257-pfoxi9y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308233257-pfoxi9y",
+				"updated": "20230308233356"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230308233356-dcw192c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233356-dcw192c",
+				"updated": "20230308233358"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 kube-ipam与Multus概述"
+				}
+			]
+		},
+		{
+			"ID": "20230308233343-7muzmx1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233343-7muzmx1",
+				"updated": "20230308233408"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-ipam支持给kubernetes集群中的Pod固定IP地址。一些场景往往对IP地址有依赖，需要使用固定IP地址的Pod，可以使用kube-ipam轻松解决这类问题。例如，mysql主从架构的时候，主database与从database之间的同步；例如keepalived做集群HA的时候，两个节点之间检测通信等；例如某些安全防护设备，需要基于IP地址进行网络安全访问策略限制的场景等。\nMultus-CNI支持同时添加多个网络接口到kubernetes环境中的Pod。这样的部署方式有利于安全人员把应用网络和数据库等多个网络区域进行相互隔离，有效控制容器集群网络架构。"
+				}
+			]
+		},
+		{
+			"ID": "20230308233436-nh1mway",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233436-nh1mway",
+				"updated": "20230308233441"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 网络分层架构设计"
+				}
+			]
+		},
+		{
+			"ID": "20230308233441-6h8bo4a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233441-6h8bo4a",
+				"updated": "20230308233442"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230308233442-f0ixpop.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308233458-4lf6ht0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233458-4lf6ht0",
+				"updated": "20230308233459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上图中显示了每个Pod具有2个接口：eth0、net1。eth0作为外界用户访问web pod的网络接口；而net1是附加的容器网卡，作为web Pod到database Pod的内部网络通信。"
+				}
+			]
+		},
+		{
+			"ID": "20230308233529-sqkwtyh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308233529-sqkwtyh",
+				"updated": "20230308233545"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.  安装CNI插件"
+				}
+			]
+		},
+		{
+			"ID": "20230308233541-kperght",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233541-kperght",
+				"updated": "20230308233551"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 安装cni plugin和flannel"
+				}
+			]
+		},
+		{
+			"ID": "20230308233553-qicke20",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230308233553-qicke20",
+				"updated": "20230308233610"
+			},
+			"Children": [
+				{
+					"ID": "20230308233601-kdcjvaf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308233601-kdcjvaf",
+						"updated": "20230308233610"
+					},
+					"Children": [
+						{
+							"ID": "20230308233601-91d1xqt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308233601-91d1xqt",
+								"updated": "20230308233610"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装cni plugin"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308233614-d0kfsjw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233614-d0kfsjw",
+				"updated": "20230308233614"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# wget https://github.com/containernetworking/plugins/releases/download/v0.9.1/cni-plugins-linux-amd64-v0.9.1.tgz\n# tar -zxvf cni-plugins-linux-amd64-v0.9.1.tgz -C /opt/cni/bin/"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233619-ev4hsh9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230308233619-ev4hsh9",
+				"updated": "20230308233621"
+			},
+			"Children": [
+				{
+					"ID": "20230308233621-ettw1yj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308233621-ettw1yj"
+					},
+					"Children": [
+						{
+							"ID": "20230308233621-o0l8v7b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308233621-o0l8v7b",
+								"updated": "20230308233626"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装flanned"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308233641-anvncv0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233641-anvncv0",
+				"updated": "20230308233642"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建flanneld所需的subnet网段"
+				}
+			]
+		},
+		{
+			"ID": "20230308233634-pqnovah",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233634-pqnovah",
+				"updated": "20230308233634"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# etcdctl --endpoints=https://192.168.1.11:2379,https://192.168.1.12:2379,https://192.168.1.13:2379  --ca-file=/etc/kubernetes/ssl/k8s-root-ca.pem --cert-file=/etc/kubernetes/ssl/kubernetes.pem --key-file=/etc/kubernetes/ssl/kubernetes-key.pem set /kubernetes/network/config '{\"Network\":\"10.244.0.0/16\", \"SubnetLen\":24, \"Backend\":{\"Type\":\"vxlan\"}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233657-o8yqa4k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233657-o8yqa4k",
+				"updated": "20230308233709"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  下载flanneld软件包："
+				}
+			]
+		},
+		{
+			"ID": "20230308233716-j7chyc2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233716-j7chyc2",
+				"updated": "20230308233716"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# wget https://github.com/flannel-io/flannel/releases/download/v0.11.0/flannel-v0.11.0-linux-amd64.tar.gz\n# tar -zxvf flannel-v0.11.0-linux-amd64.tar.gz -C /opt/cni/bin/"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233720-ll7wpy0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233720-ll7wpy0",
+				"updated": "20230308233721"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编辑 /etc/systemd/system/flanneld.service"
+				}
+			]
+		},
+		{
+			"ID": "20230308233727-jdqmz53",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233727-jdqmz53",
+				"updated": "20230308233727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat /etc/systemd/system/flanneld.service\n[Unit]\nDescription=Flanneld overlay address etcd agent\nAfter=network.target\nAfter=network-online.target\nWants=network-online.target\nAfter=etcd.service\nBefore=docker.service\n\n[Service]\nType=notify\nExecStart=/opt/cni/bin/flanneld \\\n -etcd-cafile=/etc/kubernetes/ssl/k8s-root-ca.pem \\\n -etcd-certfile=/etc/kubernetes/ssl/kubernetes.pem \\\n -etcd-keyfile=/etc/kubernetes/ssl/kubernetes-key.pem \\\n -etcd-endpoints=https://192.168.1.11:2379,https://192.168.1.12:2379,https://192.168.1.13:2379 \\\n -etcd-prefix=/kubernetes/network \\\n -ip-masq\nExecStartPost=/usr/local/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker\nRestart=always\nRestartSec=5\nStartLimitInterval=0\n\n[Install]\nWantedBy=multi-user.target\nRequiredBy=docker.service"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233733-ifzpyru",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233733-ifzpyru",
+				"updated": "20230308233733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改 /etc/systemd/system/docker.service，注意增加EnvironmentFile，并修改ExecStart参数："
+				}
+			]
+		},
+		{
+			"ID": "20230308233743-buk6c4y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233743-buk6c4y",
+				"updated": "20230308233743"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "...\n[Service]\nEnvironmentFile=/run/flannel/docker\nExecStart=/usr/bin/dockerd $DOCKER_NETWORK_OPTIONS\n..."
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233754-jd8i0lp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233754-jd8i0lp",
+				"updated": "20230308233754"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明：如果你是使用的是"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-install",
+					"TextMarkTextContent": "kube-install"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "安装的kubernetes集群，那么安装cni plugin和flannel这两步可以省略。"
+				}
+			]
+		},
+		{
+			"ID": "20230308233756-622duum",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233756-622duum",
+				"updated": "20230308233804"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 安装kube-ipam"
+				}
+			]
+		},
+		{
+			"ID": "20230308233803-zr49w8q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233803-zr49w8q",
+				"updated": "20230308233823"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/docs/download.md",
+					"TextMarkTextContent": "下载"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "或"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/docs/build.md",
+					"TextMarkTextContent": "编译"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "获得kube-ipam的二进制文件，然后将kube-ipam的二进制文件拷贝到kubernetes node主机的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/cni/bin/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录中。"
+				}
+			]
+		},
+		{
+			"ID": "20230308233829-qy7ogzk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233829-qy7ogzk",
+				"updated": "20230308233829"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# wget https://github.com/cloudnativer/kube-ipam/releases/download/v0.2.0/kube-ipam-v0.2.0-x86.tgz\n# tar -zxvf kube-ipam-v0.2.0-x86.tgz\n# mv kube-ipam-v0.2.0-x86/kube-ipam /opt/cni/bin/kube-ipam"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233834-h0zfox0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233834-h0zfox0",
+				"updated": "20230308233834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 安装multus-cni"
+				}
+			]
+		},
+		{
+			"ID": "20230308233839-guydsb8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233839-guydsb8",
+				"updated": "20230308233839"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下载multus-cni包："
+				}
+			]
+		},
+		{
+			"ID": "20230308233839-addgi0o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233839-addgi0o",
+				"updated": "20230308233839"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# wget https://github.com/k8snetworkplumbingwg/multus-cni/releases/download/v3.8/multus-cni_3.8_linux_amd64.tar.gz\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233839-bbs232p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233839-bbs232p",
+				"updated": "20230308233839"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "把解压出来的二进制文件拷贝到所有Kubernetes的worker节点的/opt/cni/bin目录"
+				}
+			]
+		},
+		{
+			"ID": "20230308233839-2c55od8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233839-2c55od8",
+				"updated": "20230308233839"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# tar -zxvf multus-cni_3.8_linux_amd64.tar.gz\n# mv multus-cni_3.8_linux_amd64/multus-cni /opt/cni/bin/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233849-g2jbruh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308233849-g2jbruh",
+				"updated": "20230308233853"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.配置与创建Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308233952-g06pl1a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233952-g06pl1a",
+				"updated": "20230308233952"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 创建CNI配置"
+				}
+			]
+		},
+		{
+			"ID": "20230308233900-moiylyj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233900-moiylyj",
+				"updated": "20230308233900"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了确保主机环境的干净，请执行如下命令删除kubernetes node主机上的已有的cni配置："
+				}
+			]
+		},
+		{
+			"ID": "20230308233900-h9mh5zx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233900-h9mh5zx",
+				"updated": "20230308233900"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# rm -rf /etc/cni/net.d/*\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233919-aj76nf7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233919-aj76nf7",
+				"updated": "20230308233919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "multus使用\"delegates\"的概念将多个CNI插件组合起来，并且指定一个masterplugin来作为POD的主网络并且被Kubernetes所感知。"
+				}
+			]
+		},
+		{
+			"ID": "20230308233919-25x3uf0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233919-25x3uf0",
+				"updated": "20230308233919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后创建/etc/cni/net.d/10-multus.conf"
+				}
+			]
+		},
+		{
+			"ID": "20230308233919-sluztbd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233919-sluztbd",
+				"updated": "20230308233919"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat /etc/cni/net.d/10-multus.conf\n    {\n      \"cniVersion\": \"0.3.1\",\n      \"name\": \"multus-demo\",\n      \"type\": \"multus-cni\",\n      \"delegates\": [\n        {\n          \"name\": \"k8snet1\",\n          \"type\": \"flannel\",\n          \"masterplugin\": true,\n          \"delegate\": {\n             \"isDefaultGateway\": true,\n             \"bridge\": \"docker0\",\n             \"mtu\": 1400\n          }\n        },\n        {\n          \"name\": \"k8snet2\",\n          \"type\": \"macvlan\",\n          \"master\": \"eth0\",\n          \"ipam\": {\n                \"name\": \"kube-subnet\",\n                \"type\": \"kube-ipam\",\n                \"kubeConfig\": \"/etc/kubernetes/ssl/kube.kubeconfig\",\n                \"etcdConfig\": {\n                        \"etcdURL\": \"https://192.168.1.50:2379,https://192.168.1.58:2379,https://192.168.1.63:2379\",\n                        \"etcdCertFile\": \"/etc/kubernetes/ssl/kubernetes.pem\",\n                        \"etcdKeyFile\": \"/etc/kubernetes/ssl/kubernetes-key.pem\",\n                        \"etcdTrustedCAFileFile\": \"/etc/kubernetes/ssl/k8s-root-ca.pem\"\n                },\n                \"subnet\": \"10.188.0.0/16\",\n                \"fixedStart\": \"10.188.0.10\",\n                \"fixedEnd\": \"10.188.0.255\",\n                \"rangeStart\": \"10.188.1.0\",\n                \"rangeEnd\": \"10.188.255.254\",\n                \"gateway\": \"10.188.0.1\",\n                \"routes\": [{\n                        \"dst\": \"0.0.0.0/0\"\n                }],\n                \"resolvConf\": \"/etc/resolv.conf\"\n          }\n        }\n      ]\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233919-2e5lm31",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233919-2e5lm31",
+				"updated": "20230308233919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重启kubelet服务："
+				}
+			]
+		},
+		{
+			"ID": "20230308233919-hfkb5rx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233919-hfkb5rx",
+				"updated": "20230308233919"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# systemctl restart kubelet\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233938-eqe5m2l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308233938-eqe5m2l",
+				"updated": "20230308233938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 创建Database Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308233938-drbovgh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233938-drbovgh",
+				"updated": "20230308233938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置需要固定IP的数据容器"
+				}
+			]
+		},
+		{
+			"ID": "20230308233938-ufazurm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233938-ufazurm",
+				"updated": "20230308233938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat db.yaml \napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: database\nspec:\n  selector:\n    matchLabels:\n      app: database\n  serviceName: database\n  template:\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: database-1\nspec:\n  selector:\n    matchLabels:\n      app: database-1\n  serviceName: database-1\n  template:\n    metadata:\n      labels:\n        app: database-1\n      annotations:\n        kube-ipam.ip: \"10.188.0.218\"\n        kube-ipam.netmask: \"255.255.0.0\"\n        kube-ipam.gateway: \"10.188.0.1\"\n    spec:\n      terminationGracePeriodSeconds: 10\n      containers:\n      - name: database-1c\n        image: 192.168.1.12:5000/db:v1.0\n        resources: {}\n\n---\n\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: database-2\nspec:\n  selector:\n    matchLabels:\n      app: database-2\n  serviceName: database-2\n  template:\n    metadata:\n      labels:\n        app: database-2\n      annotations:\n        kube-ipam.ip: \"10.188.0.219\"\n        kube-ipam.netmask: \"255.255.0.0\"\n        kube-ipam.gateway: \"10.188.0.1\"\n    spec:\n      terminationGracePeriodSeconds: 10\n      containers:\n      - name: database-2c\n        image: 192.168.1.12:5000/db:v1.0\n        resources: {} \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308233938-494nwwn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308233938-494nwwn",
+				"updated": "20230308233938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令创建："
+				}
+			]
+		},
+		{
+			"ID": "20230308233938-xtp6pta",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308233938-xtp6pta",
+				"updated": "20230308233938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# \n# kubectl apply -f db.yaml \nstatefulset.apps/database created\n# \n# kubectl get pod -o wide              \nNAME                   READY   STATUS    RESTARTS   AGE     IP            NODE         \ndatabase-1-0           1/1     Running   0          2m5s    10.244.69.7   192.168.1.13 \ndatabase-2-0           1/1     Running   0          2m5s    10.244.5.5    192.168.1.12 \nweb-5fd8684df7-8c7zb   1/1     Running   0          3h17m   10.244.71.8   192.168.1.14 \nweb-5fd8684df7-p9g8s   1/1     Running   0          3h17m   10.244.71.9   192.168.1.14 \n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234035-7dbx3lv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234035-7dbx3lv",
+				"updated": "20230308234035"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 创建Web Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308234035-oss4ifv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234035-oss4ifv",
+				"updated": "20230308234035"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置不需要固定IP的web应用"
+				}
+			]
+		},
+		{
+			"ID": "20230308234035-9q61mtm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234035-9q61mtm",
+				"updated": "20230308234035"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat web.yaml \napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  labels:\n    app: web\n  name: web\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: web\n  strategy: {}\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n      - image: 192.168.1.12:5000/nginx:1.7.9\n        imagePullPolicy: IfNotPresent\n        name: web-c\n        ports:\n        - containerPort: 80\n          name: web\n        resources: {}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234035-uazfzih",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234035-uazfzih",
+				"updated": "20230308234035"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令创建："
+				}
+			]
+		},
+		{
+			"ID": "20230308234035-jlepky8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234035-jlepky8",
+				"updated": "20230308234035"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl apply -f web.yaml             \ndeployment.apps/web created\n# \n# \n# kubectl get pod -o wide \nNAME                   READY   STATUS    RESTARTS   AGE   IP            NODE          \nweb-5fd8684df7-8c7zb   1/1     Running   0          5s    10.244.71.8   192.168.1.14  \nweb-5fd8684df7-p9g8s   1/1     Running   0          5s    10.244.71.9   192.168.1.14  \n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-kbtcpm9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234046-kbtcpm9",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4 创建service或ingress"
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-gmpbdlt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234046-gmpbdlt",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用户可以通过web区域网络，通过ingress或service来访问到web服务。"
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-3zimwh0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234046-3zimwh0",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "给web Pod配置service："
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-if3wtx0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234046-if3wtx0",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat web-svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: web-svc\n  labels:\n    app: web\nspec:\n  type: NodePort\n  selector:\n    app: web\n  ports:\n  - port: 80\nprotocol: TCP\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-ezqm2o2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234046-ezqm2o2",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令创建："
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-nh4hrdr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234046-nh4hrdr",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl apply -f web-svc.yaml \nservice/web-svc created\n# \n#\n# kubectl get service\nNAME         TYPE        CLUSTER-IP      EXTERNAL-IP  PORT(S)       AGE\nkubernetes   ClusterIP   10.254.0.1      \u003cnone\u003e       443/TCP       7d22h\nweb-svc      ClusterIP   10.254.150.15   \u003cnone\u003e       80:18370/TCP  6m4s\n# \n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-8a4qt3t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234046-8a4qt3t",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置ingress到web service："
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-v2tk072",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234046-v2tk072",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# \n# cat web-ingress.yaml\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: web-ingress\nspec:\n  defaultBackend:\n    service:\n      name: web-svc\n      port:\n        number: 80\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-9mcrj8k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234046-9mcrj8k",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令创建："
+				}
+			]
+		},
+		{
+			"ID": "20230308234046-imkxnop",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234046-imkxnop",
+				"updated": "20230308234046"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# \n[root@localhost ~]# k apply -f web-ingress.yaml \ningress.networking.k8s.io/web-ingress created\n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234101-7tgxoh7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308234101-7tgxoh7",
+				"updated": "20230308234111"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 验证分层网络访问"
+				}
+			]
+		},
+		{
+			"ID": "20230308234117-e1r5zji",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234117-e1r5zji",
+				"updated": "20230308234123"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用户可以通过ingress或service来访问到web服务。web pod可以通过database区域网络，访问固定IP地址的database服务。Database区域网络的database Pod可以互相通过固定IP地址进行集群的通信操作。"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-eav6axz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234146-eav6axz",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 用户通过service访问Web"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-nm8la7v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-nm8la7v",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过ingress或service来访问到web服务"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-sq03a4h",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-sq03a4h",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# curl http://192.168.1.12:18370\n\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003ctitle\u003eWelcome to nginx!\u003c/title\u003e\n\u003cstyle\u003e\n    body {\n        width: 35em;\n        margin: 0 auto;\n        font-family: Tahoma, Verdana, Arial, sans-serif;\n    }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003ch1\u003eWelcome to nginx!\u003c/h1\u003e\n\u003cp\u003eIf you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.\u003c/p\u003e\n\n\u003cp\u003eFor online documentation and support please refer to\n\u003ca href=\"http://nginx.org/\"\u003enginx.org\u003c/a\u003e.\u003cbr/\u003e\nCommercial support is available at\n\u003ca href=\"http://nginx.com/\"\u003enginx.com\u003c/a\u003e.\u003c/p\u003e\n\n\u003cp\u003e\u003cem\u003eThank you for using nginx.\u003c/em\u003e\u003c/p\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-vs0gkzo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234146-vs0gkzo",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 Web Pod通过固定IP访问Database"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-bvrjpt2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-bvrjpt2",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看database-2 Pod的net1网卡，10.188.0.219为固定IP地址"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-p4eym2j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-p4eym2j",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl exec -it database-2-0 -- ip address               \n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n3: eth0@if9: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1400 qdisc noqueue state UP \n    link/ether 26:16:04:dc:82:fe brd ff:ff:ff:ff:ff:ff\n    inet 10.244.69.7/24 brd 10.244.69.255 scope global eth0\n       valid_lft forever preferred_lft forever\n4: net1@if2: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1500 qdisc noqueue state UP \n    link/ether c6:17:6c:da:ee:e9 brd ff:ff:ff:ff:ff:ff\n    inet 10.188.0.219/16 brd 10.188.255.255 scope global net1\n       valid_lft forever preferred_lft forever\n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-xlygmwh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-xlygmwh",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Web Pod可以通过database区域网络，访问固定IP地址的database服务"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-cgu4vfc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-cgu4vfc",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl exec -it web-5fd8684df7-8c7zb -- ping 10.188.0.219\nPING 10.188.0.219 (10.188.0.219): 48 data bytes\n56 bytes from 10.188.0.219: icmp_seq=0 ttl=64 time=0.720 ms\n56 bytes from 10.188.0.219: icmp_seq=1 ttl=64 time=0.341 ms\n56 bytes from 10.188.0.219: icmp_seq=2 ttl=64 time=0.485 ms\n56 bytes from 10.188.0.219: icmp_seq=3 ttl=64 time=0.389 ms\n56 bytes from 10.188.0.219: icmp_seq=4 ttl=64 time=0.454 ms\n^C--- 10.188.0.219 ping statistics ---\n5 packets transmitted, 5 packets received, 0% packet loss\nround-trip min/avg/max/stddev = 0.341/0.478/0.720/0.131 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-0f0ssw0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234146-0f0ssw0",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 database区域的Pod通过固定IP互访"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-6vmdael",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-6vmdael",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "database区域网络内的database-1与database-2都拥有固定IP地址，两个数据库Pod之间可以互相通过固定IP进行集群的通信操作。例如，mysql主从架构的时候，主database-1与从database-2之间的同步。"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-nwq8pzd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-nwq8pzd",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl exec -it database-1-0 -- ip address                \n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n3: eth0@if9: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1400 qdisc noqueue state UP \n    link/ether 2a:64:f3:b8:18:01 brd ff:ff:ff:ff:ff:ff\n    inet 10.244.5.5/24 brd 10.244.5.255 scope global eth0\n       valid_lft forever preferred_lft forever\n4: net1@if2: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1500 qdisc noqueue state UP \n    link/ether fe:9d:18:25:9c:a1 brd ff:ff:ff:ff:ff:ff\n    inet 10.188.0.218/16 brd 10.188.255.255 scope global net1\n       valid_lft forever preferred_lft forever\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-sdmul3l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-sdmul3l",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用database-2 Pod访问database-1 Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-org073j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-org073j",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl exec -it database-2-0 -- /bin/bash\nroot@database-2-0:/# \nroot@database-2-0:/# ip address\n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n3: eth0@if10: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1400 qdisc noqueue state UP \n    link/ether ba:32:1c:33:dc:a6 brd ff:ff:ff:ff:ff:ff\n    inet 10.244.69.7/24 brd 10.244.69.255 scope global eth0\n       valid_lft forever preferred_lft forever\n4: net1@if2: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1500 qdisc noqueue state UP \n    link/ether 86:3b:09:c8:31:93 brd ff:ff:ff:ff:ff:ff\n    inet 10.188.0.219/16 brd 10.188.255.255 scope global net1\n       valid_lft forever preferred_lft forever\nroot@database-2-0:/# \nroot@database-2-0:/# \nroot@database-2-0:/# ping 10.188.0.218\nPING 10.188.0.218 (10.188.0.218): 48 data bytes\n56 bytes from 10.188.0.218: icmp_seq=0 ttl=64 time=0.335 ms\n56 bytes from 10.188.0.218: icmp_seq=1 ttl=64 time=0.246 ms\n56 bytes from 10.188.0.218: icmp_seq=2 ttl=64 time=0.484 ms\n56 bytes from 10.188.0.218: icmp_seq=3 ttl=64 time=0.371 ms\n^C--- 10.188.0.218 ping statistics ---\n4 packets transmitted, 4 packets received, 0% packet loss\nround-trip min/avg/max/stddev = 0.246/0.359/0.484/0.085 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-hjojc99",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308234146-hjojc99",
+				"updated": "20230308234156"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 验证固定IP通信"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-uc9h14g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-uc9h14g",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上文中使用kube-ipam进行固定IP的容器在删除、漂移、重启之后，重新起来的容器依然保持原有的IP地址固定不变。"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-aog5dcd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234146-aog5dcd",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.1 删除一个database Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-83ghrmj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-83ghrmj",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl delete pod database-2-0\npod \"database-2-0\" deleted\n#\n# kubectl get pod -o wide      \nNAME                   READY   STATUS              RESTARTS   AGE     IP            NODE           \ndatabase-1-0           1/1     Running             0          20m     10.244.69.7   192.168.1.13   \ndatabase-2-0           0/1     ContainerCreating   0          1s      \u003cnone\u003e        192.168.1.12   \nweb-5fd8684df7-8c7zb   1/1     Running             0          3h35m   10.244.71.8   192.168.1.14   \nweb-5fd8684df7-p9g8s   1/1     Running             0          3h35m   10.244.71.9   192.168.1.14   \n# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-94v94qh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234146-94v94qh",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.2 重新启动Pod的IP地址不变"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-a4on3h6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-a4on3h6",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl get pod -o wide \nNAME                   READY   STATUS    RESTARTS   AGE     IP            NODE           \ndatabase-1-0           1/1     Running   0          20m     10.244.69.7   192.168.1.13   \ndatabase-2-0           1/1     Running   0          4s      10.244.5.6    192.168.1.12   \nweb-5fd8684df7-8c7zb   1/1     Running   0          3h35m   10.244.71.8   192.168.1.14   \nweb-5fd8684df7-p9g8s   1/1     Running   0          3h35m   10.244.71.9   192.168.1.14   \n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-5kne7xv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-5kne7xv",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看重新启动Pod的IP地址，我们发现net1网卡的IP地址依然为10.188.0.219"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-im9b137",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-im9b137",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl exec -it database-2-0 -- ip address\n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n3: eth0@if10: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1400 qdisc noqueue state UP \n    link/ether fa:0c:af:f7:ca:4d brd ff:ff:ff:ff:ff:ff\n    inet 10.244.5.6/24 brd 10.244.5.255 scope global eth0\n       valid_lft forever preferred_lft forever\n4: net1@if2: \u003cBROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN\u003e mtu 1500 qdisc noqueue state UP \n    link/ether 72:17:7d:5d:fd:fc brd ff:ff:ff:ff:ff:ff\n    inet 10.188.0.219/16 brd 10.188.255.255 scope global net1\n       valid_lft forever preferred_lft forever\n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-4w0523n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308234146-4w0523n",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.3 验证容器可以正常访问"
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-iuvbx3x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308234146-iuvbx3x",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用Web Pod或其他Database Pod访问这个刚刚删除重建的database-2 Pod，可以正常访问："
+				}
+			]
+		},
+		{
+			"ID": "20230308234146-1omvech",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308234146-1omvech",
+				"updated": "20230308234146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl exec -it web-5fd8684df7-8c7zb -- ping 10.188.0.219\nPING 10.188.0.219 (10.188.0.219): 48 data bytes\n56 bytes from 10.188.0.219: icmp_seq=0 ttl=64 time=0.720 ms\n56 bytes from 10.188.0.219: icmp_seq=1 ttl=64 time=0.341 ms\n56 bytes from 10.188.0.219: icmp_seq=2 ttl=64 time=0.485 ms\n56 bytes from 10.188.0.219: icmp_seq=3 ttl=64 time=0.389 ms\n56 bytes from 10.188.0.219: icmp_seq=4 ttl=64 time=0.454 ms\n^C--- 10.188.0.219 ping statistics ---\n5 packets transmitted, 5 packets received, 0% packet loss\nround-trip min/avg/max/stddev = 0.341/0.478/0.720/0.131 ms\n#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230309002507-7cxd8n7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230309002507-7cxd8n7",
+				"updated": "20230309002507"
+			}
+		}
+	]
+}

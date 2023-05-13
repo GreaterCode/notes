@@ -1,0 +1,576 @@
+{
+	"ID": "20221121170633-dxgwylz",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221121170633-dxgwylz",
+		"title": "优化",
+		"updated": "20221121174434"
+	},
+	"Children": [
+		{
+			"ID": "20221121170701-ivzpx8t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221121170701-ivzpx8t",
+				"updated": "20221121173749"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 资源配置优化"
+				}
+			]
+		},
+		{
+			"ID": "20221121170705-8fa6jqu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221121170705-8fa6jqu",
+				"updated": "20221121170709"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "去掉k8s控制面组件（etcd、apiserver、controller-manager、scheduler）的资源limit，确保资源配给"
+				}
+			]
+		},
+		{
+			"ID": "20221121170714-4pu8chv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221121170714-4pu8chv",
+				"updated": "20221121173754"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 优化内核参数"
+				}
+			]
+		},
+		{
+			"ID": "20221121170901-3mub3m2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121170901-3mub3m2",
+				"updated": "20221121172100"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " # k8s.conf\nnet.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\nnet.ipv4.ip_forward = 1\nnet.netfilter.nf_conntrack_tcp_be_liberal = 1\n\n# sys.conf\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv4.neigh.default.gc_stale_time=120\nnet.ipv4.conf.default.accept_source_route = 0\nkernel.msgmnb = 65536\nkernel.msgmax = 65536\nnet.ipv4.conf.all.rp_filter = 1\nnet.ipv4.conf.default.rp_filter = 1\nkernel.shmmax = 68719476736\nkernel.shmall = 4294967296\nnet.ipv4.tcp_max_tw_buckets = 6000\nnet.core.wmem_default = 8388608\nnet.core.rmem_default = 8388608\nnet.core.rmem_max = 16777216\nnet.core.wmem_max = 16777216\nnet.core.netdev_max_backlog = 32768\nnet.ipv4.tcp_max_syn_backlog = 65536\nnet.core.somaxconn = 32768\nnet.ipv4.tcp_max_orphans = 3276800\nnet.ipv4.tcp_max_syn_backlog = 262144\nnet.ipv4.tcp_timestamps = 0\nnet.ipv4.tcp_synack_retries = 1\nnet.ipv4.tcp_syn_retries = 1\nnet.ipv4.tcp_tw_reuse = 1\nnet.ipv4.tcp_mem = 94500000 915000000 927000000\nnet.ipv4.tcp_fin_timeout = 1\nnet.ipv4.ip_no_pmtu_disc = 1\nnet.ipv4.ip_local_port_range = 32768 65000\nnet.bridge.bridge-nf-call-ip6tables = 1\nnet.bridge.bridge-nf-call-iptables = 1\nnet.ipv4.ip_forward = 1\nnet.ipv4.neigh.default.gc_thresh3 = 4096\nnet.ipv4.neigh.default.gc_thresh2 = 1024\nvm.swappiness = 0\n\nnet.ipv6.conf.all.forwarding = 1\n\nfs.inotify.max_user_watches = 65536\nfs.inotify.max_user_instances = 8192\n\n# ARP缓存表项上限\nnet.ipv4.neigh.default.gc_thresh1 = 80000\nnet.ipv4.neigh.default.gc_thresh2 = 90000\nnet.ipv4.neigh.default.gc_thresh3 = 100000\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121172130-ru3rq6k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221121172130-ru3rq6k",
+				"updated": "20221121173819"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. event使用独立的etcd"
+				}
+			]
+		},
+		{
+			"ID": "20221121172140-x79o4g6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221121172140-x79o4g6",
+				"updated": "20221121172200"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--etcd-servers-overrides"
+				}
+			]
+		},
+		{
+			"ID": "20221121173825-d038ns7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221121173825-d038ns7",
+				"updated": "20221121173827"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. k8s控制面参数调优"
+				}
+			]
+		},
+		{
+			"ID": "20221121173839-z0pu2n7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121173839-z0pu2n7",
+				"updated": "20221121173849"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 API优先级和公平"
+				}
+			]
+		},
+		{
+			"ID": "20221121173916-sdwkdxu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221121173916-sdwkdxu",
+				"updated": "20221121173917"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tlease的update得提升优先级，防止因api不及时更新导致的节点NotReady："
+				}
+			]
+		},
+		{
+			"ID": "20221121172207-xh7bzy3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221121172207-xh7bzy3",
+				"updated": "20221121173937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221121173937-fp78ced.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221121173940-8ifh0ji",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121173940-8ifh0ji",
+				"updated": "20221121173952"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 etcd"
+				}
+			]
+		},
+		{
+			"ID": "20221121173952-wu44qnc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121173952-wu44qnc",
+				"updated": "20221121174004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--logger=zap\n--log-level=info\n--metrics=extensive\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121174012-74hx5pu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121174012-74hx5pu",
+				"updated": "20221121174018"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 kubelet"
+				}
+			]
+		},
+		{
+			"ID": "20221121174018-t83u3rl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121174018-t83u3rl",
+				"updated": "20221121174027"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "nodeLeaseDurationSeconds: 默认40s\nnodeStatusUpdateFrequency: 默认10s，kubelet计算节点状态更新的周期\nnodeStatusReportFrequency: 默认5min，强制update node.status的周期，即使节点状态没有更新\nsyncFrequency：默认1min，同步容器状态的周期\nkubeAPIQPS: 50\nkubeAPIBurst: 100\nserializeImagePulls: false\nfeatureGates:\n\tAPIPriorityAndFairness: true\n\tLegacyNodeRoleBehavior: false\n\tNodeDisruptionExclusion: true\n\tServiceNodeExclusion: true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121174044-c4h9hxk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121174044-c4h9hxk",
+				"updated": "20221121174048"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.4 kube-apiserver"
+				}
+			]
+		},
+		{
+			"ID": "20221121174056-v8hcmeo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121174056-v8hcmeo",
+				"updated": "20221121174112"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\n  \"apiServerArguments\": {\n    \"event-ttl\": [\n      \"3h\"\n    ],\n    \"feature-gates\": [\n      \"APIPriorityAndFairness=true\",\n      \"NodeDisruptionExclusion=true\",\n      \"ServiceNodeExclusion=true\",\n      \"LegacyNodeRoleBehavior=false\"\n    ],\n    \"goaway-chance\": [\n      \"0\"\n    ],\n    \"http2-max-streams-per-connection\": [\n      \"2000\"\n    ],\n    \"max-mutating-requests-inflight\": [\n      \"1000\"\n    ],\n    \"max-requests-inflight\": [\n      \"3000\"\n    ],\n    \"min-request-timeout\": [\n      \"3600\"\n    ],\n    \"shutdown-delay-duration\": [\n      \"70s\"\n    ],\n    \"shutdown-send-retry-after\": [\n      \"true\"\n    ],\n    ...\n  }\n  ...\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121174123-wq3ls32",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121174123-wq3ls32",
+				"updated": "20221121174143"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.5 audit日志策略"
+				}
+			]
+		},
+		{
+			"ID": "20221121174208-hln5jdh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121174208-hln5jdh",
+				"updated": "20221121174230"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: audit.k8s.io/v1\nkind: Policy\nmetadata:\n  creationTimestamp: null\n  name: policy\nomitStages:\n- RequestReceived\nrules:\n- level: None\n  resources:\n  - resources:\n    - events\n- level: None\n  nonResourceURLs:\n  - /api*\n  - /version\n  - /healthz\n  - /readyz\n  userGroups:\n  - system:authenticated\n  - system:unauthenticated\n- level: RequestResponse\n  resources:\n  - group: user.openshift.io\n    resources:\n    - identities\n  - group: oauth.openshift.io\n    resources:\n    - oauthaccesstokens\n    - oauthauthorizetokens\n  verbs:\n  - create\n  - update\n  - patch\n  - delete\n- level: Metadata\n  omitStages:\n  - RequestReceived\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121174313-jj95eon",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121174313-jj95eon",
+				"updated": "20221121174330"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6 kube-controller-manager"
+				}
+			]
+		},
+		{
+			"ID": "20221121174349-04pnhwa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121174349-04pnhwa",
+				"updated": "20221121174403"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--feature-gates=APIPriorityAndFairness=true\n--feature-gates=LegacyNodeRoleBehavior=false\n--feature-gates=NodeDisruptionExclusion=true\n--feature-gates=ServiceNodeExclusion=true\n--kube-api-burst=300\n--kube-api-qps=150\n--leader-elect-resource-lock=configmaps\n--leader-elect-retry-period=3s\n--leader-elect=true\n--pv-recycler-pod-template-filepath-hostpath=/etc/kubernetes/static-pod-resources/configmaps/recycler-config/recycler-pod.yaml\n--pv-recycler-pod-template-filepath-nfs=/etc/kubernetes/static-pod-resources/configmaps/recycler-config/recycler-pod.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121174406-yzyf0g5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221121174406-yzyf0g5",
+				"updated": "20221121174422"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.7  kube-scheduler"
+				}
+			]
+		},
+		{
+			"ID": "20221121174432-57629vq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221121174432-57629vq",
+				"updated": "20221121174434"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--feature-gates=APIPriorityAndFairness=true,LegacyNodeRoleBehavior=false,NodeDisruptionExclusion=true,ServiceNodeExclusion=true\n \n{\n  \"leaderElection\": {\n    \"leaderElect\": true,\n    \"leaseDuration\": \"137s\",\n    \"renewDeadline\": \"107s\",\n    \"resourceLock\": \"configmaps\",\n    \"retryPeriod\": \"26s\"\n  }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221121173639-op7lox8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221121173639-op7lox8",
+				"updated": "20221121174407"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考链接"
+				}
+			]
+		},
+		{
+			"ID": "20221121173706-i93a5lg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221121173706-i93a5lg",
+				"updated": "20221121173706"
+			},
+			"Children": [
+				{
+					"ID": "20221121173706-y2jkudt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221121173706-y2jkudt"
+					},
+					"Children": [
+						{
+							"ID": "20221121173706-6f8rki8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221121173706-6f8rki8"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://openai.com/blog/scaling-kubernetes-to-2500-nodes/",
+									"TextMarkTextContent": "https://openai.com/blog/scaling-kubernetes-to-2500-nodes/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221121173706-imnhk0f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221121173706-imnhk0f"
+					},
+					"Children": [
+						{
+							"ID": "20221121173706-m8ucrm2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221121173706-m8ucrm2"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://openai.com/blog/scaling-kubernetes-to-7500-nodes/",
+									"TextMarkTextContent": "https://openai.com/blog/scaling-kubernetes-to-7500-nodes/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221121173706-6doi6be",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221121173706-6doi6be"
+					},
+					"Children": [
+						{
+							"ID": "20221121173706-bmgv65h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221121173706-bmgv65h"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.sofastack.tech/blog/ant-groups-10000-scale-k8s-cluster-etcd-high-availability-construction-road/",
+									"TextMarkTextContent": "https://www.sofastack.tech/blog/ant-groups-10000-scale-k8s-cluster-etcd-high-availability-construction-road/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221121173647-gspb34x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221121173647-gspb34x",
+				"updated": "20221121173647"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				}
+			]
+		}
+	]
+}

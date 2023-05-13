@@ -1,0 +1,1670 @@
+{
+	"ID": "20221227085629-m0nt1zu",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221227085629-m0nt1zu",
+		"title": "containerd启动过程",
+		"type": "doc",
+		"updated": "20221228083732"
+	},
+	"Children": [
+		{
+			"ID": "20221227085630-33tzrpq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227085630-33tzrpq",
+				"updated": "20221227085630"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"id": ""
+					},
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=github\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "github"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ": ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"id": ""
+					},
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/containerd/containerd",
+					"TextMarkTextContent": "https://github.com/containerd/containerd"
+				}
+			]
+		},
+		{
+			"ID": "20221227085631-w76d2ek",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227085631-w76d2ek",
+				"updated": "20221227085631"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeBang",
+							"Data": "!",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeOpenBracket",
+							"Data": "[",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeCloseBracket",
+							"Data": "]",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeOpenParen",
+							"Data": "(",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221227023859-xo28izv.png",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeCloseParen",
+							"Data": ")",
+							"Properties": {
+								"id": ""
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221227085632-9ojijco",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221227085632-9ojijco",
+				"updated": "20221227085632"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "# ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "1. 前言",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085633-4gd6pty",
+			"Type": "NodeList",
+			"ListData": {
+				"Tight": true,
+				"BulletChar": 42,
+				"Padding": 2,
+				"Marker": "Kg==",
+				"Num": -1
+			},
+			"Properties": {
+				"id": "20221227085633-4gd6pty",
+				"updated": "20221227085633"
+			},
+			"Children": [
+				{
+					"ID": "20221227085634-kqa87dc",
+					"Type": "NodeListItem",
+					"Data": "*",
+					"ListData": {
+						"Tight": true,
+						"BulletChar": 42,
+						"Padding": 2,
+						"Marker": "Kg==",
+						"Num": -1
+					},
+					"Properties": {
+						"id": "20221227085634-kqa87dc",
+						"updated": "20221227085634"
+					},
+					"Children": [
+						{
+							"ID": "20221227085635-ys39j7b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227085635-ys39j7b",
+								"updated": "20221227085635"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "dockerd 是 docker engine 守护进程，dockerd 启动时会启动 containerd 子进程，dockerd 与 containerd 通过 rpc 进行通信",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221227085636-5cvrriq",
+					"Type": "NodeListItem",
+					"Data": "*",
+					"ListData": {
+						"Tight": true,
+						"BulletChar": 42,
+						"Padding": 2,
+						"Marker": "Kg==",
+						"Num": -1
+					},
+					"Properties": {
+						"id": "20221227085636-5cvrriq",
+						"updated": "20221227085636"
+					},
+					"Children": [
+						{
+							"ID": "20221227085637-kx2c21i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227085637-kx2c21i",
+								"updated": "20221227085637"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ctr 是 containerd 的 cli",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221227085638-q5if2q5",
+					"Type": "NodeListItem",
+					"Data": "*",
+					"ListData": {
+						"Tight": true,
+						"BulletChar": 42,
+						"Padding": 2,
+						"Marker": "Kg==",
+						"Num": -1
+					},
+					"Properties": {
+						"id": "20221227085638-q5if2q5",
+						"updated": "20221227085638"
+					},
+					"Children": [
+						{
+							"ID": "20221227085639-vkhuq7w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227085639-vkhuq7w",
+								"updated": "20221227085639"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "containerd 通过 shim 操作 runc，runc 真正控制容器生命周期，启动一个容器就会启动一个 shim 进程",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221227085640-orqylqg",
+					"Type": "NodeListItem",
+					"Data": "*",
+					"ListData": {
+						"Tight": true,
+						"BulletChar": 42,
+						"Padding": 2,
+						"Marker": "Kg==",
+						"Num": -1
+					},
+					"Properties": {
+						"id": "20221227085640-orqylqg",
+						"updated": "20221227085640"
+					},
+					"Children": [
+						{
+							"ID": "20221227085641-psewood",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227085641-psewood",
+								"updated": "20221227085641"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "shim 直接调用 runc 的包函数,shim 与 containerd 之前通过 rpc 通信",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221227085642-l2vxkhb",
+					"Type": "NodeListItem",
+					"Data": "*",
+					"ListData": {
+						"Tight": true,
+						"BulletChar": 42,
+						"Padding": 2,
+						"Marker": "Kg==",
+						"Num": -1
+					},
+					"Properties": {
+						"id": "20221227085642-l2vxkhb",
+						"updated": "20221227085642"
+					},
+					"Children": [
+						{
+							"ID": "20221227085643-mlqcf96",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227085643-mlqcf96",
+								"updated": "20221227085643"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "真正用户想启动的进程由 runc 的 init 进程启动，即 runc init [args ...]",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221227085644-v4ftgak",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20221227085644-v4ftgak",
+				"updated": "20221227085644"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker     ctr\n  |         |\n  V         V\ndockerd -\u003e containerd ---\u003e shim -\u003e runc -\u003e runc init -\u003e process\n                      |-- \u003e shim -\u003e runc -\u003e runc init -\u003e process\n                      +-- \u003e shim -\u003e runc -\u003e runc init -\u003e process\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085645-xf4xxxf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227085645-xf4xxxf",
+				"updated": "20221227085645"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "containerd 只是一个守护进程，容器的实际运行时由 runC 控制。",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"id": ""
+					},
+					"TextMarkType": "em strong",
+					"TextMarkTextContent": "containerd 主要职责是镜像管理（镜像、元信息等）、容器执行"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "（调用最终运行时组件执行）",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085646-7ohg32y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227085646-7ohg32y",
+				"updated": "20221227085646"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeBang",
+							"Data": "!",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeOpenBracket",
+							"Data": "[",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeCloseBracket",
+							"Data": "]",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeOpenParen",
+							"Data": "(",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221227024423-1aw2ge0.png",
+							"Properties": {
+								"id": ""
+							}
+						},
+						{
+							"Type": "NodeCloseParen",
+							"Data": ")",
+							"Properties": {
+								"id": ""
+							}
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085647-7vjio8c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221227085647-7vjio8c",
+				"updated": "20221227085647"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "# ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2. 源码编译",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085648-bnqtlsz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227085648-bnqtlsz",
+				"updated": "20221227085648"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要安装依赖包：btrfs-tools，直接 make 即可生成 ctr containerd containerd-shim binaries 可执行文件",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085649-9ltuy4n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221227085649-9ltuy4n",
+				"updated": "20221227085649"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "## ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2.1 containerd main 函数",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085650-dibd0ja",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227085650-dibd0ja",
+				"updated": "20221227085650"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "入口目录为 cmd/containerd/main.go 中 main 函数，默认配置文件 /etc/containerd/config.toml，包含三个子命令，configCommand，publishCommand，ociHook",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085651-urlybb9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20221227085651-urlybb9",
+				"updated": "20221227085651"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\tapp := command.App()\n\tif err := app.Run(os.Args); err != nil {\n\t\tfmt.Fprintf(os.Stderr, \"containerd: %s\\n\", err)\n\t\tos.Exit(1)\n\t}\n}\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085652-r9i9x60",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221227085652-r9i9x60",
+				"updated": "20221227085652"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "### ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2.1.1 command App 函数",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085653-49cshu1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20221227085653-49cshu1",
+				"updated": "20221227085653"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//  App 函数返回 *cli.App 实例\nfunc App() *cli.App {\n\tapp := cli.NewApp()\n\tapp.Name = \"containerd\"\n\tapp.Version = version.Version\n\tapp.Usage = usage\n\tapp.Description = `\ncontainerd is a high performance container runtime whose daemon can be started\nby using this command. If none of the *config*, *publish*, or *help* commands\nare specified, the default action of the **containerd** command is to start the\ncontainerd daemon in the foreground.\n\n\nA default configuration is used if no TOML configuration is specified or located\nat the default file location. The *containerd config* command can be used to\ngenerate the default configuration for containerd. The output of that command\ncan be used and modified as necessary as a custom configuration.`\n// 如果未指定 TOML 配置或位于默认文件位置，则使用默认配置。容器配置命令可用于生成容器的默认配置。该命令的输出可以根据需要作为自定义配置使用和修改\n\tapp.Flags = []cli.Flag{\n\t\tcli.StringFlag{\n\t\t\tName:  \"config,c\",\n\t\t\tUsage: \"path to the configuration file\",\n\t\t\tValue: filepath.Join(defaults.DefaultConfigDir, \"config.toml\"),\n\t\t},\n\t\tcli.StringFlag{\n\t\t\tName:  \"log-level,l\",\n\t\t\tUsage: \"set the logging level [trace, debug, info, warn, error, fatal, panic]\",\n\t\t},\n\t\tcli.StringFlag{\n\t\t\tName:  \"address,a\",\n\t\t\tUsage: \"address for containerd's GRPC server\",\n\t\t},\n\t\tcli.StringFlag{\n\t\t\tName:  \"root\",\n\t\t\tUsage: \"containerd root directory\",\n\t\t},\n\t\tcli.StringFlag{\n\t\t\tName:  \"state\",\n\t\t\tUsage: \"containerd state directory\",\n\t\t},\n\t}\n\tapp.Flags = append(app.Flags, serviceFlags()...)\n\t// configCommand 用于生成配置文件 containerd config default \u003e /etc/containerd/config.toml，publishCommand，ociHook  \n\t// publishCommand 二进制方式推送数据到containerd\n\t// ociHook 为 OCI 运行时钩子提供基础，以允许注入参数\n       \tapp.Commands = []cli.Command{\n\t\tconfigCommand,\n\t\tpublishCommand,\n\t\tociHook,\n\t}\n\t//未指定子命令时要执行的操作 \n        // 需要“cli.ActionFunc”，但可以接受“func（cli.Context） {}” \n\t// 注意：对已弃用的“Action”的支持将在将来的版本中删除\n\tapp.Action = func(context *cli.Context) error {\n\t\tvar (\n\t\t\tstart       = time.Now()\n\t\t\tsignals     = make(chan os.Signal, 2048)\n\t\t\tserverC     = make(chan *server.Server, 1)\n\t\t\tctx, cancel = gocontext.WithCancel(gocontext.Background())\n\t\t\tconfig      = defaultConfig()\n\t\t)\n\n\t\tdefer cancel()\n\n \t\t// 仅当配置存在或用户明确告诉我们加载此路径时，才尝试加载配置。\n\t\tconfigPath := context.GlobalString(\"config\")\n\t\t_, err := os.Stat(configPath)\n\t\tif !os.IsNotExist(err) || context.GlobalIsSet(\"config\") {\n\t\t\tif err := srvconfig.LoadConfig(configPath, config); err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\t\t}\n\n\t\t// 将传入参数应用于配置\n\t\tif err := applyFlags(context, config); err != nil {\n\t\t\treturn err\n\t\t}\n\n\t\t//  确定根目录被创建\n\t\tif err := server.CreateTopLevelDirectories(config); err != nil {\n\t\t\treturn err\n\t\t}\n\n\t\t// Stop if we are registering or unregistering against Windows SCM.\n\t\tstop, err := registerUnregisterService(config.Root)\n\t\tif err != nil {\n\t\t\tlogrus.Fatal(err)\n\t\t}\n\t\tif stop {\n\t\t\treturn nil\n\t\t}\n\n\t\tdone := handleSignals(ctx, signals, serverC, cancel)\n\t\t// start the signal handler as soon as we can to make sure that\n\t\t// we don't miss any signals during boot\n\t\tsignal.Notify(signals, handledSignals...)\n\n\t\t// 清理挂载点\n\t\tif err := mount.SetTempMountLocation(filepath.Join(config.Root, \"tmpmounts\")); err != nil {\n\t\t\treturn fmt.Errorf(\"creating temp mount location: %w\", err)\n\t\t}\n\t\t// unmount all temp mounts on boot for the server\n\t\twarnings, err := mount.CleanupTempMounts(0)\n\t\tif err != nil {\n\t\t\tlog.G(ctx).WithError(err).Error(\"unmounting temp mounts\")\n\t\t}\n\t\tfor _, w := range warnings {\n\t\t\tlog.G(ctx).WithError(w).Warn(\"cleanup temp mount\")\n\t\t}\n\t\t// 配置文件中grpc address 不能为空\n\t\tif config.GRPC.Address == \"\" {\n\t\t\treturn fmt.Errorf(\"grpc address cannot be empty: %w\", errdefs.ErrInvalidArgument)\n\t\t}\n\t\tif config.TTRPC.Address == \"\" {\n\t\t\t// If TTRPC was not explicitly configured, use defaults based on GRPC.\n\t\t\tconfig.TTRPC.Address = fmt.Sprintf(\"%s.ttrpc\", config.GRPC.Address)\n\t\t\tconfig.TTRPC.UID = config.GRPC.UID\n\t\t\tconfig.TTRPC.GID = config.GRPC.GID\n\t\t}\n\t\tlog.G(ctx).WithFields(logrus.Fields{\n\t\t\t\"version\":  version.Version,\n\t\t\t\"revision\": version.Revision,\n\t\t}).Info(\"starting containerd\")\n\n\t\ttype srvResp struct {\n\t\t\ts   *server.Server\n\t\t\terr error\n\t\t}\n\n\t\t// run server initialization in a goroutine so we don't end up blocking important things like SIGTERM handling\n\t\t// while the server is initializing.\n\t\t// As an example opening the bolt database will block forever if another containerd is already running and containerd\n\t\t// will have to be be `kill -9`'ed to recover.\n\t\t// 在 goroutine 中运行服务器初始化，这样我们就不会在服务器初始化时阻止重要的事情，例如 SIGTERM 处理。\n                // 例如，如果另一个 containerd 已经在运行，则打开 bolt 数据库将永远阻塞，并且 containerd 必须被“kill -9”才能恢复。\n\t\tchsrv := make(chan srvResp)\n\t\tgo func() {\n\t\t\tdefer close(chsrv)\n\n\t\t\tserver, err := server.New(ctx, config)\n\t\t\tif err != nil {\n\t\t\t\tselect {\n\t\t\t\tcase chsrv \u003c- srvResp{err: err}:\n\t\t\t\tcase \u003c-ctx.Done():\n\t\t\t\t}\n\t\t\t\treturn\n\t\t\t}\n\n\t\t\t// Launch as a Windows Service if necessary\n\t\t\tif err := launchService(server, done); err != nil {\n\t\t\t\tlogrus.Fatal(err)\n\t\t\t}\n\t\t\tselect {\n\t\t\tcase \u003c-ctx.Done():\n\t\t\t\tserver.Stop()\n\t\t\tcase chsrv \u003c- srvResp{s: server}:\n\t\t\t}\n\t\t}()\n\n\t\tvar server *server.Server\n\t\tselect {\n\t\tcase \u003c-ctx.Done():\n\t\t\treturn ctx.Err()\n\t\tcase r := \u003c-chsrv:\n\t\t\tif r.err != nil {\n\t\t\t\treturn r.err\n\t\t\t}\n\t\t\tserver = r.s\n\t\t}\n\n\t\t// We don't send the server down serverC directly in the goroutine above because we need it lower down.\n\t\tselect {\n\t\tcase \u003c-ctx.Done():\n\t\t\treturn ctx.Err()\n\t\tcase serverC \u003c- server:\n\t\t}\n\n\t\tif config.Debug.Address != \"\" {\n\t\t\tvar l net.Listener\n\t\t\tif isLocalAddress(config.Debug.Address) {\n\t\t\t\tif l, err = sys.GetLocalListener(config.Debug.Address, config.Debug.UID, config.Debug.GID); err != nil {\n\t\t\t\t\treturn fmt.Errorf(\"failed to get listener for debug endpoint: %w\", err)\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\tif l, err = net.Listen(\"tcp\", config.Debug.Address); err != nil {\n\t\t\t\t\treturn fmt.Errorf(\"failed to get listener for debug endpoint: %w\", err)\n\t\t\t\t}\n\t\t\t}\n\t\t\tserve(ctx, l, server.ServeDebug)\n\t\t}\n\t\tif config.Metrics.Address != \"\" {\n\t\t\tl, err := net.Listen(\"tcp\", config.Metrics.Address)\n\t\t\tif err != nil {\n\t\t\t\treturn fmt.Errorf(\"failed to get listener for metrics endpoint: %w\", err)\n\t\t\t}\n\t\t\tserve(ctx, l, server.ServeMetrics)\n\t\t}\n\t\t// setup the ttrpc endpoint\n\t\ttl, err := sys.GetLocalListener(config.TTRPC.Address, config.TTRPC.UID, config.TTRPC.GID)\n\t\tif err != nil {\n\t\t\treturn fmt.Errorf(\"failed to get listener for main ttrpc endpoint: %w\", err)\n\t\t}\n\t\tserve(ctx, tl, server.ServeTTRPC)\n\n\t\tif config.GRPC.TCPAddress != \"\" {\n\t\t\tl, err := net.Listen(\"tcp\", config.GRPC.TCPAddress)\n\t\t\tif err != nil {\n\t\t\t\treturn fmt.Errorf(\"failed to get listener for TCP grpc endpoint: %w\", err)\n\t\t\t}\n\t\t\tserve(ctx, l, server.ServeTCP)\n\t\t}\n\t\t// setup the main grpc endpoint\n\t\tl, err := sys.GetLocalListener(config.GRPC.Address, config.GRPC.UID, config.GRPC.GID)\n\t\tif err != nil {\n\t\t\treturn fmt.Errorf(\"failed to get listener for main endpoint: %w\", err)\n\t\t}\n\t\tserve(ctx, l, server.ServeGRPC)\n\n\t\tif err := notifyReady(ctx); err != nil {\n\t\t\tlog.G(ctx).WithError(err).Warn(\"notify ready failed\")\n\t\t}\n\n\t\tlog.G(ctx).Infof(\"containerd successfully booted in %fs\", time.Since(start).Seconds())\n\t\t\u003c-done\n\t\treturn nil\n\t}\n\treturn app\n\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085654-plo62w6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221227085654-plo62w6",
+				"updated": "20221227085654"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "## ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2.2 server.New 函数创建以及初始化 containerd server",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085655-up6wdon",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221227085655-up6wdon",
+				"updated": "20221227085655"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "### ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2.2.1 初始化 contaienrd server，加载 timeout 配置",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085656-7z708hr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20221227085656-7z708hr",
+				"updated": "20221227085656"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func New(ctx context.Context, config *srvconfig.Config) (*Server, error) {\n\tif err := apply(ctx, config); err != nil {\n\t\treturn nil, err\n\t}\n\tfor key, sec := range config.Timeouts {\n\t\td, err := time.ParseDuration(sec)\n\t\tif err != nil {\n\t\t\treturn nil, fmt.Errorf(\"unable to parse %s into a time duration\", sec)\n\t\t}\n\t\ttimeout.Set(key, d)\n\t}\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085657-297dz9j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockInfo": "c2hlbGw=",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20221227085657-297dz9j",
+				"updated": "20221227085657"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw=",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[timeouts]\n  \"io.containerd.timeout.shim.cleanup\" = \"5s\"\n  \"io.containerd.timeout.shim.load\" = \"5s\"\n  \"io.containerd.timeout.shim.shutdown\" = \"3s\"\n  \"io.containerd.timeout.task.state\" = \"2s\"\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085658-hv4p2gj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221227085658-hv4p2gj",
+				"updated": "20221227085658"
+			},
+			"Children": [
+				{
+					"Type": "NodeHeadingC8hMarker",
+					"Data": "### ",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2.2.2 LoadPlugins 加载插件",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085659-h1i5zdh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockInfo": "c2hlbGw=",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20221227085659-h1i5zdh",
+				"updated": "20221227085659"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw=",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n// LoadPlugins loads all plugins into containerd and generates an ordered graph\n// of all plugins.\nfunc LoadPlugins(ctx context.Context, config *srvconfig.Config) ([]*plugin.Registration, error) {\n\t// load all plugins into containerd\n\tpath := config.PluginDir\n\tif path == \"\" {\n\t\tpath = filepath.Join(config.Root, \"plugins\")\n\t}\n\tif err := plugin.Load(path); err != nil {\n\t\treturn nil, err\n\t}\n\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20221227085662-fksbsh4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221227085662-fksbsh4",
+				"updated": "20221227112642"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2.2.1 注册插件 io.containerd.content.v1"
+				}
+			]
+		},
+		{
+			"ID": "20221227085664-0alk30g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227085664-0alk30g",
+				"updated": "20221227104314"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// load additional plugins that don't automatically register themselves\n\tplugin.Register(\u0026plugin.Registration{\n\t\tType: plugin.ContentPlugin,\n\t\tID:   \"content\",\n\t\tInitFn: func(ic *plugin.InitContext) (interface{}, error) {\n\t\t\tic.Meta.Exports[\"root\"] = ic.Root\n\t\t\treturn local.NewStore(ic.Root)\n\t\t},\n\t})\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227104320-lizw9q8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227104320-lizw9q8",
+				"updated": "20221227104323"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "，"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "store 结构体 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实现了 Store 接口"
+				}
+			]
+		},
+		{
+			"ID": "20221227085663-ikgb98c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227085663-ikgb98c",
+				"updated": "20221227085663"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "路径 containerd/content/local/store.go\n\n// Store combines the methods of content-oriented interfaces into a set that\n// are commonly provided by complete implementations.\ntype Store interface {\n    Manager\n    Provider\n    IngestManager\n    Ingester\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227105237-5xc0kif",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221227105237-5xc0kif",
+				"updated": "20221227112638"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2.2.2 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注册插件 io.containerd.metadata.v1，使用 bolt 数据库存储"
+				}
+			]
+		},
+		{
+			"ID": "20221227105313-s5ea02b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227105313-s5ea02b",
+				"updated": "20221227105316"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\tplugin.Register(\u0026plugin.Registration{\n\t\tType: plugin.MetadataPlugin,\n\t\tID:   \"bolt\",\n\t\tRequires: []plugin.Type{\n\t\t\tplugin.ContentPlugin,\n\t\t\tplugin.SnapshotPlugin,\n\t\t},\n\t\tConfig: \u0026srvconfig.BoltConfig{\n\t\t\tContentSharingPolicy: srvconfig.SharingPolicyShared,\n\t\t},\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227111005-j72051d",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221227111005-j72051d",
+				"updated": "20221227112654"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2.2.3 遍历所有插件"
+				}
+			]
+		},
+		{
+			"ID": "20221227111419-kvx57h5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227111419-kvx57h5",
+				"updated": "20221227111421"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "类型为 io.containerd.snapshotter.v1，或者 snapshot，实现在 containerd/snapshots/proxy/proxy.go，proxySnapshotter 结构体实现了 Snapshotter 接口"
+				}
+			]
+		},
+		{
+			"ID": "20221227111011-ye80mq4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227111011-ye80mq4",
+				"updated": "20221227111015"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\tclients := \u0026proxyClients{}\n\tfor name, pp := range config.ProxyPlugins {\n\t\tvar (\n\t\t\tt plugin.Type\n\t\t\tf func(*grpc.ClientConn) interface{}\n\n\t\t\taddress = pp.Address\n\t\t)\n\n\t\tswitch pp.Type {\n\t\tcase string(plugin.SnapshotPlugin), \"snapshot\":\n\t\t\tt = plugin.SnapshotPlugin\n\t\t\tssname := name\n\t\t\tf = func(conn *grpc.ClientConn) interface{} {\n\t\t\t\treturn ssproxy.NewSnapshotter(ssapi.NewSnapshotsClient(conn), ssname)\n\t\t\t}\n\n\t\tcase string(plugin.ContentPlugin), \"content\":\n\t\t\tt = plugin.ContentPlugin\n\t\t\tf = func(conn *grpc.ClientConn) interface{} {\n\t\t\t\treturn csproxy.NewContentStore(csapi.NewContentClient(conn))\n\t\t\t}\n\t\tdefault:\n\t\t\tlog.G(ctx).WithField(\"type\", pp.Type).Warn(\"unknown proxy plugin type\")\n\t\t}\n\n\t\tplugin.Register(\u0026plugin.Registration{\n\t\t\tType: t,\n\t\t\tID:   name,\n\t\t\tInitFn: func(ic *plugin.InitContext) (interface{}, error) {\n\t\t\t\tic.Meta.Exports[\"address\"] = address\n\t\t\t\tconn, err := clients.getClient(address)\n\t\t\t\tif err != nil {\n\t\t\t\t\treturn nil, err\n\t\t\t\t}\n\t\t\t\treturn f(conn), nil\n\t\t\t},\n\t\t})\n\n\t}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227111401-4tu55pt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227111401-4tu55pt",
+				"updated": "20221227111401"
+			}
+		},
+		{
+			"ID": "20221227111351-9hnx6r0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227111351-9hnx6r0",
+				"updated": "20221227111357"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[plugins]\n\n  [plugins.\"io.containerd.snapshotter.v1.devmapper\"]\n    root_path = \"\"\n    pool_name = \"\"\n    base_image_size = \"\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227111604-y8kox8i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227111604-y8kox8i",
+				"updated": "20221227111604"
+			}
+		},
+		{
+			"ID": "20221227111943-zdgk2o3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227111943-zdgk2o3",
+				"updated": "20221227111945"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type Snapshotter interface {\n    Stat(ctx context.Context, key string) (Info, error)\n    Update(ctx context.Context, info Info, fieldpaths ...string) (Info, error)\n    Usage(ctx context.Context, key string) (Usage, error)\n    Mounts(ctx context.Context, key string) ([]mount.Mount, error)\n    Prepare(ctx context.Context, key string, parent string, opts ...Opt) ([]mount.Mount, error)\n    View(ctx context.Context, key string, parent string, opts ...Opt) ([]mount.Mount, error)\n    Commit(ctx context.Context, name string, key string, opts ...Opt) error\n    Remove(ctx context.Context, key string) error\n    Walk(ctx context.Context, fn WalkFunc, filters ...string) error\n    Close() error\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227112121-udwniyt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221227112121-udwniyt",
+				"updated": "20221227112707"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2.2.4 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Graph 函数返回一个注册有序的插件列表"
+				}
+			]
+		},
+		{
+			"ID": "20221227112121-xso2nlv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227112121-xso2nlv",
+				"updated": "20221227112121"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Plugins in disableList specified by id will be disabled.\nfunc Graph(filter DisableFilter) (ordered []*Registration) {\n\tregister.RLock()\n\tdefer register.RUnlock()\n\n\tfor _, r := range register.r {\n\t\tif filter(r) {\n\t\t\tr.Disable = true\n\t\t}\n\t}\n\n\tadded := map[*Registration]bool{}\n\tfor _, r := range register.r {\n\t\tif r.Disable {\n\t\t\tcontinue\n\t\t}\n\t\tchildren(r, added, \u0026ordered)\n\t\tif !added[r] {\n\t\t\tordered = append(ordered, r)\n\t\t\tadded[r] = true\n\t\t}\n\t}\n\treturn ordered\n}"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227112321-t4i0z89",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221227112321-t4i0z89",
+				"updated": "20221227112720"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2.2.5 启动GRPC Server"
+				}
+			]
+		},
+		{
+			"ID": "20221227112334-hxtlrnn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227112334-hxtlrnn",
+				"updated": "20221227112337"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func serve(ctx gocontext.Context, l net.Listener, serveFunc func(net.Listener) error) {\n\tpath := l.Addr().String()\n\tlog.G(ctx).WithField(\"address\", path).Info(\"serving...\")\n\tgo func() {\n\t\tdefer l.Close()\n\t\tif err := serveFunc(l); err != nil {\n\t\t\tlog.G(ctx).WithError(err).WithField(\"address\", path).Fatal(\"serve failure\")\n\t\t}\n\t}()\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227112854-1ws45he",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221227112854-1ws45he",
+				"updated": "20221227113231"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3  获取 GRPC server 配置参数"
+				}
+			]
+		},
+		{
+			"ID": "20221227113426-1k0efrg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227113426-1k0efrg",
+				"updated": "20221227113440"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " [grpc]\n  address = \"/run/containerd/containerd.sock\"\n  tcp_address = \"\"\n  tcp_tls_cert = \"\"\n  tcp_tls_key = \"\"\n  uid = 0\n  gid = 0\n  max_recv_message_size = 16777216\n  max_send_message_size = 16777216  \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228080731-4sboozo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228080731-4sboozo",
+				"updated": "20221228080735"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\tserverOpts := []grpc.ServerOption{\n\t\tgrpc.StreamInterceptor(grpc_middleware.ChainStreamServer(\n\t\t\totelgrpc.StreamServerInterceptor(),\n\t\t\tgrpc.StreamServerInterceptor(grpc_prometheus.StreamServerInterceptor),\n\t\t\tstreamNamespaceInterceptor,\n\t\t)),\n\t\tgrpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(\n\t\t\totelgrpc.UnaryServerInterceptor(),\n\t\t\tgrpc.UnaryServerInterceptor(grpc_prometheus.UnaryServerInterceptor),\n\t\t\tunaryNamespaceInterceptor,\n\t\t)),\n\t}\n\tif config.GRPC.MaxRecvMsgSize \u003e 0 {\n\t\tserverOpts = append(serverOpts, grpc.MaxRecvMsgSize(config.GRPC.MaxRecvMsgSize))\n\t}\n\tif config.GRPC.MaxSendMsgSize \u003e 0 {\n\t\tserverOpts = append(serverOpts, grpc.MaxSendMsgSize(config.GRPC.MaxSendMsgSize))\n\t}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228081128-2gat774",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221228081128-2gat774",
+				"updated": "20221228081149"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 实例化Server"
+				}
+			]
+		},
+		{
+			"ID": "20221228081150-2xips36",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228081150-2xips36",
+				"updated": "20221228081153"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\tvar (\n\t\tgrpcServer = grpc.NewServer(serverOpts...)\n\t\ttcpServer  = grpc.NewServer(tcpServerOpts...)\n\n\t\tgrpcServices  []grpcService\n\t\ttcpServices   []tcpService\n\t\tttrpcServices []ttrpcService\n\n\t\ts = \u0026Server{\n\t\t\tgrpcServer:  grpcServer,\n\t\t\ttcpServer:   tcpServer,\n\t\t\tttrpcServer: ttrpcServer,\n\t\t\tconfig:      config,\n\t\t}\n\t\t// TODO: Remove this in 2.0 and let event plugin crease it\n\t\tevents      = exchange.NewExchange()\n\t\tinitialized = plugin.NewPluginSet()\n\t\trequired    = make(map[string]struct{})\n\t)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228082145-v0nw9qj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221228082145-v0nw9qj",
+				"updated": "20221228082754"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.5  需要开启设置的插件"
+				}
+			]
+		},
+		{
+			"ID": "20221228082217-73aa83t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228082217-73aa83t",
+				"updated": "20221228082230"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "required_plugins = []\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228082217-wh5qokj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228082217-wh5qokj",
+				"updated": "20221228082244"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for _, r := range config.RequiredPlugins {\n\trequired[r] = struct{}{}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228082156-7z7ho9r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221228082156-7z7ho9r",
+				"updated": "20221228082757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.6 Init调用各个注册的 InitFn 函数初始化，分别实现了不同的接口"
+				}
+			]
+		},
+		{
+			"ID": "20221228082440-mkx9r9w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221228082440-mkx9r9w",
+				"updated": "20221228082440"
+			}
+		},
+		{
+			"ID": "20221228082433-ovam6ai",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228082433-ovam6ai",
+				"updated": "20221228082437"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Init the registered plugin\nfunc (r *Registration) Init(ic *InitContext) *Plugin {\n\tp, err := r.InitFn(ic)\n\treturn \u0026Plugin{\n\t\tRegistration: r,\n\t\tConfig:       ic.Config,\n\t\tMeta:         ic.Meta,\n\t\tinstance:     p,\n\t\terr:          err,\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228082549-losdjyq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221228082549-losdjyq",
+				"updated": "20221228082801"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.7 对所有 服务分别调用 Register 方法注册(根据是否实现了 Register 接口，各个插件里面的实现的接口 Register)"
+				}
+			]
+		},
+		{
+			"ID": "20221228082652-ssig4if",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228082652-ssig4if",
+				"updated": "20221228082656"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\t// register services after all plugins have been initialized\n\tfor _, service := range grpcServices {\n\t\tif err := service.Register(grpcServer); err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t}\n\tfor _, service := range ttrpcServices {\n\t\tif err := service.RegisterTTRPC(ttrpcServer); err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t}\n\tfor _, service := range tcpServices {\n\t\tif err := service.RegisterTCP(tcpServer); err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228082614-201jekb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221228082614-201jekb",
+				"updated": "20221228082831"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. plugin"
+				}
+			]
+		},
+		{
+			"ID": "20221228083040-4j6ip4f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228083040-4j6ip4f",
+				"updated": "20221228083051"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Registration contains information for registering a plugin\ntype Registration struct {\n    Type     Type\n    ID       string\n    Config   interface{}\n    Requires []Type\n    InitFn   func(*InitContext) (interface{}, error)\n    Disable  bool\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228083141-rg9nyvh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228083141-rg9nyvh",
+				"updated": "20221228083552"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ctr plugins ls\nTYPE                            ID                    PLATFORMS      STATUS  \nio.containerd.content.v1        content               -              ok  \nio.containerd.snapshotter.v1    btrfs                 linux/amd64    error   \nio.containerd.snapshotter.v1    devmapper             linux/amd64    error   \nio.containerd.snapshotter.v1    aufs                  linux/amd64    error   \nio.containerd.snapshotter.v1    native                linux/amd64    ok  \nio.containerd.snapshotter.v1    overlayfs             linux/amd64    ok  \nio.containerd.snapshotter.v1    zfs                   linux/amd64    error   \nio.containerd.metadata.v1       bolt                  -              ok  \nio.containerd.differ.v1         walking               linux/amd64    ok  \nio.containerd.gc.v1             scheduler             -              ok  \nio.containerd.service.v1        containers-service    -              ok  \nio.containerd.service.v1        content-service       -              ok  \nio.containerd.service.v1        diff-service          -              ok  \nio.containerd.service.v1        images-service        -              ok  \nio.containerd.service.v1        leases-service        -              ok  \nio.containerd.service.v1        namespaces-service    -              ok  \nio.containerd.service.v1        snapshots-service     -              ok  \nio.containerd.runtime.v1        linux                 linux/amd64    ok  \nio.containerd.runtime.v2        task                  linux/amd64    ok  \nio.containerd.monitor.v1        cgroups               linux/amd64    ok  \nio.containerd.service.v1        tasks-service         -              ok  \nio.containerd.internal.v1       restart               -              ok  \nio.containerd.grpc.v1           containers            -              ok  \nio.containerd.grpc.v1           content               -              ok  \nio.containerd.grpc.v1           diff                  -              ok  \nio.containerd.grpc.v1           events                -              ok  \nio.containerd.grpc.v1           healthcheck           -              ok  \nio.containerd.grpc.v1           images                -              ok  \nio.containerd.grpc.v1           leases                -              ok  \nio.containerd.grpc.v1           namespaces            -              ok  \nio.containerd.internal.v1       opt                   -              ok  \nio.containerd.grpc.v1           snapshots             -              ok  \nio.containerd.grpc.v1           tasks                 -              ok  \nio.containerd.grpc.v1           version               -              ok  \nio.containerd.grpc.v1           cri                   linux/amd64    ok\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221228083346-ukpi5hw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221228083346-ukpi5hw",
+				"updated": "20221228083451"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以在源码中看到具体实现"
+				}
+			]
+		},
+		{
+			"ID": "20221228083451-o3htquy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221228083451-o3htquy",
+				"updated": "20221228083613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 以plugin：io.containerd.grpc.v1.containers为例"
+				}
+			]
+		},
+		{
+			"ID": "20221228083502-0g75yzr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221228083502-0g75yzr",
+				"updated": "20221228083627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码路径： services/containers/service.go，ID 为 containers，提供基础元素的存储"
+				}
+			]
+		},
+		{
+			"ID": "20221228083625-thsibu6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221228083625-thsibu6",
+				"updated": "20221228083630"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注册"
+				}
+			]
+		},
+		{
+			"ID": "20221228083728-27ddfu3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221228083728-27ddfu3",
+				"updated": "20221228083732"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func init() {\n\tplugin.Register(\u0026plugin.Registration{\n\t\tType: plugin.GRPCPlugin,\n\t\tID:   \"containers\",\n\t\tRequires: []plugin.Type{\n\t\t\tplugin.ServicePlugin,\n\t\t},\n\t\tInitFn: func(ic *plugin.InitContext) (interface{}, error) {\n\t\t\tplugins, err := ic.GetByType(plugin.ServicePlugin)\n\t\t\tif err != nil {\n\t\t\t\treturn nil, err\n\t\t\t}\n\t\t\tp, ok := plugins[services.ContainersService]\n\t\t\tif !ok {\n\t\t\t\treturn nil, errors.New(\"containers service not found\")\n\t\t\t}\n\t\t\ti, err := p.Instance()\n\t\t\tif err != nil {\n\t\t\t\treturn nil, err\n\t\t\t}\n\t\t\treturn \u0026service{local: i.(api.ContainersClient)}, nil\n\t\t},\n\t})\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

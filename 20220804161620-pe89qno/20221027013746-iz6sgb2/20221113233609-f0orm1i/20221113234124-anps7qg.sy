@@ -1,0 +1,385 @@
+{
+	"ID": "20221113234124-anps7qg",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221113234124-anps7qg",
+		"title": "2. OpenShift 4 - 通过Service的nodePort访问应",
+		"updated": "20221114051704"
+	},
+	"Children": [
+		{
+			"ID": "20221113234124-zxb6t4p",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221113234124-zxb6t4p"
+			}
+		},
+		{
+			"ID": "20221113234124-yyqyeyx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113234124-yyqyeyx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在OpenShift中，通常我们是根据Service生成Route对象来为外部客户端提供一个访问应用的地址。不过也可以不通过Route，而是直接在Node上开一个nodePort来访问Service（虽然这种方式一般不在生产环境中使用）。这种方式的实现机制如下图，当为Service定义了nodePort后，Openshift会在每个对应Node打开nodePort端口（如下图30001），这样当客户端无论访问那个节点的30001端口就都可以访问到Service了（如果在node前再加一层外部负载均衡，就可以实现节点访问负载均衡了）。\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191211180816778-20221113234124-byp4aua.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n 下面我们在OpenShift上实现这种配置。"
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-3unmnk7",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113234124-3unmnk7"
+			},
+			"Children": [
+				{
+					"ID": "20221113234124-53zbwmn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113234124-53zbwmn"
+					},
+					"Children": [
+						{
+							"ID": "20221113234124-kos6uy1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113234124-kos6uy1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建测试应用，其中我们会在nodepod-client上通过NodePort的方式访问nodepod-service应用的Service。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-18dqr27",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113234124-18dqr27"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project service-nodeport\n$ oc new-app openshift/hello-openshift -n service-nodeport\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-tgnsk1s",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113234124-tgnsk1s"
+			},
+			"Children": [
+				{
+					"ID": "20221113234124-sme1a9c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113234124-sme1a9c"
+					},
+					"Children": [
+						{
+							"ID": "20221113234124-h7imp9h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113234124-h7imp9h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "访问OpenShift控制台，查看nodepod-service的Service配置。在YAML页面找到“type: ClusterIP”部分，改为“type: NodePort”，然后Save保存。此时该Service的Details的页面会显示以下的Service显示信息，其中以下Node Port的2个端口是系统自动生成的。如果需要，可以再通过“Edit YAML”修改Node Port。"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "在这里插入图片描述"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/20201213195735796-20221113234124-2ngk2cu.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221113234124-1uqvb3m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221113234124-1uqvb3m"
+					},
+					"Children": [
+						{
+							"ID": "20221113234124-85icl33",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113234124-85icl33"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获得任一个worker角色的Node节点的内部访问IP地址"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-1chkz0l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113234124-1chkz0l"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get nodes --selector=\"node-role.kubernetes.io/worker\"\nNAME                 STATUS   ROLES           AGE   VERSION\nip-10-0-152-241.ap-southeast-1.compute.internal   Ready    worker   5d4h   v1.19.0+7070803\nip-10-0-176-189.ap-southeast-1.compute.internal   Ready    worker   5d4h   v1.19.0+7070803\n$ oc describe node ip-10-0-152-241.ap-southeast-1.compute.internal | grep InternalIP\nInternalIP:  10.0.152.241\n123456\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-49kv79w",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113234124-49kv79w"
+			},
+			"Children": [
+				{
+					"ID": "20221113234124-2bi5r51",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221113234124-2bi5r51"
+					},
+					"Children": [
+						{
+							"ID": "20221113234124-1ea13bs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113234124-1ea13bs"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "进入一个master节点。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-xdxi454",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113234124-xdxi454"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get nodes --selector=\"node-role.kubernetes.io/master\"\nNAME                                              STATUS   ROLES    AGE    VERSION\nip-10-0-130-191.ap-southeast-1.compute.internal   Ready    master   5d4h   v1.19.0+7070803\nip-10-0-164-17.ap-southeast-1.compute.internal    Ready    master   5d4h   v1.19.0+7070803\nip-10-0-193-183.ap-southeast-1.compute.internal   Ready    master   5d4h   v1.19.0+7070803\n \n$ oc debug node/$(oc get nodes --selector=\"node-role.kubernetes.io/master\" | awk 'NR==2{print}' | awk '{print $1}')\n1234567\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-velbh2v",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113234124-velbh2v"
+			},
+			"Children": [
+				{
+					"ID": "20221113234124-7t13gh8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221113234124-7t13gh8"
+					},
+					"Children": [
+						{
+							"ID": "20221113234124-2a0kyo6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113234124-2a0kyo6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在master节点内部通过Node地址+nodePort访问worker节点的Service。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113234124-1qn9cgc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113234124-1qn9cgc"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# curl 10.0.152.241:31306\nHello OpenShift!\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

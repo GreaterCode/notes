@@ -1,0 +1,943 @@
+{
+	"ID": "20221128101746-lp8bvqw",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221128101746-lp8bvqw",
+		"title": "6-EIP和SNAT配置",
+		"updated": "20221128113237"
+	},
+	"Children": [
+		{
+			"ID": "20221128101746-srakvsq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128101746-srakvsq",
+				"updated": "20221128101813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该配置针对默认 VPC 下的网络，用户自定义 VPC 请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://kubeovn.github.io/docs/v1.10.x/guide/vpc/#vpc_2",
+					"TextMarkTextContent": "VPC 网关"
+				}
+			]
+		},
+		{
+			"ID": "20221128101835-4whyz9u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128101835-4whyz9u",
+				"updated": "20221128101841"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-OVN 支持利用 OVN 中的 L3 Gateway 功能来实现 Pod 级别的 SNAT 和 EIP 功能。 通过使用 SNAT，一组 Pod 可以共享一个 IP 地址对外进行访问。 通过 EIP 的功能，一个 Pod 可以直接和一个外部 IP 关联， 外部服务可以通过 EIP 直接访问 Pod，Pod 也将通过这个 EIP 访问外部服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221128101903-6ac56o0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128101903-6ac56o0",
+				"updated": "20221128101905"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Properties": {
+						"parent-style": "display: block;"
+					},
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221128101905-5ihwg2q.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: parent-style=\"display: block;\"}"
+				}
+			]
+		},
+		{
+			"ID": "20221128101941-vlrkh9w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128101941-vlrkh9w",
+				"style": "text-align: center;",
+				"updated": "20221128101941"
+			}
+		},
+		{
+			"ID": "20221128103310-jk8ppr5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128103310-jk8ppr5",
+				"updated": "20221128103336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.  准备工作"
+				}
+			]
+		},
+		{
+			"ID": "20221128103359-2ivlpzj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128103359-2ivlpzj",
+				"updated": "20221128103359"
+			},
+			"Children": [
+				{
+					"ID": "20221128103359-zz0delx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103359-zz0delx"
+					},
+					"Children": [
+						{
+							"ID": "20221128103359-kfn3ac3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103359-kfn3ac3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为了使用 OVN 的 L3 Gateway 能力，必须将一个单独的网卡接入 OVS 网桥中进行 Overlay 和 Underlay 网络的打通， 主机必须有其他的网卡用于运维管理。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103359-uolxlhv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103359-uolxlhv"
+					},
+					"Children": [
+						{
+							"ID": "20221128103359-gyb6cm9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103359-gyb6cm9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于经过 NAT 后的数据包会直接进入 Underlay 网络，必须确认当前的网络架构下此类数据包可以安全通过。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103359-0twzg4k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103359-0twzg4k"
+					},
+					"Children": [
+						{
+							"ID": "20221128103359-2p6z21w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103359-2p6z21w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "目前 EIP 和 SNAT 地址没有冲突检测，需要管理员手动分配避免地址冲突"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128103425-jwljzzc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128103425-jwljzzc",
+				"updated": "20221128103446"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 创建配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20221128103454-8ptlx7s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128103454-8ptlx7s",
+				"updated": "20221128103454"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-system"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 下创建 ConfigMap "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn-external-gw-config"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				}
+			]
+		},
+		{
+			"ID": "20221128103454-ku9ucik",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128103454-ku9ucik",
+				"updated": "20221128103504"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: ovn-external-gw-config\n  namespace: kube-system\ndata:\n  enable-external-gw: \"true\"\n  external-gw-nodes: \"kube-ovn-worker\"\n  external-gw-nic: \"eth1\"\n  external-gw-addr: \"172.56.0.1/16\"\n  nic-ip: \"172.56.0.254/16\"\n  nic-mac: \"16:52:f3:13:6a:25\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128103515-woxzqkp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128103515-woxzqkp",
+				"updated": "20221128103515"
+			},
+			"Children": [
+				{
+					"ID": "20221128103515-odurj0l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103515-odurj0l"
+					},
+					"Children": [
+						{
+							"ID": "20221128103515-ginr3rc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103515-ginr3rc"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "enable-external-gw"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 是否开启 SNAT 和 EIP 功能。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103515-7gf6sps",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103515-7gf6sps"
+					},
+					"Children": [
+						{
+							"ID": "20221128103515-ag2sbay",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103515-ag2sbay"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "type"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "centrailized"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 或 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "distributed"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "， 默认为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "centralized"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 如果使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "distributed"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，则集群所有节点都需要有同名网卡来承担网关功能。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103515-js2d9vg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103515-js2d9vg"
+					},
+					"Children": [
+						{
+							"ID": "20221128103515-0zzjcqe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103515-0zzjcqe"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "external-gw-nodes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "centralized"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 模式下，承担网关作用的节点名，逗号分隔。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103515-zgadrvj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103515-zgadrvj"
+					},
+					"Children": [
+						{
+							"ID": "20221128103515-9nf6um0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103515-9nf6um0"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "external-gw-nic"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 节点上承担网关作用的网卡名。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103515-vfsc4lc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103515-vfsc4lc"
+					},
+					"Children": [
+						{
+							"ID": "20221128103515-upez88j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103515-upez88j"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "external-gw-addr"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 物理网络网关的 IP 和掩码。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128103515-v1kxr7g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128103515-v1kxr7g"
+					},
+					"Children": [
+						{
+							"ID": "20221128103515-yjgq7ds",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128103515-yjgq7ds"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nic-ip"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ","
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nic-mac"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 分配给逻辑网关端口的 IP 和 Mac，需为物理段未被占用的 IP 和 Mac。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128111518-5vsonns",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128111518-5vsonns",
+				"updated": "20221128112449"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 观察 OVN 和 OVS 状态确认配置生效"
+				}
+			]
+		},
+		{
+			"ID": "20221128112611-j1celqq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128112611-j1celqq",
+				"updated": "20221128112612"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查 OVN-NB 状态, 确认 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn-external"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 逻辑交换机存在，并且 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn-cluster-ovn-external"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 逻辑路由器端口上 绑定了正确的地址和 chassis。"
+				}
+			]
+		},
+		{
+			"ID": "20221128112608-5fa7yrb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128112608-5fa7yrb",
+				"updated": "20221128112712"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl ko nbctl show\nswitch 3de4cea7-1a71-43f3-8b62-435a57ef16a6 (ovn-external)\n    port ln-ovn-external\n        type: localnet\n        addresses: [\"unknown\"]\n    port ovn-external-ovn-cluster\n        type: router\n        router-port: ovn-cluster-ovn-external\nrouter e1eb83ad-34be-4ed5-9a02-fcc8b1d357c4 (ovn-cluster)\n    port ovn-cluster-ovn-external\n        mac: \"ac:1f:6b:2d:33:f1\"\n        networks: [\"172.56.0.100/16\"]\n        gateway chassis: [a5682814-2e2c-46dd-9c1c-6803ef0dab66]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128112729-2utr1tn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128112729-2utr1tn",
+				"updated": "20221128112729"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查 OVS 状态，确认相应的网卡已经桥接进 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "br-external"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 网桥："
+				}
+			]
+		},
+		{
+			"ID": "20221128112729-dzcyuz2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128112729-dzcyuz2",
+				"updated": "20221128112746"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl ko vsctl ${gateway node name} show\ne7d81150-7743-4d6e-9e6f-5c688232e130\n    Bridge br-external\n        Port br-external\n            Interface br-external\n                type: internal\n        Port eno2\n            Interface eno2\n        Port patch-ln-ovn-external-to-br-int\n            Interface patch-ln-ovn-external-to-br-int\n                type: patch\n                options: {peer=patch-br-int-to-ln-ovn-external}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128112726-krxyaog",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128112726-krxyaog",
+				"updated": "20221128112932"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. Pod 配置 EIP 和 SNAT"
+				}
+			]
+		},
+		{
+			"ID": "20221128112936-mdo8b1j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128112936-mdo8b1j",
+				"updated": "20221128112937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可通过在 Pod 上增加 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/snat"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 或 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/eip"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " annotation 来分别配置 SNAT 和 EIP："
+				}
+			]
+		},
+		{
+			"ID": "20221128112953-7ht3ia7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128112953-7ht3ia7",
+				"updated": "20221128113110"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Pod\nmetadata:\n  name: pod-gw\n  annotations:\n    ovn.kubernetes.io/snat: 172.56.0.200\nspec:\n  containers:\n  - name: snat-pod\n    image: nginx:alpine\n---\napiVersion: v1\nkind: Pod\nmetadata:\n  name: pod-gw\n  annotations:\n    ovn.kubernetes.io/eip: 172.56.0.233\nspec:\n  containers:\n  - name: eip-pod\n    image: nginx:alpine\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128113133-z3q5cp3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128113133-z3q5cp3",
+				"updated": "20221128113134"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可通过 kubectl 或其他工具动态调整 Pod 所配置的 EIP 或 SNAT 规则，更改时请注意要同时删除 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/routed"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " annotation 触发路由的变更："
+				}
+			]
+		},
+		{
+			"ID": "20221128113201-1mo2rx8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128113201-1mo2rx8",
+				"updated": "20221128113208"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl annotate pod pod-gw ovn.kubernetes.io/eip**=**172.56.0.221 --overwrite\nkubectl annotate pod pod-gw ovn.kubernetes.io/routed-\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128113138-5ktlhz1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128113138-5ktlhz1",
+				"updated": "20221128113224"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 高级配置"
+				}
+			]
+		},
+		{
+			"ID": "20221128113237-zcmya5c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128113237-zcmya5c",
+				"updated": "20221128113237"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ovn-controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的部分启动参数可对 SNAT 和 EIP 功能进行高阶配置："
+				}
+			]
+		},
+		{
+			"ID": "20221128113237-kamidtv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128113237-kamidtv",
+				"updated": "20221128113237"
+			},
+			"Children": [
+				{
+					"ID": "20221128113237-v2d12fh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128113237-v2d12fh"
+					},
+					"Children": [
+						{
+							"ID": "20221128113237-omkf10p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128113237-omkf10p"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--external-gateway-config-ns"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": Configmap "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn-external-gw-config"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 所属 Namespace， 默认为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-system"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128113237-0ffij5l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128113237-0ffij5l"
+					},
+					"Children": [
+						{
+							"ID": "20221128113237-zwv5iag",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128113237-zwv5iag"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--external-gateway-net"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 物理网卡所桥接的网桥名，默认为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "external"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128113237-n2vdgz4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128113237-n2vdgz4"
+					},
+					"Children": [
+						{
+							"ID": "20221128113237-9emcvhz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128113237-9emcvhz"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--external-gateway-vlanid"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 物理网络 Vlan Tag 号，默认为 0， 即不使用 Vlan。"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

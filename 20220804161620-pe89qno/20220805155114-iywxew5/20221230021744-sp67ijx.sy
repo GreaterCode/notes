@@ -1,0 +1,285 @@
+{
+	"ID": "20221230021744-sp67ijx",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221230021744-sp67ijx",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20221230021759-jl6kw2f\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20221230021806-ubr5q0a\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20221230021759-um555lp\u0026quot;,\u0026quot;focusStart\u0026quot;:12,\u0026quot;focusEnd\u0026quot;:12}",
+		"title": "openshfit etd备份恢复",
+		"updated": "20221230021806"
+	},
+	"Children": [
+		{
+			"ID": "20221230021759-jl6kw2f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-jl6kw2f",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1 找到etcd的leader节点"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ："
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-paiekz8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-paiekz8",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  随机进入一个etcd的pod；使用 etcdctl endpoint status  ，返回值有true的就是etcd leader节点"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-t00wklx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-t00wklx",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2 进入etcd leader节点所在的执行etcd备份命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ："
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-22se4kk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-22se4kk",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " /usr/local/bin/cluster-backup.sh /home/backup/      （后面的/home/backup/为备份文件存放的目录，可自定义 ）"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-jwfbw24",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-jwfbw24",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3 进入需要进行恢复的节点，将etcd和kube-apiserver的静态文件移到/tmp目录"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " （目录可自定义）："
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-fqn06va",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-fqn06va",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  sudo mv /etc/kubernetes/manifests/etcd-pod.yaml /tmp\n  sudo mv /etc/kubernetes/manifests/kube-apiserver-pod.yaml /tmp"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-qy6arga",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-qy6arga",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  sudo crictl ps | grep etcd | grep -v operator\n  sudo crictl ps | grep kube-apiserver | grep -v operator"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-um555lp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-um555lp",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " //使用上面两个命令检测etcd和kube-apiserver是否已正常停止，然后将etcd的存储目录也移动到/tmp目录"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-ugbyd2x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-ugbyd2x",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  sudo mv /var/lib/etcd/  /tmp"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-6siseoo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-6siseoo",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4 在etcd leader 节点执行"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ："
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-2f77ihe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-2f77ihe",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  sudo -E /usr/local/bin/cluster-restore.sh /home/backup/"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-75k6u7b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-75k6u7b",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5 所有 master 节点均执行重启Kubelet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ："
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-lxcq164",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-lxcq164",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  sudo systemctl restart kubelet.service"
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-8s62so9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-8s62so9",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "6 在etcd leader节点执行重新部署etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ："
+				}
+			]
+		},
+		{
+			"ID": "20221230021759-pgljqnb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021759-pgljqnb",
+				"updated": "20221230021759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  oc patch etcd cluster -p='{\"spec\": {\"forceRedeploymentReason\": \"recovery-'\"$( date --rfc-3339=ns )\"'\"}}' --type=merge"
+				}
+			]
+		},
+		{
+			"ID": "20221230021806-ubr5q0a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221230021806-ubr5q0a",
+				"updated": "20221230021806"
+			}
+		}
+	]
+}

@@ -1,0 +1,1787 @@
+{
+	"ID": "20230412102011-53q7mtu",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230412102011-53q7mtu",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230412102011-h8blnnk\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230412102011-gbqtbe6\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230412102011-x807ilb\u0026quot;,\u0026quot;focusStart\u0026quot;:28,\u0026quot;focusEnd\u0026quot;:28}",
+		"title": "Promethues 应用监控的一些实践",
+		"updated": "20230412102011"
+	},
+	"Children": [
+		{
+			"ID": "20230412102011-h8blnnk",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230412102011-h8blnnk"
+			}
+		},
+		{
+			"ID": "20230412102011-ondx5ti",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-ondx5ti"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在具体设计 Metrics 之前，首先需要明确需要测量的对象。需要测量的对象应该依据具体的问题背景、需求和需监控的系统本身来确定。"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-ev57ms8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-ev57ms8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从需求出发"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-veu9njj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-veu9njj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Google 针对大量分布式监控的经验总结出四个监控的黄金指标，这四个指标对于一般性的监控测量对象都具有较好的参考意义。这四个指标分别为："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-yv9yxt9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-yv9yxt9"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-d87k3zp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-d87k3zp"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-33ett42",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-33ett42"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "延迟：服务请求的时间。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-36cqz10",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-36cqz10"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-tg1h87g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-tg1h87g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通讯量：监控当前系统的流量，用于衡量服务的容量需求。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-feywxcs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-feywxcs"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-snsbx8q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-snsbx8q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "错误：监控当前系统所有发生的错误请求，衡量当前系统错误发生的速率。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-ypx6fsi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-ypx6fsi"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-5cehj2s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-5cehj2s"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "饱和度：衡量当前服务的饱和度。主要强调最能影响服务状态的受限制的资源。例如，如果系统主要受内存影响，那就主要关注系统的内存状态。以上四种指标，其实是为了满足四个监控需求："
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-sccpka4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-sccpka4"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-hexaiwd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-hexaiwd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "反映用户体验，衡量系统核心å性能。如：在线系统的时延，作业计算系统的作业完成时间等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-onmews1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-onmews1"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-x807ilb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-x807ilb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "反映系统的吞吐量。如：请求数，发出和接收的网络包大小等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-2g57ebn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-2g57ebn"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-6tv5m8w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-6tv5m8w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "帮助发现和定位故障和问题。如：错误计数、调用失败率等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-qcv5p1l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-qcv5p1l"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-we1emyg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-we1emyg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "反映系统的饱和度和负载。如：系统占用的内存、作业队列的长度等。除了以上常规需求，还可根据具体的问题场景，为了排除和发现以前出现过或可能出现的问题，确定相应的测量对象。比如，系统需要经常调用的一个库的接口可能耗时较长，或偶有失败，可制定 Metrics 以测量这个接口的时延和失败数。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-o7a0xrb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-o7a0xrb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从需要监控的系统出发"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-rgyhenl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-rgyhenl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了满足相应的需求，不同系统需要观测的测量对象也是不同的。在 官方文档 的最佳实践中，将需要监控的应用分为了三类："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-sa506j7",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-sa506j7"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-p8r1por",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-p8r1por"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-vmumvkk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-vmumvkk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "线上服务系统（Online-serving systems）：需对请求做即时的响应，请求发起者会等待响应。如 web 服务器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-q8j0e5z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-q8j0e5z"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-zwvt6y4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-zwvt6y4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "线下计算系统（Offline processing）：请求发起者不会等待响应，请求的作业通常会耗时较长。如批处理计算框架 Spark 等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-fitibqv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-fitibqv"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-0vkweke",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-0vkweke"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "批处理作业（Batch jobs）：这类应用通常为一次性的，不会一直运行，运行完成后便会结束运行。如数据分析的 MapReduce 作业。对于每一类应用其通常情况下测量的对象是不太一样的。其总结如下："
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-71x6gzv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-71x6gzv"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-zsrg5rm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-zsrg5rm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "线上服务系统：主要有请求、出错的数量，请求的时延等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-gyb5z6d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-gyb5z6d"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-o9dtoou",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-o9dtoou"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "线下计算系统：最后开始处理作业的时间，目前正在处理作业的数量，发出了多少 items， 作业队列的长度等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-dxy9h66",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-dxy9h66"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-qfs2owo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-qfs2owo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "批处理作业：最后成功执行的时刻，每个主要 stage 的执行时间，总的耗时，处理的记录数量等。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-c6guinw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-c6guinw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "除了系统本身，有时还需监控子系统："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-17vt9ar",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-17vt9ar"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-8egzisk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-8egzisk"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-9su5qz8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-9su5qz8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用的库（Libraries）: 调用次数，成功数，出错数，调用的时延。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-qhni4y6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-qhni4y6"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-bifj3vm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-bifj3vm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "日志（Logging）：计数每一条写入的日志，从而可找到每条日志发生的频率和时间。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-qwbca0p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-qwbca0p"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-rtpdwjo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-rtpdwjo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Failures: 错误计数。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-iecejnp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-iecejnp"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-z8k8rof",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-z8k8rof"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "线程池：排队的请求数，正在使用的线程数，总线程数，耗时，正在处理的任务数等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-7f8n4ql",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-7f8n4ql"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-qnvvbiv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-qnvvbiv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "缓存：请求数，命中数，总时延等。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-whgbi9t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-whgbi9t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "选择 Vector"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-6d31m42",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-6d31m42"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "选用 Vec 的原则："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-7ogr0te",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-7ogr0te"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-2s5w332",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-2s5w332"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-kd25c10",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-kd25c10"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "数据类型类似但资源类型、收集地点等不同"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-oozlhmg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-oozlhmg"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-hmhyu5i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-hmhyu5i"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Vec 内数据单位统一\n例子："
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-r45qfml",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-r45qfml"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-277xd78",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-277xd78"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "不同资源对象的请求延迟"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-mhschdk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-mhschdk"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-jh3op70",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-jh3op70"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "不同地域服务器的请求延迟"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-ycp5kpf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-ycp5kpf"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-293o8av",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-293o8av"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "不同 http 请求错误的计数\n…\n此外，官方文档 中建议，对于一个资源对象的不同操作，如 Read/Write、Send/Receive， 应采用不同的 Metric 去记录，而不要放在一个 Metric 里。原因是监控时一般不会对这两者做聚合，而是分别去观测。不过对于 request 的测量，通常是以 Label 做区分不同的 action。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-7b2lkid",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-7b2lkid"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "确定 Label"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-5hcno6g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-5hcno6g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见 Label 的选择有："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-zo11yhx",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-zo11yhx"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-bc5vtdh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-bc5vtdh"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-080gc2o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-080gc2o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "resource"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-ftqc5d6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-ftqc5d6"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-99qozoa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-99qozoa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "region"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-tfajq88",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-tfajq88"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-x990zyx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-x990zyx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "type …\n确定 Label 的一个重要原则是：同一维度 Label 的数据是可平均和可加和的，也即单位要统一。如风扇的风速和电压就不能放在一个 Label 里。此外，不建议下列做法：my_metric{label=a} 1 my_metric{label=b} 6 my_metric{label=total} 7\n即在 Label 中同时统计了分和总的数据，建议采用 PromQL 在服务器端聚合得到总和的结果。或者用另外的 Metric 去测量总的数据。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-fm4svao",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-fm4svao"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "命名 Metrics 和 Label"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-s9j5yar",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-s9j5yar"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "好的命名能够见名知义，因此命名也是良好设计的一环。"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-so2yu47",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230412102011-so2yu47"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Metric 的命名："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-fzy1ive",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-fzy1ive"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-8iqj5oy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-8iqj5oy"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-78kt25f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-78kt25f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "需要符合 pattern: a-zA-Z"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": ":"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-chnjwoz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-chnjwoz"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-mtkmeui",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-mtkmeui"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "应该包含一个单词作为前缀，表明这个 Metric 所属的域。如："
+								}
+							]
+						},
+						{
+							"ID": "20230412102011-jyp69iy",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230412102011-jyp69iy"
+							},
+							"Children": [
+								{
+									"ID": "20230412102011-qha8xmy",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230412102011-qha8xmy"
+									},
+									"Children": [
+										{
+											"ID": "20230412102011-015uj5z",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230412102011-015uj5z"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "prometheus_notifications_total"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230412102011-gzxzqqe",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230412102011-gzxzqqe"
+									},
+									"Children": [
+										{
+											"ID": "20230412102011-yh1l261",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230412102011-yh1l261"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "process_cpu_seconds_total"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230412102011-39sblj2",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230412102011-39sblj2"
+									},
+									"Children": [
+										{
+											"ID": "20230412102011-qckec5h",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230412102011-qckec5h"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ipamd_request_latency"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-4141qxo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-4141qxo"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-qu8x5vj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-qu8x5vj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "应该包含一个单位的单位作为后缀，表明这个 Metric 的单位。如："
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-e59jy1d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-e59jy1d"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-4ceaex2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-4ceaex2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "http_request_duration_seconds"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-cgwpyvr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-cgwpyvr"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-1xhz22e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-1xhz22e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "node_memory_usage_bytes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-mkfephd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-mkfephd"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-ud0myqb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-ud0myqb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "http_requests_total (for a unit-less accumulating count)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-tksjrs5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-tksjrs5"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-iergp9g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-iergp9g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "逻辑上与被测量的变量含义相同。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-pyj0zno",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-pyj0zno"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-u32cbs4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-u32cbs4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "尽量使用基本单位，如 seconds，bytes。而不是 Milliseconds, megabytes。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-jvddwut",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230412102011-jvddwut"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Label 的命名："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-6h4l0f9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-6h4l0f9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "依据选择的维度命名，如："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-twx9wj4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-twx9wj4"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-111crsa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-111crsa"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-25jmxwg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-25jmxwg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "region: shenzhen/guangzhou/beijing"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-oq5nj6z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-oq5nj6z"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-wxq2bsn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-wxq2bsn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "owner: user1/user2/user3"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-7lhusii",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-7lhusii"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-ujqsc9b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-ujqsc9b"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "stage: extract/transform/load"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-o3181mc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-o3181mc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Buckets 选择"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-dx72gzn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-dx72gzn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "适宜的 buckets 能使 histogram 的百分位数计算更加准确。"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-kesjqmq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-kesjqmq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "理想情况下，桶会使得数据分布呈阶梯状，即各桶区间内数据个数大致相同。buckets 的设计可遵从如下经验："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-b74j2bg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230412102011-b74j2bg"
+			},
+			"Children": [
+				{
+					"ID": "20230412102011-6atfzaa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-6atfzaa"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-ts82jgt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-ts82jgt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "需要知道数据的大致分布，若事先不知道可先用默认桶 （{.005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5, 10}）或 2 倍数桶（{1,2,4,8…}）观察数据分布再调整 buckets。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-7v98v68",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-7v98v68"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-ctbfjt4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-ctbfjt4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "数据分布较密处桶间隔制定的较窄一些，分布稀疏处可制定的较宽一些。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-8odxbnu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-8odxbnu"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-i2j4nx4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-i2j4nx4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于多数时延数据，一般具有长尾的特性，较适宜用指数形式的桶（ExponentialBuckets）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-zw001we",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-zw001we"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-6cnboxa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-6cnboxa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "初始桶上界一般覆盖10%左右的数据，若不关注头部数据也可以让初始上界更大一些。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230412102011-ccm4qjg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230412102011-ccm4qjg"
+					},
+					"Children": [
+						{
+							"ID": "20230412102011-aapvul5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230412102011-aapvul5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "若为了更准确计算特定百分位数，如90%，可在90%的数据处加密分布桶，即减少桶的间隔。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-vvt0uks",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-vvt0uks"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如我在监控我们某些任务耗时的时候，就是选根据实际情况估算出大致的 bucket 取值，上线后观察数据和监控再去调整 bucket， 这样经过几次调整应该就能调整到比较合适的 bucket。"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-9tlww6w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230412102011-9tlww6w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Grafana 使用技巧"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-7w8llve",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230412102011-7w8llve"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看所有维度"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-kfek3ka",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-kfek3ka"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你想知道是否还能按其它维度分组，并快速查看还有哪些维度，可采用以下技巧：在 query 的表达式上只保留指标名称，不做任何计算，Legend format 也留空。这样就能显示出原始的 metric 数据。如下图所示"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-3sifi70",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-3sifi70"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230412102011-1m3a513"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-6zsiwk7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230412102011-6zsiwk7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "标尺联动"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-2knymva",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-2knymva"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Settings 面板中，有一个 Graph Tooltip 设置项，默认使用 Default。"
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-omzsncs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-omzsncs"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230412102011-mqhxc28"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-6216elk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-6216elk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面将图形展示工具分别调整为 Shared crosshair 和 Shared Tooltip 看看效果。可以看到标尺能联动展示了，方便排查问题时确认 2 个指标的关联性。将图形展示工具调整为 Shared Tooltip："
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-thy9sja",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230412102011-thy9sja"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230412102011-lwm3x9b"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230412102011-gbqtbe6",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230412102011-gbqtbe6"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230412102011-ksrkm3p",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230412102011-ksrkm3p"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "原文链接：https://www.lxkaka.wang/metrics-best-practice/"
+						}
+					]
+				}
+			]
+		}
+	]
+}

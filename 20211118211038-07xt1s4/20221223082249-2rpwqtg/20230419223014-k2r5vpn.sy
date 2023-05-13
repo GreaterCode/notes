@@ -1,0 +1,39 @@
+{
+	"ID": "20230419223014-k2r5vpn",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230419223014-k2r5vpn",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230419223014-a7zf7gz\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230419223014-a7zf7gz\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230419223014-a7zf7gz\u0026quot;,\u0026quot;focusStart\u0026quot;:581,\u0026quot;focusEnd\u0026quot;:581}",
+		"title": "自定义Qcow2",
+		"updated": "20230419223053"
+	},
+	"Children": [
+		{
+			"ID": "20230419223014-a7zf7gz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230419223014-a7zf7gz",
+				"updated": "20230419223053"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 1. 创建目录，挂载 qcow2\n# 可能需要 export LIBGUESTFS_BACKEND=direct\nmkdir qcow2-dir\nguestmount -a linux-os.qcow2 -i -w qcow2-dir\n \n# 2. 拷贝出 initramfs\ncp qcow2-dir/boot/initramfs-xxx.img /home/USER\ncd /home/USER\n \n# 3. 解压 initramfs\n# initramfs 可能是 gz 压缩的 cpio，所以可能多个 gz 步骤\nmkdir initramfs\nmv initramfs-xxx.img initramfs\ncd initramfs\n# 这两步可能不需要(xxLinux 的 initramfs 需要gz压缩)\nmv initramfs-xxx.img initramfs-xxx.img.gz\ngunzip initramfs-xxx.img.gz\ncpio -dim \u003c initramfs-xxx.img\nrm initramfs-xxx.img\n# 此时获取到 initramfs 的文件树结构\n \n# 4. 修改任意内容\n \n# 5. 归档 initramfs 目录树为 cpio\n#    如果必要则进行 gz 压缩(xxLinux需要)\nfind . 2\u003e/dev/null | cpio -c -o \u003e /home/USER/initramfs-xxx.img\ncd /home/USER\ngzip initramfs-xxx.img\nmv initramfs-xxx.img.gz initramfs-xxx.img\n \n# 6. 替换 qcow2 中的 initramfs\nrm qcow2-dir/boot/initramfs-xxx.img\ncp initramfs-xxx.img  qcow2-dir/boot/\n \n# 7. unmount\nguestunmount qcow2-dir\n \n# 此时，linux-os.qcow2 就是自定义 initramfs 后的 qcow2 镜像了.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

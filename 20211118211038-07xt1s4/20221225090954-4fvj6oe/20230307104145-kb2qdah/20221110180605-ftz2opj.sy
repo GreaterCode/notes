@@ -1,0 +1,595 @@
+{
+	"ID": "20221110180605-ftz2opj",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221110180605-ftz2opj",
+		"title": "服务器load高解决思路 ",
+		"updated": "20230307110354"
+	},
+	"Children": [
+		{
+			"ID": "20221110180605-dg7k2rv",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221110180605-dg7k2rv"
+			}
+		},
+		{
+			"ID": "20221110180605-mgfcltx",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221110180605-mgfcltx"
+			}
+		},
+		{
+			"ID": "20221110180605-me5nm7s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-me5nm7s"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/load_average-20221110180605-cmhd8iq.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-cl2nnvv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-cl2nnvv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux的系统负载指运行队列的平均长度，可运行的进程是指处于运行队列的进程，不单单是指正在运行的进程，还包括已就绪的等待调度的进程，即进程的状态是TASK_RUNNING或者TASK_UNINTERRUPTIBLE。"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-hlzsk7l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221110180605-hlzsk7l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "资源瓶颈定位:"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-ccvl8gj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221110180605-ccvl8gj"
+			},
+			"Children": [
+				{
+					"ID": "20221110180605-0yaazpi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221110180605-0yaazpi"
+					},
+					"Children": [
+						{
+							"ID": "20221110180605-5oem7t0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221110180605-5oem7t0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CPU高、Load高"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-wadkeco",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-wadkeco"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "列出load高时运行队列中的进程"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-szjea73",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-szjea73"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "LANG=C ps -eTo stat,pid,tid,ppid,comm --no-header | sed -e 's/^ *"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "//' | perl -nE 'chomp;say if (m!^\\S"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "[RD]+\\S"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "!)'\n或者\nps -e -L h o state,cmd ?| awk '{if($1"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "\u0026quot;R\u0026quot;||$1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"D\"){print $0}}' | sort | uniq -c | sort -k 1nr"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-zx69cvj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-zx69cvj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用top命令查看查找到cpu占用率超过100的进程 (命令待完善)"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-gf15f4n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-gf15f4n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "top -b -n 5 | grep PID -A 300 | grep -v PID | awk '{print $1, $9}'"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-n9afczf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-n9afczf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用ps命令查找占用cpu较高的进程"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-9e7mlvq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-9e7mlvq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "LANG=C ps -eT -o%cpu,pid,tid,ppid,comm | grep -v CPU | sort -n -r"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-tz7tocv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-tz7tocv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对状态为R的进程，使用pidstat -u分析进程cpu利用率"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-zrkdiae",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-zrkdiae"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "pidstat -w -p pid"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-ccz9402",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-ccz9402"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用pidstat -w 分析进程上下文切换占用时间"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-p8ed13p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-p8ed13p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "pidstat -u -p pid"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-khrbrfh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-khrbrfh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对状态为D的进程，分析磁盘IO的信息"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-sp20sd7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-sp20sd7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "pidstat -d -p pid"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-laza0n9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-laza0n9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "     2. CPU低、Load高"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-zmci26t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-zmci26t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同样也要列出导致load高的运行队列里有哪些进程"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-rxj2px6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-rxj2px6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "LANG=C ps -eTo stat,pid,tid,ppid,comm --no-header | sed -e 's/^ *"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "//' | perl -nE 'chomp;say if (m!^\\S"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "[RD]+\\S"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "!)'"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-x4v3wnp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-x4v3wnp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过iostat -d -x -m 1 10查看磁盘IO情况"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-zyxq5wa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-zyxq5wa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过sar -n DEV 1 10查看网络IO情况"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-ggjmbca",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-ggjmbca"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查找占用IO的进程："
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-4e633u6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-4e633u6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ps -e -L h o state,cmd  | awk '{if($1"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "\u0026quot;R\u0026quot;||$1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"D\"){print $0}}' | sort | uniq -c | sort -k 1nr"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-top4v3s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221110180605-top4v3s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "排查策略:"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-ufukoxe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-ufukoxe"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/loavavg-20221110180605-tux10db.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-fimlcus",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221110180605-fimlcus",
+				"updated": "20221110180605"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例脚本:"
+				}
+			]
+		},
+		{
+			"ID": "20230307110216-0tlq23v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230307110216-0tlq23v",
+				"updated": "20230307110323"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nLANG=C\nPATH=/[sbin:/usr/sbin:/bin:/usr/bin](http://sbin/usr/sbin:/bin:/usr/bin)\n\n#default second\ninterval=20\nbenchmark=50.0\n\necho \"start gather system infos\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\nwhile true\ndo\n  sleep ${interval}\n\n  avg=$(cat /proc/loadavg)\n\n  lavg1=$(echo ${avg} | cut -d ' ' -f 1)\n  lavg5=$(echo ${avg} | cut -d ' ' -f 2)\n  lavg15=$(echo ${avg} | awk '{print $3}')\n\n  #manual trigger to debug\n  #lavg1=$(echo \"${lavg1} + ${benchmark}\" | bc)\n\n  if [ $(echo \"${lavg1} \u003c ${benchmark}\" | bc) = 1  ] \u0026\u0026\n     [ $(echo \"${lavg5} \u003c ${benchmark}\" | bc) = 1  ] \u0026\u0026\n     [ $(echo \"${lavg15} \u003c ${benchmark}\" | bc) = 1 ]\n  then\n    echo \"debug script 1\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n    continue\n  fi\n\n  #echo \"loadavg triger to gather system info\"  \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  #echo \"${load1} ${load5} ${load15}\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\n  #record the processes which are in running queue\n  echo -e \"\\n\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  date \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  echo -e \"The running queue has following processes:\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  LANG=C ps -eTo stat,pid,tid,ppid,comm --no-header | sed -e 's/^ \\*//' | perl -nE 'chomp;say if (m!^\\S*[RD]+\\S*!)' \u003e\u003e /var/log/cpu_loadavg_$$.txt 2\u003e\u00261\n\n  #record the top 50 processes of high cpu time\n  echo -e \"\\nThe top 50 processes:\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  LANG=C ps -eT -o%cpu,pid,tid,ppid,comm | grep -v CPU | sort -n -r | head -50 \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  { LANG=C ps -eT -o%cpu,pid,tid,ppid,comm | sed -e 's/^ *//' | tr -s ' ' | grep -v CPU | sort -n -r | cut -d ' ' -f 1 | xargs -I{} echo -n \"{} + \" \u0026\u0026 echo ' 0'; } | bc -l \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\n# for high cpu progress\n\n  top -b -n 5 | grep PID -A 50 | grep -v PID \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\n #for low cpu high loadavg\n# record io stat\n\n  echo -e \"\\nThe disk IO stat:\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  iostat -d -x -m 1 10 \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\n  #record network io stat\n  echo -e \"The network IO stat:\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  sar -n DEV 1 10 \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\n# for high cpu high loadavg\n\n  echo -e \"\\nThe top cpu:\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  #only summary\n  #top -bi -n 5 \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  top -b -n 5 \u003e\u003e /var/log/cpu_loadavg_$$.txt\n\n  echo -e \"\\nThe vmstat stat:\\n\" \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  vmstat -n -t 5 10 \u003e\u003e /var/log/cpu_loadavg_$$.txt\n  #sleep ${interval}\ndone\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-u39zocw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-u39zocw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ref:"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-ht5bxkg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-ht5bxkg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://developer.aliyun.com/article/484253",
+					"TextMarkTextContent": "https://developer.aliyun.com/article/484253"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-10wo5xs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-10wo5xs"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://juejin.cn/post/7016127914454286367",
+					"TextMarkTextContent": "https://juejin.cn/post/7016127914454286367"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-viu1igc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-viu1igc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://segmentfault.com/a/1190000025167113",
+					"TextMarkTextContent": "https://segmentfault.com/a/1190000025167113"
+				}
+			]
+		},
+		{
+			"ID": "20221110180605-07dtjrw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221110180605-07dtjrw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://serverfault.com/questions/708425/server-crashes-with-incredibly-high-load",
+					"TextMarkTextContent": "https://serverfault.com/questions/708425/server-crashes-with-incredibly-high-load"
+				}
+			]
+		},
+		{
+			"ID": "20230307110354-4eai3pj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230307110354-4eai3pj",
+				"updated": "20230307110354"
+			}
+		}
+	]
+}

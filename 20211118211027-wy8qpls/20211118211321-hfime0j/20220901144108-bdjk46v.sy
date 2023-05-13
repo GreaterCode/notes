@@ -1,0 +1,1734 @@
+{
+	"ID": "20220901144108-bdjk46v",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220901144108-bdjk46v",
+		"title": "shell如何实现多线程？ ",
+		"updated": "20230323032132"
+	},
+	"Children": [
+		{
+			"ID": "20220901144108-5eq2ipc",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220901144108-5eq2ipc"
+			}
+		},
+		{
+			"ID": "20220901144108-2tak1ia",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220901144108-2tak1ia",
+				"updated": "20230323032132"
+			},
+			"Children": [
+				{
+					"ID": "20220901144108-3v69752",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-3v69752"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-12e4wbr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-12e4wbr"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/signjing/p/7074778.html",
+									"TextMarkTextContent": "https://www.cnblogs.com/signjing/p/7074778.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-yjy3075",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-yjy3075"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-zx97x7d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-zx97x7d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "情景linux shell如何实现多线程？ 情景 shell脚本的执行效率虽高，但当任务量巨大时仍然需要较长的时间，尤其是需要执行一大批的命令时。因为默认情况下，shell脚本中的命令是串行执行的。如"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-3rgxs1i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-3rgxs1i",
+						"updated": "20230323032132"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-wsfddfp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-wsfddfp",
+								"updated": "20230323032132"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-fayqk11",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220901144108-fayqk11"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "情景linux--shell如何实现多线程？"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-7zg0ny0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220901144108-7zg0ny0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "情景"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-32r60hu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-32r60hu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "shell脚本的执行效率虽高，但当任务量巨大时仍然需要较长的时间，尤其是需要执行一大批的命令时。因为默认情况下，shell脚本中的命令是串行执行的。如果这些命令相互之间是独立的，则可以使用“并发”的方式执行这些命令，这样可以更好地 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "利用系统资源，提升运行效率，缩短脚本执行的时间"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。如果命令相互之间存在交互，则情况就复杂了，那么不建议使用shell脚本来完成多线程的实现。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-0ecuvqy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-0ecuvqy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了方便阐述，使用一段测试代码。在这段代码中，通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "seq"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令输出1到10，使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "for...in"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "语句产生一个执行10次的循环。每一次循环都执行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "sleep 1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，并"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "echo"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "出当前循环对应的数字。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-sy6977u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-sy6977u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-gs1dxsx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220901144108-gs1dxsx"
+			},
+			"Children": [
+				{
+					"ID": "20220901144108-v4tw7c4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20220901144108-v4tw7c4"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-gcts82a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-gcts82a"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "真实的使用场景下，循环次数不一定等于10，或高或低，具体取决于实际的需求。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-mj73s7k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20220901144108-mj73s7k"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-nitkdha",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-nitkdha"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "真实的使用场景下，循环体内执行的语句往往比较耗费系统资源，或比较耗时等。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-w96roin",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-w96roin"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "请根据真实场景的各种情况理解本文想要表达的内容"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-scp19lf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-scp19lf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat test1.sh  \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-9r1i4q2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-9r1i4q2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#/bin/bash\n\nall_num=10\n\na=$(date +%H%M%S)\n\nfor num in `seq 1 ${all_num}`\ndo\n\tsleep 1\n\techo ${num}\ndone\n\nb=$(date +%H%M%S)\n\necho -e \"startTime:\\t$a\"\necho -e \"endTime:\\t$b\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-8m32v2v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-8m32v2v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过上述代码可知，为了体现执行的时间，将循环体开始前后的时间打印了出来。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-mhyi4w3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-mhyi4w3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行结果："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-xla7yfk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-xla7yfk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWlwc2FzbQ=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sh test1.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-uy4g1eh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-uy4g1eh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWFrZWZpbGU="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\nstartTime:\t193649\nendTime:\t193659\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-3w4qc1e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-3w4qc1e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10次循环，每次sleep 1秒，所以总执行时间10s。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-q31sz8u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220901144108-q31sz8u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-mcoew26",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-mcoew26"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案1：使用\"\u0026\"使命令后台运行"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-jq9afkk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-jq9afkk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在linux中，在命令的末尾加上"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026amp;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "符号，则表示该命令将在后台执行，这样后面的命令不用等待前面的命令执行完就可以开始执行了。示例中的循环体内有多条命令，则可以以"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "{}"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "括起来，在大括号后面添加"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026amp;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "符号。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-cdlhky4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-cdlhky4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat test2.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-5vbdo4f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-5vbdo4f"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#/bin/bash\n\nall_num=10\n\na=$(date +%H%M%S)\n\nfor num in `seq 1 ${all_num}`\ndo\n{\n\tsleep 1\n\techo ${num}\n} \u0026\ndone\n\nb=$(date +%H%M%S)\n\necho -e \"startTime:\\t$a\"\necho -e \"endTime:\\t$b\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-rkjrcnr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-rkjrcnr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行结果："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-6x9qimz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-6x9qimz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWlwc2FzbQ=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh test2.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-scby5wh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-scby5wh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cnVieQ=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "startTime:\t194147\nendTime:\t194147\n[j-tester@merger142 ~/bin/multiple_process]$ 1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-lp6uyxy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-lp6uyxy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过结果可知，程序没有先打印数字，而是直接输出了开始和结束时间，然后显示出了命令提示符"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[j-tester@merger142 ~/bin/multiple_process]$"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "（出现命令提示符表示脚本已运行完毕），然后才是数字的输出。这是因为循环体内的命令全部进入后台，所以均在sleep了1秒以后输出了数字。开始和结束时间相同，即循环体的执行时间不到1秒钟，这是由于循环体在后台执行，没有占用脚本主进程的时间。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-ldgt6b0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-ldgt6b0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案2：命令后台运行+"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "wait"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-zikkkbd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-zikkkbd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决上面的问题，只需要在上述循环体的done语句后面加上"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "wait"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令，该命令等待当前脚本进程下的子进程结束，再运行后面的语句。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-17imo5f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-17imo5f"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat test3.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-w7daxgz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-w7daxgz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#/bin/bash\n\nall_num=10\n\na=$(date +%H%M%S)\n\nfor num in `seq 1 ${all_num}`\ndo\n{\n\tsleep 1\n\techo ${num}\n} \u0026\ndone\n\nwait\n\nb=$(date +%H%M%S)\n\necho -e \"startTime:\\t$a\"\necho -e \"endTime:\\t$b\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-3jhnfe7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-3jhnfe7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行结果："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-sv1tbbe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-sv1tbbe"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWlwc2FzbQ=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sh test3.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-ifk62o5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-ifk62o5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWFrZWZpbGU="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1\n2\n3\n4\n5\n6\n7\n9\n8\n10\nstartTime:\t194221\nendTime:\t194222\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-84ephmw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-84ephmw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "但这样依然存在一个问题："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-01ya8za",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-01ya8za"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026amp;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "使得所有循环体内的命令全部进入后台运行，那么倘若循环的次数很多，会使操作系统在瞬间创建出所有的子进程，这会非常消耗系统的资源。如果循环体内的命令又很消耗系统资源，则结果可想而知。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-3z1ukrq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-3z1ukrq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最好的方法是并发的进程是可配置的。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-k142pz6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-k142pz6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案3：使用文件描述符控制并发数"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-h90jyw5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-h90jyw5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat test4.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-vgj3bii",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-vgj3bii",
+				"updated": "20220901144626"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#/bin/bash\n\nall_num=10\n# 设置并发的进程数\nthread_num=5\n\na=$(date +%H%M%S)\n\n\n# mkfifo\ntempfifo=/tmp/$$.fifo\t\t\t#声明管道名称，'$$'表示脚本当前运行的进程PID\nmkfifo ${tempfifo}\t\t\t#创建管道\n# 使文件描述符为非阻塞式\nexec 6\u003c\u003e${tempfifo}\t\t\t#创建文件标示符“5”，这个数字可以为除“0”、“1”、“2”之外的所有未声明过的字符，以读写模式操作管道文件；系统调用exec是以新的进程去代替原来的进程，但进程的PID保持不变，换句话说就是在调用进程内部执行一个可执行文件\nrm -f ${tempfifo}\t\t\t#清除创建的管道文件\n\n# 为文件描述符创建占位信息\nfor ((i=1;i\u003c=${thread_num};i++))\ndo\n{\n #借用read命令一次读取一行的特性，使用一个echo默认输出一个换行符，来确保每一行只有一个线程占位；这里让人联想到生产者\u0026消费者模型，管道文件充当消息队列，来记录消费者的需求，然后由生产者去领任务，并完成任务，这里运用了异步解耦的思想。\n\techo;\n}\ndone \u003e\u00266 \n#  将占位信息写入管道\n\n# \nfor num in `seq 1 ${all_num}`\ndo\n{\n #从文件描述符管道中，获取一个管道的线程占位然后开始执行操作；read中 -u 后面跟fd，表示从文件描述符中读入，该文件描述符可以是exec新开启的。\n\tread -u6\n\t{\n\t\tsleep 1\n\t\techo ${num}\n\t\techo \"\" \u003e\u00266\n#任务执行完后在fd6中写入一个占位符，以保证这个线程执行完后，线程继续保持占位，继而维持管道中永远是50个线程数，\u0026表示该部分命令/任务放入后台不占当前的bash，实现并行处理\n\n\t} \u0026 \n} \ndone \n\nwait\n\n# 关闭fd6管道\nexec 6\u003e\u0026-\n\nb=$(date +%H%M%S)\n\necho -e \"startTime:\\t$a\"\necho -e \"endTime:\\t$b\"\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-1h6h1hh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-1h6h1hh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案4：使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "xargs -P"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "控制并发数"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-7iztgj0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-7iztgj0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "xargs命令有一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-P"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数，表示支持的最大进程数，默认为1。为0时表示尽可能地大，即"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "方案2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的效果。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-dm8gt4p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-dm8gt4p"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat test5.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-1qqastw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-1qqastw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#/bin/bash\n\nall_num=10\nthread_num=5\n\na=$(date +%H%M%S)\n\nseq 1 ${all_num} | xargs -n 1 -I {} -P ${thread_num} sh -c \"sleep 1;echo {}\"\n\nb=$(date +%H%M%S)\n\necho -e \"startTime:\\t$a\"\necho -e \"endTime:\\t$b\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-42ptb4o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-42ptb4o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行结果："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-v8j89r5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-v8j89r5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWlwc2FzbQ=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sh test5.sh \n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-otnsm1g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-otnsm1g"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWFrZWZpbGU="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1\n2\n3\n4\n5\n6\n8\n7\n9\n10\nstartTime:\t195257\nendTime:\t195259\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-vhkxg3m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-vhkxg3m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案5：使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GNU parallel"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令控制并发数"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-8xkwskv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-8xkwskv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GNU parallel"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令是非常强大的并行计算命令，使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-j"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数控制其并发数量。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-uzpxqm6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-uzpxqm6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat test6.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-pz5yi40",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-pz5yi40"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#/bin/bash\n\nall_num=10\nthread_num=6\n\na=$(date +%H%M%S)\n\n\nparallel -j 5 \"sleep 1;echo {}\" ::: `seq 1 10`\n\nb=$(date +%H%M%S)\n\necho -e \"startTime:\\t$a\"\necho -e \"endTime:\\t$b\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-8jsimy0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-8jsimy0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行结果："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-iut3o9s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-iut3o9s"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWlwc2FzbQ=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sh test6.sh \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-u5o1902",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220901144108-u5o1902"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWFrZWZpbGU="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\nstartTime:\t195616\nendTime:\t195618\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-s7k34pb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220901144108-s7k34pb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-kroj97e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-kroj97e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "“多线程”的好处不言而喻，虽然shell中并没有真正的多线程，但上述解决方案可以实现“多线程”的效果，重要的是，在实际编写脚本时应有这样的考虑和实现。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-cu1h6kc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-cu1h6kc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外："
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-yih9x9q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-yih9x9q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案3、4、5虽然都可以控制并发数量，但方案3显然写起来太繁琐。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-sis8b6p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-sis8b6p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案4和5都以非常简洁的形式完成了控制并发数的效果，但由于方案5的parallel命令非常强大，所以十分建议系统学习下。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-1v0g67b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-1v0g67b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案3、4、5设置的并发数均为5，实际编写时可以将该值作为一个参数传入。"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-kdzolxe",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-kdzolxe"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考文章"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-wvbkeoy",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220901144108-wvbkeoy"
+			},
+			"Children": [
+				{
+					"ID": "20220901144108-m89o4kh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20220901144108-m89o4kh"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-gco6x8g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-gco6x8g"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "http://blog.csdn.net/qq_34409701/article/details/52488964",
+									"TextMarkTextContent": "http://blog.csdn.net/qq_34409701/article/details/52488964"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-pi576uf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20220901144108-pi576uf"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-u1yrs5l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-u1yrs5l"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.codeword.xyz/2015/09/02/three-ways-to-script-processes-in-parallel/",
+									"TextMarkTextContent": "https://www.codeword.xyz/2015/09/02/three-ways-to-script-processes-in-parallel/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-zsnx758",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20220901144108-zsnx758"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-wxhvd0m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-wxhvd0m"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "http://www.gnu.org/software/parallel/",
+									"TextMarkTextContent": "http://www.gnu.org/software/parallel/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-5hpkkyw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220901144108-5hpkkyw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "相关知识点"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-ivw15it",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220901144108-ivw15it"
+			},
+			"Children": [
+				{
+					"ID": "20220901144108-ytpizg9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-ytpizg9"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-3leqq6h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-3leqq6h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "wait命令"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-i6qrcoy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-i6qrcoy"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-6pkr1nd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-6pkr1nd"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "\u0026amp;"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "后台运行"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-5szurxk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-5szurxk"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-yuex94u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-yuex94u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "文件描述符、mkfifo等"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-1y9hm2j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-1y9hm2j"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-4ibpnbu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-4ibpnbu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "xargs命令"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220901144108-6hqth5w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-6hqth5w"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-d4v5mna",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-d4v5mna"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "parallel命令"
+								}
+							]
+						},
+						{
+							"ID": "20220901144108-j860j03",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-j860j03"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "学习、总结、分享软件测试人员的技能栈。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-hi7hubo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-hi7hubo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "微信公众号：软件测试技能栈"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-naympo9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901144108-naympo9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    *  分类            "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/signjing/category/1007159.html",
+					"TextMarkTextContent": "OS"
+				}
+			]
+		},
+		{
+			"ID": "20220901144108-v3ww1e6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220901144108-v3ww1e6"
+			},
+			"Children": [
+				{
+					"ID": "20220901144108-fnp4lc1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220901144108-fnp4lc1"
+					},
+					"Children": [
+						{
+							"ID": "20220901144108-xrxgkm7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220901144108-xrxgkm7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "标签            "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/signjing/tag/linux/",
+									"TextMarkTextContent": "linux"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n,            "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/signjing/tag/shell/",
+									"TextMarkTextContent": "shell"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n,            "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/signjing/tag/%E5%A4%9A%E7%BA%BF%E7%A8%8B/",
+									"TextMarkTextContent": "多线程"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,126 @@
+{
+	"ID": "20230410135415-lt86a09",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230410135415-lt86a09",
+		"title": "根据docker镜像反推dockerfile",
+		"updated": "20230410140502"
+	},
+	"Children": [
+		{
+			"ID": "20230410135415-ooinvpl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410135415-ooinvpl",
+				"updated": "20230410135440"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "想知道官方镜像的dockerfile是怎么写的，需要根据"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=docker\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " image 反推docker file，后来发现docker history命令可以帮助我们实现这个需求，具体如下"
+				}
+			]
+		},
+		{
+			"ID": "20230410135444-5m2ompi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410135444-5m2ompi",
+				"updated": "20230410135447"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "命令行："
+				}
+			]
+		},
+		{
+			"ID": "20230410135448-n3kf3g2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410135448-n3kf3g2",
+				"updated": "20230410135455"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker history --format {{.CreatedBy}} --no-trunc=true java:8|sed \"s?/bin/sh\\ -c\\ \\#(nop)\\ ??g\"|sed \"s?/bin/sh\\ -c?RUN?g\" | tac\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410135457-mwbt10k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410135457-mwbt10k",
+				"updated": "20230410135501"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例："
+				}
+			]
+		},
+		{
+			"ID": "20230410135501-4bhlgig",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410135501-4bhlgig",
+				"updated": "20230410135516"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\u003e docker history --format {{.CreatedBy}} --no-trunc=true java:8|sed \"s?/bin/sh\\ -c\\ \\#(nop)\\ ??g\"|sed \"s?/bin/sh\\ -c?RUN?g\" | tac\n\nADD file:89ecb642d662ee7edbb868340551106d51336c7e589fdaca4111725ec64da957 in / \n CMD [\"/bin/bash\"]\nRUN apt-get update \u0026\u0026 apt-get install -y --no-install-recommends   ca-certificates   curl   wget  \u0026\u0026 rm -rf /var/lib/apt/lists/*\nRUN apt-get update \u0026\u0026 apt-get install -y --no-install-recommends   bzr   git   mercurial   openssh-client   subversion     procps  \u0026\u0026 rm -rf /var/lib/apt/lists/*\nRUN apt-get update \u0026\u0026 apt-get install -y --no-install-recommends   bzip2   unzip   xz-utils  \u0026\u0026 rm -rf /var/lib/apt/lists/*\nRUN echo 'deb http://deb.debian.org/debian jessie-backports main' \u003e /etc/apt/sources.list.d/jessie-backports.list\n ENV LANG=C.UTF-8\nRUN {   echo '#!/bin/sh';   echo 'set -e';   echo;   echo 'dirname \"$(dirname \"$(readlink -f \"$(which javac || which java)\")\")\"';  } \u003e /usr/local/bin/docker-java-home  \u0026\u0026 chmod +x /usr/local/bin/docker-java-home\n ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64\n ENV JAVA_VERSION=8u111\n ENV JAVA_DEBIAN_VERSION=8u111-b14-2~bpo8+1\n ENV CA_CERTIFICATES_JAVA_VERSION=20140324\nRUN set -x  \u0026\u0026 apt-get update  \u0026\u0026 apt-get install -y   openjdk-8-jdk=\"$JAVA_DEBIAN_VERSION\"   ca-certificates-java=\"$CA_CERTIFICATES_JAVA_VERSION\"  \u0026\u0026 rm -rf /var/lib/apt/lists/*  \u0026\u0026 [ \"$JAVA_HOME\" = \"$(docker-java-home)\" ]\nRUN /var/lib/dpkg/info/ca-certificates-java.postinst configure\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410140502-5qtgal7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410140502-5qtgal7",
+				"updated": "20230410140502"
+			}
+		}
+	]
+}

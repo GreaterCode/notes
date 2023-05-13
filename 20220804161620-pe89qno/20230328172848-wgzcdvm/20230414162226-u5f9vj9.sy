@@ -1,0 +1,1938 @@
+{
+	"ID": "20230414162226-u5f9vj9",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230414162226-u5f9vj9",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230414162226-i920r78\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230414162400-59pp7q6\u0026quot;,\u0026quot;scrollTop\u0026quot;:900,\u0026quot;focusId\u0026quot;:\u0026quot;20230414162226-i920r78\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "K8S Pod该如何监控_k8s pod 监控",
+		"updated": "20230414162424"
+	},
+	"Children": [
+		{
+			"ID": "20230414162226-i920r78",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230414162226-i920r78"
+			}
+		},
+		{
+			"ID": "20230414162226-0zadxu5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414162226-0zadxu5"
+			},
+			"Children": [
+				{
+					"ID": "20230414162226-y8pkl5j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-y8pkl5j"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-0b59pt8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-0b59pt8"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/felix_yujing/article/details/106799075",
+									"TextMarkTextContent": "https://blog.csdn.net/felix_yujing/article/details/106799075"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-hhxplj5",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230414162226-hhxplj5"
+			}
+		},
+		{
+			"ID": "20230414162226-0zkhwjf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-0zkhwjf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "背景"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-vd2egzs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-vd2egzs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于业务容器化的推进，对K8S上运行的业务，也必须做到向之前物理机/虚拟机上一样，要有完备的监控保障。但是，毕竟K8S不是物理机/虚拟机，由于技术实现方式不同，监控方面也是有一定差别的。\n Pod是K8S上调度的最小单元，本文就K8S Pod该如何监控进行说明。"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-o5pbfha",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-o5pbfha"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-mziixxu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-mziixxu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在使用物理机/虚拟机时，对于CPU的监控通常关注的是CPU使用率、CPU负载等。在K8S场景下，关注的指标有所不同：CPU使用率、CPU受限（CPU Throttled）时间或占比等。"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-ks1d5kh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-ks1d5kh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU使用率"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-q88ysbw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-q88ysbw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "K8S场景下，CPU使用率是相对CPU核的使用时间来衡量的。比如，一个应用申请的是1个CPU core，但实际运行时只消耗了0.5，这时的CPU使用率可以计算为50%。"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-d1u08vl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-d1u08vl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU使用时间相关指标如下："
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-bg0x4i4",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414162226-bg0x4i4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "指标"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "类型"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_cpu_usage_seconds_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative cpu time consumed in seconds(CPU消费累计时间)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_cpu_system_seconds_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative system cpu time consumed in seconds(系统CPU消费的累计时间)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_cpu_user_seconds_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative user cpu time consumed in seconds(用户CPU消费的累计时间)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-fbb6bxq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-fbb6bxq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要注意的是："
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-8vvz61l",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414162226-8vvz61l"
+			},
+			"Children": [
+				{
+					"ID": "20230414162226-s55c1s2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-s55c1s2"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-x1qtxqj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-x1qtxqj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "上面3个指标是对CPU不同的消费时间的统计，并不是CPU使用率。如果计算使用率，需要除以应用申请的CPU配额"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414162226-0hb3pan",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-0hb3pan"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-x85zhrn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-x85zhrn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于指标类型为counter，在计算使用时先做rate或irate"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-fuuhr1o",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230414162226-fuuhr1o"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230414162226-t76m2mf",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230414162226-t76m2mf"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "CPU配额可以通过"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "container_spec_cpu_quota"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "除以"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "container_spec_cpu_period"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "来得到，或用CPU Limit值"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kube_pod_container_resource_limits_cpu_cores"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "也可以"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-96bgfdn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-96bgfdn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU使用率监控图类似如下：\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20200617003548105-20230414162226-vwlm3xn.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-wnpbcbz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-wnpbcbz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU受限"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-le5yong",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-le5yong"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU受限这个说法在物理机/虚拟机场景是没有的，由于K8S使用绝对公平调度（Completely Fair Scheduler，简称CFS），通过配置cgroup带宽控制（bandwidth control）来限制Pod的CPU资源。带宽控制组定义了一个周期（cfs_period_us），通常100000微秒（即1/10秒）。还定义了一个配额（cfs_quota_us），表示允许进程在设置的周期长度内所能使用的CPU时间数，两个文件配合起来设置CPU的使用上限。两个文件的单位都是微秒（us），cfs_period_us的取值范围为 1 毫秒（ms）到 1 秒（s），cfs_quota_us 的取值大于 1ms 即可，如果 cfs_quota_us 的值为 -1（默认值），表示不受 CPU 时间的限制。我们在编写K8S资源的yaml文件时，如果将Pod的CPU Limits设置为100m，表示可使用100/1000个CPU核心，即100000微秒的CPU时间周期中的10000。当容器使用CPU资源达到申请的配额时，CPU使用时间会被限制。"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-6ycp4xb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-6ycp4xb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU限制相关的指标如下："
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-0nkd3fe",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414162226-0nkd3fe"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "指标"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "类型"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_cpu_cfs_periods_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Number of elapsed enforcement period intervals(使用的CPU时间周期数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_cpu_cfs_throttled_periods_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Number of throttled period intervals(被限制CPU时间周期数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_cpu_cfs_throttled_seconds_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Total time duration the container has been throttled(记录CPU被限制的时间)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-mktkyxq",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230414162226-mktkyxq"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230414162226-ry1qoct",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230414162226-ry1qoct"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "说明：CPU资源的限制与内存不同。当容器使用的内存超过限制配额后，会被系统加到OOM-Killing候选中。当容器使用CPU资源到达申请配额时，容器不会被系统驱逐或怎么样，只是限制CPU使用。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-kxkq9n0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-kxkq9n0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内存"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-q99tlon",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-q99tlon"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内存监控相关指标如下："
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-m5ha6hi",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414162226-m5ha6hi"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "指标"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "类型"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_cache"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Number of bytes of page cache memory(页缓存的内存大小)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_max_usage_bytes"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Maximum memory usage recorded in bytes(最大内存使用记录)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_rss"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Size of RSS in bytes(常驻内存大小)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_swap"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Container swap usage in bytes(swap使用量)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_usage_bytes"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Current memory usage in bytes, including all memory regardless of when it was accessed(当前内存使用，包括所有的缓存)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_working_set_bytes"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Current working set in bytes(当前使用的内存，不包括长期没有访问的缓存)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_failcnt"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Number of memory usage hits limits(达到使用上限的次数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_failures_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of memory allocation failures(内存分配失败次数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_memory_mapped_file"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Size of memory mapped files in bytes(内存映射文件的大小)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-9rlbho6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-9rlbho6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "与物理机/虚拟机类似，通常关注的指标是如下几个："
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-7mf6xx8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414162226-7mf6xx8"
+			},
+			"Children": [
+				{
+					"ID": "20230414162226-2thlflm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-2thlflm"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-ergggka",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-ergggka"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当前使用内存：container_memory_usage_bytes或container_memory_working_set_bytes"
+								}
+							]
+						},
+						{
+							"ID": "20230414162226-c6qh2v9",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230414162226-c6qh2v9"
+							},
+							"Children": [
+								{
+									"ID": "20230414162226-5915ho9",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230414162226-5915ho9"
+									},
+									"Children": [
+										{
+											"ID": "20230414162226-ayttnxy",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230414162226-ayttnxy"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "container_memory_usage_bytes包含了很久没用的缓存，该值比container_memory_working_set_bytes要大"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414162226-qeo9cos",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-qeo9cos"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-hl4tnor",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-hl4tnor"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "常驻内存：container_memory_rss"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414162226-sh0x0nn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-sh0x0nn"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-ke2a050",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-ke2a050"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "缓存：container_memory_cache"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414162226-s5zmkg3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414162226-s5zmkg3"
+					},
+					"Children": [
+						{
+							"ID": "20230414162226-qaap1eu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414162226-qaap1eu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "swap：container_memory_swap"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-fzjtybu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-fzjtybu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "监控图类似如下：\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20200617003317469-20230414162226-jomtsgm.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-dbcc3z1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-dbcc3z1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "磁盘"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-vucvzrd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-vucvzrd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于磁盘，容器层面的磁盘监控指标关注的要相对少一些。如果不使用持久卷，通常不需要关心磁盘可用空间。毕竟，宿主机的磁盘IO监控还是会做的。"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-cyc31y0",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414162226-cyc31y0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "指标"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "类型"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_fs_usage_bytes"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "gauge"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Number of bytes that are consumed by the container on this filesystem(容器磁盘空间使用)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_fs_writes_bytes_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of bytes written(磁盘写入速度)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_fs_reads_bytes_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of bytes read(磁盘读取速度)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-8jj1z91",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-8jj1z91"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "监控图类似如下：\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20200617002404913-20230414162226-9otjlry.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-v54gazg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414162226-v54gazg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "网络"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-yvpdexc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-yvpdexc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "与物理机/虚拟机场景类似，容器的网络监控主要关注入向/出向的网络流量、packet数、drop率等。"
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-9d7jggw",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414162226-9d7jggw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "指标"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "类型"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_network_receive_bytes_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of bytes received(入向流量大小，单位字节)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_network_receive_packets_dropped_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of packets dropped while receiving(入向dropped包数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_network_receive_packets_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of packets received(入向packet数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_network_transmit_bytes_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of bytes transmitted(出向流量大小，单位字节)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_network_transmit_packets_dropped_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of packets dropped while transmitting(出向dropped包数)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "container_network_transmit_packets_total"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "counter"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cumulative count of packets transmitted(出向packet数)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162226-my3suwc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162226-my3suwc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这几个网络指标理解起来比较简单，直接使用即可。监控图类似如下：\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20200617002229562-20230414162226-r5uavcx.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414162353-c2w7nnr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230414162353-c2w7nnr",
+				"updated": "20230414162400"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结："
+				}
+			]
+		},
+		{
+			"ID": "20230414162400-59pp7q6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414162400-59pp7q6",
+				"updated": "20230414162424"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所有的监控信息可以从kube-state-metrics、kubelet cadvisor等暴露的metrics获取"
+				}
+			]
+		}
+	]
+}

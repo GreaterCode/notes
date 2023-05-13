@@ -1,0 +1,2584 @@
+{
+	"ID": "20230206153504-3m27ah8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230206153504-3m27ah8",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230206153504-x8rxbry\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230206153504-erjbn18\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230206153504-sdxyotn\u0026quot;,\u0026quot;focusStart\u0026quot;:54,\u0026quot;focusEnd\u0026quot;:54}",
+		"title": "一些超实用的 Kubernetes 日常运维常用命令，建议收藏",
+		"updated": "20230206153504"
+	},
+	"Children": [
+		{
+			"ID": "20230206153504-x8rxbry",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230206153504-x8rxbry"
+			}
+		},
+		{
+			"ID": "20230206153504-1mv5b83",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-1mv5b83",
+				"updated": "20230206153704"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取前一个容器的日志"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-6a0wu2z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-6a0wu2z"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n my-namespace logs my-pod –previous\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-dj26we8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-dj26we8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据启动时间降序（descending order）"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-sdxyotn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-sdxyotn"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods --sort-by=.metadata.creationTimestamp\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-4vv4qo3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-4vv4qo3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据启动时间升序（ascending order）"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-s7oxd8e",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-s7oxd8e"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods --sort-by=.metadata.creationTimestamp | awk 'NR == 1; NR \u003e 1 {print $0 | \"tac\"}'\nkubectl get pods --sort-by=.metadata.creationTimestamp | tail -n +2 | tac\nkubectl get pods --sort-by={metadata.creationTimestamp} --no-headers | tac\nkubectl get pods --sort-by=.metadata.creationTimestamp | tail -n +2 | tail -r\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-1hyjti5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-1hyjti5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看集群內 Pod 的服务质量等级（QoS）"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-veb5ehe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-veb5ehe"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods --all-namespaces -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,QOS-CLASS:.status.qosClass\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-b6j6lbc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-b6j6lbc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "把Secret复制到其他namespace"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-v827mj4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-v827mj4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get secrets -o json --namespace namespace-old | \\\n  jq '.items[].metadata.namespace = \"namespace-new\"' | \\\n  kubectl create-f  -\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-izdfanm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-izdfanm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取K8s的token"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-aw1zxsn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-aw1zxsn"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n kube-system describe $(kubectl -n kube-system get secret -n kube-system -o name | grep namespace) | grep token\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-gt4g90q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-gt4g90q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "清理K8s异常pod"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-tnwzk0m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-tnwzk0m"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#clean Evicted\nkubectl get pods --all-namespaces -o wide | grep Evicted | awk '{print $1,$2}' | xargs -L1 kubectl delete pod -n \n# clean error\nkubectl get pods --all-namespaces -o wide | grep Error | awk '{print $1,$2}' | xargs -L1 kubectl delete pod -n \n#clean compete\nkubectl get pods --all-namespaces -o wide | grep Completed | awk '{print $1,$2}' | xargs -L1 kubectl delete pod -n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-hpe3wcg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-hpe3wcg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "强制删除指定namespace下"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Terminating"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "状态的pod"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-wjv6lc8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-wjv6lc8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pod -n $namespace |grep Terminating|awk '{print $1}'|xargs kubectl delete pod --grace-period=0 --force\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-2tyhvgo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-2tyhvgo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "批量强制删除集群内"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Terminating"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "状态的pod"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-3z76ej3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-3z76ej3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for ns in $(kubectl get ns --no-headers | cut -d ' ' -f1); do \\\n  for po in $(kubectl -n $ns get po --no-headers --ignore-not-found | grep Terminating | cut -d ' ' -f1); do \\\n    kubectl -n $ns delete po $po --force --grace-period 0; \\\n  done; \\\ndone;\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-cdvjn2a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-cdvjn2a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "导出干净的YAML"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-pez58s1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-pez58s1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#需要插件kubectl-neat支持https://github.com/itaysk/kubectl-neat\nkubectl get cm nginx-config -oyaml | kubectl neat -o yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-hr8euvp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-hr8euvp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "clean unused pv"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-8a7jpcx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-8a7jpcx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl describe -A pvc | grep -E \"^Name:.*$|^Namespace:.*$|^Used By:.*$\" | grep -B 2 \"\u003cnone\u003e\" | grep -E \"^Name:.*$|^Namespace:.*$\" | cut -f2 -d: | paste -d \" \" - - | xargs -n2 bash -c 'kubectl -n ${1} delete pvc ${0}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-3tq9mrm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-3tq9mrm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "清理没有被绑定的 PVC"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-4w78ow5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-4w78ow5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pvc --all-namespaces | tail -n +2 | grep -v Bound | awk '{print $1,$2}' | xargs -L1 kubectl delete pvc -n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-nv6iugw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-nv6iugw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "临时释放的指定namespace下的pod"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-4wvcd6q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-4wvcd6q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "适用于不想删除 Kubernetes 集群內的信息"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-bsig9md",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-bsig9md"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 方法一：通过 patch 模式\nkubectl get deploy -o name -n \u003cNAMESPACE\u003e|xargs -I{} kubectl patch {} -p '{\"spec\":{\"replicas\":0}}'# 方法二：通过资源伸缩副本数\nkubectl get deploy -o name |xargs -I{} kubectl scale --replicas=0 {}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-dr8rp12",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-dr8rp12"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "临时关闭 Daemonsets"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-w1cqm9x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-w1cqm9x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果需要临时将 Daemonsets 关闭，只需要将其调度到一个不存在的 node 上即可，调整下 nodeSelector"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-4hbx9or",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-4hbx9or"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl patch daemonsets nginx-ingress-controller -p '{\"spec\":{\"template\":{\"spec\":{\"nodeSelector\":{\"project/xdp\":\"none\"}}}}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-1zhzx5s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-1zhzx5s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "清理没有被绑定的 PV"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-678e77a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-678e77a"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pv | tail -n +2 | grep -v Bound | awk '{print $1}' | xargs -L1 kubectl delete pv\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-vgo0scg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-vgo0scg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据pods的重启次数进行排序"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-iwhz4b1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-iwhz4b1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods -A --sort-by='.status.containerStatuses[0].restartCount'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-y3s4lbj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-y3s4lbj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "无缝重启deploy,daemonset,statfulset(zero downtime)"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-1udilw1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-1udilw1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n \u003cnamespace\u003e rollout restart deployment \u003cdeployment-name\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-igpxlao",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-igpxlao"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据overlay2目录名找容器"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ok3y5be",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-ok3y5be"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker ps -q | xargs docker inspect --format '{{.Name}}, {{.State.Pid}}, {{.Id}}, {{.GraphDriver.Data.WorkDir}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-lh45815",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-lh45815"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过变量组合展示容器绑定端口列表"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-f8t3h9k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-f8t3h9k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format '{{/*通过变量组合展示容器绑定端口列表*/}}已绑定端口列表：{{println}}{{range $p,$conf := .NetworkSettings.Ports}}{{$p}} -\u003e {{(index $conf 0).HostPort}}{{println}}{{end}}' Web_web_1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-6j9ab63",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-6j9ab63"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查询指定网络下的容器名称，如果存在输出容器名称，如果没有，输出With No Containers"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-m7ihulv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-m7ihulv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format '{{range .Containers}}{{.Name}}{{println}}{{else}}With No Containers{{end}}' bridge\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-0h92lhn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-0h92lhn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过索引序号读取默认网关"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-rcw82o8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-rcw82o8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect bridge --format '{{/*查看网络的默认网关*/}}{{(index .IPAM.Config 0).Gateway}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-4qzon8e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-4qzon8e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看容器是否配置了容器策略"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ay8ttl2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-ay8ttl2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker ps -q | xargs docker inspect --format '{{if not .State.Restarting}}{{.Name}}容器没有配置重启策略{{end}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-c9no4s2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-c9no4s2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看容器当前的运行状态"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-kt64rlk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-kt64rlk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format '{{or .State.Status .State.Restarting}}' configuration-center\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-erjbn18",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-erjbn18"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "显示所有容器的IP"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-gs81w3e",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-gs81w3e"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -q)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ip4mpa2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-ip4mpa2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "显示所有容器的mac地址"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-vn1xxl5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-vn1xxl5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format='{{range .NetworkSettings.Networks}}{{.MacAddress}}{{end}}' $(docker ps -a -q)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-h2v0hyx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-h2v0hyx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "显示所有容器的名称，并分离出反斜杠"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-orj8hxz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-orj8hxz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format='{{.Name}}' $(docker ps -aq)|cut -d\"/\" -f2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-i5zevb9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-i5zevb9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建临时可调式POD"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-u9zo3rl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-u9zo3rl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl run ephemeral-busybox \\\n  --rm \\\n  --stdin \\\n  --tty \\\n  --restart=Never \\\n  --image=lqshow/busybox-curl:1.28 \\\n  -- sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-m7xx98q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-m7xx98q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取容器的日志路径"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-et866wr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-et866wr"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker inspect --format='{{.LogPath}}' docker-test1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-txs00c9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-txs00c9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调试coredns"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-cq1lald",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-cq1lald"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-fa0tbo2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-fa0tbo2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看资源使用情况"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ff0u6zs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-ff0u6zs"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} sh -c \"echo {} ; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve --;\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-zkna8kd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-zkna8kd",
+				"updated": "20230206153504"
+			}
+		},
+		{
+			"ID": "20230206153504-16glv76",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-16glv76"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看资源总情况"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-zxbgx0c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-zxbgx0c"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get no -o=custom-columns=\"NODE:.metadata.name,ALLOCATABLE CPU:.status.allocatable.cpu,ALLOCATABLE MEMORY:.status.allocatable.memory\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-hvnawnx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-hvnawnx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看CPU分配情况"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ob7t5d5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-ob7t5d5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} sh -c 'echo -n \"{}\\t\"|tr \"\\n\" \" \" ; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- | grep cpu | awk '\\''{print $2$3}'\\'';'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-rvp2vds",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-rvp2vds"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看内存分配"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-bs4nopu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-bs4nopu"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} sh -c 'echo \"{}\\t\"|tr \"\\n\" \" \" ; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- | grep memory | awk '\\''{print $2$3}'\\'';'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-zmrzb07",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-zmrzb07"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看所有镜像"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-hfwaf1p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-hfwaf1p"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods -o custom-columns='NAME:metadata.name,IMAGES:spec.containers[*].image'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-zo3knk7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-zo3knk7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "线程数统计"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-cckko2x",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-cckko2x"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "printf \"    ThreadNUM  PID\\t\\tCOMMAND\\n\" \u0026\u0026 ps -eLf | awk '{$1=null;$3=null;$4=null;$5=null;$6=null;$7=null;$8=null;$9=null;print}' | sort |uniq -c |sort -rn | head -10\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-cnx1yyy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-cnx1yyy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置环境变量"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ihv0953",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-ihv0953"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl set env deploy \u003cDEPLOYMENT_NAME\u003e OC_XXX_HOST=bbb\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-thnerdr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-thnerdr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "端口映射"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-e9pq9hu",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230206153504-e9pq9hu"
+			},
+			"Children": [
+				{
+					"ID": "20230206153504-6do37l3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230206153504-6do37l3"
+					},
+					"Children": [
+						{
+							"ID": "20230206153504-mqde8rm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230206153504-mqde8rm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将 localhost:3000 的请求转发到 nginx-pod Pod 的 80 端口"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-09z2vma",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-09z2vma"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl port-forward nginx-po 3000:80\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-28ai0nx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230206153504-28ai0nx"
+			},
+			"Children": [
+				{
+					"ID": "20230206153504-yphk2z8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230206153504-yphk2z8"
+					},
+					"Children": [
+						{
+							"ID": "20230206153504-ekit2o1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230206153504-ekit2o1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将 localhost:3201 的请求转发到 nginx-web service 的 3201 端口"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ozfclpz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-ozfclpz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl port-forward svc/nginx-web 3201\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-coxmcc5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-coxmcc5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置默认storageclass"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-xicgcln",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-xicgcln"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl patch storageclass \u003cyour-class-name\u003e -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-3qylevi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-3qylevi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在多个pod中运行命令"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-p7pkfo3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-p7pkfo3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods -o name | xargs -I{} kubectl exec {} -- \u003ccommand goes here\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-rgqwwkh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-rgqwwkh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看容器名"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-kde705i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-kde705i"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get po calibre-web-76b9bf4d8b-2kc5j -o json | jq -j \".spec.containers[].name\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-8pvmaly",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-8pvmaly"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "进入容器namespace"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-mdimjlo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-mdimjlo"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker ps | grep APP_NAME\ndocker inspect CONTAINER_ID | grep Pid\nnsenter -t PID -n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-hxxcqk3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-hxxcqk3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查找非 running 状态的 Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-vpyz255",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-vpyz255"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get pods -A --field-selector=status.phase!=Running | grep -v Complete\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ch2hcjk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-ch2hcjk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取节点列表及其内存容量"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-01jlgt5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-01jlgt5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get no -o json | jq -r '.items | sort_by(.status.capacity.memory)[]|[.metadata.name,.status.capacity.memory]| @tsv'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-jlrq5ck",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-jlrq5ck"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用交互 shell 访问匹配到 标签的 Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-flp63xf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-flp63xf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 案例1\nkubectl exec -i -t $(kubectl get pod -l \u003cKEY\u003e=\u003cVALUE\u003e -o name |sed 's/pods\\///') -- bash# 案例2\nkubectl exec -i -t $(kubectl get pod -l \u003cKEY\u003e=\u003cVALUE\u003e -o jsonpath='{.items[0].metadata.name}') -- bash\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-xeozywd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-xeozywd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取每个节点的Pod数量"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-kmfidz8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-kmfidz8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get po -o json --all-namespaces | jq '.items | group_by(.spec.nodeName) | map({\"nodeName\": .[0].spec.nodeName, \"count\": length}) | sort_by(.count)'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-6x1c7lq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-6x1c7lq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "复制secret到其他namespace下"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-10aj4vh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-10aj4vh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如使用证书，镜像凭证等."
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-z82ct2h",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-z82ct2h"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get secret \u003cSECRET-NAME\u003e -n \u003cSOURCE-NAMESPACE\u003e -oyaml | sed \"/namespace:/d\" | kubectl apply --namespace=\u003cTARGET-NAMESPACE\u003e -f -\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-lxys7cc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230206153504-lxys7cc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重置集群节点"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-5t27q0c",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230206153504-5t27q0c"
+			},
+			"Children": [
+				{
+					"ID": "20230206153504-axrh4tn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230206153504-axrh4tn"
+					},
+					"Children": [
+						{
+							"ID": "20230206153504-d9vp7iv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230206153504-d9vp7iv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将节点标记为不可调度，确保新的容器不会调度到该节点"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-340idih",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-340idih"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl cordon \u003cNODE-NAME\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-en5rdl3",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230206153504-en5rdl3"
+			},
+			"Children": [
+				{
+					"ID": "20230206153504-o8lhx6i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230206153504-o8lhx6i"
+					},
+					"Children": [
+						{
+							"ID": "20230206153504-50pnabs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230206153504-50pnabs"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Master 节点上将需要重置的节点驱逐, 除了 deemonset"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-92k6bye",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-92k6bye"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl drain \u003cNODE-NAME\u003e --delete-local-data --force --ignore-daemonsets\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-gm4g3au",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230206153504-gm4g3au"
+			},
+			"Children": [
+				{
+					"ID": "20230206153504-nox28e4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230206153504-nox28e4"
+					},
+					"Children": [
+						{
+							"ID": "20230206153504-vdqdbvq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230206153504-vdqdbvq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "删除节点"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-cwoq9e9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-cwoq9e9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl delete node \u003cNODE-NAME\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ye4glkw",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230206153504-ye4glkw"
+			},
+			"Children": [
+				{
+					"ID": "20230206153504-h0o9wut",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230206153504-h0o9wut"
+					},
+					"Children": [
+						{
+							"ID": "20230206153504-0tdd10q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230206153504-0tdd10q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在需要重置节点上执⾏重置脚本，注意，如果在 Master 主节点执⾏ kubeadm reset，则需要重新初始化集群"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-pl7udpk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230206153504-pl7udpk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubeadm reset\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-ryi5zgj",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230206153504-ryi5zgj"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230206153504-wqiqcc2",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230206153504-wqiqcc2"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本文转载自：「云原生生态圈」，原文：https://url.hi-linux.com/Vf5Xj，版权归原作者所有。欢迎投稿，投稿邮箱: editor@hi-linux.com。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-net96ic",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-net96ic"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230206153504-mgrali7"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-7znduy7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-7znduy7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最近，我们建立了一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "技术交流微信群"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。目前群里已加入了不少行业内的大神，有兴趣的同学可以加入和我们一起交流技术，在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "「奇妙的 Linux 世界」"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 公众号直接回复 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "「加群」"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 邀请你入群。"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-gsnw193",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-gsnw193"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230206153504-4diwdpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-9qgwpd4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-9qgwpd4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "你可能还喜欢"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-c4atce8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-c4atce8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "点击下方图片即可阅读"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-vip3lkp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-vip3lkp"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230206153504-c3psy2m"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==\u0026mid=2247520577\u0026idx=1\u0026sn=9efe2ea7f13aaf006134f7df4381dd40\u0026chksm=eac6b068ddb1397e20dda9fd29331c33c40a5f5a283c3b4ea5af29ea8a6e7245e1b8aa582bd2\u0026scene=21#wechat_redirect",
+					"TextMarkTextContent": "http://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==\u0026amp;mid=2247520577\u0026amp;idx=1\u0026amp;sn=9efe2ea7f13aaf006134f7df4381dd40\u0026amp;chksm=eac6b068ddb1397e20dda9fd29331c33c40a5f5a283c3b4ea5af29ea8a6e7245e1b8aa582bd2\u0026amp;scene=21#wechat_redirect"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-16323at",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-16323at"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如何使用 Avahi 在局域网轻松发现你的系统服务"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-jdam8a8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-jdam8a8"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230206153504-pd6f20r"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==\u0026mid=2247497936\u0026idx=1\u0026sn=ec9442c73de91c5ab35dbd21dfbedcbd\u0026chksm=eac6d9f9ddb150ef9fc91129ab2b34d35ffef884a726fd90bc1fe9d4014456d910b3baa73afc\u0026scene=21#wechat_redirect",
+					"TextMarkTextContent": "http://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==\u0026amp;mid=2247497936\u0026amp;idx=1\u0026amp;sn=ec9442c73de91c5ab35dbd21dfbedcbd\u0026amp;chksm=eac6d9f9ddb150ef9fc91129ab2b34d35ffef884a726fd90bc1fe9d4014456d910b3baa73afc\u0026amp;scene=21#wechat_redirect"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n点击上方图片，『美团|饿了么』外卖红包天天免费领"
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-zw1m0zq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-zw1m0zq"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230206153504-f354qhi"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230206153504-1c4ospv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230206153504-1c4ospv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "更多有趣的互联网新鲜事，关注「奇妙的互联网」视频号全了解！"
+				}
+			]
+		}
+	]
+}

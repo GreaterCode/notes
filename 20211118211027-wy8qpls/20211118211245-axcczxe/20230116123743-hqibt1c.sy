@@ -1,0 +1,1273 @@
+{
+	"ID": "20230116123743-hqibt1c",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230116123743-hqibt1c",
+		"title": "Go语言使用事件系统实现事件的响应和处理",
+		"updated": "20230116123900"
+	},
+	"Children": [
+		{
+			"ID": "20230116123743-q51nw1d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-q51nw1d"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Go语言可以将类型的方法与普通函数视为一个概念，从而简化方法和函数混合作为回调类型时的复杂性。这个特性和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://c.biancheng.net/csharp/",
+					"TextMarkTextContent": "C#"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中的代理（delegate）类似，调用者无须关心谁来支持调用，系统会自动处理是否调用普通函数或类型的方法。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-52w0549",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-52w0549"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 本节中，首先将用简单的例子了解Go语言是如何将方法与函数视为一个概念，接着会实现一个事件系统，事件系统能有效地将事件触发与响应两端代码解耦。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-rp7oc24",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230116123743-rp7oc24"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法和函数的统一调用"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-yi8a8ld",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-yi8a8ld"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本节的例子将让一个结构体的方法（class.Do）的参数和一个普通函数（funcDo）的参数完全一致，也就是方法与函数的签名一致。然后使用与它们签名一致的函数变量（delegate）分别赋值方法与函数，接着调用它们，观察实际效果。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-rsgadb8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-rsgadb8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 详细实现请参考下面的代码。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-24vdbg6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230116123743-24vdbg6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport \"fmt\"\n\n// 声明一个结构体\ntype class struct {\n}\n\n// 给结构体添加Do方法\nfunc (c *class) Do(v int) {\n\n    fmt.Println(\"call method do:\", v)\n}\n\n// 普通函数的Do\nfunc funcDo(v int) {\n\n    fmt.Println(\"call function do:\", v)\n}\n\nfunc main() {\n\n// 声明一个函数回调\nvar delegate func(int)\n\n// 创建结构体实例\n    c := new(class)\n\n// 将回调设为c的Do方法\n    delegate = c.Do\n\n// 调用\n    delegate(100)\n\n// 将回调设为普通函数\n    delegate = funcDo\n\n// 调用\n    delegate(100)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-891me4b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-891me4b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-avqmxa6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230116123743-avqmxa6"
+			},
+			"Children": [
+				{
+					"ID": "20230116123743-ceguhts",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-ceguhts"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-oe31kuj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-oe31kuj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 10 行，为结构体添加一个 Do() 方法，参数为整型。这个方法的功能是打印提示和输入的参数值。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-kh8s12u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-kh8s12u"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-9i5aysm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-9i5aysm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 16 行，声明一个普通函数，参数也是整型，功能是打印提示和输入的参数值。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-btrzqdn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-btrzqdn"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-nok1mms",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-nok1mms"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 24 行，声明一个 delegate 的变量，类型为 func(int)，与 funcDo 和 class 的 Do() 方法的参数一致。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-hkrjsad",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-hkrjsad"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-hs57t06",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-hs57t06"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 30 行，将 c.Do 作为值赋给 delegate 变量。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-opv5p6z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-opv5p6z"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-f698xmk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-f698xmk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 33 行，调用 delegate() 函数，传入 100 的参数。此时会调用 c 实例的 Do() 方法。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-8qud926",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-8qud926"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-9l71usq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-9l71usq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 36 行，将 funcDo 赋值给 delegate。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-rv0e86r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-rv0e86r"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-xoyva4r",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-xoyva4r"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 39 行，调用 delegate()，传入 100 的参数。此时会调用 funcDo() 方法。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-yp0l4wf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-yp0l4wf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 运行代码，输出如下："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-tqxsbne",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-tqxsbne"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "call method do: 100\n call function do: 100"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-p9108jb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-p9108jb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这段代码能运行的基础在于：无论是普通函数还是结构体的方法，只要它们的签名一致，与它们签名一致的函数变量就可以保存普通函数或是结构体方法。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-ponboas",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-ponboas"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 了解了Go语言的这一特性后，我们就可以将这个特性用在事件中。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-9b0hgw2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230116123743-9b0hgw2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件系统基本原理"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-09zopae",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-09zopae"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件系统可以将事件派发者与事件处理者解耦。例如，网络底层可以生成各种事件，在网络连接上后，网络底层只需将事件派发出去，而不需要关心到底哪些代码来响应连接上的逻辑。或者再比如，你注册、关注或者订阅某“大V”的社交消息后，“大V”发生的任何事件都会通知你，但他并不用了解粉丝们是如何为她喝彩或者疯狂的。如下图所示为事件系统基本原理图。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-on9sd15",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-on9sd15"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/aHR0cDovL2MuYmlhbmNoZW5nLm5ldC91cGxvYWRzL2FsbGltZy8xODA4MTUvMS0xUFE1MTYyUUgwNC5qcGc-20230116123743-sjh0r27"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n 图：事件系统基本原理"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-fj5rlkl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-fj5rlkl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 一个事件系统拥有如下特性："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-429mkj6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230116123743-429mkj6"
+			},
+			"Children": [
+				{
+					"ID": "20230116123743-2qylxj4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-2qylxj4"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-qyqkjw7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-qyqkjw7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "能够实现事件的一方，可以根据事件 ID 或名字注册对应的事件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-86n3ry9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-86n3ry9"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-ltzf92h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-ltzf92h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "事件发起者，会根据注册信息通知这些注册者。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-ucag64a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-ucag64a"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-r5ugm29",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-r5ugm29"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一个事件可以有多个实现方响应。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-glhhznt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-glhhznt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 通过下面的步骤详细了解事件系统的构成及使用。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-borozjo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230116123743-borozjo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件注册"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-k5ib5mp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-k5ib5mp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件系统需要为外部提供一个注册入口。这个注册入口传入注册的事件名称和对应事件名称的响应函数，事件注册的过程就是将事件名称和响应函数关联并保存起来，详细实现请参考下面代码的 RegisterEvent() 函数。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-q767krr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230116123743-q767krr"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-ipp0zl3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230116123743-ipp0zl3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\n// 实例化一个通过字符串映射函数切片的map\nvar eventByName = make(map[string][]func(interface{}))\n\n// 注册事件，提供事件名和回调函数\nfunc RegisterEvent(name string, callback func(interface{})) {\n\n// 通过名字查找事件列表\n    list := eventByName[name]\n\n// 在列表切片中添加函数\n    list = append(list, callback)\n\n// 将修改的事件列表切片保存回去\n    eventByName[name] = list\n}\n\n// 调用事件\nfunc CallEvent(name string, param interface{}) {\n\n// 通过名字找到事件列表\n    list := eventByName[name]\n\n// 遍历这个事件的所有回调\nfor _, callback := range list {\n\n// 传入参数调用回调\n        callback(param)\n    }\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-hd66s67",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-hd66s67"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-sjquya8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230116123743-sjquya8"
+			},
+			"Children": [
+				{
+					"ID": "20230116123743-yi0uyo0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-yi0uyo0"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-k5hrwxm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-k5hrwxm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 4 行，创建一个 map 实例，这个 map 通过事件名（string）关联回调列表（[]func(interface{}），同一个事件名称可能存在多个事件回调，因此使用回调列表保存。回调的函数声明为 func(interface{})。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-tx09iux",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-tx09iux"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-7f50b6u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-7f50b6u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 7 行，提供给外部的通过事件名注册响应函数的入口。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-me4sz74",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-me4sz74"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-xjm71z5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-xjm71z5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 10 行，eventByName 通过事件名（name）进行查询，返回回调列表（[]func(interface{}）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-tbobbbu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-tbobbbu"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-m6fp4m0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-m6fp4m0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 13 行，为同一个事件名称在已经注册的事件回调的列表中再添加一个回调函数。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-lt4jizw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-lt4jizw"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-sexgjri",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-sexgjri"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 16 行，将修改后的函数列表设置到 map 的对应事件名中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-xyrsd2v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-xyrsd2v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 拥有事件名和事件回调函数列表的关联关系后，就需要开始准备事件调用的入口了。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-qjhu4e8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230116123743-qjhu4e8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件调用"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-9mamz7g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-9mamz7g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "事件调用方和注册方是事件处理中完全不同的两个角色。事件调用方是事发现场，负责将事件和事件发生的参数通过事件系统派发出去，而不关心事件到底由谁处理；事件注册方通过事件系统注册应该响应哪些事件及如何使用回调函数处理这些事件。事件调用的详细实现请参考上面代码的 CallEvent() 函数。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-ov80lo1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-ov80lo1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-bq0alwt",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230116123743-bq0alwt"
+			},
+			"Children": [
+				{
+					"ID": "20230116123743-oe9p5jd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-oe9p5jd"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-jx6zcby",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-jx6zcby"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 20 行，调用事件的入口，提供事件名称 name 和参数 param。事件的参数表示描述事件具体的细节，例如门打开的事件触发时，参数可以传入谁进来了。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-l5nfey3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-l5nfey3"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-p1imv98",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-p1imv98"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 23 行，通过注册事件回调的 eventByName 和事件名字查询处理函数列表 list。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-wnk3ebp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-wnk3ebp"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-g6cxt1o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-g6cxt1o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 26 行，遍历这个事件列表，如果没有找到对应的事件，list 将是一个空切片。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-ktzsbce",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-ktzsbce"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-v1e5nha",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-v1e5nha"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 29 行，将每个函数回调传入事件参数并调用，就会触发事件实现方的逻辑处理。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-wn5pj1s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230116123743-wn5pj1s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用事件系统"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-nt3skfq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-nt3skfq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子中，在 main() 函数中调用事件系统的 CallEvent 生成 OnSkill 事件，这个事件有两个处理函数，一个是角色的 OnEvent() 方法，还有一个是函数 GlobalEvent()，详细代码实现过程请参考下面的代码。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-3b6sqn8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230116123743-3b6sqn8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-i8y25q6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230116123743-i8y25q6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport \"fmt\"\n\n// 声明角色的结构体\ntype Actor struct {\n}\n\n// 为角色添加一个事件处理函数\nfunc (a *Actor) OnEvent(param interface{}) {\n\n    fmt.Println(\"actor event:\", param)\n}\n\n// 全局事件\nfunc GlobalEvent(param interface{}) {\n\n    fmt.Println(\"global event:\", param)\n}\n\nfunc main() {\n\n// 实例化一个角色\n    a := new(Actor)\n\n// 注册名为OnSkill的回调\n    RegisterEvent(\"OnSkill\", a.OnEvent)\n\n// 再次在OnSkill上注册全局事件\n    RegisterEvent(\"OnSkill\", GlobalEvent)\n\n// 调用事件，所有注册的同名函数都会被调用\n    CallEvent(\"OnSkill\", 100)\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-i7iwg61",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-i7iwg61"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-r6tyqlz",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230116123743-r6tyqlz"
+			},
+			"Children": [
+				{
+					"ID": "20230116123743-vailywh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-vailywh"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-nq106fj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-nq106fj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 6 行，声明一个角色的结构体。在游戏中，角色是常见的对象，本例中，角色也是 OnSkill 事件的响应处理方。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-nn0ddqz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-nn0ddqz"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-faksadm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-faksadm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 10 行，为角色结构添加一个 OnEvent() 方法，这个方法拥有 param 参数，类型为 interface{}，与事件系统的函数（func(interface{})）签名一致。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-5qtx6gr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-5qtx6gr"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-4799skb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-4799skb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 16 行为全局事件响应函数。有时需要全局进行侦听或者处理一些事件，这里使用普通函数实现全局事件的处理。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-8exwyuo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-8exwyuo"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-6tjehy3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-6tjehy3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 27 行，注册一个 OnSkill 事件，实现代码由 a 的 OnEvent 进行处理。也就是 Actor的OnEvent() 方法。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-z306cex",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-z306cex"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-rlixkbh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-rlixkbh"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 30 行，注册一个 OnSkill 事件，实现代码由 GlobalEvent 进行处理，虽然注册的是同一个名字的事件，但前面注册的事件不会被覆盖，而是被添加到事件系统中，关联 OnSkill 事件的函数列表中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230116123743-szpn63g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230116123743-szpn63g"
+					},
+					"Children": [
+						{
+							"ID": "20230116123743-1ku1fpa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230116123743-1ku1fpa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 33 行，模拟处理事件，通过 CallEvent() 函数传入两个参数，第一个为事件名，第二个为处理函数的参数。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-97olpir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-97olpir"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 整个例子运行结果如下："
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-m33n3ti",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-m33n3ti"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "actor event: 100\n global event: 100"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-tddbvh3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-tddbvh3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "结果演示，角色和全局的事件会按注册顺序顺序地触发。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-k88oiga",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-k88oiga"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 一般来说，事件系统不保证同一个事件实现方多个函数列表中的调用顺序，事件系统认为所有实现函数都是平等的。也就是说，无论例子中的 a.OnEvent 先注册，还是 GlobalEvent() 函数先注册，最终谁先被调用，都是无所谓的，开发者不应该去关注和要求保证调用的顺序。"
+				}
+			]
+		},
+		{
+			"ID": "20230116123743-mgc9975",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230116123743-mgc9975"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 一个完善的事件系统还会提供移除单个和所有事件的方法。"
+				}
+			]
+		}
+	]
+}

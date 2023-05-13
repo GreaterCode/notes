@@ -1,0 +1,2234 @@
+{
+	"ID": "20230414190240-na6uym7",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230414190240-na6uym7",
+		"title": "Calico学习：IP 地址管理",
+		"updated": "20230414190727"
+	},
+	"Children": [
+		{
+			"ID": "20230414190240-9knuyqu",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230414190240-9knuyqu"
+			}
+		},
+		{
+			"ID": "20230414190240-cgrcdsr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-cgrcdsr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 使用 IPAM 插件管理 POD 的 IP 地址信息，默认情况下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/containernetworking/plugins/tree/main/plugins/ipam/host-local",
+					"TextMarkTextContent": "containernetworking/plugins"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 项目中提供的 host-local 作为 IPAM 工具，该工具存储 POD IP 地址在每个节点的 /var/lib/cni/networks/$NETWORK_NAME 并且支持配置多个子网、路由、resolvConf 等内容。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-yosihky",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-yosihky"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Calico 支持和 host-local 一起工作，但提供了专用的 calico-ipam 插件，从配置 /etc/cni/net.d/10-calico.conflist 中可以看出默认情况下 calico 使用的是 calico-ipam 。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-vl6i5xf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414190240-vl6i5xf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. IP Pool"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-ix0bb6u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-ix0bb6u",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico-ipam 从一个指定 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://projectcalico.docs.tigera.io/reference/resources/ippool",
+					"TextMarkTextContent": "IPPool"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中为 POD 分配 IP 地址，默认情况下 Cailco 会自动创建 ip 地址池 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "ippools/default-ipv4-ippool"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，用户没有特殊配置时所有 Pod 的 ip 地址从该池中分配："
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-mllggrx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-mllggrx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion:crd.projectcalico.org/v1\nkind:IPPool\nmetadata:\nname:default-ipv4-ippool\nspec:\nblockSize:28\ncidr:172.31.253.0/24 \nipipMode:Never\nnatOutgoing:true\nnodeSelector:all()\nvxlanMode:CrossSubnet\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-vkeu5vy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-vkeu5vy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 Mainifest 进行安装时，我们可以通过注入环境变量指定默认 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://projectcalico.docs.tigera.io/reference/resources/ippool",
+					"TextMarkTextContent": "IPPOOL"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的相关配置（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://projectcalico.docs.tigera.io/reference/node/configuration",
+					"TextMarkTextContent": "参考"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）:"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-is847wu",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414190240-is847wu"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "环境变量"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "默认值"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV4POOL_CIDR"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "192.168.0.0/16, 172.16.0.0/16, .., 172.31.0.0/16"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "默认地址池的CIDR，当定义了环境变量NO_DEFAULT_POOLS时，该配置无效"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV4POOL_BLOCK_SIZE"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "26"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每个节点在 ippool 中分配的默认地址块"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV4POOL_IPIP"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Always"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "该 ippool 使用 ipip 模式，Always, CrossSubnet, Never(Off)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV4POOL_VXLAN"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Never"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "该 ippool 使用 vxlan 模式，Always, CrossSubnet, Never(Off)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV4POOL_NAT_OUTGOING"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "true"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设置为 false 时，pod 访问集群之外的服务不进行 nat，即禁止集群外的流量"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV4POOL_NODE_SELECTOR"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "all()"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设置 ippool 作用的容器范围，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://projectcalico.docs.tigera.io/reference/resources/ippool#node-selector",
+									"TextMarkTextContent": "node-selector 配置参考"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV6POOL_BLOCK_SIZE"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "\u003ca randomly chosen /48 ULA\u003e"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同 ipv4 同名配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV6POOL_BLOCK_SIZE"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "122"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同 ipv4 同名配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV6POOL_VXLAN"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Never"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同 ipv4 同名配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV6POOL_NAT_OUTGOING"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "false"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同 ipv4 同名配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CALICO_IPV6POOL_NODE_SELECTOR"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "all()"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同 ipv4 同名配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "NO_DEFAULT_POOLS"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "false"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "禁止 calico 创建默认 ippool"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-7dtvijr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-7dtvijr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico-ipam 相比 host-local 的最大优点包括："
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-4mp5q7i",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-4mp5q7i"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-enfx87j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-enfx87j"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-znfhbes",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-znfhbes"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "支持动态的定义多个 ippool"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-ahqscnj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-ahqscnj"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-yqhhr3b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-yqhhr3b"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "支持将 ippool 作用范围和 Node、Namespace、Pod 进行关联"
+								}
+							]
+						},
+						{
+							"ID": "20230414190240-nbd09yb",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230414190240-nbd09yb"
+							},
+							"Children": [
+								{
+									"ID": "20230414190240-ko3rmbw",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230414190240-ko3rmbw"
+									},
+									"Children": [
+										{
+											"ID": "20230414190240-keuen8z",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230414190240-keuen8z"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ippool 中 spec.nodeSelector 可以关联不同 Node 到不同 ippool，此时运行在不同 Node 上的 pod 将从不同的 ippool 中获取 ip 地址（"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "https://projectcalico.docs.tigera.io/networking/assign-ip-addresses-topology",
+													"TextMarkTextContent": "assign-ip-addresses-topology"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "）"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230414190240-k29yfs7",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230414190240-k29yfs7"
+									},
+									"Children": [
+										{
+											"ID": "20230414190240-32f7s3j",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230414190240-32f7s3j"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "通过在 Namespace 中添加注解，此时该命名空间中的 Pod 都将从指定 IPPool 中获取 ip，如："
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "\u0026quot;cni.projectcalico.org/ipv4pools\u0026quot;: \u0026quot;[\\\u0026quot;poolname\\\u0026quot;]\u0026quot;"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230414190240-2umhwht",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230414190240-2umhwht"
+									},
+									"Children": [
+										{
+											"ID": "20230414190240-1xnylfp",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230414190240-1xnylfp"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "通过在 Pod 中添加注解，可以实现从指定 ippool 中分配 IP"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-9nd0wdt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-9nd0wdt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Calico 支持使用以下注解进行 IP 地址的管理，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://projectcalico.docs.tigera.io/reference/cni-plugin/configuration#using-kubernetes-annotations",
+					"TextMarkTextContent": "参考"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-b63rl46",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-b63rl46"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-z9rhvpk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-z9rhvpk"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-wzlbxc1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-wzlbxc1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni.projectcalico.org/ipv4pools：指定 ipv4 地址的 ippool，可以指定多个"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-r39d8ps",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-r39d8ps"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-6w7llb8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-6w7llb8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni.projectcalico.org/ipv6pools：指定 ipv6 地址的 ippool，可以指定多个"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-g0t1wqj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-g0t1wqj"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-iugtmve",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-iugtmve"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni.projectcalico.org/ipAddrs：指定 ip 地址，但是指定的 IP 地址需要属于某个 ippool，且没有被分配？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-yxlw0c8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-yxlw0c8"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-hbss12r",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-hbss12r"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni.projectcalico.org/ipAddrsNoIpam： 指定 ip 地址，并且绕过 ipam 插件的检查（可以认为是配置静态 ip）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-ervzjsv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-ervzjsv"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-xs181es",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-xs181es"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni.projectcalico.org/floatingIPs：指定浮动 ip"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-wa2u2ae",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414190240-wa2u2ae"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. IP BlockSize"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-o33rxpg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-o33rxpg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico-ipam 和 host-local 类似，同样将 ippool 中的 cidr 划分成多个 ipamblocks ，默认情况下每个 ipamblocks 的掩码长度是 26 ，每个 Node 会和一个或者多个 ipamblocks 关联。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-kgkq8ya",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-kgkq8ya",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当 pod 调度到指定 Node 时，calico-ipam 会尽可能从该节点关联的 ipamblocks 中分配 ip 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-fg68yxj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-fg68yxj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion:crd.projectcalico.org/v1\nkind:IPAMBlock\nmetadata:\nname:172-31-253-128-27\nspec:\naffinity:host:node1# 关联的主机名称\nallocations:[0,1,null,null...]# IP 地址槽，已经分配的地址通过数字表示、未分配的通过 null 表示\nunallocated:[2,3...]# 未分配的地址槽]\nattributes:# 分配的 IP 地址详情\n- handle_id:vxlan-tunnel-addr-node1# 第一个 IP 通常分配给 ipip/vxlan 等网关设备\nsecondary:\nnode:node1\ntype:vxlanTunnelAddress\n- handle_id:k8s-pod-network.b3250f3b6a6ab9bfd318ad67fc11ccacb02e2eb0e74d86ffdd220f32736242bb\nsecondary:\nnamespace:kube-system\nnode:node1\npod:coredns-5798446d7b-wghzp\ntimestamp:2022-07-25 08:05:16.226345746 +0000UTC\ncidr:172.31.253.128/27\ndeleted:false\nstrictAffinity:false\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-bm44cb9",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414190240-bm44cb9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-0rv7qzg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-0rv7qzg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico-ipam 划分 ipamblocks  的目的是： "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "将在同一个 Node 上运行的 Pod 分配同一个子网中，以此减小主机上 route 表的数量"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-u8eqa0z",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-u8eqa0z"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-uv5nckq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-uv5nckq"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-9ezh87u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-9ezh87u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "某个节点的 ipamblocks 的资源耗尽，calico 会自动为该节点关联一个新的 ipamblocks"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-dgc0pbz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-dgc0pbz"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-bntvwpv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-bntvwpv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "某个节点的 ipamblocks 的资源耗尽，并且没有未分配 ipamblocks 时，calico 可以从其他节点的 ipamblocks 中分配地址"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-ex7w19n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-ex7w19n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了验证上述特性，我们进行以下实验："
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-oz8thsp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-oz8thsp",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-ff974i7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-ff974i7",
+						"updated": "20230414190240"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-xofhj85",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-xofhj85",
+								"updated": "20230414190240"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在 2 节点 kubernetes 环境中，创建第二个子网 cidr 为 10.10.10.0/29 ，blockSize 为 30"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-b9h6lnb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-b9h6lnb"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion:crd.projectcalico.org/v1\nkind:IPPool\nmetadata:\ngeneration:1\nname:yoaz\nspec:\nblockSize:30\ncidr:10.10.10.0/29\nipipMode:Never\nnatOutgoing:true\nnodeSelector:all()\nvxlanMode:Always\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-8ppl2ke",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-8ppl2ke",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-00tadti",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-00tadti",
+						"updated": "20230414190240"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-57fttbp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-57fttbp",
+								"updated": "20230414190240"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建在每个节点上创建一个 Deployment（）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-u23csu1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-u23csu1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion:apps/v1\nkind:Deployment\nmetadata:\nname:yoaz-\u003cnodename\u003e\nspec:\nreplicas:1\nselector:\nmatchLabels:\napp:yoaz\ntemplate:\nmetadata:\nannotations:\n\"cni.projectcalico.org/ipv4pools\": \"[\\\"yoaz\\\"]\"\nlabels:\napp:yoaz\nspec:\nnodeSelector:\nkubernetes.io/hostname:\u003cnodename\u003e\ncontainers:\n- command:[\"/bin/sh\",\"-c\",\"trap : TERM INT; sleep infinity \u0026 wait\"]\nimage:rcos-dockerimage_centos:v2.0.4\nimagePullPolicy:IfNotPresent\nname:centos\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-xbkjx0e",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-xbkjx0e",
+				"updated": "20230414190605"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-5ahx7pw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-5ahx7pw",
+						"updated": "20230414190605"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-k9a5tka",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-k9a5tka",
+								"updated": "20230414190605"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "calicoctl ipam show –show-blocks"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 查看 ip 分配情况，可以看到 10.10.10.0/29 被分成了 2 个 ipamblocks ，并且关联到不同的节点，此时 ippool 中已经没有多余 ipamblock"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-lufogh6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-lufogh6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "ZmFsbGJhY2s="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "+----------+-------------------+-----------+------------+-----------+\n| GROUPING |       CIDR        | IPS TOTAL | IPS IN USE | IPS FREE  |\n+----------+-------------------+-----------+------------+-----------+\n| IP Pool  | 172.31.253.0/24   |       256 | 6 (2%)     | 250 (98%) |\n| Block    | 172.31.253.128/27 |        32 | 5 (16%)    | 27 (84%)  |\n| Block    | 172.31.253.160/27 |        32 | 1 (3%)     | 31 (97%)  |\n| IP Pool  | 10.10.10.0/29     |         8 | 1 (12%)    | 7 (88%)   |\n| Block    | 10.10.10.0/30     |         4 | 1 (25%)    | 3 (75%)   |          # 关联到节点 node1\n| Block    | 10.10.10.4/30     |         4 | 1 (0%)     | 4 (100%)  |          # 关联到节点 node2\n+----------+-------------------+-----------+------------+-----------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-cx3o62h",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-cx3o62h",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-cm0zzto",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-cm0zzto",
+						"updated": "20230414190240"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-nktgwti",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-nktgwti",
+								"updated": "20230414190240"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "扩容其中一个节点的 deploy 的副本书为 5 ，使 ipamblocks 耗尽。此时所有新增加的 pod 都能正常获取 ip ，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "yoaz-node2-77c466f757-7grbm"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 运行在 node2 节点，但是其 ip 地址为 10.10.10.2，该 IP 从 10.10.10.0/30 分配，而这个 ipamblocks 实际上和 node1 关联。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-hzcsnaz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-hzcsnaz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "ZmFsbGJhY2s="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl  get pod -owide\n\nNAME                          READY    STATUS   RESTARTS   AGE   IP           NODE  \nyoaz-node1-56677c6496-c662m   1/1     Running   0          10m   10.10.10.1   node1 \nyoaz-node2-77c466f757-56dk2   1/1     Running   0          4s    10.10.10.4   node2 \nyoaz-node2-77c466f757-5l4nr   1/1     Running   0          4s    10.10.10.6   node2 \nyoaz-node2-77c466f757-7grbm   1/1     Running   0          4s    10.10.10.2   node2        # 特殊 POD\nyoaz-node2-77c466f757-d6lfh   1/1     Running   0          4s    10.10.10.7   node2 \nyoaz-node2-77c466f757-n4fmp   1/1     Running   0          10m   10.10.10.5   node2 \n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-2nf7d4g",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230414190240-2nf7d4g",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"ID": "20230414190240-93zb11s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230414190240-93zb11s",
+						"updated": "20230414190240"
+					},
+					"Children": [
+						{
+							"ID": "20230414190240-vnyh25g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414190240-vnyh25g",
+								"updated": "20230414190240"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看两个节点的路由信息： node1 的路由表中，专门为 10.10.10.2/32 增加了独立路由，并通过 vxlan.calico 直接转发到 node2 ，node2 中同样为 10.10.10.2/32 增加了独立路由并转发到本地容器对应的 veth 。"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "需要注意的是：node1 中对路由表的顺序有一定要求。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-03wbb0k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-03wbb0k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "ZmFsbGJhY2s="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "节点 node1\n\nKernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\n0.0.0.0         172.28.112.1    0.0.0.0         UG    800    0        0 rcosmgmt\n10.10.10.1      0.0.0.0         255.255.255.255 UH    0      0        0 cali9a29d83d8a0\n10.10.10.2      172.31.253.160  255.255.255.255 UGH   0      0        0 vxlan.calico      # 独立 Route 信息\n10.10.10.4      172.31.253.160  255.255.255.252 UG    0      0        0 vxlan.calico\n\n节点 node2\n\nKernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\n0.0.0.0         172.28.112.1    0.0.0.0         UG    800    0        0 rcosmgmt\n10.10.10.0      172.31.253.128  255.255.255.252 UG    0      0        0 vxlan.calico\n10.10.10.2      0.0.0.0         255.255.255.255 UH    0      0        0 cali459ad9c24e2  # 独立 Route 信息\n10.10.10.4      0.0.0.0         255.255.255.255 UH    0      0        0 califad72e995d4\n10.10.10.5      0.0.0.0         255.255.255.255 UH    0      0        0 calic07dc2fb526\n10.10.10.6      0.0.0.0         255.255.255.255 UH    0      0        0 cali511a020a7d4\n10.10.10.7      0.0.0.0         255.255.255.255 UH    0      0        0 calibdd00a1c9e8\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-o93nbl8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-o93nbl8",
+				"updated": "20230414190240"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当创建多个 ippool 时，如果使用的 tunnel 方案（ipip or vxlan），那么是可以共用的 tunnel 设备的。换句话说，上述实验中创建的 ippools/yoaz 并没有分配一个独立 ip 作为 tunnel 设备的地址，而是复用了 ippools/default-ipv4-ippool 中创建的 vxlanTunnelAddress ，其路由地址如下："
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-z1ixait",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-z1ixait"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "ZmFsbGJhY2s="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Kernel IP routing table\nDestination Gateway        Genmask         Flags Metric Ref Use Iface\n0.0.0.0     172.28.112.1   0.0.0.0         UG    800    0   0 rcosmgmt\n10.10.10.0  172.31.253.128 255.255.255.252 UG    0      0   0 vxlan.calico    # 172.31.253.128是对端vxlan.calico设备的ip地址\n10.10.10.5  0.0.0.0        255.255.255.255 UH    0      0   0 calic07dc2fb526\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-42e6msl",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414190240-42e6msl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-hdqdw3e",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230414190240-hdqdw3e"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230414190240-u8uih6k",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230414190240-u8uih6k"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "需要注意 ippool 不能通过直接修改 blockSize 改变 ipamblocks 的长度，如果 calico 已经部署完成，需要遵循官方给出的步骤变更。"
+						}
+					]
+				},
+				{
+					"ID": "20230414190240-gppag3g",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230414190240-gppag3g"
+					},
+					"Children": [
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "a",
+							"TextMarkAHref": "https://projectcalico.docs.tigera.io/networking/change-block-size",
+							"TextMarkTextContent": "https://projectcalico.docs.tigera.io/networking/change-block-size"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190727-dzoqwc7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190727-dzoqwc7",
+				"updated": "20230414190727"
+			}
+		},
+		{
+			"ID": "20230414190240-hzpqvxm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414190240-hzpqvxm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.  Floating IP"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-040prom",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-040prom"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Floating IP 是 IaaS 架构中提出的概念，只在工作负载不知情的情况的下为其提供 external IP，使集群之外的服务可以通过 external IP 访问工作负载。目前绝大多数公有云虚拟机的公网 IP 都是通过 Floating IP 方式实现的。 Calico 支持在 Kubernetes/OpenStack 中为 Workload 设置 Floating IP。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-f8ej4aw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-f8ej4aw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kubernetes 场景中，Calico Floating IP 和 Kubernetes Service 相似，基于 DNAT/SNAT 工作。用户可以定义特定的 IPPOOL ，并通过注解将其中的 IP 关联到 POD 中。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-2xjleew",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-2xjleew"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "|"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-bvqlws6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-bvqlws6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-7zbzhvn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-7zbzhvn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " |"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-iretnmx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-iretnmx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion:crd.projectcalico.org/v1\nkind:IPPool\nmetadata:\nname:floating-ippool\nspec:\nblockSize:30\ncidr:10.10.10.0/29\nnatOutgoing:true\nnodeSelector:\"!all()\"# 通过 nodeSelector 预留整个 IPPOOL \n---\napiVersion:v1\nkind:Pod\nmetadata:\nname:centos-floating-ip\nannotations:\ncni.projectcalico.org/floatingIPs:\"[\\\"10.10.10.2\\\"]\"\nspec:\ncontainers:\n- command:\n- /bin/sh\n- -c\n- 'trap :TERM INT; sleep infinity \u0026 wait'\nimage:rcos-dockerimage_centos:v2.0.4\nimagePullPolicy:IfNotPresent\nname:centos\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-13k8dqc",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414190240-13k8dqc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-efjr732",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-efjr732"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico 在运行 Pod 的物理机上，为 Floating IP 添加了额外的 DNAT/SNAT 规则"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-fx3um6h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-fx3um6h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "|"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-zhrumxm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-zhrumxm"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1\n2\n3\n4\n5\n6\n7\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-okh55jy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-okh55jy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " |"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-x4wc2zi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-x4wc2zi"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "ZmFsbGJhY2s="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cali-fip-dnat 安装在 cali-OUTPUT 和 cali-PREROUTING\n-A cali-fip-dnat -d 10.10.10.2/32 -m comment --comment \"cali:utJYcbVCl62obave\" -j DNAT --to-destination 172.31.253.162\n\n# cali-fip-snat 安装在 cali-POSTROUTING\n-A cali-fip-snat -s 172.31.253.162/32 -d 172.31.253.162/32 -m comment --comment \"cali:-JAgnyKh1gAKBkh7\" -j SNAT --to-source 10.10.10.2 --random-fully\n\nPS：由于容器内和物理 iptable 命令行工具存在版本差异，物理上查看的 rule 可能不完整。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-0m32nwn",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414190240-0m32nwn"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-04trgua",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-04trgua"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "cali-fip-dnat 规则保证外部 Client 能以 FloatingIP 访问目标容器，由于这里往返流量都经过物理机，所以无需进行 SNAT（类似 Kubernetes Service 的 externalTrafficPolicy = Local 模式）。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-hvqftw6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-hvqftw6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "cali-fip-snat 的存在是为了在配置了 Floating IP 的容器中，可以正常访问 Floating IP 。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-8tj2f7u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-8tj2f7u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后，Floating IP 只在 BGP 模式下使用，VXLAN 模式下 Floating IP 无法正常工作 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/projectcalico/calico/issues/5190",
+					"TextMarkTextContent": "【参考 issues/519】 "
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-9sa0fxy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230414190240-9sa0fxy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. IP 地址预留"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-5lwhmw2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-5lwhmw2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 IPReservation 可以预留 IPPool 的指定 ip 不被自动分配给容器（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://projectcalico.docs.tigera.io/reference/resources/ipreservation",
+					"TextMarkTextContent": "参考"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-08tdrgz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-08tdrgz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "|"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-9j1ppcy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-9j1ppcy"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1\n2\n3\n4\n5\n6\n7\n8\n9\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-2dald13",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-2dald13"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " |"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-xkxn99g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414190240-xkxn99g"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "ZmFsbGJhY2s="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: projectcalico.org/v3\nkind: IPReservation\nmetadata:\n  name: my-ipreservation-1\nspec:\n  reservedCIDRs:\n  - 192.168.2.3\n  - 10.0.2.3/32\n  - cafe:f00d::/123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-6t2rxms",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230414190240-6t2rxms"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-olpcy85",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-olpcy85"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过注解可以强制分配预留的 IP。"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-r0mgtye",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-r0mgtye"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "文章作者"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "yoaz"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-tswvvwn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-tswvvwn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "上次更新"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n    **\n        2022-07-25"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-t5otdkt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-t5otdkt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    **"
+				}
+			]
+		},
+		{
+			"ID": "20230414190240-i233sni",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414190240-i233sni"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "许可协议"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "MIT"
+				}
+			]
+		}
+	]
+}

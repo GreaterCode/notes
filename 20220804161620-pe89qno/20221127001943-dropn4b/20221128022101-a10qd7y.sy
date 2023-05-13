@@ -1,0 +1,377 @@
+{
+	"ID": "20221128022101-a10qd7y",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221128022101-a10qd7y",
+		"title": "5-容器网络 QoS 配置",
+		"updated": "20221128091100"
+	},
+	"Children": [
+		{
+			"ID": "20221128022144-bsnxu2a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128022144-bsnxu2a",
+				"updated": "20221128022144"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-OVN 支持两种不同类型的 QoS："
+				}
+			]
+		},
+		{
+			"ID": "20221128022144-pppipea",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128022144-pppipea",
+				"updated": "20221128022144"
+			},
+			"Children": [
+				{
+					"ID": "20221128022144-hcc7idl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128022144-hcc7idl"
+					},
+					"Children": [
+						{
+							"ID": "20221128022144-316ctvn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128022144-316ctvn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最大带宽限制 QoS。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128022144-kl0l09r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128022144-kl0l09r"
+					},
+					"Children": [
+						{
+							"ID": "20221128022144-9age8o8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128022144-9age8o8"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "linux-netem"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，模拟设备干扰丢包等的 QoS，可用于模拟测试。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128022148-nr4g5u8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128022148-nr4g5u8",
+				"updated": "20221128022208"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 基于最大带宽限制的QoS"
+				}
+			]
+		},
+		{
+			"ID": "20221128022215-v2dx2gj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128022215-v2dx2gj",
+				"updated": "20221128022217"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该类型的 QoS 可以通过 Pod annotation 动态进行配置，可以在不中断 Pod 运行的情况下进行调整。 带宽限速的单位为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Mbit/s"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221128022220-intvubm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128022220-intvubm",
+				"updated": "20221128022229"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Pod\nmetadata:\n  name: qos\n  namespace: ls1\n  annotations:\n    ovn.kubernetes.io/ingress_rate: \"3\"\n    ovn.kubernetes.io/egress_rate: \"1\"\nspec:\n  containers:\n  - name: qos\n    image: nginx:alpine\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128022227-o0vmfim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128022227-o0vmfim",
+				"updated": "20221128022254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 annotation 动态调整 QoS"
+				}
+			]
+		},
+		{
+			"ID": "20221128022242-trjow9r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128022242-trjow9r",
+				"updated": "20221128022242"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl annotate --overwrite  pod nginx-74d5899f46-d7qkn ovn.kubernetes.io/ingress_rate=3\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128022430-b22hsc4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128022430-b22hsc4",
+				"updated": "20221128022453"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. linux-netem QoS"
+				}
+			]
+		},
+		{
+			"ID": "20221128022513-9osbwty",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128022513-9osbwty",
+				"updated": "20221128022514"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pod 可以使用如下 annotation 配置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "linux-netem"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 类型 QoS： "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/latency"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/limit"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn.kubernetes.io/loss"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221128022525-co788ar",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128022525-co788ar",
+				"updated": "20221128022525"
+			},
+			"Children": [
+				{
+					"ID": "20221128022525-rptj5s0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128022525-rptj5s0"
+					},
+					"Children": [
+						{
+							"ID": "20221128022525-8wawfff",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128022525-8wawfff"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/latency"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：设置 Pod 流量延迟，取值为整数，单位为 ms。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128022525-ywiuj0j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128022525-ywiuj0j"
+					},
+					"Children": [
+						{
+							"ID": "20221128022525-jun4ju0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128022525-jun4ju0"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/limit"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "： 为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "qdisc"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 队列可容纳的最大数据包数，取值为整形数值，例如 1000。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128022525-wdgjofa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128022525-wdgjofa"
+					},
+					"Children": [
+						{
+							"ID": "20221128022525-5u9tqnd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128022525-5u9tqnd"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ovn.kubernetes.io/loss"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "： 为设置的报文丢包概率，取值为 float 类型，例如取值为 20，则为设置 20% 的丢包概率。"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

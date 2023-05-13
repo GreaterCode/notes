@@ -1,0 +1,355 @@
+{
+	"ID": "20230202184919-e4memzg",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230202184919-e4memzg",
+		"title": "containerd pull过程分析",
+		"updated": "20230307021844"
+	},
+	"Children": [
+		{
+			"ID": "20230202184919-bn1uorh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202184919-bn1uorh",
+				"updated": "20230202185001"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. pull镜像下载"
+				}
+			]
+		},
+		{
+			"ID": "20230202185013-76reurx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185013-76reurx",
+				"updated": "20230202185021"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 本实例以一个nginx镜像为例 \n[~]# ctr image pull daocloud.io/library/nginx:1.12.0-alpine\ndaocloud.io/library/nginx:1.12.0-alpine:                                          resolved       |++++++++++++++++++++++++++++++++++++++|\nmanifest-sha256:6a88bc1398333a1a508824c13cc214119510bf7d5898557640606d5edf5da244: done           |++++++++++++++++++++++++++++++++++++++|\nlayer-sha256:30cf39878add9b76abdfccd79b79d1eb76629f7eca924822f6b68df9735a9f00:    done           |++++++++++++++++++++++++++++++++++++++|\nconfig-sha256:09b2eb12555fd1a51a97f9231f7edefd4e242af42cc6ce73fc94a4fd2014bf1e:   done           |++++++++++++++++++++++++++++++++++++++|\nlayer-sha256:ab14e39f58e6d8ba465d2bb577a82a750ec0bcd2342b380920f9e7f307be3c4f:    done           |++++++++++++++++++++++++++++++++++++++|\nlayer-sha256:b719aad0065e54869664cc345032763a5ef015431b4b712c55c26d591d2a2281:    done           |++++++++++++++++++++++++++++++++++++++|\nlayer-sha256:193bc4296e28af74c271e70ffc4456f2f2e39972dd7912dff5a0b542d8f2c3a4:    done           |++++++++++++++++++++++++++++++++++++++|\nelapsed: 15.1s                                                                    total:  5.9 Mi (399.1 KiB/s)\nunpacking linux/amd64 sha256:6a88bc1398333a1a508824c13cc214119510bf7d5898557640606d5edf5da244...\ndone: 347.589512ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202185023-lhe58lr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202185023-lhe58lr",
+				"updated": "20230202185056"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 下载过程中 ingest （下载完成后移至content,并清理 ingest 目录)"
+				}
+			]
+		},
+		{
+			"ID": "20230202185102-bfid8qo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230202185102-bfid8qo",
+				"updated": "20230202185118"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注：在上面拉取镜像时可以通过 ctrl+c 中断下载，保持未完成状态，这样可能到下载过程数据断点续传的机制，这也就是 content 服务 ingest 实现"
+				}
+			]
+		},
+		{
+			"ID": "20230202185127-mx88i14",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185127-mx88i14",
+				"updated": "20230202185136"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@i-ratolcyu ingest]# pwd\n/var/lib/containerd/io.containerd.content.v1.content/ingest\n[root@i-ratolcyu ingest]# tree\n.\n└── 640b3de94bbe6f243a26ee8a5ad6edc21997868a961280068a6d48e9504106b6\n    ├── data\n    ├── ref\n    ├── startedat\n    ├── total\n    └── updated\n1 directory, 5 files\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202185134-tw2mh6s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202185134-tw2mh6s",
+				"updated": "20230202185151"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 下载完后 content 内容"
+				}
+			]
+		},
+		{
+			"ID": "20230202185200-8w7tuo0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185200-8w7tuo0",
+				"updated": "20230202185203"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@i-ratolcyu sha256]# pwd\n/var/lib/containerd/io.containerd.content.v1.content/blobs/sha256\n[root@i-ratolcyu sha256]# ls -alh\n总用量 7.3M\ndrwxr-xr-x 2 root root 4.0K 8月  17 15:52 .\ndrwxr-xr-x 3 root root 4.0K 5月  25 17:33 ..\n-r--r--r-- 1 root root 8.6K 8月  17 15:52 09b2eb12555fd1a51a97f9231f7edefd4e242af42cc6ce73fc94a4fd2014bf1e         # config-sha256\n-r--r--r-- 1 root root  492 8月  17 15:52 193bc4296e28af74c271e70ffc4456f2f2e39972dd7912dff5a0b542d8f2c3a4         # layer-sha256\n-r--r--r-- 1 root root  631 8月  17 15:52 30cf39878add9b76abdfccd79b79d1eb76629f7eca924822f6b68df9735a9f00         # layer-sha256\n-r--r--r-- 1 root root 1.2K 8月  17 15:52 6a88bc1398333a1a508824c13cc214119510bf7d5898557640606d5edf5da244         # manifest-sha256\n-r--r--r-- 1 root root 1.9M 8月  17 15:52 ab14e39f58e6d8ba465d2bb577a82a750ec0bcd2342b380920f9e7f307be3c4f         # layer-sha256\n-r--r--r-- 1 root root 4.6M 8月  17 15:52 b719aad0065e54869664cc345032763a5ef015431b4b712c55c26d591d2a2281         # layer-sha256\n\n# layer tar files\n[root@i-ratolcyu sha256]# file b719aad0065e54869664cc345032763a5ef015431b4b712c55c26d591d2a2281\nb719aad0065e54869664cc345032763a5ef015431b4b712c55c26d591d2a2281: gzip compressed data\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202185214-x6t0ci2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202185214-x6t0ci2",
+				"updated": "20230202185236"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 查看metadb元数据库信息"
+				}
+			]
+		},
+		{
+			"ID": "20230202185237-7icj48v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185237-7icj48v",
+				"updated": "20230202185253"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[~ io.containerd.metadata.v1.bolt]# pwd\n/var/lib/containerd/io.containerd.metadata.v1.bolt\n[~ io.containerd.metadata.v1.bolt]# ls\nmeta.db\n\n# 查看工具 boltbrowser\n===============================================================================================|\n  - v1                                                                                         | \n    - default                                                                                  |  \n      + containers                                                                             | \n      - content                                                                                |\n        - blob                                                                                 |\n          + sha256:09b2eb12555fd1a51a97f9231f7edefd4e242af42cc6ce73fc94a4fd2014bf1e            |\n          + sha256:193bc4296e28af74c271e70ffc4456f2f2e39972dd7912dff5a0b542d8f2c3a4            |\n          + sha256:30cf39878add9b76abdfccd79b79d1eb76629f7eca924822f6b68df9735a9f00            |\n          + sha256:6a88bc1398333a1a508824c13cc214119510bf7d5898557640606d5edf5da244            |\n          + sha256:ab14e39f58e6d8ba465d2bb577a82a750ec0bcd2342b380920f9e7f307be3c4f            |\n          + sha256:b719aad0065e54869664cc345032763a5ef015431b4b712c55c26d591d2a2281            |\n        + ingests                                                                              |\n      - images                                                                                 |\n        - daocloud.io/library/nginx:1.12.0-alpine                                              |\n          - target                                                                             |\n            digest: sha256:6a88bc1398333a1a508824c13cc214119510bf7d5898557640606d5edf5da244    |  # manifest-sha256\n            mediatype: application/vnd.docker.distribution.manifest.v2+json                    |\n            size: 8212                                                                         |\n          createdat: 010000000ed8ad61c714c53555ffff                                            |\n          updatedat: 010000000ed8ad61c714c53555ffff                                            |\n      + leases                                                                                 |\n      + snapshots                                                                              |\n    version: 06 \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202185311-1y94fog",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202185311-1y94fog",
+				"updated": "20230202185315"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 镜像层的应用，解压至 snapshot 文件系统"
+				}
+			]
+		},
+		{
+			"ID": "20230202185329-ci9ntjw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185329-ci9ntjw",
+				"updated": "20230202185451"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#查看镜像config配置文件 ( 获取关于layer 文件chain_IDs)\n[root@i-ratolcyu sha256]# cat 09b2eb12555fd1a51a97f9231f7edefd4e242af42cc6ce73fc94a4fd2014bf1e\n{…\n … 略\n\"rootfs”:{\n  \"type\":\"layers”,\n  \"diff_ids\":[\"sha256:040fd7841192c4f283485d5c7817f4508a774a8fabef8fc265c87f4d2a2ae635”,         # layer 文件chain_IDs, sha256sum计算方式，可扩展学习本文最后\n   \"sha256:613b41d784fd502fed68d437a35318388828394a9d099dbdac24d4162c79c172\",\n   \"sha256:9854154a6906e0b692131dd23c739a70ef376e32c89a79bc3adb0039c4529355\",\n   \"sha256:96c62e4b6ca4c84a1dc877e7a93408ce41e9d0b25d276d8703ac689e95fbb842\"]\n }\n}\n# 查看 layers 父子关系链\n[root@i-ratolcyu ~]# ctr snapshot tree\n sha256:040fd7841192c4f283485d5c7817f4508a774a8fabef8fc265c87f4d2a2ae635\n  \\_ sha256:7ce319e17b0b70ff9abdff5a32d9442a1218f9fd5d38432a9818426577d3836e\n    \\_ sha256:5e8742c74622849e0886659428fb6b295edb5e8a3d0808b85b390e62e8c2a7ca\n      \\_ sha256:2c01bb519bed0697c239bcef756503e5fe4f308f5297db3527dd1e2b4df7e14f\n\n# 查看snapshot的 metadata.db 元数据库 \n[~ snapshots]# pwd\n/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots\n[~ io.containerd.snapshotter.v1.overlayfs]# ls\nmetadata.db snapshots\n===============================================================================================|\n  - v1                                                                                         | \n    - parents                                                                                  | \n      010003: default/4/demo_lab                                                               | \n      1c001d: default/56/commit_add02                                                          | \n      1c001e: default/57/activeLayer0                                                          |\n      1d001f: default/58/activeLayer1                                                          |\n      200021: default/62/sha256:7ce319e17b0b70ff9abdff5a32d9442a1218f9fd5d38432a9818426577d3...|\n      210022: default/64/sha256:5e8742c74622849e0886659428fb6b295edb5e8a3d0808b85b390e62e8c2...|\n      220023: default/66/sha256:2c01bb519bed0697c239bcef756503e5fe4f308f5297db3527dd1e2b4df7...|\n    - snapshots                                                                                |\n      + default/2/sha256:d0d0905d7be4eff6a63efe4a38647a679de1e024101f67db4fe4b5736c1...        |\n      + default/4/demo_lab                                                                     |\n      + default/48/sha256:5b8c72934dfc08c7d2bd707e93197550f06c0751023dabb3a045b723c5...        |\n      + default/54/commit_add01                                                                |\n      + default/56/commit_add02                                                                |\n      + default/57/activeLayer0                                                                |\n      + default/58/activeLayer1                                                                |\n      + default/60/sha256:040fd7841192c4f283485d5c7817f4508a774a8fabef8fc265c87f4d2a...        |\n      + default/62/sha256:7ce319e17b0b70ff9abdff5a32d9442a1218f9fd5d38432a9818426577...        |\n      + default/64/sha256:5e8742c74622849e0886659428fb6b295edb5e8a3d0808b85b390e62e8...        |\n      + default/66/sha256:2c01bb519bed0697c239bcef756503e5fe4f308f5297db3527dd1e2b4d...        |\n                                                                               \n# 查看 snapshots layers的内容\n# 注意此文件目录名在元数据库内为 snapshot 的 id (十六进制)号\n[~ snapshots]# pwd\n/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots\n[~ snapshots]# ls -alh\n总用量 52K\ndrwx------ 13 root root 4.0K 8月  17 15:52 .\ndrwx------  3 root root 4.0K 8月  17 16:06 ..\ndrwx------  4 root root 4.0K 5月  25 17:33 1\ndrwx------  4 root root 4.0K 6月  18 18:39 25\ndrwx------  4 root root 4.0K 6月  28 09:40 28\ndrwx------  4 root root 4.0K 6月  28 09:41 29\ndrwx------  4 root root 4.0K 5月  25 17:53 3\ndrwx------  4 root root 4.0K 6月  28 09:59 30\ndrwx------  4 root root 4.0K 6月  28 10:01 31\ndrwx------  4 root root 4.0K 8月  17 15:52 32\ndrwx------  4 root root 4.0K 8月  17 15:52 33\ndrwx------  4 root root 4.0K 8月  17 15:52 34\ndrwx------  4 root root 4.0K 8月  17 15:52 35\n\n[root@i-ratolcyu snapshots]# ls 32\nfs  work\n[root@i-ratolcyu snapshots]# ls 32/fs\nbin  dev  etc  home  lib  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var\n[root@i-ratolcyu snapshots]# ls 33/fs\netc  lib  tmp  usr  var\n[root@i-ratolcyu snapshots]# ls 34/fs\netc\n[root@i-ratolcyu snapshots]# ls 35/fs\netc\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202185404-newh086",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202185404-newh086",
+				"updated": "20230202185519"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 当镜像下载后就可以作为容器的基础来运行一个 container ,这样我们可通看文件来查看一下容器的 rootfs"
+				}
+			]
+		},
+		{
+			"ID": "20230202185530-00vn2r8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185530-00vn2r8",
+				"updated": "20230202185533"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/run/containerd/io.containerd.runtime.v2.task/default/\n\n[~]# ls /run/containerd/io.containerd.runtime.v2.task/default/demo_lab/\naddress  config.json  init.pid  log  log.json  options.json  rootfs  runtime  work\n\n\n[root@i-ratolcyu containerd]# ls /run/containerd/io.containerd.runtime.v2.task/default/demo_lab/rootfs\nbin  dev  etc  home  proc  root  run  sys  tmp  usr  var\n\n# rootfs通过挂载overlay文件系统实现\n[~]# mount | grep /run/containerd/io.containerd.runtime.v2.task/default/demo_lab/rootfs\noverlay on /run/containerd/io.containerd.runtime.v2.task/default/demo_lab/rootfs type overlay (rw,relatime,lowerdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1/fs,upperdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/3/fs,workdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/3/work)\n\n#底层\n[~]# ls /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1/fs/\nbin  dev  etc  home  root  tmp  usr  var\n#上层\n[~]# ls /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/3/fs/\nproc  root  run  sys\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202185821-mm2y95b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230202185821-mm2y95b",
+				"updated": "20230202185937"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 从镜像的diff_ids计算出chain-id扩展学习"
+				}
+			]
+		},
+		{
+			"ID": "20230202185950-oxp0zge",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202185950-oxp0zge",
+				"updated": "20230202190004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  \"os\": \"linux\",\n  \"rootfs\": {\n    \"type\": \"layers\",\n    \"diff_ids\": [\n      \"sha256:c1eac31e742f9787152adeb8d82dbff43882214993210f684a432ec5b8f276ec”,   //base_image\n      \"sha256:9161a60cc9644083de5cafc67d0efe1d03aeabe6159f1df397dcccf2a049e533\",\n      \"sha256:6872307367a6d0aef099e87420442dc2b75e73244f2e00cd55747e9440e84c09\"\n    ]\n  }\n\n\n最顶层为 base_image ，作为下一层的 “父”\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230202190002-wnod290",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230202190002-wnod290",
+				"updated": "20230202190013"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "需要使用 echo -n ，因为默认命令为加上’\\n’等字符，计算将出错\n\n第一次计算：\n#echo -n 'sha256:c1eac31e742f9787152adeb8d82dbff43882214993210f684a432ec5b8f276ec sha256:9161a60cc9644083de5cafc67d0efe1d03aeabe6159f1df397dcccf2a049e533' | sha256sum\n318d73f100e4c2697a545df715b171afc9774b7a37944c684a6f67c6c1cd0397  -\n\n第二次计算：\n# echo -n 'sha256:318d73f100e4c2697a545df715b171afc9774b7a37944c684a6f67c6c1cd0397 sha256:6872307367a6d0aef099e87420442dc2b75e73244f2e00cd55747e9440e84c09' | sha256sum\naa9ec45414d1cfeb999a6755caad9075e263bc591caa89d59e0e488cdfee10d5  -\n\n\n//shasum(parent_chainid diff_id)  == chain_id\n# echo -n 'sha256:318d73f100e4c2697a545df715b171afc9774b7a37944c684a6f67c6c1cd0397 sha256:6872307367a6d0aef099e87420442dc2b75e73244f2e00cd55747e9440e84c09' | sha256sum\naa9ec45414d1cfeb999a6755caad9075e263bc591caa89d59e0e488cdfee10d5  -\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230307021844-553oedl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230307021844-553oedl",
+				"updated": "20230307021844"
+			}
+		}
+	]
+}

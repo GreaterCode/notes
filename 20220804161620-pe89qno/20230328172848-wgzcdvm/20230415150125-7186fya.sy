@@ -1,0 +1,1199 @@
+{
+	"ID": "20230415150125-7186fya",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230415150125-7186fya",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230415150125-wk5yd8a\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230415150125-pstzkgo\u0026quot;,\u0026quot;scrollTop\u0026quot;:1500,\u0026quot;focusId\u0026quot;:\u0026quot;20230415150125-wk5yd8a\u0026quot;,\u0026quot;focusStart\u0026quot;:2,\u0026quot;focusEnd\u0026quot;:2}",
+		"title": "使用KubeNurse进行集群网络监控 ",
+		"updated": "20230424161233"
+	},
+	"Children": [
+		{
+			"ID": "20230415150125-wk5yd8a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415150125-wk5yd8a"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "前言"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-2hkz6lm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-2hkz6lm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Kubernetes中，网络是通过第三方网络插件来提供，这些三方插件本身的实现就比较复杂，以至于在排查网络问题时常常碰壁。那么有没有什么方式来监控集群中所有的网络连接呢？"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-eqg0zp0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-eqg0zp0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubenurse"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "就是这样一个项目，它通过监视集群中的所有网络连接，并提供监控指标供"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/product/tmp?from=20065\u0026from_column=20065",
+					"TextMarkTextContent": "Prometheus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "采集。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-y2a7hvz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415150125-y2a7hvz"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Kubenurse"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-w98nvn2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-w98nvn2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubenurse的部署非常简单，使用Daemonset形式部署到集群节点上，Yaml文件在项目的example目录下。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-8vkkkts",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-8vkkkts"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署成功后，每5秒钟会对/alive发一次检查请求，然后其内部会运行各种方法全方位对集群网络进行检测，为了防止过多的网络流量，会对检查结果缓存3秒。其检测机制如下："
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-w0i4x06",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-w0i4x06"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/yf8yomrgv2-20230415150125-v1ijje1.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-0ne7pu5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-0ne7pu5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上图可以看出，kubenurse会对ingress、dns、apiserver、kube-proxy进行网络探测。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-3t5isqu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-3t5isqu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所有的检查都会创建公开的指标，这些指标可用于检测："
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-xahcl9p",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415150125-xahcl9p"
+			},
+			"Children": [
+				{
+					"ID": "20230415150125-6yg6szy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-6yg6szy"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-trpv1mw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-trpv1mw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "SDN网络延迟以及错误"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-e8amoel",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-e8amoel"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-vt6altx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-vt6altx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubelet之间的网络延迟以及错误"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-4w1z01u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-4w1z01u"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-zg8pc40",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-zg8pc40"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Pod与apiserver通信问题"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-o0bpzo9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-o0bpzo9"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-xozhdq0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-xozhdq0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Ingress往返网络延迟以及错误"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-2b03x94",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-2b03x94"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-rwpcj3o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-rwpcj3o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Service往返网络延迟以及错误（kube-proxy）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-qog9qel",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-qog9qel"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-j3tuzrd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-j3tuzrd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kube-apiserver问题"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-gjs9mo9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-gjs9mo9"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-e0vsn85",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-e0vsn85"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kube-dns（CoreDns）错误"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-4yo4uvi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-4yo4uvi"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-puxhgkh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-puxhgkh"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "外部DNS解析错误（ingress url解析）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-y6t0qkm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-y6t0qkm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后这些数据主要通过两个监控指标来体现："
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-ci0m3zq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415150125-ci0m3zq"
+			},
+			"Children": [
+				{
+					"ID": "20230415150125-2yhk9wu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-2yhk9wu"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-f0rdfzo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-f0rdfzo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubenurse_errors_total：按错误类型划分的错误计数器"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-398jkl9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-398jkl9"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-s5bh88h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-s5bh88h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubenurse_request_duration：按类型划分的请求时间分布"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-mrh4w8o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-mrh4w8o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这些指标都是通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Type"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "类型进行标识，对应几种不同的检测目标："
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-8g4bfzu",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415150125-8g4bfzu"
+			},
+			"Children": [
+				{
+					"ID": "20230415150125-oywv8hg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-oywv8hg"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-pek0yow",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-pek0yow"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "api_server_direct：从节点直接检测 API Server"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-vuttv2q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-vuttv2q"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-e1nc3th",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-e1nc3th"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "api_server_dns：从节点通过 DNS 检测 API Server"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-1xol4w5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-1xol4w5"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-lg9yp2l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-lg9yp2l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "me_ingress：通过 Ingress 检测本服务 Service"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-79kfgjy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-79kfgjy"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-0kmsix0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-0kmsix0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "me_service：使用 Service 检测本服务 Service"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415150125-2t24cyb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415150125-2t24cyb"
+					},
+					"Children": [
+						{
+							"ID": "20230415150125-ukx0b62",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415150125-ukx0b62"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "path_$KUBELET_HOSTNAME：节点之间的互相检测"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-f0e4bhs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-f0e4bhs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后这些指标分别按P50，P90，P99分位数进行划分，就可以根据不同的情况来确认集群网络状况了。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-n9ibivr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415150125-n9ibivr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "安装部署"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-3qszs8g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-3qszs8g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里直接使用官方的部署文件进行部署。不过需要更改几个地方。（1）首先将代码clone到本地"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-st7vyxr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415150125-st7vyxr"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "git clone https://github.com/postfinance/kubenurse.git\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-yaqzbcl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-yaqzbcl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（2）进入"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "example"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "目录，修改"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ingress.yaml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "配置，主要是添加"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/act/pro/domain-sales?from=20065\u0026from_column=20065",
+					"TextMarkTextContent": "域名"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，如下。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-w4dvxhd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415150125-w4dvxhd"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\napiVersion: extensions/v1beta1\nkind: Ingress\nmetadata:\n  annotations:\n    kubernetes.io/ingress.class: nginx\n  name: kubenurse\n  namespace: kube-system\nspec:\n  rules:\n  - host: kubenurse-test.coolops.cn\n    http:\n      paths:\n      - backend:\n          serviceName: kubenurse\n          servicePort: 8080\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-4aho6jp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-4aho6jp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（2）更新daemonset.yaml配置，主要是更改ingress的入口域名，如下。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-etvtauz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415150125-etvtauz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\napiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  labels:\n    app: kubenurse\n  name: kubenurse\n  namespace: kube-system\nspec:\n  selector:\n    matchLabels:\n      app: kubenurse\n  template:\n    metadata:\n      labels:\n        app: kubenurse\n      annotations:\n        prometheus.io/path: \"/metrics\"\n        prometheus.io/port: \"8080\"\n        prometheus.io/scheme: \"http\"\n        prometheus.io/scrape: \"true\"\n    spec:\n      serviceAccountName: nurse\n      containers:\n      - name: kubenurse\n        env:\n        - name: KUBENURSE_INGRESS_URL\n          value: kubenurse-test.coolops.cn      # 需要更改的地方\n        - name: KUBENURSE_SERVICE_URL\n          value: http://kubenurse.kube-system.svc.cluster.local:8080\n        - name: KUBENURSE_NAMESPACE\n          value: kube-system\n        - name: KUBENURSE_NEIGHBOUR_FILTER\n          value: \"app=kubenurse\"\n        image: \"postfinance/kubenurse:v1.2.0\"\n        ports:\n        - containerPort: 8080\n          protocol: TCP\n      tolerations:\n      - effect: NoSchedule\n        key: node-role.kubernetes.io/master\n        operator: Equal\n      - effect: NoSchedule\n        key: node-role.kubernetes.io/control-plane\n        operator: Equal\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-llxiwkn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-llxiwkn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（4）新创建一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ServiceMonitor"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，用于获取指标数据，如下："
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-4lg3cvb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415150125-4lg3cvb"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: monitoring.coreos.com/v1\nkind: ServiceMonitor\nmetadata:\n  name: kubenurse\n  namespace: monitoring\n  labels:\n    k8s-app: kubenurse\nspec:\n  jobLabel: k8s-app\n  endpoints:\n  - port: \"8080-8080\" \n    interval: 30s\n    scheme: http\n  selector:\n    matchLabels:\n     app: kubenurse\n  namespaceSelector:\n    matchNames:\n    - kube-system\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-h79ujw0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-h79ujw0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（5）部署应用，在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "example"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "目录下执行以下命令。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-duugc7y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415150125-duugc7y"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl apply -f .\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-jcm6and",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-jcm6and"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（6）等待所有应用变成"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "running"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，如下。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-khzm8vh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415150125-khzm8vh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get all -n kube-system -l app=kubenurse\nNAME                  READY   STATUS    RESTARTS   AGE\npod/kubenurse-fznsw   1/1     Running   0          17h\npod/kubenurse-n52rq   1/1     Running   0          17h\npod/kubenurse-nwtl4   1/1     Running   0          17h\npod/kubenurse-xp92p   1/1     Running   0          17h\npod/kubenurse-z2ksz   1/1     Running   0          17h\n\nNAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE\nservice/kubenurse   ClusterIP   10.96.229.244   \u003cnone\u003e        8080/TCP   17h\n\nNAME                       DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE\ndaemonset.apps/kubenurse   5         5         5       5            5           \u003cnone\u003e          17h\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-wyabymi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-wyabymi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（7）到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "prometheus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "上查看是否正常获取数据。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-kkmdp3k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-kkmdp3k"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/uiyfuwbqb8-20230415150125-ihmun4d.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-z42sdhl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-z42sdhl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看指标是否正常。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-vaemxyf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-vaemxyf"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/mjv652tjwy-20230415150125-mvi5vo7.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-pbj9xzo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-pbj9xzo"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/pqqw9fh7vw-20230415150125-ycvwbg6.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-iat753k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-iat753k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（8）这时候就可以在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "grafana"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "上画图，展示监控数据了，如下。"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-ssmhg5j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-ssmhg5j"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/9h8epmzjbh-20230415150125-qqp9eth.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-mxtsy4y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415150125-mxtsy4y"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "参考文档"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-4warr6o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-4warr6o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "【1】https://github.com/postfinance/kubenurse"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-kz50bzk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-kz50bzk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "【2】https://github.com/postfinance/kubenurse/tree/master/examples"
+				}
+			]
+		},
+		{
+			"ID": "20230415150125-pstzkgo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415150125-pstzkgo",
+				"updated": "20230415165515"
+			}
+		}
+	]
+}

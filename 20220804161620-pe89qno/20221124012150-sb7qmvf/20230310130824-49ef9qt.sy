@@ -1,0 +1,126 @@
+{
+	"ID": "20230310130824-49ef9qt",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230310130824-49ef9qt",
+		"title": "calico cni-plugin源码解读",
+		"updated": "20230310132828"
+	},
+	"Children": [
+		{
+			"ID": "20230310130824-5035fvf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230310130824-5035fvf",
+				"updated": "20230310130925"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.  概述"
+				}
+			]
+		},
+		{
+			"ID": "20230310130926-xj3svkc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230310130926-xj3svkc",
+				"updated": "20230310130953"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 本文基于calico 3.25版本"
+				}
+			]
+		},
+		{
+			"ID": "20230310131026-m8id5ts",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230310131026-m8id5ts",
+				"updated": "20230310131026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico解决不同物理机上容器之间的通信，而calico-plugin是在k8s创建Pod时为Pod设置虚拟网卡(容器中的eth0和lo网卡)，calico-plugin是由两个静态的二进制文件组成，由kubelet以命令行的形式调用，这两个二进制的作用如下："
+				}
+			]
+		},
+		{
+			"ID": "20230310131026-a77k81z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230310131026-a77k81z",
+				"updated": "20230310131031"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico-ipam：分配维护IP，依赖etcd\ncalico：系统调用API来修改namespace中的网卡信息\n "
+				}
+			]
+		},
+		{
+			"ID": "20230310131100-8amj2fs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230310131100-8amj2fs",
+				"updated": "20230310131113"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230310131114-j9r8336",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230310131114-j9r8336",
+				"updated": "20230310132824"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 入口"
+				}
+			]
+		},
+		{
+			"ID": "20230310132824-2nbmbux",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230310132824-2nbmbux",
+				"updated": "20230310132828"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\t// Use the name of the binary to determine which routine to run.\n\t_, filename := filepath.Split(os.Args[0])\n\tswitch filename {\n\tcase \"calico\", \"calico.exe\":\n\t\tplugin.Main(VERSION)\n\tcase \"calico-ipam\", \"calico-ipam.exe\":\n\t\tipamplugin.Main(VERSION)\n\tcase \"install\":\n\t\terr := install.Install()\n\t\tif err != nil {\n\t\t\tlogrus.WithError(err).Fatal(\"Error installing CNI plugin\")\n\t\t}\n\tdefault:\n\t\tpanic(\"Unknown binary name: \" + filename)\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,613 @@
+{
+	"ID": "20230202184833-l5wbm75",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230202184833-l5wbm75",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230207100720-0whbg0g\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230406170912-bgy2gdc\u0026quot;,\u0026quot;scrollTop\u0026quot;:7521,\u0026quot;focusId\u0026quot;:\u0026quot;20230207113237-dx482wo\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "etcd启动过程梳理",
+		"updated": "20230406170912"
+	},
+	"Children": [
+		{
+			"ID": "20230207100720-0whbg0g",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230207100720-0whbg0g",
+				"updated": "20230207100720"
+			}
+		},
+		{
+			"ID": "20230202184833-mnvpwm4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230202184833-mnvpwm4",
+				"updated": "20230207100701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "源码地址："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fetcd-io%2Fetcd",
+					"TextMarkTextContent": "https://github.com/etcd-io/etcd"
+				}
+			]
+		},
+		{
+			"ID": "20230207100717-xkw1fa2",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230207100717-xkw1fa2",
+				"updated": "20230207100717"
+			}
+		},
+		{
+			"ID": "20230207100727-pvysdcg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230207100727-pvysdcg",
+				"updated": "20230207100739"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 入口"
+				}
+			]
+		},
+		{
+			"ID": "20230207101118-lin8eoy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207101118-lin8eoy",
+				"updated": "20230207101123"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    scripts/build.sh"
+				}
+			]
+		},
+		{
+			"ID": "20230207100943-34dk16k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207100943-34dk16k",
+				"updated": "20230207101129"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/usr/bin/env bash\n\n# This scripts build the etcd binaries\n# To build the tools, run `build_tools.sh`\n\nsource ./scripts/test_lib.sh\nsource ./scripts/build_lib.sh\n\n# only build when called directly, not sourced\nif echo \"$0\" | grep -E \"build(.sh)?$\" \u003e/dev/null; then\n  run_build etcd_build\nfi\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207101131-bv5hdx3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207101131-bv5hdx3",
+				"updated": "20230207101144"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "scripts/build_lib.sh"
+				}
+			]
+		},
+		{
+			"ID": "20230207101146-0y9l07u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207101146-0y9l07u",
+				"updated": "20230207101944"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "run_build() {\n  echo Running \"$1\"\n  if $1; then\n    log_success \"SUCCESS: $1 (GOARCH=${GOARCH})\"\n  else\n    log_error \"FAIL: $1 (GOARCH=${GOARCH})\"\n    exit 2\n  fi\n}\n\netcd_build() {\n  out=\"bin\"\n  if [[ -n \"${BINDIR}\" ]]; then out=\"${BINDIR}\"; fi\n\n  run rm -f \"${out}/etcd\"\n  (\n    cd ./server\n    # Static compilation is useful when etcd is run in a container. $GO_BUILD_FLAGS is OK\n    # shellcheck disable=SC2086\n    run env \"${GO_BUILD_ENV[@]}\" go build $GO_BUILD_FLAGS \\\n      -trimpath \\\n      -installsuffix=cgo \\\n      \"-ldflags=${GO_LDFLAGS[*]}\" \\\n      -o=\"../${out}/etcd\" . || return 2\n  ) || return 2\n\n  run rm -f \"${out}/etcdutl\"\n  # shellcheck disable=SC2086\n  (\n    cd ./etcdutl\n    run env GO_BUILD_FLAGS=\"${GO_BUILD_FLAGS}\" \"${GO_BUILD_ENV[@]}\" go build $GO_BUILD_FLAGS \\\n      -trimpath \\\n      -installsuffix=cgo \\\n      \"-ldflags=${GO_LDFLAGS[*]}\" \\\n      -o=\"../${out}/etcdutl\" . || return 2\n  ) || return 2\n\n  run rm -f \"${out}/etcdctl\"\n }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207102007-bdmx318",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207102007-bdmx318",
+				"updated": "20230207102351"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以看到项目的启动文件在./server下"
+				}
+			]
+		},
+		{
+			"ID": "20230207102051-uc1q8jr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230207102051-uc1q8jr",
+				"updated": "20230207102103"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 启动过程"
+				}
+			]
+		},
+		{
+			"ID": "20230207102322-0ydvwy7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207102322-0ydvwy7",
+				"updated": "20230207102344"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "server/main.go"
+				}
+			]
+		},
+		{
+			"ID": "20230207102354-kn2m18f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207102354-kn2m18f",
+				"updated": "20230207102407"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\tetcdmain.Main(os.Args)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207102425-6pwet1e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207102425-6pwet1e",
+				"updated": "20230207102437"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcdmain/main.go"
+				}
+			]
+		},
+		{
+			"ID": "20230207102447-zox13oq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207102447-zox13oq",
+				"updated": "20230207103228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func Main(args []string) {\n\tcheckSupportArch()\n\n\tif len(args) \u003e 1 {\n\t\tcmd := args[1]\n\t\tswitch cmd {\n\t\tcase \"gateway\", \"grpc-proxy\":\n\t\t\tif err := rootCmd.Execute(); err != nil {\n\t\t\t\tfmt.Fprint(os.Stderr, err)\n\t\t\t\tos.Exit(1)\n\t\t\t}\n\t\t\treturn\n\t\t}\n\t}\n\n\tstartEtcdOrProxyV2(args)\n}\n\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207103315-3qj9788",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207103315-3qj9788",
+				"updated": "20230207103339"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果传递了参数 可以以proxy启动"
+				}
+			]
+		},
+		{
+			"ID": "20230207102813-ab1jzzp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207102813-ab1jzzp",
+				"updated": "20230207105108"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func startEtcdOrProxyV2(args []string) {\n\tgrpc.EnableTracing = false\n\n\tcfg := newConfig()\n\t// 根据配置初始化日志 集群信息等内容\n\tdefaultInitialCluster := cfg.ec.InitialCluster\n\t....\n\t....\n\n\tvar stopped \u003c-chan struct{}\n\tvar errc \u003c-chan error\n\t// 对数据存储目录做了校验 禁止proxy和data同时配置\n\twhich := identifyDataDirOrDie(cfg.ec.GetLogger(), cfg.ec.Dir)\n\tif which != dirEmpty {\n\t\tlg.Info(\n\t\t\t\"server has already been initialized\",\n\t\t\tzap.String(\"data-dir\", cfg.ec.Dir),\n\t\t\tzap.String(\"dir-type\", string(which)),\n\t\t)\n\t\tswitch which {\n\t\tcase dirMember:\n\t\t       // 启动etcd\n\t\t\tstopped, errc, err = startEtcd(\u0026cfg.ec)\n\t\tcase dirProxy:\n\t\t\tlg.Panic(\"v2 http proxy has already been deprecated in 3.6\", zap.String(\"dir-type\", string(which)))\n\t\tdefault:\n\t\t\tlg.Panic(\n\t\t\t\t\"unknown directory type\",\n\t\t\t\tzap.String(\"dir-type\", string(which)),\n\t\t\t)\n\t\t}\n\t} else {\n\t\tlg.Info(\n\t\t\t\"Initialize and start etcd server\",\n\t\t\tzap.String(\"data-dir\", cfg.ec.Dir),\n\t\t\tzap.String(\"dir-type\", string(which)),\n\t\t)\n\t\tstopped, errc, err = startEtcd(\u0026cfg.ec)\n\t}\n\t// 对异常进行处理\n\t...\n\n\tosutil.Exit(0)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207105108-2l72xro",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207105108-2l72xro",
+				"updated": "20230207105138"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "初始化完成后，开始正式进入启动流程"
+				}
+			]
+		},
+		{
+			"ID": "20230207105205-43jsrtr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207105205-43jsrtr",
+				"updated": "20230207105223"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  etcdmain/etcd.go"
+				}
+			]
+		},
+		{
+			"ID": "20230207105138-2hr6tvk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207105138-2hr6tvk",
+				"updated": "20230207105255"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// startEtcd除了运行独立etcd所需的钩子外，还运行startEtcd。\nfunc startEtcd(cfg *embed.Config) (\u003c-chan struct{}, \u003c-chan error, error) {\n\te, err := embed.StartEtcd(cfg)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tosutil.RegisterInterruptHandler(e.Close)\n\tselect {\n\tcase \u003c-e.Server.ReadyNotify(): // wait for e.Server to join the cluster\n\tcase \u003c-e.Server.StopNotify(): // publish aborted from 'ErrStopped'\n\tcase \u003c-time.After(cfg.ExperimentalWaitClusterReadyTimeout):\n\t\te.GetLogger().Warn(\"startEtcd: timed out waiting for the ready notification\")\n\t}\n\treturn e.Server.StopNotify(), e.Err(), nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207105616-2juvm7v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207105616-2juvm7v",
+				"updated": "20230207105630"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "embed/etcd.go"
+				}
+			]
+		},
+		{
+			"ID": "20230207105631-4af8tal",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207105631-4af8tal",
+				"updated": "20230207111116"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// StartEtcd启动etcd服务器和HTTP处理程序，用于客户端/服务器通信。返回的Etcd.Server不能保证已加入群集。等待Etcd.Server.ReadyNotify（）通道，以了解它何时完成并准备好使用。\nfunc StartEtcd(inCfg *Config) (e *Etcd, err error) {\n\t// 校验配置\n\tif err = inCfg.Validate(); err != nil {\n\t\treturn nil, err\n\t}\n\tserving := false\n\te = \u0026Etcd{cfg: *inCfg, stopc: make(chan struct{})}\n\tcfg := \u0026e.cfg\n\tdefer func() {\n\t\tif e == nil || err == nil {\n\t\t\treturn\n\t\t}\n\t\tif !serving {\n\t\t\t// errored before starting gRPC server for serveCtx.serversC\n\t\t\tfor _, sctx := range e.sctxs {\n\t\t\t\tclose(sctx.serversC)\n\t\t\t}\n\t\t}\n\t\te.Close()\n\t\te = nil\n\t}()\n\n\tif !cfg.SocketOpts.Empty() {\n\t\tcfg.logger.Info(\n\t\t\t\"configuring socket options\",\n\t\t\tzap.Bool(\"reuse-address\", cfg.SocketOpts.ReuseAddress),\n\t\t\tzap.Bool(\"reuse-port\", cfg.SocketOpts.ReusePort),\n\t\t)\n\t}\n\te.cfg.logger.Info(\n\t\t\"configuring peer listeners\",\n\t\tzap.Strings(\"listen-peer-urls\", e.cfg.getLPURLs()),\n\t)\n\t// 开始监听其他member发送消息的监听，即2380\n\tif e.Peers, err = configurePeerListeners(cfg); err != nil {\n\t\treturn e, err\n\t}\n\n\te.cfg.logger.Info(\n\t\t\"configuring client listeners\",\n\t\tzap.Strings(\"listen-client-urls\", e.cfg.getLCURLs()),\n\t)\n        // 开启client服务监听  即默认的2379\n\tif e.sctxs, err = configureClientListeners(cfg); err != nil {\n\t\treturn e, err\n\t}\n\n\tfor _, sctx := range e.sctxs {\n\t\te.Clients = append(e.Clients, sctx.l)\n\t}\n\n\tvar (\n\t\turlsmap types.URLsMap\n\t\ttoken   string\n\t)\n\tmemberInitialized := true\n\t// 通过wal文件是否存在 来判断是否进行过初始化\n\tif !isMemberInitialized(cfg) {\n\t\tmemberInitialized = false\n\t\turlsmap, token, err = cfg.PeerURLsMapAndToken(\"etcd\")\n\t\tif err != nil {\n\t\t\treturn e, fmt.Errorf(\"error setting up initial cluster: %v\", err)\n\t\t}\n\t}\n\n\t// AutoCompactionRetention defaults to \"0\" if not set.\n\tif len(cfg.AutoCompactionRetention) == 0 {\n\t\tcfg.AutoCompactionRetention = \"0\"\n\t}\n\t// 获取自动压缩版本的周期 mode: Revision根据配置获得 Periodic 配置时间*1 hour\n\tautoCompactionRetention, err := parseCompactionRetention(cfg.AutoCompactionMode, cfg.AutoCompactionRetention)\n\tif err != nil {\n\t\treturn e, err\n\t}\n  \n\t// boltdb 后端存储方式 数组/map  这个应该是对应阿里之前的boltdb优化分享\n\tbackendFreelistType := parseBackendFreelistType(cfg.BackendFreelistType)\n\n\tsrvcfg := config.ServerConfig{\n\t....\n\t}\n\tif e.Server, err = etcdserver.NewServer(srvcfg); err != nil {\n\t\treturn e, err\n\t}\n\n\t// buffer channel so goroutines on closed connections won't wait forever\n\te.errc = make(chan error, len(e.Peers)+len(e.Clients)+2*len(e.sctxs))\n\n\t// newly started member (\"memberInitialized==false\")\n\t// does not need corruption check\n\tif memberInitialized \u0026\u0026 srvcfg.InitialCorruptCheck {\n\t\tif err = e.Server.CorruptionChecker().InitialCheck(); err != nil {\n\t\t\t// set \"EtcdServer\" to nil, so that it does not block on \"EtcdServer.Close()\"\n\t\t\t// (nothing to close since rafthttp transports have not been started)\n\n\t\t\te.cfg.logger.Error(\"checkInitialHashKV failed\", zap.Error(err))\n\t\t\te.Server.Cleanup()\n\t\t\te.Server = nil\n\t\t\treturn e, err\n\t\t}\n\t}\n\te.Server.Start()\n\n\tif err = e.servePeers(); err != nil {\n\t\treturn e, err\n\t}\n\tif err = e.serveClients(); err != nil {\n\t\treturn e, err\n\t}\n\tif err = e.serveMetrics(); err != nil {\n\t\treturn e, err\n\t}\n\n\te.cfg.logger.Info(\n\t\t\"now serving peer/client/metrics\",\n\t\tzap.String(\"local-member-id\", e.Server.MemberId().String()),\n\t\tzap.Strings(\"initial-advertise-peer-urls\", e.cfg.getAPURLs()),\n\t\tzap.Strings(\"listen-peer-urls\", e.cfg.getLPURLs()),\n\t\tzap.Strings(\"advertise-client-urls\", e.cfg.getACURLs()),\n\t\tzap.Strings(\"listen-client-urls\", e.cfg.getLCURLs()),\n\t\tzap.Strings(\"listen-metrics-urls\", e.cfg.getMetricsURLs()),\n\t)\n\tserving = true\n\treturn e, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207111145-r3tz44s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207111145-r3tz44s",
+				"updated": "20230207113044"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对配置参数转换 并开启监听  然后开始etcdserver.NewServer 分析新建Server的过程"
+				}
+			]
+		},
+		{
+			"ID": "20230207112618-nb5lsh1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207112618-nb5lsh1",
+				"updated": "20230207112759"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "server/etcdserver/server.go"
+				}
+			]
+		},
+		{
+			"ID": "20230207112824-9dua1iz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207112824-9dua1iz",
+				"updated": "20230207113027"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// NewServer根据提供的配置创建一个新的EtcdServer。在EtcdServer的生命周期内，配置被认为是静态的\nfunc NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {\n\tb, err := bootstrap(cfg)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tdefer func() {\n\t\tif err != nil {\n\t\t\tb.Close()\n\t\t}\n\t}()\n\n\tsstats := stats.NewServerStats(cfg.Name, b.cluster.cl.String())\n\tlstats := stats.NewLeaderStats(cfg.Logger, b.cluster.nodeID.String())\n\n\theartbeat := time.Duration(cfg.TickMs) * time.Millisecond\n\tsrv = \u0026EtcdServer{\n\t\treadych:               make(chan struct{}),\n\t\tCfg:                   cfg,\n\t\tlgMu:                  new(sync.RWMutex),\n\t\tlg:                    cfg.Logger,\n\t\terrorc:                make(chan error, 1),\n\t\tv2store:               b.storage.st,\n\t\tsnapshotter:           b.ss,\n\t\tr:                     *b.raft.newRaftNode(b.ss, b.storage.wal.w, b.cluster.cl),\n\t\tmemberId:              b.cluster.nodeID,\n\t\tattributes:            membership.Attributes{Name: cfg.Name, ClientURLs: cfg.ClientURLs.StringSlice()},\n\t\tcluster:               b.cluster.cl,\n\t\tstats:                 sstats,\n\t\tlstats:                lstats,\n\t\tSyncTicker:            time.NewTicker(500 * time.Millisecond),\n\t\tpeerRt:                b.prt,\n\t\treqIDGen:              idutil.NewGenerator(uint16(b.cluster.nodeID), time.Now()),\n\t\tAccessController:      \u0026AccessController{CORS: cfg.CORS, HostWhitelist: cfg.HostWhitelist},\n\t\tconsistIndex:          b.storage.backend.ci,\n\t\tfirstCommitInTerm:     notify.NewNotifier(),\n\t\tclusterVersionChanged: notify.NewNotifier(),\n\t}\n\tserverID.With(prometheus.Labels{\"server_id\": b.cluster.nodeID.String()}).Set(1)\n\tsrv.cluster.SetVersionChangedNotifier(srv.clusterVersionChanged)\n\tsrv.applyV2 = NewApplierV2(cfg.Logger, srv.v2store, srv.cluster)\n\n\tsrv.be = b.storage.backend.be\n\tsrv.beHooks = b.storage.backend.beHooks\n\tminTTL := time.Duration((3*cfg.ElectionTicks)/2) * heartbeat\n\n\t// always recover lessor before kv. When we recover the mvcc.KV it will reattach keys to its leases.\n\t// If we recover mvcc.KV first, it will attach the keys to the wrong lessor before it recovers.\n\tsrv.lessor = lease.NewLessor(srv.Logger(), srv.be, srv.cluster, lease.LessorConfig{\n\t\tMinLeaseTTL:                int64(math.Ceil(minTTL.Seconds())),\n\t\tCheckpointInterval:         cfg.LeaseCheckpointInterval,\n\t\tCheckpointPersist:          cfg.LeaseCheckpointPersist,\n\t\tExpiredLeasesRetryInterval: srv.Cfg.ReqTimeout(),\n\t})\n\n\ttp, err := auth.NewTokenProvider(cfg.Logger, cfg.AuthToken,\n\t\tfunc(index uint64) \u003c-chan struct{} {\n\t\t\treturn srv.applyWait.Wait(index)\n\t\t},\n\t\ttime.Duration(cfg.TokenTTL)*time.Second,\n\t)\n\tif err != nil {\n\t\tcfg.Logger.Warn(\"failed to create token provider\", zap.Error(err))\n\t\treturn nil, err\n\t}\n\n\tmvccStoreConfig := mvcc.StoreConfig{\n\t\tCompactionBatchLimit:    cfg.CompactionBatchLimit,\n\t\tCompactionSleepInterval: cfg.CompactionSleepInterval,\n\t}\n\tsrv.kv = mvcc.New(srv.Logger(), srv.be, srv.lessor, mvccStoreConfig)\n\tsrv.corruptionChecker = newCorruptionChecker(cfg.Logger, srv, srv.kv.HashStorage())\n\n\tsrv.authStore = auth.NewAuthStore(srv.Logger(), schema.NewAuthBackend(srv.Logger(), srv.be), tp, int(cfg.BcryptCost))\n\n\tnewSrv := srv // since srv == nil in defer if srv is returned as nil\n\tdefer func() {\n\t\t// closing backend without first closing kv can cause\n\t\t// resumed compactions to fail with closed tx errors\n\t\tif err != nil {\n\t\t\tnewSrv.kv.Close()\n\t\t}\n\t}()\n\tif num := cfg.AutoCompactionRetention; num != 0 {\n\t\tsrv.compactor, err = v3compactor.New(cfg.Logger, cfg.AutoCompactionMode, num, srv.kv, srv)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tsrv.compactor.Run()\n\t}\n\n\tif err = srv.restoreAlarms(); err != nil {\n\t\treturn nil, err\n\t}\n\tsrv.uberApply = srv.NewUberApplier()\n\n\tif srv.Cfg.EnableLeaseCheckpoint {\n\t\t// setting checkpointer enables lease checkpoint feature.\n\t\tsrv.lessor.SetCheckpointer(func(ctx context.Context, cp *pb.LeaseCheckpointRequest) {\n\t\t\tsrv.raftRequestOnce(ctx, pb.InternalRaftRequest{LeaseCheckpoint: cp})\n\t\t})\n\t}\n\n\t// Set the hook after EtcdServer finishes the initialization to avoid\n\t// the hook being called during the initialization process.\n\tsrv.be.SetTxPostLockInsideApplyHook(srv.getTxPostLockInsideApplyHook())\n\n\t// TODO: move transport initialization near the definition of remote\n\ttr := \u0026rafthttp.Transport{\n\t\tLogger:      cfg.Logger,\n\t\tTLSInfo:     cfg.PeerTLSInfo,\n\t\tDialTimeout: cfg.PeerDialTimeout(),\n\t\tID:          b.cluster.nodeID,\n\t\tURLs:        cfg.PeerURLs,\n\t\tClusterID:   b.cluster.cl.ID(),\n\t\tRaft:        srv,\n\t\tSnapshotter: b.ss,\n\t\tServerStats: sstats,\n\t\tLeaderStats: lstats,\n\t\tErrorC:      srv.errorc,\n\t}\n\tif err = tr.Start(); err != nil {\n\t\treturn nil, err\n\t}\n\t// add all remotes into transport\n\tfor _, m := range b.cluster.remotes {\n\t\tif m.ID != b.cluster.nodeID {\n\t\t\ttr.AddRemote(m.ID, m.PeerURLs)\n\t\t}\n\t}\n\tfor _, m := range b.cluster.cl.Members() {\n\t\tif m.ID != b.cluster.nodeID {\n\t\t\ttr.AddPeer(m.ID, m.PeerURLs)\n\t\t}\n\t}\n\tsrv.r.transport = tr\n\n\treturn srv, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230207113237-6r362nf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230207113237-6r362nf",
+				"updated": "20230207113237"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建server的大体流程如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230207113237-w1gdjjo",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230207113237-w1gdjjo",
+				"updated": "20230207113237"
+			},
+			"Children": [
+				{
+					"ID": "20230207113237-cn2itm3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230207113237-cn2itm3"
+					},
+					"Children": [
+						{
+							"ID": "20230207113237-6ko776l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230207113237-6ko776l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "存储数据的初始化"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230207113237-vjx6s11",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230207113237-vjx6s11"
+					},
+					"Children": [
+						{
+							"ID": "20230207113237-dx482wo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230207113237-dx482wo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "配置server的参数"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230207113237-4xyllls",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230207113237-4xyllls"
+					},
+					"Children": [
+						{
+							"ID": "20230207113237-us13pb2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230207113237-us13pb2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "新建mvcc服务 （todo 具体分析）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230207113237-lr69btu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230207113237-lr69btu"
+					},
+					"Children": [
+						{
+							"ID": "20230207113237-cz26lih",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230207113237-cz26lih"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动transport服务"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230207113307-tmeupki",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230207113307-tmeupki",
+				"updated": "20230207114046"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func bootstrap(cfg config.ServerConfig) (b *bootstrappedServer, err error) {\n\tif cfg.MaxRequestBytes \u003e recommendedMaxRequestBytes {\n\t\tcfg.Logger.Warn(\n\t\t\t\"exceeded recommended request limit\",\n\t\t\tzap.Uint(\"max-request-bytes\", cfg.MaxRequestBytes),\n\t\t\tzap.String(\"max-request-size\", humanize.Bytes(uint64(cfg.MaxRequestBytes))),\n\t\t\tzap.Int(\"recommended-request-bytes\", recommendedMaxRequestBytes),\n\t\t\tzap.String(\"recommended-request-size\", recommendedMaxRequestBytesString),\n\t\t)\n\t}\n\t// 新建存储目录,快照目录 后端存储\n\tif terr := fileutil.TouchDirAll(cfg.Logger, cfg.DataDir); terr != nil {\n\t\treturn nil, fmt.Errorf(\"cannot access data directory: %v\", terr)\n\t}\n\n\tif terr := fileutil.TouchDirAll(cfg.Logger, cfg.MemberDir()); terr != nil {\n\t\treturn nil, fmt.Errorf(\"cannot access member directory: %v\", terr)\n\t}\n\tss := bootstrapSnapshot(cfg)\n\tprt, err := rafthttp.NewRoundTripper(cfg.PeerTLSInfo, cfg.PeerDialTimeout())\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\thaveWAL := wal.Exist(cfg.WALDir())\n\tst := v2store.New(StoreClusterPrefix, StoreKeysPrefix)\n\tbackend, err := bootstrapBackend(cfg, haveWAL, st, ss)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tvar bwal *bootstrappedWAL\n\n\tif haveWAL {\n\t\tif err = fileutil.IsDirWriteable(cfg.WALDir()); err != nil {\n\t\t\treturn nil, fmt.Errorf(\"cannot write to WAL directory: %v\", err)\n\t\t}\n\t\tbwal = bootstrapWALFromSnapshot(cfg, backend.snapshot)\n\t}\n\n\tcluster, err := bootstrapCluster(cfg, bwal, prt)\n\tif err != nil {\n\t\tbackend.Close()\n\t\treturn nil, err\n\t}\n\n\ts, err := bootstrapStorage(cfg, st, backend, bwal, cluster)\n\tif err != nil {\n\t\tbackend.Close()\n\t\treturn nil, err\n\t}\n\n\tif err = cluster.Finalize(cfg, s); err != nil {\n\t\tbackend.Close()\n\t\treturn nil, err\n\t}\n\traft := bootstrapRaft(cfg, cluster, s.wal)\n\treturn \u0026bootstrappedServer{\n\t\tprt:     prt,\n\t\tss:      ss,\n\t\tstorage: s,\n\t\tcluster: cluster,\n\t\traft:    raft,\n\t}, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406170912-bgy2gdc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170912-bgy2gdc",
+				"updated": "20230406170912"
+			}
+		}
+	]
+}

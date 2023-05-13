@@ -1,0 +1,256 @@
+{
+	"ID": "20230406141836-lk1lyun",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230406141836-lk1lyun",
+		"title": "secret和ServiceAccount",
+		"updated": "20230406195650"
+	},
+	"Children": [
+		{
+			"ID": "20230406143151-tbexep5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406143151-tbexep5",
+				"updated": "20230406143151"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=kubernetes\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "kubernetes"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "集群有两类认证时的账号："
+				}
+			]
+		},
+		{
+			"ID": "20230406143151-6tn5qvy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230406143151-6tn5qvy",
+				"updated": "20230406143203"
+			},
+			"Children": [
+				{
+					"ID": "20230406143151-efq5hek",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406143151-efq5hek"
+					},
+					"Children": [
+						{
+							"ID": "20230406143151-zqllaxk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406143151-zqllaxk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "user account（管理者、访问者）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406143151-b51wctz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406143151-b51wctz",
+						"updated": "20230406143203"
+					},
+					"Children": [
+						{
+							"ID": "20230406143151-wq2w3jh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406143151-wq2w3jh",
+								"updated": "20230406143203"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "service account（pod）：主要是给service使用的一个账号。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406143152-t0q7hcd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406143152-t0q7hcd",
+				"updated": "20230406143214"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基于service account，pod中的进程、服务能获取到一个username和令牌Token，从而调用kubernetes集群的api server。"
+				}
+			]
+		},
+		{
+			"ID": "20230406143216-4n9n6oq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406143216-4n9n6oq",
+				"updated": "20230406143603"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果kubernetes开启了ServiceAccount（–admission_control=…,ServiceAccount,… ）\n那么会在每个namespace下面都会创建一个默认的default的ServiceAccount，每个sa都关联着一个secrets："
+				}
+			]
+		},
+		{
+			"ID": "20230406143249-3sc3wdn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406143249-3sc3wdn",
+				"updated": "20230406143256"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get sa  default  -o yaml\n\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  creationTimestamp: 2017-05-02T06:39:12Z\n  name: default\n  namespace: default\n  resourceVersion: \"175\"\n  selfLink: /api/v1/namespaces/default/serviceaccounts/default\n  uid: 0de23575-2f02-11e7-98d0-5254c4628ad9\nsecrets:\n- name: default-token-rsf8r\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406143322-yqas4nq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406143322-yqas4nq",
+				"updated": "20230406143531"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当用户在该namespace下创建pod的时候都会默认使用这个sa， "
+				}
+			]
+		},
+		{
+			"ID": "20230406143532-xsuqhki",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406143532-xsuqhki",
+				"updated": "20230406143532"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面是get pod 截取的部分，可以看到kubernetes会把默认的sa挂载到容器内。"
+				}
+			]
+		},
+		{
+			"ID": "20230406143323-owzadaq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406143323-owzadaq",
+				"updated": "20230406143409"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#kubectl exec -it  -n xxxx  xxxx-7ff559f8b4-vx5m8  -- bash\n#ls -al  /var/run/secrets/kubernetes.io/serviceaccount/\ntotal 0\ndrwxrwxrwt 3 root root 140 Apr  4 01:59 .\ndrwxr-xr-x 3 root root  28 Apr  4 02:00 ..\ndrwxr-xr-x 2 root root 100 Apr  4 01:59 ..2023_04_04_01_59_52.667149260\nlrwxrwxrwx 1 root root  31 Apr  4 01:59 ..data -\u003e ..2023_04_04_01_59_52.667149260\nlrwxrwxrwx 1 root root  13 Apr  4 01:59 ca.crt -\u003e ..data/ca.crt\nlrwxrwxrwx 1 root root  16 Apr  4 01:59 namespace -\u003e ..data/namespace\nlrwxrwxrwx 1 root root  12 Apr  4 01:59 token -\u003e ..data/token\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406144618-wcpdzf0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406144618-wcpdzf0",
+				"updated": "20230406144636"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体来看secret内容："
+				}
+			]
+		},
+		{
+			"ID": "20230406144636-umz2kaj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406144636-umz2kaj",
+				"updated": "20230406144648"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get secret default-token-rsf8r -o yaml\napiVersion: v1\ndata:\n  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR2akNDQXFhZ0F3SUJBZ0lVZlpvZDJtSzNsa3JiMzR3NDhhUmtOc0pVVDJjd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1pURUxNQWtHQTFVRUJoTUN\n  namespace: ZGVmYXVsdA==\n  token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV0\nmetadata:\n  annotations:\n    kubernetes.io/service-account.name: default\n    kubernetes.io/service-account.uid: 0de23575-2f02-11e7-98d0-5254c4628ad9\n  creationTimestamp: 2017-05-02T06:42:07Z\n  name: default-token-rsf8r\n  namespace: default\n  resourceVersion: \"12551\"\n  selfLink: /api/v1/namespaces/default/secrets/default-token-rsf8r\n  uid: 75c0a236-2f02-11e7-98d0-5254c4628ad9\ntype: kubernetes.io/service-account-token\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406195650-ztvr6ej",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406195650-ztvr6ej",
+				"updated": "20230406195650"
+			}
+		}
+	]
+}

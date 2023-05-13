@@ -1,0 +1,1848 @@
+{
+	"ID": "20230208142601-itkjlm5",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230208142601-itkjlm5",
+		"title": "实操strace",
+		"updated": "20230208143451"
+	},
+	"Children": [
+		{
+			"ID": "20230208142601-t2br670",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230208142601-t2br670"
+			}
+		},
+		{
+			"ID": "20230208142601-8c75ehf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-8c75ehf"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-dd8sn2m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-dd8sn2m"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-o45l1sb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-o45l1sb"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://jiwangreal.blog.csdn.net/article/details/106442036",
+									"TextMarkTextContent": "https://jiwangreal.blog.csdn.net/article/details/106442036"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-giy55vr",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230208142601-giy55vr"
+			}
+		},
+		{
+			"ID": "20230208142601-ynleepg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-ynleepg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.strace简介"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-5xoxll0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-5xoxll0"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-np1ntl1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-np1ntl1"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-0bcuqki",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-0bcuqki"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "Strace是Linux中一个调试和跟踪工具。"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n（1）可以通过strace找到问题出现在user层还是kernel层\n（2）进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230208142601-nt87jdo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-nt87jdo"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-08yls4d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-08yls4d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "man strace"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-l1mfy6k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-l1mfy6k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.strace的2种用法"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-16905o9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-16905o9"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-2pj4vhc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-2pj4vhc"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-8jhk6hv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-8jhk6hv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "strace常用组合"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-j4srz7t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-j4srz7t"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "strace -p \u003cPID\u003e\n\nstrace -cp \u003cPID\u003e\t\t「c」选项用来汇总各个操作的总耗时\neg：clone的time很大，则可以单独跟踪以下clone\n\nstrace -T -e clone -p \u003cPID\u003e\n通过「T」选项可以获取操作实际消耗的时间，通过「e」选项可以跟踪某个操作\n1234567\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-hbdqii1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-hbdqii1"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-gebevn4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-gebevn4"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-zblr7pf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-zblr7pf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（1）一种是通过它启动要跟踪的进程 ，在原本的命令前加上strace即可"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-1axj6va",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-1axj6va"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "strace ls -lh /var/log/messages\nstrace ./可执行程序\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-domyl50",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-domyl50"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-0q96xgq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-0q96xgq"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-w2bjwpc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-w2bjwpc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（2）另外一种运行模式，给strace传递-p pid 选项"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-0uky3x1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-0uky3x1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "strace -p 17553\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ar2fsg5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-ar2fsg5"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-kwdqc6t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-kwdqc6t"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-5qxk20h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-5qxk20h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "strace的常用选项"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-nvi4doo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-nvi4doo",
+				"updated": "20230208143302"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "-c 统计每一系统调用的所执行的时间,次数和出错的次数等. \n-d 输出strace关于标准错误的调试信息. \n-f 除了跟踪当前进程外，还跟踪由fork调用所产生的子进程. \n-ff 如果提供-o filename,则所有进程的跟踪结果输出到相应的filename.pid中,pid是各进程的进程号. \n-F 尝试跟踪vfork调用.在-f时,vfork不被跟踪. \n-h 输出简要的帮助信息. \n-i 输出系统调用的入口指针寄存器值. \n-q 禁止输出关于结合(attaching)、脱离(detaching)的消息，当输出重定向到一个文件时，自动抑制此类消息. \n-r 打印出相对时间关于每一个系统调用，即连续的系统调用起点之间的时间差，与-t对应. \n-t 打印各个系统调用被调用时的绝对时间秒级，观察程序各部分的执行时间可以用此选项。 \n-tt 在输出中的每一行前加上时间信息,微秒级. \n-ttt 在每行输出前添加相对时间信息，格式为”自纪元时间起经历的秒数.微秒数”\n-T 显示每一调用所耗的时间，其时间开销在输出行最右侧的尖括号内. \n-v 冗余显示模式：显示系统调用中argv[]envp[]stat、termio(s)等数组/结构体参数所有的元素/成员内容. \n-V 输出strace的版本信息. \n-x 以十六进制形式输出非标准字符串 。\n-xx 所有字符串以十六进制形式输出. \n-a column 设置返回值的输出位置.默认为40，即\"=\"出现在第40列.\n-e expr 指定一个表达式,用来控制如何跟踪.\n    -e trace=set 只跟踪指定的系统 调用.例如:-e trace=open.\n    -e trace=file 只跟踪有关文件操作的系统调用. \n    -e trace=process 只跟踪有关进程控制的系统调用. \n    -e trace=network 跟踪与网络有关的所有系统调用. \n    -e trace=signal 跟踪所有与系统信号有关的 系统调用 \n    -e trace=ipc 跟踪所有与进程通讯有关的系统调用 \n    -e abbrev=set 设定 strace输出的系统调用的结果集.-v 等与 abbrev=none.默认为abbrev=all. \n    -e raw=set 将指 定的系统调用的参数以十六进制显示. \n    -e signal=set 指定跟踪的系统信号.默认为all.如signal=!SIGIO,表示不跟踪SIGIO信号. \n    -e read=set 输出从指定文件中读出 的数据.例如: -e read=3,5 -e write=set \n-E var 从命令的环境变量列表中移除var。\n-E var=val 将var=val放入命令的环境变量列表.\n-o filename 将strace的输出写入文件filename，而不是显示到标准错误输出（stderr）.\n-p pid 跟踪指定的进程pid，可指定多达32个(-p pid)选项以同时跟踪多个进程。该选项常用于调试后台进程. \n-s strsize 限制每行输出中字符串(如read参数)的最大显示长度，默认32字节。但文件名总是完整显示\n-S sortby 按指定规则对-c选项的输出直方图进行排序。sortby取值可为time、calls、name和nothing(默认     time)\n-u username 以username 的UID和GID执行被跟踪的命令\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-pir68b8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-pir68b8"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-buu05m1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-buu05m1"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-opjc29q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-opjc29q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "eg："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-16z2oh4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-16z2oh4",
+				"updated": "20230208143305"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "strace -o output.txt -T -tt -e trace=all -p 28979\n表示的含义是，跟踪28979进程的所有系统调用（-e trace=all），并统计系统调用的花费时间，以及开始时间（并以可视化的时分秒格式显示），\n最后将记录结果存在output.txt文件里面。\n\nstrace -f -e trace=read,write -p 17151 -o log\n跟踪进程17151及子进程中read和write系统调用，输出到log文件\n\n注意：\n-e trace=open,close,rean,write表示只跟踪这四个系统调用.默认的为set=all\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-30gm0r4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-30gm0r4"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-wz6rdl5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-wz6rdl5"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-631xk2p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-631xk2p"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "strace记录程序所产生的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "每次系统调用的格式为："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n（1）单独为一行\n（2）每行起始为系统调用的函数名，括号内为参数，该调用的返回值则显示在等号右侧。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-1vd1r5j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-1vd1r5j"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "当参数为bit时，使用方括号并用空格隔开每项参数\nsigprocmask(SIG_BLOCK,[CHLD TTOU],[ ]) = 0\t\t\t\t\t​ 第二个参数代表信号SIGCHLD和SIGTTOU\t\n\n若bit型参数全部置位，则输出如:\nsigprocmask(SIG_UNBLOCK,~[ ],NULL) = 0\n12345\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-cu6ytxf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-cu6ytxf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.strace使用案例"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-uyorv3h",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-uyorv3h"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-fe453ug",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-fe453ug"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-quqm5r8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-quqm5r8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "strace用法举例，测试程序test1.c运行过程中的系统调用情况："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-rpw1vc3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-rpw1vc3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#include \u003cstdio.h\u003e\nint main(void)\n{ \n\tfputs(\"hello\", stdout);\n\tsleep(2);\n\t//这里一开始输出了换行符，所以前面的hello就被输出到屏幕上了。\n\tfputs(\"\\nworld\\n\", stdout);\n\tsleep(2);\n\treturn 0;\n}\n12345678910\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-dkaun3h",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-dkaun3h"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "@Cpl-WH-30:~/test$ gcc test1.c -o test1\n@Cpl-WH-30:~/test$ strace ./test1\nexecve(\"./test1\", [\"./test1\"], [/* 30 vars */]) = 0\nbrk(0)                                  = 0x12b7000\n...\nopen(\"/etc/ld.so.cache\", O_RDONLY|O_CLOEXEC) = 3\nfstat(3, { st_mode=S_IFREG|0644, st_size=143984, ...}) = 0\nmmap(NULL, 143984, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7feee4d32000\nclose(3)                                = 0\n...\nfstat(1, { st_mode=S_IFCHR|0622, st_rdev=makedev(136, 14), ...}) = 0\nmmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7feee4d55000\n...\nnanosleep({ 2, 0}, 0x7ffd00227380)       = 0\nwrite(1, \"hello\\n\", 6hello\n)                  = 6\n...\nnanosleep({ 2, 0}, 0x7ffd00227380)       = 0\nwrite(1, \"world\", 5world)                    = 5\nexit_group(0)                           = ?\n+++ exited with 0 +++\n123456789101112131415161718192021\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-s7dgare",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-s7dgare"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-ewr8c88",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-ewr8c88"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-x8q5u6d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-x8q5u6d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析如下：\n（1）"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "第3行"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "表示通过系统调用execve来建立一个进程，本例中为test1对应的进程，在控制台中执行各种命令，比如ls、cd时，都是通过系统调用execve来建立它们的进程的，通过strace可以看到程序运行的细节。\n（2）"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "第4行"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "brk通过传递的addr来重新设置program break，成功则返回0，否则返回-1。\nbrk(0)的参数是一个地址，假如已经知道了堆的起始地址，还有堆的大小，那么就可以据此修改 brk() 中的地址参数已达到调整堆的目的。\n以0作为参数调用brk，返回值为内存管理的起始地址(若在子进程中调用malloc，则从0x12b7000地址开始分配空间)\n（3）​ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "第6~8行"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "表示打开动态连接库的过程，如果程序是静态连接的，这几个步骤将不需要。\n（4）"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "第14~19行"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "是程序的处理过程，nanosleep()使得进程进入睡眠状态，指定时候后唤醒进程，sleep()基于其实现 ，然后写入hello和world\n（5）"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "20~21行"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "表示退出进程中所有的线程。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230208142601-4zg0j6g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-4zg0j6g"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-n5ypicu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-n5ypicu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​ test2.c代码使用死循环模拟用户态挂死，调用sleep模拟内核态程序挂死，然后利用strace工具分析原因。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-lvh50m8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-lvh50m8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#include \u003cstdio.h\u003e\n#include \u003csys/types.h\u003e\n#include \u003cunistd.h\u003e\n#include \u003cstring.h\u003e\n\nint main(int argc, char** argv)\n{ \n    getpid(); //该系统调用起到标识作用\n    if(argc \u003c 2)\n    { \n        printf(\"hang (user|system)\\n\");\n        return 1;\n    }\n    if(!strcmp(argv[1], \"user\"))\n        while(1);\n    else if(!strcmp(argv[1], \"system\"))\n        sleep(500);\n    return 0;\n}\n12345678910111213141516171819\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ekvgnxs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-ekvgnxs"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "...\nopen(\"/lib/x86_64-linux-gnu/libc.so.6\", O_RDONLY|O_CLOEXEC) = 3\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\3\\0\u003e\\0\\1\\0\\0\\0P \\2\\0\\0\\0\\0\\0\"..., 832) = 832\nfstat(3, { st_mode=S_IFREG|0755, st_size=1857312, ...}) = 0\n...\nclose(3)                                = 0\n...\nmunmap(0x7f21e695f000, 143984)          = 0\ngetpid()                                = 8446\nrt_sigprocmask(SIG_BLOCK, [CHLD], [], 8) = 0\nrt_sigaction(SIGCHLD, NULL, { SIG_DFL, [], 0}, 8) = 0\nrt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0\nnanosleep({ 500, 0},\n12345678910111213\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-5xpa57m",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-5xpa57m"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-uqi359p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-uqi359p"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-kc2z3ce",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-kc2z3ce"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析：\n（1）第3行，调用read，从/lib/i386-linux-gnu/libc.so.6该libc库文件中读取832bytes，即读取ELF头信息 。\n​ （2）分析：\n用户态挂死情况下，strace在getpid()一行输出之后没有其他系统调用输出；\n进程在内核态挂死，最后一行的系统调用nanosleep不能完整显示，这里nanosleep没有返回值表示该调用尚未完成。\n（3）​ 结论：\n"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "使用strace跟踪挂死程序，如果最后一行系统调用显示完整，程序在逻辑代码处挂死；"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "如果最后一行系统调用显示不完整，程序在该系统调用处挂死。"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n当程序挂死在系统调用处，可以查看相应系统调用的man手册，了解在什么情况下该系统调用会出现挂死情况。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230208142601-2zdkpez",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-2zdkpez"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-ikxu9o7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-ikxu9o7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "eg：定位共享内存异常"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-e71oik6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-e71oik6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "-WH-30：~/$ strace -tt -f -e trace=ipc ./a_mon_svr     ../conf/a_mon_svr.conf\n22:46:36.351798 shmget(0x5feb, 12000, 0666) = 0\n22:46:36.351939 shmat(0, 0, 0)          = ?\nProcess 21406 attached\n22:46:36.355439 shmget(0x41400, 30097568, 0666) = -1 EINVAL (Invalid argument)\nshmget 267264 30097568: Invalid argument\nCan not get shm...exit!\n1234567\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-gvq1d3q",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-gvq1d3q"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-wgd3rmr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-wgd3rmr"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-vlwrycz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-vlwrycz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-9sr7ked",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-9sr7ked"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ipcs  -m | grep 41400\nkey        shmid      owner      perms      bytes      nattch     status  \n0x00041400 1015822    root       666        30095516   1\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-x4bocyx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230208142601-x4bocyx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​ 可以看到，已经0x41400这个key已经存在，并且其大小为30095516字节，和我们调用参数中的30097568不匹配，于是产生了这个错误。"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ay4ve3z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-ay4ve3z"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.五种利用strace查故障的简单方法"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-8q4ucy9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-8q4ucy9"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-0mgo7ug",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-0mgo7ug"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-du6q5jj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-du6q5jj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（1）找出程序在startup的时候读取的哪个config文件？"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-fkz3zw4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-fkz3zw4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ strace php 2\u003e\u00261 | grep php.ini  \nopen(\"/usr/local/bin/php.ini\", O_RDONLY) = -1 ENOENT (No such file or directory)  \nopen(\"/usr/local/lib/php.ini\", O_RDONLY) = 4  \nlstat64(\"/usr/local/lib/php.ini\", { st_mode=S_IFLNK|0777, st_size=27, ...}) = 0  \nreadlink(\"/usr/local/lib/php.ini\", \"/usr/local/Zend/etc/php.ini\", 4096) = 27  \nlstat64(\"/usr/local/Zend/etc/php.ini\", { st_mode=S_IFREG|0664, st_size=40971, ...}) = 0  \n\n更精致的方法\n$ strace -e open php 2\u003e\u00261 | grep php.ini  \nopen(\"/usr/local/bin/php.ini\", O_RDONLY) = -1 ENOENT (No such file or directory)  \nopen(\"/usr/local/lib/php.ini\", O_RDONLY) = 4  \n1234567891011\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ye2rong",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-ye2rong"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-xdjj2y5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-xdjj2y5"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-k9tk9yp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-k9tk9yp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（2）为什么这个程序没有打开我的文件？"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-w70wyt4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-w70wyt4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "strace -e open,access 2\u003e\u00261 | grep your-filename  \n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-3r3o67g",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-3r3o67g"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-k463wk2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-k463wk2"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-l1twdyg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-l1twdyg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（3) 某个进程现在在做什么?"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-p5qawbl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-p5qawbl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "root@dev:~# strace -p 15427  \nProcess 15427 attached - interrupt to quit  \nfutex(0x402f4900, FUTEX_WAIT, 2, NULL   \nProcess 15427 detached  \n\n这个例子里面，它在调用futex()的时候挂起了。\n123456\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ry5kjty",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-ry5kjty"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-1a14gl0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-1a14gl0"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-hsmd286",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-hsmd286"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（4） 是谁偷走了时间？"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-gisre01",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-gisre01"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "root@dev:~# strace -c -p 11084  \t\t\t\troot@dev:~# strace -c \u003e/dev/null ls\nProcess 11084 attached - interrupt to quit  \nProcess 11084 detached  \n% time     seconds  usecs/call     calls    errors syscall  \n------ ----------- ----------- --------- --------- ----------------  \n 94.59    0.001014          48        21           select  \n  2.89    0.000031           1        21           getppid  \n  2.52    0.000027           1        21           time  \n------ ----------- ----------- --------- --------- ----------------  \n100.00    0.001072                    63           total  \n\n在这个例子中，程序花了绝大部分时间在等待select()。\n\n它在每一个slect()调用这件调用getpid()和time()，这是一种典型的事件循环\n1234567891011121314\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ujszi8m",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-ujszi8m"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-a9vn3uq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-a9vn3uq"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-66xojau",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-66xojau"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（4）为什么 无法连接到服务器?\n"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "strace只返回你的进程相关的系统调用产生的数据。"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n如果你要从100个连接到统一个数据服务器的运行进程里面找出一个连接所做的事情，用strace就比tcpdump简单得多。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-ss8iq2l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-ss8iq2l"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ strace -e poll,select,connect,recvfrom,sendto nc www.news.com 80  \n.。。。。。。。。\nconnect(3, { sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr(\"216.239.122.102\")}, 16) = -1 EINPROGRESS (Operation now in progress) \n。。。。\n\n最后，它发起一个connect()请求到得到的IP地址，注意到返回值是EINPROGRESS。这意味这connect是非阻塞的，nc希望继续处理，\n然后它调用slect()，连接建立后，select返回成功。\n1234567\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-v4gcodt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-v4gcodt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.strace解决高负载服务器的top"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-aw76zrf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-aw76zrf"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-80c8h3v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-80c8h3v"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-z9iwszk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-z9iwszk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "top技巧"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-xe89ri4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-xe89ri4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "运行 top 时，按「1」打开 CPU 列表，按「shift+p」以 CPU 排序\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-n9n274p",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-n9n274p"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-3vqjio3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-3vqjio3"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-fsusuqg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-fsusuqg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析\n（1）CPU 主要是被若干个 PHP 进程占用了，同时 PHP 进程占用的比较多的内存，不过系统内存尚有结余，SWAP 也不严重\n（2）"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "在 CPU 列表中能看到 CPU 主要消耗在内核态「sy」，而不是用户态「us」"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "在这里插入图片描述"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/2020053016245151-20230208142601-d5jhkvd.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-bnwlpxp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-bnwlpxp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6.linux下的调试工具ltrace与strace"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-owdrt45",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-owdrt45"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-4h8cxfh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-4h8cxfh"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-lirnux0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-lirnux0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ltrace能够跟踪进程的库函数调用，它会显现出哪个库函数被调用，而strace则是跟踪程序的每个系统调用"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230208142601-mrnmov9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-mrnmov9"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-ojrze00",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-ojrze00"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "strace在跟踪系统调用的时候不需要动态库,而ltrace是根据动态库来分析程序运行的，所以"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "ltrace也只能跟踪动态库，不能跟踪静态库"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230208142601-erltaek",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-erltaek"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-o9t2lv1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-o9t2lv1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "用ltrace和strace都可以发现程序在哪个系统调用时发生了性能瓶径"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-3uns6dm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230208142601-3uns6dm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.strace+addr2line调试"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-j8farl0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-j8farl0"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-6d5b9fk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-6d5b9fk"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-6ycrj51",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-6ycrj51"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "然而在实际开发中，有很多问题都是概率发生的，gdb方法不太实用"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230208142601-ehfw7xl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-ehfw7xl"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-w17dtcb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-w17dtcb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "strace:用来跟踪进程执行时的系统调用和所接收的信号。\n"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "（1）实际上strace是一个集诊断，调试，统计与一体的工具。\n（2）strace可以跟踪到一个进程产生的系统调用，包括参数，返回值，执行消耗的时间。"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n（3）strace -i可以定位core地址。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-2suxqmx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-2suxqmx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#include\u003cstdio.h\u003e\n \nint main()\n{ \n       int *p=NULL;\n       *p=0;\n \n       printf(\"bad\\n\");\n       return 0;\n}\n12345678910\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-fo9i5lb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230208142601-fo9i5lb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行：strace -i a.out\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/2020061511062070-20230208142601-800ilh2.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n 然后接着执行addr2line命令，找出出错行:"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-egbp68j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230208142601-egbp68j"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y3Bw"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "addr2line -e a.out 4004d8\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230208142601-t3ecvqe",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230208142601-t3ecvqe"
+			},
+			"Children": [
+				{
+					"ID": "20230208142601-025dav3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230208142601-025dav3"
+					},
+					"Children": [
+						{
+							"ID": "20230208142601-56mnukf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230208142601-56mnukf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "参考："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/Huangxiang6/article/details/81295752",
+									"TextMarkTextContent": "strace工具使用手册"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/youxin/p/8837771.html",
+									"TextMarkTextContent": "linux神器strace"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/machangwei-8/p/10388883.html",
+									"TextMarkTextContent": "strace命令详解"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ",linux下的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/hushaojun/p/4846749.html",
+									"TextMarkTextContent": "调试工具ltrace与strace"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/ma2595162349/article/details/51472328",
+									"TextMarkTextContent": "core dump调试"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

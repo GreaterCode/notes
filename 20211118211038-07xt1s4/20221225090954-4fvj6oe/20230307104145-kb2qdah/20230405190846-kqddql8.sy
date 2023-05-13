@@ -1,0 +1,391 @@
+{
+	"ID": "20230405190846-kqddql8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230405190846-kqddql8",
+		"title": "一次 Docker 容器内大量僵尸进程排查分析",
+		"updated": "20230405191424"
+	},
+	"Children": [
+		{
+			"ID": "20230405190929-2g7mi0k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405190929-2g7mi0k",
+				"updated": "20230405190929"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了解决这个问题，不能让 node/npm 成为 init 进程，让有能力接管僵尸进程的服务成为 init 进程即可，有两个解决办法。"
+				}
+			]
+		},
+		{
+			"ID": "20230405190929-ftxj8p9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405190929-ftxj8p9",
+				"updated": "20230405190929"
+			},
+			"Children": [
+				{
+					"ID": "20230405190929-bx9tdfk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405190929-bx9tdfk"
+					},
+					"Children": [
+						{
+							"ID": "20230405190929-w0fp984",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405190929-w0fp984"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用 bash 启动 node 或者 npm"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230405190929-h8jajjm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405190929-h8jajjm"
+					},
+					"Children": [
+						{
+							"ID": "20230405190929-srtf9hz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405190929-srtf9hz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "增加专门的 init 进程，比如 tini"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405190943-n2vcdg5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230405190943-n2vcdg5",
+				"updated": "20230405191259"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方式一：使用 bash 启动 node"
+				}
+			]
+		},
+		{
+			"ID": "20230405190956-kh6kml3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230405190956-kh6kml3",
+				"updated": "20230405191006"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "让 bash 成为顶层进程是比较快的一种方式，bash 进程会负责回收僵尸进程，修改 Dockerfile，如下所示。\nADD test.tar.gz .\n# CMD [\"npm\", \"run\", \"start\"]\nCMD [\"/bin/bash\", \"-c\", \"set -e \u0026\u0026 npm run start\"]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230405191030-rx3dhzw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230405191030-rx3dhzw",
+				"updated": "20230405191030"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方式二：使用专门的 init 进程"
+				}
+			]
+		},
+		{
+			"ID": "20230405191309-3gftq3c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191309-3gftq3c",
+				"updated": "20230405191309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "init系统有以下几个特点："
+				}
+			]
+		},
+		{
+			"ID": "20230405191309-ehoc97w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405191309-ehoc97w",
+				"updated": "20230405191309"
+			},
+			"Children": [
+				{
+					"ID": "20230405191309-y5nwrjq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405191309-y5nwrjq"
+					},
+					"Children": [
+						{
+							"ID": "20230405191309-bznn76z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405191309-bznn76z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "它是系统的第一个进程，负责产生其他所有用户进程。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230405191309-ku91ych",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405191309-ku91ych"
+					},
+					"Children": [
+						{
+							"ID": "20230405191309-rjrrhe3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405191309-rjrrhe3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "init 以守护进程方式存在，是所有其他进程的祖先。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230405191309-xx8uw0r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405191309-xx8uw0r"
+					},
+					"Children": [
+						{
+							"ID": "20230405191309-5zuq48m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405191309-5zuq48m"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "它主要负责："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405191309-51krgzl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191309-51krgzl",
+				"updated": "20230405191309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.启动守护进程"
+				}
+			]
+		},
+		{
+			"ID": "20230405191309-jebdxmu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191309-jebdxmu",
+				"updated": "20230405191309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.回收孤儿进程"
+				}
+			]
+		},
+		{
+			"ID": "20230405191309-f5uxdxe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191309-f5uxdxe",
+				"updated": "20230405191309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.将操作系统信号转发给子进程"
+				}
+			]
+		},
+		{
+			"ID": "20230405191347-trkif55",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191347-trkif55",
+				"updated": "20230405191347"
+			}
+		},
+		{
+			"ID": "20230405191348-t6fwjvg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191348-t6fwjvg",
+				"updated": "20230405191348"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "如何使用 tini 初始化系統"
+				}
+			]
+		},
+		{
+			"ID": "20230405191348-0y0z8hq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405191348-0y0z8hq",
+				"updated": "20230405191348"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "tini 是一套更简单的 init 系统，专门用来执行一个子程序(spawn a single child)，并等待子程序结束，即便子程序已经变成僵尸程序也能捕捉到，同时也能转送 Signal 给子程序。如果你使用docker来跑容器，可以非常简便的在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "docker run"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的时候用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "--init"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数，就会自动注入tini程式 ( "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "/sbin/docker-init"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ) 到容器中，并且自动取代"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "ENTRYPOINT"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "设定，让原本的程式直接跑在 tini程序底下。"
+				}
+			]
+		},
+		{
+			"ID": "20230405191342-1gt9yv8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230405191342-1gt9yv8",
+				"updated": "20230405191424"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "FROM nginx\n\nRUN export TINI_VERSION=0.9.0 \u0026\u0026 \\\n    export TINI_SHA=fa23d1e20732501c3bb8eeeca423c89ac80ed452 \u0026\u0026 \\\n    curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static -o /bin/tini \u0026\u0026 \\\n    echo 'Calculated checksum: '$(sha1sum /bin/tini) \u0026\u0026 \\\n    chmod +x /bin/tini \u0026\u0026 echo \"$TINI_SHA  /bin/tini\" | sha1sum -c \n  \nENTRYPOINT [\"/bin/tini\",\"--\",\"/opt/nginx/docker-entrypoint.sh\"]\nENTRYPOINT [\"nginx\", \"-c\"] \nCMD [\"/etc/nginx/nginx.conf\"]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,566 @@
+{
+	"ID": "20230403230350-g1tidq0",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230403230350-g1tidq0",
+		"title": "client-go开发示例",
+		"updated": "20230403231305"
+	},
+	"Children": [
+		{
+			"ID": "20230403230504-8i600rm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403230504-8i600rm",
+				"updated": "20230403230600"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 查看 node列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403230350-1av7dp4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403230350-1av7dp4",
+				"updated": "20230403230448"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"fmt\"\n    metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n    \"k8s.io/client-go/kubernetes\"\n    \"k8s.io/client-go/tools/clientcmd\"\n    \"log\"\n    \"os\"\n    \"path/filepath\"\n)\n\nfunc main() {\n    // kubernetesの設定ファイルのパスを組み立てる\n    kubeconfig := filepath.Join(os.Getenv(\"HOME\"), \".kube\", \"config\")\n  \n    // BuildConfigFromFlags is a helper function that builds configs from a master url or \n    // a kubeconfig filepath.\n    config, err := clientcmd.BuildConfigFromFlags(\"\", kubeconfig)\n    if err != nil {\n        log.Fatal(err)\n    }\n\n    // NewForConfig creates a new Clientset for the given config.\n    // https://godoc.org/k8s.io/client-go/kubernetes#NewForConfig\n    clientset, err := kubernetes.NewForConfig(config)\n    if err != nil {\n        log.Fatal(err)\n    }\n\n    // https://godoc.org/k8s.io/client-go/kubernetes/typed/core/v1\n    nodes, err := clientset.CoreV1().Nodes().List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get nodes:\", err)\n    }\n\n    for i, node := range nodes.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, node.GetName())\n    }\n}\n$ go run nodelist.go\n[0] kube-01\n[1] kube-02\n[2] kube-03\n[3] kube-04\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403230450-ds0miij",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403230450-ds0miij",
+				"updated": "20230403230550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 查看pod列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403230534-5fqrcqe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403230534-5fqrcqe",
+				"updated": "20230403230534"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// https://godoc.org/k8s.io/client-go\npackage main\n\nimport (\n        \"fmt\"\n        metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n        \"k8s.io/client-go/kubernetes\"\n        \"k8s.io/client-go/tools/clientcmd\"\n        \"log\"\n        \"os\"\n        \"path/filepath\"\n)\n\nfunc main() {\n        kubeconfig := filepath.Join(os.Getenv(\"HOME\"), \".kube\", \"config\")\n        config, err := clientcmd.BuildConfigFromFlags(\"\", kubeconfig)\n        if err != nil {\n                log.Fatal(err)\n        }\n\n        // NewForConfig creates a new Clientset for the given config.\n        // https://godoc.org/k8s.io/client-go/kubernetes#NewForConfig\n        clientset, err := kubernetes.NewForConfig(config)\n        if err != nil {\n                log.Fatal(err)\n        }\n\n        // We need to create a serializer client to let us access API objects.\n        // Type Clientset, from package kubernetes, provides access to generated serializer clients\n        // to access versioned API objects\n        // https://godoc.org/k8s.io/client-go/kubernetes#Clientset.CoreV1\n        pods, err := clientset.CoreV1().Pods(\"\").List(metav1.ListOptions{})\n        if err != nil {\n                log.Fatalln(\"failed to get pods:\", err)\n        }\n\n        // print pods\n        // pods.Items: []v1.Pod\n        for i, pod := range pods.Items {\n                fmt.Printf(\"[%d] %s\\n\", i, pod.GetName())\n        }\n}"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403230609-jofw0vr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403230609-jofw0vr",
+				"updated": "20230403230653"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. service列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403230614-erorqys",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403230614-erorqys",
+				"updated": "20230403230623"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "   services, err := clientset.CoreV1().Services(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get services:\", err)\n    }\n    for i, svc := range services.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, svc.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403230624-cdq57hi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403230624-cdq57hi",
+				"updated": "20230403230640"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 获取sa列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403230640-dudidlu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403230640-dudidlu",
+				"updated": "20230403230649"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    serviceAccounts, err := clientset.CoreV1().ServiceAccounts(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get service accounts:\", err)\n    }\n    for i, sa := range serviceAccounts.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, sa.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403230648-5ecc7de",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403230648-5ecc7de",
+				"updated": "20230403230708"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 查看deploy列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403230708-ve81t9c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403230708-ve81t9c",
+				"updated": "20230403230716"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    // https://godoc.org/k8s.io/client-go/kubernetes/typed/apps/v1#AppsV1Interface\n    deployments, err := clientset.AppsV1().Deployments(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get deployments:\", err)\n    }\n    for i, deployment := range deployments.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, deployment.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403230715-15k4q6k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403230715-15k4q6k",
+				"updated": "20230403230726"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 查看pv列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403230726-zjryo57",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403230726-zjryo57",
+				"updated": "20230403231012"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    pvs, err := clientset.CoreV1().PersistentVolumes().List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get persistent volumes:\", err)\n    }\n    for i, pv := range pvs.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, pv.GetName())\n    }          \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231029-dinj8i2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231029-dinj8i2",
+				"updated": "20230403231038"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 查看PVC列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403231038-25rz6qo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231038-25rz6qo",
+				"updated": "20230403231047"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "   pvcs, err := clientset.CoreV1().PersistentVolumeClaims(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get persistent volume claim:\", err)\n    }\n    for i, pvc := range pvcs.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, pvc.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231047-90buq0w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231047-90buq0w",
+				"updated": "20230403231055"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8. 查看ns列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403231059-mprm4vg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231059-mprm4vg",
+				"updated": "20230403231104"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "   namespaces, err := clientset.CoreV1().Namespaces().List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get name space:\", err)\n    }\n    for i, ns := range namespaces.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, ns.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231105-nc2ep06",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231105-nc2ep06",
+				"updated": "20230403231116"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9. 查看ingress列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403231116-g3d351m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231116-g3d351m",
+				"updated": "20230403231125"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    // https://godoc.org/k8s.io/client-go/kubernetes/typed/extensions/v1beta1#IngressesGetter\n    // https://godoc.org/k8s.io/client-go/kubernetes/typed/extensions/v1beta1\n    ingresses, err := clientset.ExtensionsV1beta1().Ingresses(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get ingress:\", err)\n    }\n    for i, ingress := range ingresses.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, ingress.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231124-cvj80wx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231124-cvj80wx",
+				"updated": "20230403231138"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10. 查看Secret列表"
+				}
+			]
+		},
+		{
+			"ID": "20230403231139-g5dnahj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231139-g5dnahj",
+				"updated": "20230403231157"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    secrets, err := clientset.CoreV1().Secrets(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get secret:\", err)\n    }\n    for i, secret := range secrets.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, secret.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231158-1m00p1l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231158-1m00p1l",
+				"updated": "20230403231207"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "11. 创建secret"
+				}
+			]
+		},
+		{
+			"ID": "20230403231209-h4viezl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231209-h4viezl",
+				"updated": "20230403231215"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    data := make(map[string][]byte)\n    data[\"user\"] = []byte(\"admin\")\n    data[\"password\"] = []byte(\"password\")\n\n    // https://godoc.org/k8s.io/api/core/v1\n    // https://godoc.org/k8s.io/client-go/kubernetes/typed/core/v1#SecretInterface\n    secrets, err := clientset.CoreV1().Secrets(\"default\").Create(\u0026v1.Secret{\n            TypeMeta: metav1.TypeMeta{\n                    Kind: \"Secret\",\n            },\n            ObjectMeta: metav1.ObjectMeta{\n                    Name: \"generic-secret\",\n                    Namespace: \"default\",\n            },\n            Data: data,\n    })\n    fmt.Println(secrets)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231217-9pnlvdt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231217-9pnlvdt",
+				"updated": "20230403231231"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "12. 查看configmap"
+				}
+			]
+		},
+		{
+			"ID": "20230403231233-jcqf6kx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231233-jcqf6kx",
+				"updated": "20230403231240"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    configMaps, err := clientset.CoreV1().ConfigMaps(\"\").List(metav1.ListOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get config map:\", err)\n    }\n    for i, cm := range configMaps.Items {\n        fmt.Printf(\"[%d] %s\\n\", i, cm.GetName())\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231241-hjmvazh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230403231241-hjmvazh",
+				"updated": "20230403231256"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "13. 查看ingress详细信息"
+				}
+			]
+		},
+		{
+			"ID": "20230403231256-x9v21en",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403231256-x9v21en",
+				"updated": "20230403231305"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  ingress, err := clientset.ExtensionsV1beta1().Ingresses(\"jx\").Get(\"docker-registry\", metav1.GetOptions{})\n    if err != nil {\n        log.Fatalln(\"failed to get ingresses:\", err)\n    }\n\n    fmt.Println(reflect.TypeOf(ingress)) // *v1beta1.Ingress\n    fmt.Println(ingress) \n    fmt.Println(ingress.ObjectMeta.Name) // docker-registry\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403231245-54f8vhs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403231245-54f8vhs",
+				"updated": "20230403231245"
+			}
+		}
+	]
+}

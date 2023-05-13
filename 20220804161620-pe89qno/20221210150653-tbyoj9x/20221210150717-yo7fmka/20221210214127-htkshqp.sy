@@ -1,0 +1,2413 @@
+{
+	"ID": "20221210214127-htkshqp",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221210214127-htkshqp",
+		"title": "MetalLB工作原理详解",
+		"updated": "20221211015951"
+	},
+	"Children": [
+		{
+			"ID": "20221211013808-7fftott",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211013808-7fftott",
+				"updated": "20221211013808"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211013808-x0whmag",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211013808-x0whmag",
+						"updated": "20221211013808"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "项目地址：https://github.com/danderson/metallb"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-g1gcbwe",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221210214127-g1gcbwe",
+				"updated": "20221210214410"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "概述"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-3thlqsm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-3thlqsm",
+				"updated": "20221211013730"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在裸kubernetes的集群中是没有LB的功能，该功能一般由云厂商提供。如果集群不是部署在云厂商的提供服务上，则使用到LB功能Service的状态始终都是"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pendding"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "状态。只能通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NodePort"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "方式和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "externalIPs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "方式将外部流量引入集群中。这在生产系统中进行部署带来很多的不便，在kuberntes的生态中给人一种二等公民的感觉。\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/43d3e0868c41441d93fe90ea2fed11f8tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20221210214127-h3sgt0v.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n如上图所示，MetalLB监听Service的变化通过Speaker组件采用对应的模式将外部流量引流到kubernetes集群node节点的可达路径。而具体到pod中则是通过kuber-proxy依据转发模式(iptables或ipvs)将流量转发到pod中。MetaLB均衡负载负责从主机维度实现负载均衡，而pod副本间的负载是通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-proxy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "实现。MetalLB负责IP地址分配、依据设定的广播模式进行广播、节点选举、节点失效切换等功能。而引流的过程则通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "ARP、NDP和BGP标准路由协议"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "实现。"
+				}
+			]
+		},
+		{
+			"ID": "20221211013545-kxu9ylj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211013545-kxu9ylj",
+				"updated": "20221211013602"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB 会在 Kubernetes 内运行，监控服务对象的变化，一旦监测到有新的 LoadBalancer 服务运行，并且没有可申请的负载均衡器之后，就会完成地址分配和外部声明两部分的工作。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-3xl9g8k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221210214127-3xl9g8k",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "地址分配"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-2p4durm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-2p4durm",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB在kubernetes集群中启动后，MetalLB不会凭空产生出来IP。因此需要使用者配置IP地址池及相应地址池使用的广播方式。MetalLB会在Service的状态发生变化时进行响应的分配IP、回收IP，状态的变化包括Service的添加、删除、修改。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-nusyy32",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-nusyy32",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "而IP的来源主要有两种方式，方式一是采用公网IP或局域网IP，方式二是虚拟IP。如果局域网拥有富裕的IP，或者从云厂商处能购买到IP段，可采用方式方式一。方式一广播则采用layer2模式的ARP和NDP方式实现。如果出于成本考虑，可使用和网络不冲突IP段的情况下可采用方式二。方式二需要支持BGP网络，或者路由器支持BGP路由协议。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-r2ut4aw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221210214127-r2ut4aw",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "广播模式"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-8tjzfwu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-8tjzfwu",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在IP池中的IP被分配后，需要需要将分配后的IP通知集群以外的网络访问IP可达。在MetalLB中使用标准的路由协议实现，分别是ARP、NDP或者BGP。其中ARP负责IPv4的广播，NDP负责IPv6的广播。MetalLB采用两种模式，分别是Layer2模式和BGP模式。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-qg8s9en",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221210214127-qg8s9en",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Layer2模式"
+				}
+			]
+		},
+		{
+			"ID": "20221210214537-4z3f3jq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214537-4z3f3jq",
+				"updated": "20221210214537"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221210214537-gnr9hfd.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211013313-qlyb13m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211013313-qlyb13m",
+				"updated": "20221211013314"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221211013314-s84xkos.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-93e73b2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-93e73b2",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Layer2模式中，集群中确保主机与service建立关系，并通过标准的ARP或NDP协议实现IP可达。在Layer2模式中，通过集群中所有主机选举Leader作为对外暴露服务的主机。从网络上来看相当于这台主机上拥有多个IP。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-30xhq77",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-30xhq77",
+				"updated": "20221211014115"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在系统运行期间，如果出现节点丢失或故障，则默认 10 秒后即发生故障转移，会自动发起leader节点选举，并将节点ip路由到新的节点上。因此在Layer2模式下，该功能类似于keepalived的功能。不过keepalived采用的是vrrp协议实现。节点的选举由"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fhashicorp%2Fmemberlist.git",
+					"TextMarkATitle": "https://github.com/hashicorp/memberlist.git",
+					"TextMarkTextContent": "memberlist"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "工程提供。"
+				}
+			]
+		},
+		{
+			"ID": "20221211014207-w7vp74c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211014207-w7vp74c",
+				"updated": "20221211014207"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Layer 2 模式的优缺点："
+				}
+			]
+		},
+		{
+			"ID": "20221211014207-o1i1gb0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211014207-o1i1gb0",
+				"updated": "20221211014236"
+			},
+			"Children": [
+				{
+					"ID": "20221211014207-azgsg1r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211014207-azgsg1r",
+						"updated": "20221211014207"
+					},
+					"Children": [
+						{
+							"ID": "20221211014207-y7qh8wg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211014207-y7qh8wg",
+								"updated": "20221211014207"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Layer 2 模式更为通用，不需要用户有额外的设备；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211014207-3cfgm6r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211014207-3cfgm6r",
+						"updated": "20221211014207"
+					},
+					"Children": [
+						{
+							"ID": "20221211014207-v1whkqf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211014207-v1whkqf",
+								"updated": "20221211014207"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Layer 2 模式下存在单点问题，服务的所有入口流量经由单点，其网络带宽可能成为瓶颈；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211014207-xf2awg1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211014207-xf2awg1",
+						"updated": "20221211014207"
+					},
+					"Children": [
+						{
+							"ID": "20221211014207-daia55x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211014207-daia55x",
+								"updated": "20221211014207"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于 Layer 2 模式需要 ARP/NDP 客户端配合，当故障转移发生时，MetalLB 会发送 ARP 包来宣告 MAC 地址和 IP 映射关系的变化，地址分配略为繁琐。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211014227-jgwua46",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211014227-jgwua46",
+						"updated": "20221211014236"
+					},
+					"Children": [
+						{
+							"ID": "20221211014227-7r0iivu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211014227-7r0iivu",
+								"updated": "20221211014236"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "有的操作系统会存在缓存问题最终导致leader节点发生故障时无法快速切换到新的leader节点主机上，会出现短暂的服务请求失败情况。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-vhqd8x1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221210214127-vhqd8x1",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP模式"
+				}
+			]
+		},
+		{
+			"ID": "20221210214451-619dbyh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214451-619dbyh",
+				"updated": "20221210214453"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221210214453-aagu023.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-zqtzodl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-zqtzodl",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP模式是以集群中的主机与对等体进行共享路由信息，从而实现集群外部的服务能够访问到集群内部的服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-2jncirw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-2jncirw",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP模式的流量的转发到主机的均衡负载取决于路由器来决定，一般常见的路由器都是基于数据包哈希值来平衡每个连接。如果一个连接中的TCP和UDP包会统一发到一个node节点上，不会发生由于数据到散发到不同节点上而引发的网络重排问题，而流量扩散的情况出现在不同的连接上，不会发生在同一个连接上。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-6ri8i07",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-6ri8i07",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在一些高性能的路由器中转发时会从数据包中提出去"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "seed"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "数据作为关键值计算哈希，从而选择转发到不同的主机上。经典的模型做法一般是三元组和五元组。三元组使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "(协议,源IP,目标IP )"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "作为关键值来确保同一连接中的数据到达同一后端主机。五元组则在此技术长添加源端口和目标端口作为关键值，五元组较三元组能确保来自同一客户端的数据包到同一主机上。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-m59hsi7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-m59hsi7",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP模式的优势在于可以使用外部的硬件路由器，而不是定制的负载能力。当然这也是BGP模式的最大的缺点。如果集群中的主机出现故障，这时又想快速断开所有服务是，路由器会无法快速做出响应。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-1dwn5i2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-1dwn5i2",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基于BGP的无状态服务负载均衡采用数据包中固定字段进行哈希计算，将特定的数据包转发到特定的下一跳中。然而这也是BGP模式的一个弊端。如果BGP会话中断或其他原因导致后端主机集合发生变化时，数据包转发的哈希值会被重新计算，转发另外一台后端主机上。导致新接受数据包的主机出现数据错误问题。如果服务IP发生变化导致服务IP于节点映射发生变化，也会导致数据包丢失的显现发生。要解决以这些问题可依据自身的场景进行选择解决方法："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-l62p5fc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221210214127-l62p5fc",
+				"updated": "20221211014528"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-y4f6e28",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-y4f6e28",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-jp4vey4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-jp4vey4",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "路由器选择更稳定的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ECMP"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "哈希算法(有时候成为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "弹性ECPM"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "或者"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "弹性LAG"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ")，在后端主机发生变化时，这种算法会大大减少影响的连接数。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-ksea777",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-ksea777",
+						"updated": "20221211014528"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-5y3kmvj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-5y3kmvj",
+								"updated": "20221211014528"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将服务部署到固定的尽可能小、觉得可信任的主机池里，降低 rehash 的概率。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-3ififxn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-3ififxn",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-hrfrwca",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-hrfrwca",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "尽可能在流量低谷期间进行部署服务"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-0ygcfpg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-0ygcfpg",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-4x31wl0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-4x31wl0",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将每个服务拆分成为两个使用不一样IP的kubernetes的Service，并且通过DNS优雅地将用户的流量逐步迁移到新的服务上"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-c5l0cpc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-c5l0cpc",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-kypfjwq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-kypfjwq",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在客户端增加失败重试功能，特别是在移动端或者富客户端特别有用"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-74stmjr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-74stmjr",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-t5h8ipq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-t5h8ipq",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将服务放置到Ingress控制器后端。Ingress控制台采用MetalLB来接受流量，相当于在BGP和服务之间有一个状态服务层，因此无需担心服务的改变。只需要关注ingress控制器的部署。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-7p9rlnd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-7p9rlnd",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-hc1mk85",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-hc1mk85",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果是一些使用很少的内部服务，偶尔连接重置的情况是可以接受的。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-guqbkyd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221210214127-guqbkyd",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "工作过程"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-odghjim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-odghjim",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB分为两部分组成，分别是Controller和Speaker。两者的分工如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-bkexyby",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221210214127-bkexyby",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-9qrjmb8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-9qrjmb8",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-wx07ffx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-wx07ffx",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller负责监听service变化，依据对应的IP池进行IP分配。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-0xevi2u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-0xevi2u",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-4ga333m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-4ga333m",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker负责监听Service的变化，并依据具体的协议发起相应的广播或应答、节点的Leader选举。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-ntudefq",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "||",
+				"id": "20221210214127-ntudefq",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "资源名称\\组件名称"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "Controler"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "Speaker"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ConfigMap"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "√"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "√"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Node"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "X"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "√"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Service"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "√"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "√"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Endpoint"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "X"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "√"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-zraakjt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-zraakjt",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如以上列表显示，列出Controller和Speaker两个组件监听的资源情况。\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/e7955d5a5cd14bfcbd20ff82f41748f3tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20221210214127-7ns254x.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n如上图所示，Controller与Speaker之间没有直接的通讯，而彼此的写作主要依赖于Service的变化。节点之间可使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "memberlist"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "开源项目进行选举，从而实现"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keepalived"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的效果。下面对SVC和Node发生变化时Controler和Speaker协作实现Load-Balance。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-gu3l248",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221210214127-gu3l248",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "新增与更新Service"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-tj1fiea",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221210214127-tj1fiea",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Controller过程"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-qpzaxm6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-qpzaxm6",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/b4920664e60c49b490a482eec55650b5tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20221210214127-6dd096j.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-h97d1zo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-h97d1zo",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如上图所示，Controller端接收到Service带有LoadBalance的事件处理过程，具体步骤如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-zxcgk89",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221210214127-zxcgk89",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-krtvqgx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221210214127-krtvqgx",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-alinw88",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-alinw88",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "apiserver将更新添加事件发送给Controller；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-aindtrr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221210214127-aindtrr",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-xdtjt3z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-xdtjt3z",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller接收到消息后深度复制一份出来；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-fe9kap2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221210214127-fe9kap2",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-6q8urp3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-6q8urp3",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller在当前分配的IP列表中清理该Service的分配IP情况；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-dds2ygi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221210214127-dds2ygi",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-rr4o3pd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-rr4o3pd",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller根据当前的IP池计算用于LoadBalance的IP；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-6rf60dm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221210214127-6rf60dm",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-4j0aii5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-4j0aii5",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller将该IP添加到Service中，并将Service的信息更新给Apiserver；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-93w727u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221210214127-93w727u",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-hm3ng5o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-hm3ng5o",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kube-proxy接收到更新信息后，在主机上进行相应的规则修改。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-n46c98h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-n46c98h",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从以上的步骤可以看到Controller只是与Apiserver进行交互，最终两者的交互通过Apiserver对Service的监听实现协作。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-e5jssgx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221210214127-e5jssgx",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Speaker过程"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-zxnpmjs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-zxnpmjs",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/aa62a01fa9354639b5bdbd43b496d7e9tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20221210214127-zlytzio.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nSpeaker关于Service发生变化时的工作过程，具体步骤如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-fc2cvk2",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221210214127-fc2cvk2",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-6ih8lvu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221210214127-6ih8lvu",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-pf3gxxt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-pf3gxxt",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kube-apiserver收到Service新增或更新后，将事件发送给Speaker；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-og7zygx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221210214127-og7zygx",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-r97dox9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-r97dox9",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker组件收到消息后，复制一份消息；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-7sni887",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221210214127-7sni887",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-t1ot4h1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-t1ot4h1",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker根据Service中的Ingress字段的IP计算出协议；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-1xe2sbf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221210214127-1xe2sbf",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-uc61x3p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-uc61x3p",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker采用策略模式对Layer2和BGP实现对地址做出应答或同步路由规则给对等体;"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-yvqo6oq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221210214127-yvqo6oq",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-8yohbe5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-8yohbe5",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker增加promethues指标项。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-ptchmfo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-ptchmfo",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在新增或更新时，使用到BGP模式时会添加路由规则到列表中，并将其同步给所有的对等体。而在Layer2模式中则添加到应答列表中。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-0ib3ofg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221210214127-0ib3ofg",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "删除SVC操作"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-sf5hw7p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-sf5hw7p",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Service发生变化时，也会发起Controller和Speaker也会发起相应的操作。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-p7ygn1h",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221210214127-p7ygn1h",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Controller过程"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-hv6kt06",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-hv6kt06",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/c58032ffff9e4654b2b8eb59ae413ed4tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20221210214127-p2kp0mf.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n如上图所示，在删除Service时Controller和kube-proxy都会发起相应的工作，具体步骤如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-l4ngiu1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221210214127-l4ngiu1",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-ab10z0q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221210214127-ab10z0q",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-n4bbyoe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-n4bbyoe",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kube-apiserver收到Service的删除后形成事件发送给监听者；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-i3rps95",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221210214127-i3rps95",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-e8jacfc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-e8jacfc",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kube-proxy接收到消息后，对主机上的转发规则进行更新；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-9wduna4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221210214127-9wduna4",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-uhkq2m1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-uhkq2m1",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller接收到消息后复制一份信息；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-wb734c5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221210214127-wb734c5",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-pa03k2n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-pa03k2n",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller删除IP列表；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-gy8k6g5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221210214127-gy8k6g5",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-d6ixvvb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-d6ixvvb",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller对IP进行回收。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-er0b9ag",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221210214127-er0b9ag",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Speaker过程"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-2zmycrf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-2zmycrf",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/9bbe46734827422286fd865acd8ba394tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20221210214127-yb4m2rv.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n如图所示，Speaker在接收Service删除操作后，会相应的判断协议以及取消应答或发起路由规则同步，具体步骤如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-7vjoyqd",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221210214127-7vjoyqd",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-qm6wru8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221210214127-qm6wru8",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-ktona3v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-ktona3v",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Apiserver将Service的删除事件发送给Speaker;"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-nkne5p0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221210214127-nkne5p0",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-xfk2a3f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-xfk2a3f",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker接收到消息后复制一份；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-hxetmt2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221210214127-hxetmt2",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-02yfbin",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-02yfbin",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker收到消息后将Service的获取广播对象；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-97nfcec",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221210214127-97nfcec",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-siflbyr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-siflbyr",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Speaker调用广播模式的对象发起删除操作。\n在BGP模式下，针对Service的操作会将当前删除的Service进行从广播列表中移除，同时发起同步操作将路由规则同步到AS中。而在Layer2模式下，则直接从应答列表中移除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-fqq4qx9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221210214127-fqq4qx9",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "节点状态变化"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-0x4535r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-0x4535r",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "节点的状态变化对于Speaker来说至关重要。在节点出现故障无法提供服务是，在使用Layer2模式和BGP模式都需要做出相应的操作，将LB的IP及时切换到其他主机上，降低节点故障事件。MetalLB的节点间也会发起选举操作，这个选举实现采用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fhashicorp%2Fmemberlist.git",
+					"TextMarkATitle": "https://github.com/hashicorp/memberlist.git",
+					"TextMarkTextContent": "memberlist"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "实现。下面我们讨论节点的变化和节点发生的情况。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-79n0ma5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-79n0ma5",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "而在节点发生添加、删除、更新时，Speaker收到消息后，会调用协议列表进行轮训，逐个发起相关操作。在BGP模式下，会重新强制同步路由规则给AS。在Layer2模式下会强制发起重新加入member操作。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-03wzzzd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221210214127-03wzzzd",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-2pjgh7v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-2pjgh7v",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB负责将流量引流到kubernetes集群的主机上，在其中提供两种模式，分别是Layer2模式和BGP模式。Layer2模式满足局域网内拥有富裕的IP。但是Layer2只能将所有外部流量引流到集群中的某台主机上，从而导致集群对外暴露的流量受限于单台主机的流量限制。BGP模式是一种较为理想的实现。BGP需要支持BGP路由协议的软路由或者硬件路由器设备，而无需定制的负载均衡器。在使用BGP协议时，需要路由器采用哈希等方式确保单个连接上的数据包转发到同一台主机上。由此也引发BGP模式的一个最大的缺点，在主机发生故障时无法快速切换到新的主机上，从而引发同一连接的不同数据包发送到不同主机上导致网络重排问题发生。解决该弊端的方法没有太理想的解决办法，只能通过尽量选择稳定的哈希算法、流量低谷更新服务、失败重试、服务在Ingress Controller后端等方法解决。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-mrk009m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-mrk009m",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在高流量情况下的性能主要取决于网络的情况和集群主机的转发速度(ipvs或iptable的转发)，MetalLB的能做的均衡只能是采用BGP，将不同的请求转发到不同的主机上来扩展带宽和提升性能。"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-1mjpsio",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-1mjpsio",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从其代码和实践的过程中来看，MetalLB 0.9.5版本来看存在以下几点弊端："
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-xv1qny8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221210214127-xv1qny8",
+				"updated": "20221210214127"
+			},
+			"Children": [
+				{
+					"ID": "20221210214127-arzosym",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-arzosym",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-w6923ca",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-w6923ca",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果已经存在已经使用LoadBalance的Service不会在第一次启动时重新广播；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221210214127-u5pj91u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221210214127-u5pj91u",
+						"updated": "20221210214127"
+					},
+					"Children": [
+						{
+							"ID": "20221210214127-s5nulqm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221210214127-s5nulqm",
+								"updated": "20221210214127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "BGP路由规则同步是在使用LoadBalance的Service或者node节点发生变化时发起同步，其他时间不会发生同步，如果MetalLB或路由器出现故障时间过长，对已经创建的Service无法触发同步。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-11pd455",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-11pd455",
+				"updated": "20221211015951"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "关课程"
+				}
+			]
+		},
+		{
+			"ID": "20221210214127-9lti28f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221210214127-9lti28f",
+				"updated": "20221211015949"
+			}
+		}
+	]
+}

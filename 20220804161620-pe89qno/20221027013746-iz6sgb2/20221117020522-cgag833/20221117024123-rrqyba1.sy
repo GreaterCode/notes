@@ -1,0 +1,1137 @@
+{
+	"ID": "20221117024123-rrqyba1",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221117024123-rrqyba1",
+		"title": "定制CoreOS",
+		"updated": "20221117110409"
+	},
+	"Children": [
+		{
+			"ID": "20221117024123-3bvu539",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117024123-3bvu539",
+				"updated": "20221117024650"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t我们使用coreos_installer 工具对原始的CoreOS ISO文件进行加工，将Ignition文件打包进去从而生成定制的 CoreOS ISO文件，用定制的CoreOS ISO文件可以在系统启动完成后自动执行CoreOS的安装。"
+				}
+			]
+		},
+		{
+			"ID": "20221117024628-27vh088",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117024628-27vh088",
+				"updated": "20221117024723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 安装CoreOS_installer"
+				}
+			]
+		},
+		{
+			"ID": "20221117024724-b1hj9zn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117024724-b1hj9zn",
+				"updated": "20221117024736"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "两种方法："
+				}
+			]
+		},
+		{
+			"ID": "20221117024749-08nbx5l",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221117024749-08nbx5l",
+				"updated": "20221117024828"
+			},
+			"Children": [
+				{
+					"ID": "20221117024753-xb4mt58",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117024753-xb4mt58"
+					},
+					"Children": [
+						{
+							"ID": "20221117024754-ptznypw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117024754-ptznypw",
+								"updated": "20221117024802"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "$ wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/coreos-installer/latest/coreos-installer"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117024805-hm2uqgx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117024805-hm2uqgx",
+						"updated": "20221117024828"
+					},
+					"Children": [
+						{
+							"ID": "20221117024805-lcocw9b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117024805-lcocw9b",
+								"updated": "20221117024828"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "$ yum install coreos-installer"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117025750-xwcaz1u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117025750-xwcaz1u",
+				"updated": "20221117025928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Ignition 定制 CoreOS 的网络/存储等配置"
+				}
+			]
+		},
+		{
+			"ID": "20221117030027-lzhzlrf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117030027-lzhzlrf",
+				"updated": "20221117030105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tIgnition文件是从FCC文件转换的，FCC文件是一种特殊YAML格式的文件。FCC文件格式可以参见官方文档说明："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://docs.fedoraproject.org/en-US/fedora-coreos/fcct-config/",
+					"TextMarkTextContent": "https://docs.fedoraproject.org/en-US/fedora-coreos/fcct-config/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。Ignition 在系统首次启动期间（在 initramfs 中）仅运行一次。我们可以使用Ignition初始化CoreOS系统的组件包括：存储，文件系统，systemd 和用户。"
+				}
+			]
+		},
+		{
+			"ID": "20221117025932-mnlfp2k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117025932-mnlfp2k",
+				"updated": "20221117030219"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t示例配置文件（安装后通过以下过程验证Ignition文件配置已经生效）："
+				}
+			]
+		},
+		{
+			"ID": "20221117025950-dro1cz5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117025950-dro1cz5",
+				"updated": "20221117030001"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "variant: fcos\nversion: 1.1.0\npasswd:\n  users:\n    - name: core\n      password_hash: \"$1$yoursalt$7/tmQXmlhL0pYfN/fyBZS1\"\n      ssh_authorized_keys:\n        - \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIBxVOCdtNHBgbEVQseDdRonC/OlP5qm7MoKeuwYFjvg6UKXl8MTplQ4ErV1r994XnkErRBzlxsPdn/s7/alJ8CJ3Po39QDMlJvvy/nG3Vak/naxc6hXwL4to1oJr\nMhyp7YsY2EzPke+b1FyWD6NZ27mhJnCmNhw4pND6QxfZulVCnlolg9BeTSuXaIRrgLnjdSU+9ojTz6BMVo5MWY+xXRNrydlI4rx19tnd0c62SwQnvjO8i+hCXzNAkwGb8J5KDLs7jYZhjOW4IyHa95NdgWlRDcVICQSbA0makjJyIF\nK9KDzaTYM0MvCpSkMXo9uTFKwPiKfhBrKw9n8nBegXN root@ceph-node1\"\nstorage:\n  files:\n    ## 设置主机名为mycoreos\n    - path: /etc/hostname\n      mode: 0644\n      contents:\n        inline: |\n          mycoreos\n    ## 为enp0s3网卡设置固定IP地址\n    - path: /etc/NetworkManager/system-connections/enp0s3.nmconnection\n      mode: 0600\n      overwrite: true\n      contents:\n        inline: |\n          [connection]\n          type=ethernet\n          id='Custom interface'\n          interface-name=enp0s3   \n          [ipv4]\n          method=manual\n          addresses=192.168.1.100/24\n          gateway=192.168.1.1\n          dns=192.168.1.1\n    ## 允许直接使用username/password登录远程的CoreOS。缺省CoreOS只能用私钥证书登录远程的CoreOS\n    - path: /etc/ssh/sshd_config.d/20-enable-passwords.conf\n      mode: 0644\n      contents:\n        inline: |\n          PasswordAuthentication yes\n  disks:\n  ## 在sda上设置一个分区，lable设为/var。\n  - device: /dev/sda\n    wipe_table: false\n    partitions:\n    - size_mib: 0\n      start_mib: 5000\n      label: var\n  ## 将var分区挂到/var文件系统。\n  filesystems:\n    - path: /var\n      device: /dev/disk/by-partlabel/var\n      format: ext4\n      with_mount_unit: true\n\nsystemd:\n  ## 配置一个系统service，服务运行的是busybox容器。\n  units:\n    - name: hello.service\n      enabled: true\n      contents: |\n        [Unit]\n        Description=MyApp\n        After=network-online.target\n        Wants=network-online.target\n\n        [Service]\n        TimeoutStartSec=0\n        ExecStartPre=-/bin/podman kill busybox1\n        ExecStartPre=-/bin/podman rm busybox1\n        ExecStartPre=/bin/podman pull busybox\n        ExecStart=/bin/podman run --name busybox1 busybox /bin/sh -c \"trap 'exit 0' INT TERM; while true; do echo Hello World; sleep 1; done\"\n\n        [Install]\n        WantedBy=multi-user.target\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117024654-0lzgzcc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117024654-0lzgzcc",
+				"updated": "20221117025748"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 生成定制CoreOS iso"
+				}
+			]
+		},
+		{
+			"ID": "20221117024914-tzg7kiw",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117024914-tzg7kiw",
+				"updated": "20221117024948"
+			},
+			"Children": [
+				{
+					"ID": "20221117024921-1gakuno",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221117024921-1gakuno",
+						"updated": "20221117024948"
+					},
+					"Children": [
+						{
+							"ID": "20221117024921-15y4rs9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117024921-15y4rs9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设置参数变量"
+								}
+							]
+						},
+						{
+							"ID": "20221117024932-rvgxtrx",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117024932-rvgxtrx",
+								"updated": "20221117024948"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ export COREOS_ISO_ORIGIN_FILE=fedora-coreos-32.20200907.3.0-live.x86_64.iso\n$ export COREOS_ISO_CUSTOMIZED_FILE=my-coreos.iso\n$ export IGN_FILE=config.ign\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117024949-99gi0i0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117024949-99gi0i0",
+				"updated": "20221117025003"
+			},
+			"Children": [
+				{
+					"ID": "20221117024952-hkor71z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221117024952-hkor71z",
+						"updated": "20221117025003"
+					},
+					"Children": [
+						{
+							"ID": "20221117025003-n85axe0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117025003-n85axe0",
+								"updated": "20221117025003"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认原始的CoreOS ISO文件中是没有包含Ignition配置。"
+								}
+							]
+						},
+						{
+							"ID": "20221117025007-8p7khr5",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117025007-8p7khr5",
+								"updated": "20221117025018"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ coreos-installer iso ignition show $COREOS_ISO_ORIGIN_FILE\nError: No embedded Ignition config.\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117025030-hiz0i79",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117025030-hiz0i79",
+				"updated": "20221117025058"
+			},
+			"Children": [
+				{
+					"ID": "20221117025046-bn6a0x3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221117025046-bn6a0x3",
+						"updated": "20221117025058"
+					},
+					"Children": [
+						{
+							"ID": "20221117025046-5pinfu8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117025046-5pinfu8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，将Ignition文件和原始CoreOS ISO文件打包生成定制的CoreOS ISO文件。"
+								}
+							]
+						},
+						{
+							"ID": "20221117025054-8snjjzv",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117025054-8snjjzv",
+								"updated": "20221117025058"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ coreos-installer iso ignition embed $COREOS_ISO_ORIGIN_FILE --ignition-file $IGN_FILE $COREOS_ISO_ORIGIN_FILE --output $COREOS_ISO_CUSTOMIZED_FILE\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117025052-qugjnar",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117025052-qugjnar",
+				"updated": "20221117025151"
+			},
+			"Children": [
+				{
+					"ID": "20221117025103-5ybzxos",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221117025103-5ybzxos",
+						"updated": "20221117025151"
+					},
+					"Children": [
+						{
+							"ID": "20221117025103-6dzboig",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117025103-6dzboig",
+								"updated": "20221117025128"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认定制CoreOS ISO 文件中已经包含Ignition配置了"
+								}
+							]
+						},
+						{
+							"ID": "20221117025146-sh44yhi",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117025146-sh44yhi",
+								"updated": "20221117025151"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ coreos-installer iso ignition show $COREOS_ISO_CUSTOMIZED_FILE\n{\"ignition\":{\"version\":\"3.1.0\"},\"passwd\":{\"users\":[{\"name\":\"core\",\"passwordHash\":\"$1$yoursalt$7/tmQXmlhL0pYfN/fyBZS1\",\"sshAuthorizedKeys\":[\"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIBxVOCdtNHBgbEVQseDdRonC/OlP5qm7MoKeuwYFjvg6UKXl8MTplQ4ErV1r994XnkErRBzlxsPdn/s7/alJ8CJ3Po39QDMlJvvy/nG3Vak/naxc6hXwL4to1oJrMhyp7YsY2EzPke+b1FyWD6NZ27mhJnCmNhw4pND6QxfZulVCnlolg9BeTSuXaIRrgLnjdSU+9ojTz6BMVo5MWY+xXRNrydlI4rx19tnd0c62SwQnvjO8i+hCXzNAkwGb8J5KDLs7jYZhjOW4IyHa95NdgWlRDcVICQSbA0makjJyIFK9KDzaTYM0MvCpSkMXo9uTFKwPiKfhBrKw9n8nBegXN root@node1\"]}]}}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117025154-6wtc9db",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117025154-6wtc9db",
+				"updated": "20221117030342"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. CoreOS的常规操作"
+				}
+			]
+		},
+		{
+			"ID": "20221117083920-04dmdp2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117083920-04dmdp2",
+				"updated": "20221117083935"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 操作系统操作"
+				}
+			]
+		},
+		{
+			"ID": "20221117083935-bk1t3pq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117083935-bk1t3pq",
+				"updated": "20221117084158"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[core@tutorial ~]$ nmcli con show\nNAME              UUID                                  TYPE      DEVICE\nWired Connection  e1fb8b00-3905-4e08-aecb-fdd212690515  ethernet  enp0s3\n$ ip a | grep 192.168.1\n    inet 192.168.1.18/24 brd 192.168.1.255 scope global dynamic noprefixroute enp0s3 \n \n$ nmcli connection show 'Wired Connection' | grep ipv4.addresses\n ipv4.addresses:                         192.168.1.18/24 \n \n$ sudo nmcli connection mod 'Wired Connection' \\\n  ipv4.method manual \\\n  ipv4.addresses 192.168.1.20/24 \\\n  ipv4.gateway 192.168.1.1 \\\n  ipv4.dns 192.168.1.1 \\\n  connection.autoconnect yes\n$ nmcli connection show 'Wired Connection' | grep ipv4.addresses\nipv4.addresses:                         192.168.1.18/24\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117025306-ekbb119",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117025306-ekbb119",
+				"updated": "20221117084134"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 使用toolbox容器"
+				}
+			]
+		},
+		{
+			"ID": "20221117084152-vf101nu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117084152-vf101nu",
+				"updated": "20221117084222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在CoreOS中只提供了最基础的系统级命令，其它功能都建议通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=Container\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "Container"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "运行，而不是直接安装运行在CoreOS系统中。为此CoreOS提供了名为toolbox的命令，它会根据CoreOS环境参数（通常）下载并运行对应的toolbox容器镜像。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "toolbox容器在运行起来后会自动将宿主CoreOS的分区挂载到toolbox容器中"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，这样我们就可以在toolbox容器中访问宿主CoreOS的目录和文件了"
+				}
+			]
+		},
+		{
+			"ID": "20221117084320-ctjpnyx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221117084320-ctjpnyx",
+				"updated": "20221117084416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2.1 安装toolbox"
+				}
+			]
+		},
+		{
+			"ID": "20221117084354-qi3q26b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117084354-qi3q26b",
+				"updated": "20221117084354"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tCoreOS缺省提供了toolbox命令，但是没包括toolbox对应的容器。在第一次运行toolbox命令的时候，CoreOS会自动下载由缺省参数指定的toolbox容器镜像。"
+				}
+			]
+		},
+		{
+			"ID": "20221117084402-q8y0tlg",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117084402-q8y0tlg",
+				"updated": "20221117084502"
+			},
+			"Children": [
+				{
+					"ID": "20221117084433-z5g2ata",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221117084433-z5g2ata",
+						"updated": "20221117084502"
+					},
+					"Children": [
+						{
+							"ID": "20221117084435-f5mo5mz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117084435-f5mo5mz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在CoreOS中创建toolbox环境，然后通过命令进入toolbox容器。"
+								}
+							]
+						},
+						{
+							"ID": "20221117084452-yg0csto",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117084452-yg0csto",
+								"updated": "20221117084502"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "[core@tutorial ~]$ /bin/toolbox create\nImage required to create toolbox container.\nDownload registry.fedoraproject.org/f32/fedora-toolbox:32 (500MB)? [y/N]: y\nCreated container: fedora-toolbox-32\nEnter with: toolbox enter\n[core@tutorial ~]$ toolbox enter\n/usr/bin/id: cannot find name for group ID 1000\n \nWelcome to the Toolbox; a container where you can install and run\nall your tools.\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117084528-35xlekh",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117084528-35xlekh",
+				"updated": "20221117084601"
+			},
+			"Children": [
+				{
+					"ID": "20221117084601-616gcxt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221117084601-616gcxt"
+					},
+					"Children": [
+						{
+							"ID": "20221117084601-ostf9v9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117084601-ostf9v9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "文件操作"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117084541-lotyphf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117084541-lotyphf",
+				"updated": "20221117084554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在toolbox 中查看文件系统，确认CoreOS宿主机的目录是挂载到toolbox容器中的“/run/host”目录下，例如下面的“/run/host/tmp”、“/run/host/var”等"
+				}
+			]
+		},
+		{
+			"ID": "20221117084615-kn6fooi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117084615-kn6fooi",
+				"updated": "20221117084757"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "⬢[core@toolbox ~]$ df -h\nFilesystem      Size  Used Avail Use% Mounted on\nfuse-overlayfs  3.1G  696M  2.2G  24% /\ntmpfs           487M     0  487M   0% /sys/fs/cgroup\ndevtmpfs        448M     0  448M   0% /dev\ntmpfs           487M   84K  487M   1% /dev/shm\ntmpfs            98M   76K   98M   1% /etc/hostname\ntmpfs           487M  6.8M  481M   2% /run/media\n/dev/sda4       4.4G  1.9G  2.5G  43% /run/host/etc\ntmpfs           487M     0  487M   0% /run/host/tmp\n/dev/sda5       3.1G  696M  2.2G  24% /run/host/var\ntmpfs           487M     0  487M   0% /tmp\n\n// 在/run/host/tmp中创建一个test文件。\n⬢[core@toolbox ~]$ echo aaa \u003e /run/host/tmp/test\n\n// 从toolbox容器中退出来，查看CoreOS的/tmp目录，确认有在toolbox中创建的test文件。\n⬢[core@toolbox ~]$ exit\nlogout\n[core@tutorial ~]$ df -h\nFilesystem      Size  Used Avail Use% Mounted on\ndevtmpfs        448M     0  448M   0% /dev\ntmpfs           487M   84K  487M   1% /dev/shm\ntmpfs           487M  6.8M  481M   2% /run\ntmpfs           487M     0  487M   0% /sys/fs/cgroup\n/dev/sda4       4.4G  1.9G  2.5G  43% /sysroot\ntmpfs           487M     0  487M   0% /tmp\n/dev/sda5       3.1G  696M  2.2G  24% /var\n[core@tutorial tmp]$ cat /tmp/test\naaa\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117104723-s159snd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117104723-s159snd",
+				"updated": "20221117104839"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. CoreOS升级与降级"
+				}
+			]
+		},
+		{
+			"ID": "20221117104839-i7q4vfc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221117104839-i7q4vfc",
+				"updated": "20221117104954"
+			},
+			"Children": [
+				{
+					"ID": "20221117104846-wn9hvzb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117104846-wn9hvzb",
+						"updated": "20221117104954"
+					},
+					"Children": [
+						{
+							"ID": "20221117104846-0edvoge",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117104846-0edvoge",
+								"updated": "20221117104954"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看rpm-ostree的状态，确认当前操作系统RHCOS，ostree是受到OpenShift的machine-config-operator管理"
+								}
+							]
+						},
+						{
+							"ID": "20221117104914-es29ht3",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117104914-es29ht3",
+								"updated": "20221117104924"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "sh-4.4# rpm-ostree status\nState: idle\nDeployments:\n* pivot://quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:77e9ace116cec652637a79449dea00c6b4af5463ca2474463549cf145bc44438\n              CustomOrigin: Managed by machine-config-operator\n                   Version: 45.82.202007240629-0 (2020-07-24T06:33:19Z)\n \n  ostree://67315b4b010341ffd396fe699287defe530830b17879d695fec0243b87e97c82\n                   Version: 45.82.202007141718-0 (2020-07-14T17:21:59Z)\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117104821-yrcxk1r",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221117104821-yrcxk1r",
+				"updated": "20221117105425"
+			},
+			"Children": [
+				{
+					"ID": "20221117105316-jdof3em",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117105316-jdof3em",
+						"updated": "20221117105425"
+					},
+					"Children": [
+						{
+							"ID": "20221117105316-2f5punn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117105316-2f5punn",
+								"updated": "20221117105414"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看升级CoreOS是作为Transaction执行，以下是升级过程中的状态"
+								}
+							]
+						},
+						{
+							"ID": "20221117105415-2znqp29",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117105415-2znqp29",
+								"updated": "20221117105425"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "sh-4.4# rpm-ostree status\nState: busy\nTransaction: rebase --experimental '/var/lib/containers/storage/overlay/31d1175712bfb3186635fc6c5bdc7c5097ce5cd70f607641305421965974cc19/merged/                              srv/repo:f9d88d07921009f524c39773d0935a7d1642a02bd37e0d621696bf4f766a0540' --custom-origin-url 'pivot://quay.io/openshift-release-dev/ocp-v4.0-a                              rt-dev@sha256:50583514d28ef1f4bfea9dbbae9e083026cf95491b5d4dfdc375e7ffc037f861' --custom-origin-description 'Managed by machine-config-operator'                          \n  Initiator: client(id:cli dbus:1.980 unit:machine-config-daemon-host.service uid:0)\nDeployments:\n* pivot://quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:77e9ace116cec652637a79449dea00c6b4af5463ca2474463549cf145bc44438\n              CustomOrigin: Managed by machine-config-operator\n                   Version: 45.82.202007240629-0 (2020-07-24T06:33:19Z)\n\n  ostree://67315b4b010341ffd396fe699287defe530830b17879d695fec0243b87e97c82\n                   Version: 45.82.202007141718-0 (2020-07-14T17:21:59Z)\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117105429-yb2f5hv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221117105429-yb2f5hv",
+				"updated": "20221117105544"
+			},
+			"Children": [
+				{
+					"ID": "20221117105440-w4dzsa9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117105440-w4dzsa9",
+						"updated": "20221117105544"
+					},
+					"Children": [
+						{
+							"ID": "20221117105440-zbzhmhh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117105440-zbzhmhh",
+								"updated": "20221117105513"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "升级完后查看更新的rpm列表"
+								}
+							]
+						},
+						{
+							"ID": "20221117105513-kg56ei7",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117105513-kg56ei7",
+								"updated": "20221117105544"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "sh-4.4# rpm-ostree db diff\nostree diff commit from: rollback deployment (6be58e334103982d73c0aec860c5b52cd6f2cbd542c57a66be34d2cab63e6693)\nostree diff commit to:   booted deployment (f9d88d07921009f524c39773d0935a7d1642a02bd37e0d621696bf4f766a0540)\nUpgraded:\n  conmon 2:2.0.17-1.rhaos4.5.el8 -\u003e 2:2.0.20-1.rhaos4.5.el8\n  containers-common 1:1.0.0-1.module+el8.2.1+6676+604e1b26 -\u003e 1:1.1.1-1.rhaos4.5.el8\n  cri-o 1.18.3-5.rhaos4.5.git1c13d1d.el8 -\u003e 1.18.3-8.rhaos4.5.gitbefe37e.el8\n  grub2-common 1:2.02-82.el8_2.1 -\u003e 1:2.02-87.el8_2\n  grub2-efi-x64 1:2.02-82.el8_2.1 -\u003e 1:2.02-87.el8_2\n  grub2-pc 1:2.02-82.el8_2.1 -\u003e 1:2.02-87.el8_2\n  grub2-pc-modules 1:2.02-82.el8_2.1 -\u003e 1:2.02-87.el8_2\n  grub2-tools 1:2.02-82.el8_2.1 -\u003e 1:2.02-87.el8_2\n......\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117105430-cwh6qo1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221117105430-cwh6qo1",
+				"updated": "20221117105753"
+			},
+			"Children": [
+				{
+					"ID": "20221117105635-0eakw8m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117105635-0eakw8m",
+						"updated": "20221117105753"
+					},
+					"Children": [
+						{
+							"ID": "20221117105635-1wpdf8t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117105635-1wpdf8t",
+								"updated": "20221117105753"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CoreOS降级（回退），回退操作只有reboot之后才能生效"
+								}
+							]
+						},
+						{
+							"ID": "20221117105652-jryseng",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117105652-jryseng",
+								"updated": "20221117105717"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "sh-4.4# rpm-ostree rollback\nMoving 'cc6b04c267773909d8ff26db1aa185ff30c0d953a54aa80f3ef6b092ed658465.0' to be first deployment\nBootloader updated; bootconfig swap: yes; deployment count change: 0\nDowngraded:\n  machine-config-daemon 4.5.0-202009260105.p0.git.2568.f76ca42.el8 -\u003e 4.5.0-202009111813.p0.git.2563.7c12c13.el8\n  openshift-hyperkube 4.5.0-202009261118.p0.git.0.1637ada.el8 -\u003e 4.5.0-202009172050.p0.git.0.fe2f5b1.el8\n  runc 1.0.0-71.rhaos4.5.git5101761.el8 -\u003e 1.0.0-70.rhaos4.5.gite677e8b.el8\nRun \"systemctl reboot\" to start a reboot\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117105430-anb7vml",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117105430-anb7vml",
+				"updated": "20221117105430"
+			}
+		},
+		{
+			"ID": "20221117105029-mff8yp9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117105029-mff8yp9",
+				"updated": "20221117110409"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "在机器中尝试rpm-ostree upgrade根据提示确认无法升级。"
+				}
+			]
+		},
+		{
+			"ID": "20221117025306-hjnn2gx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117025306-hjnn2gx",
+				"updated": "20221117025312"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20221117025314-7xkt5t7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117025314-7xkt5t7",
+				"updated": "20221117084809"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "https://github.com/coreos/coreos-installer/blob/master/docs/cmd/iso.md\nhttps://www.katacoda.com/courses/coreos/playground\nhttps://computingforgeeks.com/install-fedora-coreos-fcos-on-kvm-openstack/\nhttps://dustymabe.com/2020/04/04/automating-a-custom-install-of-fedora-coreos/\nhttps://developers.redhat.com/blog/2020/03/12/how-to-customize-fedora-coreos-for-dedicated-workloads-with-ostree/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117030512-hc6ssxs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117030512-hc6ssxs",
+				"updated": "20221117030512"
+			}
+		}
+	]
+}

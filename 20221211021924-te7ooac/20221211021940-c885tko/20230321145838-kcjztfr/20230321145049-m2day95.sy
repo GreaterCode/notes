@@ -1,0 +1,2568 @@
+{
+	"ID": "20230321145049-m2day95",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230321145049-m2day95",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230329082603-v8adyti\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230323112528-dy93up7\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230329082603-v8adyti\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "kube-apiserver启动流程",
+		"updated": "20230321145049"
+	},
+	"Children": [
+		{
+			"ID": "20230329082603-v8adyti",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230329082603-v8adyti",
+				"updated": "20230329082605"
+			}
+		},
+		{
+			"ID": "20230329082612-wzxqew0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230329082612-wzxqew0",
+				"updated": "20230329082615"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230321145049-218etzs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321145049-218etzs",
+				"updated": "20230321145049"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KubeAPIServer 主要是提供对 API Resource 的操作请求，为 kubernetes 中众多 API 注册路由信息，暴露 RESTful API 并且对外提供 kubernetes service，使集群中以及集群外的服务都可以通过 RESTful API 操作 kubernetes 中的资源。"
+				}
+			]
+		},
+		{
+			"ID": "20230321151809-behal3i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230321151809-behal3i",
+				"updated": "20230321151815"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 代码流图"
+				}
+			]
+		},
+		{
+			"ID": "20230321145054-h9owm42",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321145054-h9owm42",
+				"updated": "20230321145054"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230321145054-2irmtjz.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230321151819-b25epbu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321151819-b25epbu",
+				"updated": "20230321151819"
+			}
+		},
+		{
+			"ID": "20230321151824-pvm6db0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230321151824-pvm6db0",
+				"updated": "20230321151833"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 源码分析"
+				}
+			]
+		},
+		{
+			"ID": "20230321151935-7oobb2m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230321151935-7oobb2m",
+				"updated": "20230322110440"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 启动main函数"
+				}
+			]
+		},
+		{
+			"ID": "20230321151833-8vye05p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321151833-8vye05p",
+				"updated": "20230321151846"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\tcommand := app.NewAPIServerCommand()\n\tcode := cli.Run(command)\n\tos.Exit(code)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321151820-fwmztzu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230321151820-fwmztzu",
+				"updated": "20230322110511"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 创建cobra.Command对象"
+				}
+			]
+		},
+		{
+			"ID": "20230321151931-k4mnjto",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321151931-k4mnjto",
+				"updated": "20230321152159"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// NewAPIServerCommand creates a *cobra.Command object with default parameters\n// NewAPIServerCommand使用默认参数创建cobra.Command对象\nfunc NewAPIServerCommand() *cobra.Command {\n\ts := options.NewServerRunOptions()\n\tcmd := \u0026cobra.Command{\n\t\tUse: \"kube-apiserver\",\n\t\tLong: `The Kubernetes API server validates and configures data\nfor the api objects which include pods, services, replicationcontrollers, and\nothers. The API Server services REST operations and provides the frontend to the\ncluster's shared state through which all other components interact.`,\n\n\t\t// stop printing usage when the command errors\n\t\tSilenceUsage: true,\n\t\tPersistentPreRunE: func(*cobra.Command, []string) error {\n\t\t\t// silence client-go warnings.\n\t\t\t// kube-apiserver loopback clients should not log self-issued warnings.\n\t\t\trest.SetDefaultWarningHandler(rest.NoWarnings{})\n\t\t\treturn nil\n\t\t},\n\t\tRunE: func(cmd *cobra.Command, args []string) error {\n\t\t\tverflag.PrintAndExitIfRequested()\n\t\t\tfs := cmd.Flags()\n\n\t\t\t// Activate logging as soon as possible, after that\n\t\t\t// show flags with the final logging configuration.\n\t\t\tif err := logsapi.ValidateAndApply(s.Logs, utilfeature.DefaultFeatureGate); err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\t\t\tcliflag.PrintFlags(fs)\n\n\t\t\t// set default options\n\t\t\tcompletedOptions, err := Complete(s)\n\t\t\tif err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\n\t\t\t// validate options\n\t\t\tif errs := completedOptions.Validate(); len(errs) != 0 {\n\t\t\t\treturn utilerrors.NewAggregate(errs)\n\t\t\t}\n\t\t\t// add feature enablement metrics\n\t\t\tutilfeature.DefaultMutableFeatureGate.AddMetrics()\n\t\t\treturn Run(completedOptions, genericapiserver.SetupSignalHandler())\n\t\t},\n\t\tArgs: func(cmd *cobra.Command, args []string) error {\n\t\t\tfor _, arg := range args {\n\t\t\t\tif len(arg) \u003e 0 {\n\t\t\t\t\treturn fmt.Errorf(\"%q does not take any arguments, got %q\", cmd.CommandPath(), args)\n\t\t\t\t}\n\t\t\t}\n\t\t\treturn nil\n\t\t},\n\t}\n\t \n\t// 设置flag标识\n\tfs := cmd.Flags()\n\tnamedFlagSets := s.Flags()\n\tverflag.AddFlags(namedFlagSets.FlagSet(\"global\"))\n\tglobalflag.AddGlobalFlags(namedFlagSets.FlagSet(\"global\"), cmd.Name(), logs.SkipLoggingConfigurationFlags())\n\toptions.AddCustomGlobalFlags(namedFlagSets.FlagSet(\"generic\"))\n\tfor _, f := range namedFlagSets.FlagSets {\n\t\tfs.AddFlagSet(f)\n\t}\n\n\tcols, _, _ := term.TerminalSize(cmd.OutOrStdout())\n\tcliflag.SetUsageAndHelpFunc(cmd, namedFlagSets, cols)\n\n\treturn cmd\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321152301-qe4e5r6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230321152301-qe4e5r6",
+				"updated": "20230322110519"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 APIServer启动流程，主要逻辑为："
+				}
+			]
+		},
+		{
+			"ID": "20230322105328-3rsyjxt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230322105328-3rsyjxt",
+				"updated": "20230322105328"
+			},
+			"Children": [
+				{
+					"ID": "20230322105328-y6tc51t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230322105328-y6tc51t"
+					},
+					"Children": [
+						{
+							"ID": "20230322105328-fxescd0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322105328-fxescd0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CreateServerChain"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "构建服务调用链并判断是否启动非安全的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "httpserver"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "httpserver"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "链中包含 apiserver要启动的三个server，以及为每个server注册对应资源的路由；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230322105328-arlmquz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230322105328-arlmquz"
+					},
+					"Children": [
+						{
+							"ID": "20230322105328-iaj22q8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322105328-iaj22q8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "server.PrepareRun"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "进行服务运行前的准备，该方法主要完成了健康检查. 存活检查和OpenAPI路由的注册工作；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230322105328-tmg9k4v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230322105328-tmg9k4v"
+					},
+					"Children": [
+						{
+							"ID": "20230322105328-uy9vfp5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322105328-uy9vfp5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "prepared.Run"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "启动server；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230321152224-a8z3vzq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321152224-a8z3vzq",
+				"updated": "20230322111910"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Run 运行指定的 APIServer,不会退出\nfunc Run(completeOptions completedServerRunOptions, stopCh \u003c-chan struct{}) error {\n\t// 注意：此版本不是k8s的version\n\tklog.Infof(\"Version: %+v\", version.Get())\n\n\tklog.InfoS(\"Golang settings\", \"GOGC\", os.Getenv(\"GOGC\"), \"GOMAXPROCS\", os.Getenv(\"GOMAXPROCS\"), \"GOTRACEBACK\", os.Getenv(\"GOTRACEBACK\"))\n \n\t // 创建调用链，通过delegation（代理）创建server（其实是代理聚合后的server）\n\tserver, err := CreateServerChain(completeOptions)\n\tif err != nil {\n\t\treturn err\n\t}\n\t// 进行一些准备工作， 注册一些hander，执行hook等，包括：通过设置 OpenAPI 规范并调用通用apiserver PrepareRun 来准备运行聚合服务。\n\tprepared, err := server.PrepareRun()\n\tif err != nil {\n\t\treturn err\n\t}\n\n  \t// 开始启动聚合服务\n\treturn prepared.Run(stopCh)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230322110925-3xknya9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230322110925-3xknya9",
+				"updated": "20230322110950"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1 服务调用链分析"
+				}
+			]
+		},
+		{
+			"ID": "20230322110955-8qpmwvg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230322110955-8qpmwvg",
+				"updated": "20230322111026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "初始化阶段, 通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CreateServerChain"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "创建调用链："
+				}
+			]
+		},
+		{
+			"ID": "20230322111028-0vzltje",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230322111028-0vzltje",
+				"updated": "20230322111028"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建过程主要有以下步骤："
+				}
+			]
+		},
+		{
+			"ID": "20230322111028-jso54lj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230322111028-jso54lj",
+				"updated": "20230322111028"
+			},
+			"Children": [
+				{
+					"ID": "20230322111028-rcbcaga",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230322111028-rcbcaga"
+					},
+					"Children": [
+						{
+							"ID": "20230322111028-uv4gnx4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322111028-uv4gnx4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据配置构造apiserver的配置，调用方法"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CreateKubeAPIServerConfig"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230322111028-2vhiqel",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230322111028-2vhiqel"
+					},
+					"Children": [
+						{
+							"ID": "20230322111028-n4norsk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322111028-n4norsk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据配置构造扩展的apiserver的配置，调用方法为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "createAPIExtensionsConfig"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230322111028-y9lqq2w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230322111028-y9lqq2w"
+					},
+					"Children": [
+						{
+							"ID": "20230322111028-snlp1e9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322111028-snlp1e9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建server，包括扩展的apiserver和原生的apiserver，调用方法为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "createAPIExtensionsServer"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CreateKubeAPIServer"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。主要就是将各个handler的路由方法注册到Container中去，完全遵循go-restful的设计模式，即将处理方法注册到Route中去，同一个根路径下的Route注册到WebService中去，WebService注册到Container中，Container负责分发。访问的过程为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Container--\u0026gt;WebService--\u0026gt;Route"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230322111028-cck1cdc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230322111028-cck1cdc"
+					},
+					"Children": [
+						{
+							"ID": "20230322111028-nlzrvya",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322111028-nlzrvya"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "聚合server的配置和和创建。主要就是将原生的apiserver和扩展的apiserver的访问进行整合，添加后续的一些处理接口。调用方法为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "createAggregatorConfig"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "createAggregatorServer"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230322111028-j0tgsvd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230322111028-j0tgsvd"
+					},
+					"Children": [
+						{
+							"ID": "20230322111028-bw09xzy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230322111028-bw09xzy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建完成，返回配置的server信息"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230326095957-bisjkus",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230326095957-bisjkus",
+				"updated": "20230326095959"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Aggregator 和 APIExtensionsServer 对应两种主要扩展 APIServer 资源的方式，即分别是 AA 和 CRD。"
+				}
+			]
+		},
+		{
+			"ID": "20230322105246-xd3p3bq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230322105246-xd3p3bq",
+				"updated": "20230322112435"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// CreateServerChain创建通过委托连接的apiserver。\nfunc CreateServerChain(completedOptions completedServerRunOptions) (*aggregatorapiserver.APIAggregator, error) {\n\t // 1. 为 kubeAPIServer 创建配置\n\tkubeAPIServerConfig, serviceResolver, pluginInitializer, err := CreateKubeAPIServerConfig(completedOptions)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\t// 2. 判断是否配置了 APIExtensionsServer，创建 apiExtensionsConfig \n\tapiExtensionsConfig, err := createAPIExtensionsConfig(*kubeAPIServerConfig.GenericConfig, kubeAPIServerConfig.ExtraConfig.VersionedInformers, pluginInitializer, completedOptions.ServerRunOptions, completedOptions.MasterCount,\n\t\tserviceResolver, webhook.NewDefaultAuthenticationInfoResolverWrapper(kubeAPIServerConfig.ExtraConfig.ProxyTransport, kubeAPIServerConfig.GenericConfig.EgressSelector, kubeAPIServerConfig.GenericConfig.LoopbackClientConfig, kubeAPIServerConfig.GenericConfig.TracerProvider))\n\tif err != nil {\n\t\treturn nil, err\n\t}\n   \t// 返回一个 HTTP 处理程序，该处理程序旨在在委托链的末尾执行。它检查是否在服务器安装所有已知的 HTTP 路径之前发出了请求。在这种情况下，它返回 503 响应，否则返回 404\n\tnotFoundHandler := notfoundhandler.New(kubeAPIServerConfig.GenericConfig.Serializer, genericapifilters.NoMuxAndDiscoveryIncompleteKey)\n\t //3. 创建 apiExtensionsServer 实例， 完成apiextensionsConfig的完全配置 以及创建一个包含通用apiserver（暴露group为\"apiextensions.k8s.io\"的api，支持crd等操作）的扩展服务\n\tapiExtensionsServer, err := createAPIExtensionsServer(apiExtensionsConfig, genericapiserver.NewEmptyDelegateWithCustomHandler(notFoundHandler))\n\tif err != nil {\n\t\treturn nil, err\n\t}\n    \t// 4. 初始化 KubeAPIServer实例\n\tkubeAPIServer, err := CreateKubeAPIServer(kubeAPIServerConfig, apiExtensionsServer.GenericAPIServer)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\t // 5. 创建 AggregatorConfig\n\taggregatorConfig, err := createAggregatorConfig(*kubeAPIServerConfig.GenericConfig, completedOptions.ServerRunOptions, kubeAPIServerConfig.ExtraConfig.VersionedInformers, serviceResolver, kubeAPIServerConfig.ExtraConfig.ProxyTransport, pluginInitializer)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n \t// 6. 初始化 AggregatorServer实例\n\taggregatorServer, err := createAggregatorServer(aggregatorConfig, kubeAPIServer.GenericAPIServer, apiExtensionsServer.Informers)\n\tif err != nil {\n\t\t// we don't need special handling for innerStopCh because the aggregator server doesn't create any go routines\n\t\treturn nil, err\n\t}\n\n\treturn aggregatorServer, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230322105946-065kvzo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230322105946-065kvzo",
+				"updated": "20230322144220"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.1 apiserver配置的创建："
+				}
+			]
+		},
+		{
+			"ID": "20230322111608-wf7obn7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230322111608-wf7obn7",
+				"updated": "20230322111609"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CreateKubeAPIServerConfig-\u0026gt;buildGenericConfig-\u0026gt;genericapiserver.NewConfig"
+				}
+			]
+		},
+		{
+			"ID": "20230322105947-8kqny0n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230322105947-8kqny0n",
+				"updated": "20230322143639"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 创建运行 API 服务器的所有资源，但不运行任何资源\nfunc CreateKubeAPIServerConfig(s completedServerRunOptions) (\n\t*controlplane.Config,\n\taggregatorapiserver.ServiceResolver,\n\t[]admission.PluginInitializer,\n\terror,\n) {\n   \t// 创建拨号器基础结构（隧道和传输层）以连接到节点。\n\tproxyTransport := CreateProxyTransport()\n\t// BuildGenericConfig 采用ServerRunOptions并生成与之关联的 genericapiserver.Config(kube-apiserver的通用配置)\n\tgenericConfig, versionedInformers, serviceResolver, pluginInitializers, admissionPostStartHook, storageFactory, err := buildGenericConfig(s.ServerRunOptions, proxyTransport)\n\tif err != nil {\n\t\treturn nil, nil, nil, err\n\t}\n\t// s.AllowPrivileged 是否允许特权\n   \t// 限制每个连接的吞吐量（目前只用于proxy、exec、attach方式）\n\tcapabilities.Setup(s.AllowPrivileged, s.MaxConnectionBytesPerSec)\n\n\t// 应用指标选项 -- 执行些预置操作，比如启用 禁用指标\n\ts.Metrics.Apply()\n\t// 注册指标收集器\n\tserviceaccount.RegisterMetrics()\n\t// 构造控制平面controlplane的配置\n\tconfig := \u0026controlplane.Config{\n\t\tGenericConfig: genericConfig,\n\t\tExtraConfig: controlplane.ExtraConfig{\n\t\t\tAPIResourceConfigSource: storageFactory.APIResourceConfigSource,\n\t\t\tStorageFactory:          storageFactory,\n\t\t\tEventTTL:                s.EventTTL,\n\t\t\tKubeletClientConfig:     s.KubeletConfig,\n\t\t\tEnableLogsSupport:       s.EnableLogsHandler,\n\t\t\tProxyTransport:          proxyTransport,\n\n\t\t\tServiceIPRange:          s.PrimaryServiceClusterIPRange,\n\t\t\tAPIServerServiceIP:      s.APIServerServiceIP,\n\t\t\tSecondaryServiceIPRange: s.SecondaryServiceClusterIPRange,\n\n\t\t\tAPIServerServicePort: 443,\n\n\t\t\tServiceNodePortRange:      s.ServiceNodePortRange,\n\t\t\tKubernetesServiceNodePort: s.KubernetesServiceNodePort,\n\n\t\t\tEndpointReconcilerType: reconcilers.Type(s.EndpointReconcilerType),\n\t\t\tMasterCount:            s.MasterCount,\n\n\t\t\tServiceAccountIssuer:        s.ServiceAccountIssuer,\n\t\t\tServiceAccountMaxExpiration: s.ServiceAccountTokenMaxExpiration,\n\t\t\tExtendExpiration:            s.Authentication.ServiceAccounts.ExtendExpiration,\n\n\t\t\tVersionedInformers: versionedInformers,\n\t\t},\n\t}\n\t// 获取 用来获取并验证证书内容的提供器\n\tclientCAProvider, err := s.Authentication.ClientCert.GetClientCAContentProvider()\n\tif err != nil {\n\t\treturn nil, nil, nil, err\n\t}\n   \t// 设置controlplane配置的验证证书内容的提供器\n\tconfig.ExtraConfig.ClusterAuthenticationInfo.ClientCA = clientCAProvider\n   \t// 用来设置controlplane配置的请求头信息（包括认证证书等）\n\trequestHeaderConfig, err := s.Authentication.RequestHeader.ToAuthenticationRequestHeaderConfig()\n\tif err != nil {\n\t\treturn nil, nil, nil, err\n\t}\n\tif requestHeaderConfig != nil {\n\t\tconfig.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderCA = requestHeaderConfig.CAContentProvider\n\t\tconfig.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderAllowedNames = requestHeaderConfig.AllowedClientNames\n\t\tconfig.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderExtraHeaderPrefixes = requestHeaderConfig.ExtraHeaderPrefixes\n\t\tconfig.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderGroupHeaders = requestHeaderConfig.GroupHeaders\n\t\tconfig.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderUsernameHeaders = requestHeaderConfig.UsernameHeaders\n\t}\n   \t// 添加PostStartHook钩子函数\n\tif err := config.GenericConfig.AddPostStartHook(\"start-kube-apiserver-admission-initializer\", admissionPostStartHook); err != nil {\n\t\treturn nil, nil, nil, err\n\t}\n   \t// 分发流量 --  controlplane cluster etcd等\n\tif config.GenericConfig.EgressSelector != nil {\n\t\t// 使用config.GenericConfig.EgressSelector loop查找以找到连接到 kubelet 的拨号器\n\t\tconfig.ExtraConfig.KubeletClientConfig.Lookup = config.GenericConfig.EgressSelector.Lookup\n\n   \t\t// 使用 config.GenericConfig.EgressSelector 查找作为“代理”子资源使用的传输\n\t\tnetworkContext := egressselector.Cluster.AsNetworkContext()\n\t\tdialer, err := config.GenericConfig.EgressSelector.Lookup(networkContext)\n\t\tif err != nil {\n\t\t\treturn nil, nil, nil, err\n\t\t}\n\t\tc := proxyTransport.Clone()\n\t\t// 这里会替换拨号器\n\t\tc.DialContext = dialer\n\t\tconfig.ExtraConfig.ProxyTransport = c\n\t}\n\n  \t // 加载公钥\n\tvar pubKeys []interface{}\n\tfor _, f := range s.Authentication.ServiceAccounts.KeyFiles {\n\t   \t// 遍历serviceaccount的认证公私钥文件\n\t\tkeys, err := keyutil.PublicKeysFromFile(f)\n\t\tif err != nil {\n\t\t\treturn nil, nil, nil, fmt.Errorf(\"failed to parse key file %q: %v\", f, err)\n\t\t}\n   \t\t// 追加到公钥数组中\n\t\tpubKeys = append(pubKeys, keys...)\n\t}\n   \t// 设置serviceaccount的证书标识及公钥\n\tconfig.ExtraConfig.ServiceAccountIssuerURL = s.Authentication.ServiceAccounts.Issuers[0]\n\tconfig.ExtraConfig.ServiceAccountJWKSURI = s.Authentication.ServiceAccounts.JWKSURI\n\tconfig.ExtraConfig.ServiceAccountPublicKeys = pubKeys\n\n\treturn config, serviceResolver, pluginInitializers, nil\n}\n\n\n// 采用ServerRunOptions并生成与之关联的 genericapiserver.Config(kube-apiserver的通用配置)\nfunc buildGenericConfig(\n\ts *options.ServerRunOptions,\n\tproxyTransport *http.Transport,\n) (\n\tgenericConfig *genericapiserver.Config,\n\tversionedInformers clientgoinformers.SharedInformerFactory,\n\tserviceResolver aggregatorapiserver.ServiceResolver,\n\tpluginInitializers []admission.PluginInitializer,\n\tadmissionPostStartHook genericapiserver.PostStartHookFunc,\n\tstorageFactory *serverstorage.DefaultStorageFactory,\n\tlastErr error,\n) {\n   \t// 使用apiserver 生成apiserver genericConfig\n\tgenericConfig = genericapiserver.NewConfig(legacyscheme.Codecs)\n   \t// 获取默认所有的gv（enable Disable）\n\tgenericConfig.MergedResourceConfig = controlplane.DefaultAPIResourceConfigSource()\n   \t// 把s.GenericServerRunOptions相关配置应用到genericConfig\n\tif lastErr = s.GenericServerRunOptions.ApplyTo(genericConfig); lastErr != nil {\n\t\treturn\n\t}\n   \t// 把s.SecureServing相关配置应用到genericConfig.SecureServing 并配置LoopbackClientConfig(具体看实现是否覆盖参数genericConfig.LoopbackClientConfig)\n\tif lastErr = s.SecureServing.ApplyTo(\u0026genericConfig.SecureServing, \u0026genericConfig.LoopbackClientConfig); lastErr != nil {\n\t\treturn\n\t}\n   \t// 配置是否开启debug pprof和 争用debug pprof功能\n\tif lastErr = s.Features.ApplyTo(genericConfig); lastErr != nil {\n\t\treturn\n\t}\n   \t// 将给定的 defaultAPIResourceConfig 与给定的 resourceConfigOverrides 合并。(合并原则是以defaultAPIResourceConfig为基础，以resourceConfigOverrides中的设置为目标)\n\tif lastErr = s.APIEnablement.ApplyTo(genericConfig, controlplane.DefaultAPIResourceConfigSource(), legacyscheme.Scheme); lastErr != nil {\n\t\treturn\n\t}\n   \t// 将出口选择器设置EgressSelectorOptions中的设置项添加到服务器配置中\n\tif lastErr = s.EgressSelector.ApplyTo(genericConfig); lastErr != nil {\n\t\treturn\n\t}\n   \t// 如果APIServerTracing对应在FeatureGate中设置为true（开启）\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIServerTracing) {\n\t\t// 使用设置的追踪选项TracingOptions配置apiserver的跟踪配置\n\t\tif lastErr = s.Traces.ApplyTo(genericConfig.EgressSelector, genericConfig); lastErr != nil {\n\t\t\treturn\n\t\t}\n\t}\n   \t// 包装定义以恢复禁用功能的任何更改 用来生成k8s的open api(类似于swagger)\n\tgetOpenAPIDefinitions := openapi.GetOpenAPIDefinitionsWithoutDisabledFeatures(generatedopenapi.GetOpenAPIDefinitions)\n   \t// 使用DefaultOpenAPIConfig设置为OpenAPIConfig的默认值\n\tgenericConfig.OpenAPIConfig = genericapiserver.DefaultOpenAPIConfig(getOpenAPIDefinitions, openapinamer.NewDefinitionNamer(legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme))\n   \t// 设置OpenAPIConfig的标题为Kubernetes\n\tgenericConfig.OpenAPIConfig.Info.Title = \"Kubernetes\"\n   \t// 如果默认开启了OpenAPIV3功能\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.OpenAPIV3) {\n\t\tgenericConfig.OpenAPIV3Config = genericapiserver.DefaultOpenAPIV3Config(getOpenAPIDefinitions, openapinamer.NewDefinitionNamer(legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme))\n\t\tgenericConfig.OpenAPIV3Config.Info.Title = \"Kubernetes\"\n\t}\n  \t// 判断是否是长运行请求（就是保持长期会话，比如watch动作，就需要持续监听）的方法\n\tgenericConfig.LongRunningFunc = filters.BasicLongRunningRequestCheck(\n\t\tsets.NewString(\"watch\", \"proxy\"),\n\t\tsets.NewString(\"attach\", \"exec\", \"proxy\", \"log\", \"portforward\"),\n\t)\n   \t// 版本信息（这里主要是git和go的版本信息）\n\tkubeVersion := version.Get()\n\tgenericConfig.Version = \u0026kubeVersion\n\n\tif genericConfig.EgressSelector != nil {\n\t // 配置EgressLookup -- 包含controlplane etcd cluster模式\n\t\ts.Etcd.StorageConfig.Transport.EgressLookup = genericConfig.EgressSelector.Lookup\n\t}\n  \t // 配置链路追踪\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIServerTracing) {\n\t\ts.Etcd.StorageConfig.Transport.TracerProvider = genericConfig.TracerProvider\n\t} else {\n\t\ts.Etcd.StorageConfig.Transport.TracerProvider = oteltrace.NewNoopTracerProvider()\n\t}\n\tif lastErr = s.Etcd.Complete(genericConfig.StorageObjectCountTracker, genericConfig.DrainedNotify(), genericConfig.AddPostStartHook); lastErr != nil {\n\t\treturn\n\t}\n   \t// 向c中添加etcd的健康检查并修改c中用于获取gr对应的RESTOptions的RESTOptionsGetter，覆盖s中StorageConfig.StorageObjectCountTracker属性\n\tstorageFactoryConfig := kubeapiserver.NewStorageFactoryConfig()\n\tstorageFactoryConfig.APIResourceConfig = genericConfig.MergedResourceConfig\n\tstorageFactory, lastErr = storageFactoryConfig.Complete(s.Etcd).New()\n\tif lastErr != nil {\n\t\treturn\n\t}\n\tif lastErr = s.Etcd.ApplyWithStorageFactoryTo(storageFactory, genericConfig); lastErr != nil {\n\t\treturn\n\t}\n\n\t// Use protobufs for self-communication.\n\t// Since not every generic apiserver has to support protobufs, we\n\t// cannot default to it in generic apiserver and need to explicitly\n\t// set it in kube-apiserver.\n\tgenericConfig.LoopbackClientConfig.ContentConfig.ContentType = \"application/vnd.kubernetes.protobuf\"\n\t// Disable compression for self-communication, since we are going to be\n\t// on a fast local network\n\tgenericConfig.LoopbackClientConfig.DisableCompression = true\n\n\tkubeClientConfig := genericConfig.LoopbackClientConfig\n\tclientgoExternalClient, err := clientgoclientset.NewForConfig(kubeClientConfig)\n\tif err != nil {\n\t\tlastErr = fmt.Errorf(\"failed to create real external clientset: %v\", err)\n\t\treturn\n\t}\n\tversionedInformers = clientgoinformers.NewSharedInformerFactory(clientgoExternalClient, 10*time.Minute)\n\n\t// Authentication.ApplyTo requires already applied OpenAPIConfig and EgressSelector if present\n\tif lastErr = s.Authentication.ApplyTo(\u0026genericConfig.Authentication, genericConfig.SecureServing, genericConfig.EgressSelector, genericConfig.OpenAPIConfig, genericConfig.OpenAPIV3Config, clientgoExternalClient, versionedInformers); lastErr != nil {\n\t\treturn\n\t}\n  \t // 构建授权器和授权规则解析器\n\tgenericConfig.Authorization.Authorizer, genericConfig.RuleResolver, err = BuildAuthorizer(s, genericConfig.EgressSelector, versionedInformers)\n\tif err != nil {\n\t\tlastErr = fmt.Errorf(\"invalid authorization config: %v\", err)\n\t\treturn\n\t}\n\t// 如果授权mode中没有RABC模式\n\tif !sets.NewString(s.Authorization.Modes...).Has(modes.ModeRBAC) {\n   \t// 将\"rbac/bootstrap-roles\"插入到在不可用的PostStartHook集合中\n\t\tgenericConfig.DisabledPostStartHooks.Insert(rbacrest.PostStartHookName)\n\t}\n   \t// 应用Audit日志审计功能到genericConfig\n\tlastErr = s.Audit.ApplyTo(genericConfig)\n\tif lastErr != nil {\n\t\treturn\n\t}\n  \t // 初始化准入插件所需的配置\n\tadmissionConfig := \u0026kubeapiserveradmission.Config{\n\t\tExternalInformers:    versionedInformers,\n\t\tLoopbackClientConfig: genericConfig.LoopbackClientConfig,\n\t\tCloudConfigFile:      s.CloudProvider.CloudConfigFile,\n\t}\n   \t// 根据enabledAggregatorRouting构建service解析器\n\tserviceResolver = buildServiceResolver(s.EnableAggregatorRouting, genericConfig.LoopbackClientConfig.Host, versionedInformers)\n\t  // 获取准入所需的插件和开始挂钩\n\tpluginInitializers, admissionPostStartHook, err = admissionConfig.New(proxyTransport, genericConfig.EgressSelector, serviceResolver, genericConfig.TracerProvider)\n\tif err != nil {\n\t\tlastErr = fmt.Errorf(\"failed to create admission plugin initializer: %v\", err)\n\t\treturn\n\t}\n   \t// 将准入链选项添加到服务器配置中\n\terr = s.Admission.ApplyTo(\n\t\tgenericConfig,\n\t\tversionedInformers,\n\t\tkubeClientConfig,\n\t\tutilfeature.DefaultFeatureGate,\n\t\tpluginInitializers...)\n\tif err != nil {\n\t\tlastErr = fmt.Errorf(\"failed to initialize admission: %v\", err)\n\t\treturn\n\t}\n   \t// 如果APIPriorityAndFairness功能开启且 s.GenericServerRunOptions.EnablePriorityAndFairness = true（默认为true）\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIPriorityAndFairness) \u0026\u0026 s.GenericServerRunOptions.EnablePriorityAndFairness {\n\t\tgenericConfig.FlowControl, lastErr = BuildPriorityAndFairness(s, clientgoExternalClient, versionedInformers)\n\t}\n\t // 构建 API 优先级和公平性过滤器的核心\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.AggregatedDiscoveryEndpoint) {\n\t\tgenericConfig.AggregatedDiscoveryGroupManager = aggregated.NewResourceManager()\n\t}\n\n\treturn\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230322144230-mhvq60l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230322144230-mhvq60l",
+				"updated": "20230322145627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.2 构建apiextensionsapiserver.Config扩展配置 – 其实就是包装了通用apiserver配置和其他额外的配置"
+				}
+			]
+		},
+		{
+			"ID": "20230322144435-aqsnx8w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230322144435-aqsnx8w",
+				"updated": "20230323040232"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 构建apiextensionsapiserver.Config扩展配置-- 其实就是包装了通用apiserver配置和其他额外的配置\nfunc createAPIExtensionsConfig(\n\tkubeAPIServerConfig genericapiserver.Config,\n\texternalInformers kubeexternalinformers.SharedInformerFactory,\n\tpluginInitializers []admission.PluginInitializer,\n\tcommandOptions *options.ServerRunOptions,\n\tmasterCount int,\n\tserviceResolver webhook.ServiceResolver,\n\tauthResolverWrapper webhook.AuthenticationInfoResolverWrapper,\n) (*apiextensionsapiserver.Config, error) {\n  \t // 做一个浅拷贝让我们更改一些配置，大多数配置实际上保持不变。我们只需要处理一些与 apiextensions 的细节相关的配置\n\tgenericConfig := kubeAPIServerConfig\n\tgenericConfig.PostStartHooks = map[string]genericapiserver.PostStartHookConfigEntry{}\n\tgenericConfig.RESTOptionsGetter = nil\n\n   \t// 使用备份（不能直接修改原始数据）的Etcd选项来做一些修改\n\tetcdOptions := *commandOptions.Etcd\n   \t// 获取是否支持分页\n\tetcdOptions.StorageConfig.Paging = utilfeature.DefaultFeatureGate.Enabled(features.APIListChunking)\n   \t// 构建编解码器  --  解码为v1beta或者v1，编码为internal\n\tetcdOptions.StorageConfig.Codec = apiextensionsapiserver.Codecs.LegacyCodec(v1beta1.SchemeGroupVersion, v1.SchemeGroupVersion)\n\t// prefer the more compact serialization (v1beta1) for storage until https://issue.k8s.io/82292 is resolved for objects whose v1 serialization is too big but whose v1beta1 serialization can be stored\n\tetcdOptions.StorageConfig.EncodeVersioner = runtime.NewMultiGroupVersioner(v1beta1.SchemeGroupVersion, schema.GroupKind{Group: v1beta1.GroupName})\n\tetcdOptions.SkipHealthEndpoints = true // avoid double wiring of health checks\n\tif err := etcdOptions.ApplyTo(\u0026genericConfig); err != nil {\n\t\treturn nil, err\n\t}\n\n   \t// 使用 apiextensions 默认值和注册表覆盖 MergedResourceConfig\n\tif err := commandOptions.APIEnablement.ApplyTo(\n\t\t\u0026genericConfig,\n\t\tapiextensionsapiserver.DefaultAPIResourceConfigSource(),\n\t\tapiextensionsapiserver.Scheme); err != nil {\n\t\treturn nil, err\n\t}\n  \t // 构建一个生成etcdOptions的工厂\n\tcrdRESTOptionsGetter, err := apiextensionsoptions.NewCRDRESTOptionsGetter(etcdOptions)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tapiextensionsConfig := \u0026apiextensionsapiserver.Config{\n\t\tGenericConfig: \u0026genericapiserver.RecommendedConfig{\n\t\t\tConfig:                genericConfig,\n\t\t\tSharedInformerFactory: externalInformers,\n\t\t},\n\t\tExtraConfig: apiextensionsapiserver.ExtraConfig{\n\t\t\tCRDRESTOptionsGetter: crdRESTOptionsGetter,\n\t\t\tMasterCount:          masterCount,\n\t\t\tAuthResolverWrapper:  authResolverWrapper,\n\t\t\tServiceResolver:      serviceResolver,\n\t\t},\n\t}\n\n   \t// 因为在之前的 CreateKubeAPIServerConfig 函数已经执行过了AddPostStartHook，所以我们需要清除 poststarthooks，这样我们就不会将它们多次（失败时）添加到所有服务器.\n\tapiextensionsConfig.GenericConfig.PostStartHooks = map[string]genericapiserver.PostStartHookConfigEntry{}\n\n\treturn apiextensionsConfig, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323040253-t6q9bht",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230323040253-t6q9bht",
+				"updated": "20230323040325"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.3  创建APIExtensionsServer"
+				}
+			]
+		},
+		{
+			"ID": "20230323112426-loi92y2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323112426-loi92y2",
+				"updated": "20230323112519"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "APIExtensionsServer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "最先初始化，在调用链的末尾, 处理CR、CRD相关资源，其中保护的controller功能如下："
+				}
+			]
+		},
+		{
+			"ID": "20230323112528-dy93up7",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230323112528-dy93up7",
+				"updated": "20230323112528"
+			},
+			"Children": [
+				{
+					"ID": "20230323112528-rlre9x8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230323112528-rlre9x8"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-cox8yg4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-cox8yg4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "openapiController：将 crd 资源的变化同步至提供的 OpenAPI 文档，可通过访问 /openapi/v2 进行查看；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230323112528-fljwie4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230323112528-fljwie4"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-xiwn3pk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-xiwn3pk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "crdController：负责将 crd 信息注册到 apiVersions 和 apiResources 中，两者的信息可通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "inline-math",
+									"TextMarkInlineMathContent": " kubectl api-versions 和 "
+								},
+								{
+									"Type": "NodeText",
+									"Data": " kubectl api-resources 查看；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230323112528-2tcpyxj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230323112528-2tcpyxj"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-tmpzyr9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-tmpzyr9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "namingController：检查 crd obj 中是否有命名冲突，可在 crd .status.conditions 中查看；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230323112528-8l57xp1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230323112528-8l57xp1"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-be9i697",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-be9i697"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "establishingController：检查 crd 是否处于正常状态，可在 crd .status.conditions 中查看；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230323112528-rye7rrc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230323112528-rye7rrc"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-yo3tgq0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-yo3tgq0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "nonStructuralSchemaController：检查 crd obj 结构是否正常，可在 crd .status.conditions 中查看；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230323112528-ade897d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20230323112528-ade897d"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-f0sl14i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-f0sl14i"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "apiApprovalController：检查 crd 是否遵循 kubernetes API 声明策略，可在 crd .status.conditions 中查看；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230323112528-n74im83",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20230323112528-n74im83"
+					},
+					"Children": [
+						{
+							"ID": "20230323112528-n6u8bsg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230323112528-n6u8bsg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "finalizingController：类似于 finalizes 的功能，与 CRs 的删除有关；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230323040310-h6t1l89",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323040310-h6t1l89",
+				"updated": "20230325230249"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 创建一个APIExtensionsServer,暴露group为\"apiextensions.k8s.io\"的api，支持crd等操作\nfunc createAPIExtensionsServer(apiextensionsConfig *apiextensionsapiserver.Config, delegateAPIServer genericapiserver.DelegationTarget) (*apiextensionsapiserver.CustomResourceDefinitions, error) {\n\treturn apiextensionsConfig.Complete().New(delegateAPIServer)\n}\n\n//k8s.io/kubernetes/staging/src/k8s.io/apiextensions-apiserver/pkg/apiserver/apiserver.go\n//  New returns a new instance of CustomResourceDefinitions from the given config.\nfunc (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget) (*CustomResourceDefinitions, error) {\n\t// 初始化 genericServer\n\tgenericServer, err := c.GenericConfig.New(\"apiextensions-apiserver\", delegationTarget)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 当 CRD informer server已经完全同步时，hasCRDInformerSyncedSignal就会关闭。它可确保在服务器尚未安装所有已知 HTTP 路径时对潜在自定义资源终结点的请求收到 503 错误，而不是 404\n\thasCRDInformerSyncedSignal := make(chan struct{})\n\tif err := genericServer.RegisterMuxAndDiscoveryCompleteSignal(\"CRDInformerHasNotSynced\", hasCRDInformerSyncedSignal); err != nil {\n\t\treturn nil, err\n\t}\n\n\ts := \u0026CustomResourceDefinitions{\n\t\tGenericAPIServer: genericServer,\n\t}\n\t// 初始化apigroup, 即需要暴露的api，这里extension apiserver只注册了cr和crd相关的\n\tapiResourceConfig := c.GenericConfig.MergedResourceConfig\n\tapiGroupInfo := genericapiserver.NewDefaultAPIGroupInfo(apiextensions.GroupName, Scheme, metav1.ParameterCodec, Codecs)\n\tstorage := map[string]rest.Storage{}\n\t// customresourcedefinitions\n\tif resource := \"customresourcedefinitions\"; apiResourceConfig.ResourceEnabled(v1.SchemeGroupVersion.WithResource(resource)) {\n\t\tcustomResourceDefinitionStorage, err := customresourcedefinition.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tstorage[resource] = customResourceDefinitionStorage\n\t\tstorage[resource+\"/status\"] = customresourcedefinition.NewStatusREST(Scheme, customResourceDefinitionStorage)\n\t}\n\tif len(storage) \u003e 0 {\n\t\tapiGroupInfo.VersionedResourcesStorageMap[v1.SchemeGroupVersion.Version] = storage\n\t}\n\t// 注册apigroup\n\tif err := s.GenericAPIServer.InstallAPIGroup(\u0026apiGroupInfo); err != nil {\n\t\treturn nil, err\n\t}\n\t// clientset创建\n\tcrdClient, err := clientset.NewForConfig(s.GenericAPIServer.LoopbackClientConfig)\n\tif err != nil {\n\t\t// it's really bad that this is leaking here, but until we can fix the test (which I'm pretty sure isn't even testing what it wants to test),\n\t\t// we need to be able to move forward\n\t\treturn nil, fmt.Errorf(\"failed to create clientset: %v\", err)\n\t}\n\ts.Informers = externalinformers.NewSharedInformerFactory(crdClient, 5*time.Minute)\n\n\tdelegateHandler := delegationTarget.UnprotectedHandler()\n\tif delegateHandler == nil {\n\t\tdelegateHandler = http.NotFoundHandler()\n\t}\n\n\tversionDiscoveryHandler := \u0026versionDiscoveryHandler{\n\t\tdiscovery: map[schema.GroupVersion]*discovery.APIVersionHandler{},\n\t\tdelegate:  delegateHandler,\n\t}\n\tgroupDiscoveryHandler := \u0026groupDiscoveryHandler{\n\t\tdiscovery: map[string]*discovery.APIGroupHandler{},\n\t\tdelegate:  delegateHandler,\n\t}\n\testablishingController := establish.NewEstablishingController(s.Informers.Apiextensions().V1().CustomResourceDefinitions(), crdClient.ApiextensionsV1())\n\tcrdHandler, err := NewCustomResourceDefinitionHandler(\n\t\tversionDiscoveryHandler,\n\t\tgroupDiscoveryHandler,\n\t\ts.Informers.Apiextensions().V1().CustomResourceDefinitions(),\n\t\tdelegateHandler,\n\t\tc.ExtraConfig.CRDRESTOptionsGetter,\n\t\tc.GenericConfig.AdmissionControl,\n\t\testablishingController,\n\t\tc.ExtraConfig.ServiceResolver,\n\t\tc.ExtraConfig.AuthResolverWrapper,\n\t\tc.ExtraConfig.MasterCount,\n\t\ts.GenericAPIServer.Authorizer,\n\t\tc.GenericConfig.RequestTimeout,\n\t\ttime.Duration(c.GenericConfig.MinRequestTimeout)*time.Second,\n\t\tapiGroupInfo.StaticOpenAPISpec,\n\t\tc.GenericConfig.MaxRequestBodyBytes,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\ts.GenericAPIServer.Handler.NonGoRestfulMux.Handle(\"/apis\", crdHandler)\n\ts.GenericAPIServer.Handler.NonGoRestfulMux.HandlePrefix(\"/apis/\", crdHandler)\n\ts.GenericAPIServer.RegisterDestroyFunc(crdHandler.destroy)\n\n\tdiscoveryController := NewDiscoveryController(s.Informers.Apiextensions().V1().CustomResourceDefinitions(), versionDiscoveryHandler, groupDiscoveryHandler, genericServer.AggregatedDiscoveryGroupManager)\n\tnamingController := status.NewNamingConditionController(s.Informers.Apiextensions().V1().CustomResourceDefinitions(), crdClient.ApiextensionsV1())\n\tnonStructuralSchemaController := nonstructuralschema.NewConditionController(s.Informers.Apiextensions().V1().CustomResourceDefinitions(), crdClient.ApiextensionsV1())\n\tapiApprovalController := apiapproval.NewKubernetesAPIApprovalPolicyConformantConditionController(s.Informers.Apiextensions().V1().CustomResourceDefinitions(), crdClient.ApiextensionsV1())\n\tfinalizingController := finalizer.NewCRDFinalizer(\n\t\ts.Informers.Apiextensions().V1().CustomResourceDefinitions(),\n\t\tcrdClient.ApiextensionsV1(),\n\t\tcrdHandler,\n\t)\n\t// 将 informer 以及 controller加入到启动hook中\n\ts.GenericAPIServer.AddPostStartHookOrDie(\"start-apiextensions-informers\", func(context genericapiserver.PostStartHookContext) error {\n\t\ts.Informers.Start(context.StopCh)\n\t\treturn nil\n\t})\n\ts.GenericAPIServer.AddPostStartHookOrDie(\"start-apiextensions-controllers\", func(context genericapiserver.PostStartHookContext) error {\n\t\t// OpenAPIVersionedService 和 StaticOpenAPISpec 填充在通用 apiserver PrepareRun（） 中。\n\t\t// 它们一起服务于通用 API 服务器上的 /openapi/v2  endpoint。  \n\t\t// 用 apiserver 可以选择不启用OpenAPI，方法是使用空的openAPIConfig，从而OpenAPIVersionedService\n\t\t// 和 StaticOpenAPISpec 都是空的。在这种情况下，我们不会运行CRD OpenAPI控制器。\n\t\tif s.GenericAPIServer.StaticOpenAPISpec != nil {\n\t\t\tif s.GenericAPIServer.OpenAPIVersionedService != nil {\n\t\t\t\topenapiController := openapicontroller.NewController(s.Informers.Apiextensions().V1().CustomResourceDefinitions())\n\t\t\t\tgo openapiController.Run(s.G enericAPIServer.StaticOpenAPISpec, s.GenericAPIServer.OpenAPIVersionedService, context.StopCh)\n\t\t\t}\n\n\t\t\tif s.GenericAPIServer.OpenAPIV3VersionedService != nil \u0026\u0026 utilfeature.DefaultFeatureGate.Enabled(features.OpenAPIV3) {\n\t\t\t\topenapiv3Controller := openapiv3controller.NewController(s.Informers.Apiextensions().V1().CustomResourceDefinitions())\n\t\t\t\tgo openapiv3Controller.Run(s.GenericAPIServer.OpenAPIV3VersionedService, context.StopCh)\n\t\t\t}\n\t\t}\n\n\t\tgo namingController.Run(context.StopCh)\n\t\tgo establishingController.Run(context.StopCh)\n\t\tgo nonStructuralSchemaController.Run(5, context.StopCh)\n\t\tgo apiApprovalController.Run(5, context.StopCh)\n\t\tgo finalizingController.Run(5, context.StopCh)\n\n\t\tdiscoverySyncedCh := make(chan struct{})\n\t\tgo discoveryController.Run(context.StopCh, discoverySyncedCh)\n\t\tselect {\n\t\tcase \u003c-context.StopCh:\n\t\tcase \u003c-discoverySyncedCh:\n\t\t}\n\n\t\treturn nil\n\t})\n\t// 在我们可以处理所有已注册的 CRD 之前，我们不想报告健康检查状况。等到informer sync确保lister 在开始前都是有效的。\n\t// 启动后，可能还会有一段时间去添加CRDS。除非否则不会进行健康检查\n\t// we don't want to report healthy until we can handle all CRDs that have already been registered.  Waiting for the informer\n\t// to sync makes sure that the lister will be valid before we begin.  There may still be races for CRDs added after startup,\n\t// but we won't go healthy until we can handle the ones already present.\n\ts.GenericAPIServer.AddPostStartHookOrDie(\"crd-informer-synced\", func(context genericapiserver.PostStartHookContext) error {\n\t\treturn wait.PollImmediateUntil(100*time.Millisecond, func() (bool, error) {\n\t\t\tif s.Informers.Apiextensions().V1().CustomResourceDefinitions().Informer().HasSynced() {\n\t\t\t\tclose(hasCRDInformerSyncedSignal)\n\t\t\t\treturn true, nil\n\t\t\t}\n\t\t\treturn false, nil\n\t\t}, context.StopCh)\n\t})\n\n\treturn s, nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324104406-pwel0ae",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230324104406-pwel0ae",
+				"updated": "20230324104834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.4 创建kubeAPIServer及其初始化"
+				}
+			]
+		},
+		{
+			"ID": "20230324104834-kxrgfha",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324104834-kxrgfha",
+				"updated": "20230324104856"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KubeAPIServer 主要是提供对 API Resource 的操作请求，为 kubernetes 中众多 API 注册路由信息，暴露 RESTful API 并且对外提供 kubernetes service，使集群中以及集群外的服务都可以通过 RESTful API 操作 kubernetes 中的资源。"
+				}
+			]
+		},
+		{
+			"ID": "20230324104441-sj5y0q0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324104441-sj5y0q0",
+				"updated": "20230324104925"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "KubeAPIServer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "初始化流程如下："
+				}
+			]
+		},
+		{
+			"ID": "20230324104925-8vd2pmv",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230324104925-8vd2pmv",
+				"updated": "20230324105015"
+			},
+			"Children": [
+				{
+					"ID": "20230324105015-kqh239q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230324105015-kqh239q"
+					},
+					"Children": [
+						{
+							"ID": "20230324105015-slf3wlo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324105015-slf3wlo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "c.GenericConfig.New"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 初始化 GenericAPIServer"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324105027-igawiev",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230324105027-igawiev"
+					},
+					"Children": [
+						{
+							"ID": "20230324105027-xan15pn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324105027-xan15pn",
+								"updated": "20230324105029"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "判断是否支持 logs 相关的路由，如果支持，则添加 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/logs"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 路由；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324105044-kp1g9sq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230324105044-kp1g9sq"
+					},
+					"Children": [
+						{
+							"ID": "20230324105044-goq7u61",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324105044-goq7u61",
+								"updated": "20230324105045"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "m.InstallLegacyAPI"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 将核心 API Resource 添加到路由中，对应到 apiserver 就是以 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/api"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 开头的 resource"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324105053-12swhnu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230324105053-12swhnu"
+					},
+					"Children": [
+						{
+							"ID": "20230324105053-y1mltoj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324105053-y1mltoj",
+								"updated": "20230324105054"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "m.InstallAPIs"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 将扩展的 API Resource 添加到路由中，在 apiserver 中即是以 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/apis"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 开头的 resource"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230324105358-364jzfa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324105358-364jzfa",
+				"updated": "20230324112738"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// CreateKubeAPIServer创建kube-apiserver\nfunc CreateKubeAPIServer(kubeAPIServerConfig *controlplane.Config, delegateAPIServer genericapiserver.DelegationTarget) (*controlplane.Instance, error) {\n\tkubeAPIServer, err := kubeAPIServerConfig.Complete().New(delegateAPIServer)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn kubeAPIServer, nil\n}\n\n\n// New 从给定的配置返回一个新的 Master 实例。如果未设置，某些配置字段将设置为默认值。\n// 必须指定某些配置字段，包括：KubeletClientConfig\nfunc (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget) (*Instance, error) {\n\tif reflect.DeepEqual(c.ExtraConfig.KubeletClientConfig, kubeletclient.KubeletClientConfig{}) {\n\t\treturn nil, fmt.Errorf(\"Master.New() called with empty config.KubeletClientConfig\")\n\t}\n\n\ts, err := c.GenericConfig.New(\"kube-apiserver\", delegationTarget)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n    \t// 注册 logs 相关的路由\n\tif c.ExtraConfig.EnableLogsSupport {\n\t\troutes.Logs{}.Install(s.Handler.GoRestfulContainer)\n\t}\n\n\t// 元数据和key目前预计只会在重新启动后更改，\n\t// 因此，我们只需立即封送并提供缓存的 JSON 字节。s.\n\tmd, err := serviceaccount.NewOpenIDMetadata(\n\t\tc.ExtraConfig.ServiceAccountIssuerURL,\n\t\tc.ExtraConfig.ServiceAccountJWKSURI,\n\t\tc.GenericConfig.ExternalAddress,\n\t\tc.ExtraConfig.ServiceAccountPublicKeys,\n\t)\n\tif err != nil {\n\t\t// 如果出现错误，请跳过安装endpoints 并记录错误，请继续。我们不会返回错误，因为\n\t\t// 元数据响应需要额外的向后进行不兼容命令行选项的验证。\n\t\tmsg := fmt.Sprintf(\"Could not construct pre-rendered responses for\"+\n\t\t\t\" ServiceAccountIssuerDiscovery endpoints. Endpoints will not be\"+\n\t\t\t\" enabled. Error: %v\", err)\n\t\tif c.ExtraConfig.ServiceAccountIssuerURL != \"\" {\n\t\t\t// The user likely expects this feature to be enabled if issuer URL is\n\t\t\t// set and the feature gate is enabled. In the future, if there is no\n\t\t\t// longer a feature gate and issuer URL is not set, the user may not\n\t\t\t// expect this feature to be enabled. We log the former case as an Error\n\t\t\t// and the latter case as an Info.\n\t\t\tklog.Error(msg)\n\t\t} else {\n\t\t\tklog.Info(msg)\n\t\t}\n\t} else {\n\t\troutes.NewOpenIDMetadataServer(md.ConfigJSON, md.PublicKeysetJSON).\n\t\t\tInstall(s.Handler.GoRestfulContainer)\n\t}\n\n\tm := \u0026Instance{\n\t\tGenericAPIServer:          s,\n\t\tClusterAuthenticationInfo: c.ExtraConfig.ClusterAuthenticationInfo,\n\t}\n\n\t// 安装 LegacyAPI\n\tif err := m.InstallLegacyAPI(\u0026c, c.GenericConfig.RESTOptionsGetter); err != nil {\n\t\treturn nil, err\n\t}\n\n\tclientset, err := kubernetes.NewForConfig(c.GenericConfig.LoopbackClientConfig)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\t// TODO: update to a version that caches success but will recheck on failure, unlike memcache discovery\n\tdiscoveryClientForAdmissionRegistration := clientset.Discovery()\n\n\t// The order here is preserved in discovery.\n\t// If resources with identical names exist in more than one of these groups (e.g. \"deployments.apps\"\" and \"deployments.extensions\"),\n\t// the order of this list determines which group an unqualified resource name (e.g. \"deployments\") should prefer.\n\t// This priority order is used for local discovery, but it ends up aggregated in `k8s.io/kubernetes/cmd/kube-apiserver/app/aggregator.go\n\t// with specific priorities.\n\t// TODO: describe the priority all the way down in the RESTStorageProviders and plumb it back through the various discovery\n\t// handlers that we have.\n\trestStorageProviders := []RESTStorageProvider{\n\t\tapiserverinternalrest.StorageProvider{},\n\t\tauthenticationrest.RESTStorageProvider{Authenticator: c.GenericConfig.Authentication.Authenticator, APIAudiences: c.GenericConfig.Authentication.APIAudiences},\n\t\tauthorizationrest.RESTStorageProvider{Authorizer: c.GenericConfig.Authorization.Authorizer, RuleResolver: c.GenericConfig.RuleResolver},\n\t\tautoscalingrest.RESTStorageProvider{},\n\t\tbatchrest.RESTStorageProvider{},\n\t\tcertificatesrest.RESTStorageProvider{},\n\t\tcoordinationrest.RESTStorageProvider{},\n\t\tdiscoveryrest.StorageProvider{},\n\t\tnetworkingrest.RESTStorageProvider{},\n\t\tnoderest.RESTStorageProvider{},\n\t\tpolicyrest.RESTStorageProvider{},\n\t\trbacrest.RESTStorageProvider{Authorizer: c.GenericConfig.Authorization.Authorizer},\n\t\tschedulingrest.RESTStorageProvider{},\n\t\tstoragerest.RESTStorageProvider{},\n\t\tflowcontrolrest.RESTStorageProvider{InformerFactory: c.GenericConfig.SharedInformerFactory},\n\t\t// keep apps after extensions so legacy clients resolve the extensions versions of shared resource names.\n\t\t// See https://github.com/kubernetes/kubernetes/issues/42392\n\t\tappsrest.StorageProvider{},\n\t\tadmissionregistrationrest.RESTStorageProvider{Authorizer: c.GenericConfig.Authorization.Authorizer, DiscoveryClient: discoveryClientForAdmissionRegistration},\n\t\teventsrest.RESTStorageProvider{TTL: c.ExtraConfig.EventTTL},\n\t\tresourcerest.RESTStorageProvider{},\n\t}\n\t// 只能API\n\tif err := m.InstallAPIs(c.ExtraConfig.APIResourceConfigSource, c.GenericConfig.RESTOptionsGetter, restStorageProviders...); err != nil {\n\t\treturn nil, err\n\t}\n\n\tm.GenericAPIServer.AddPostStartHookOrDie(\"start-cluster-authentication-info-controller\", func(hookContext genericapiserver.PostStartHookContext) error {\n\t\tkubeClient, err := kubernetes.NewForConfig(hookContext.LoopbackClientConfig)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\tcontroller := clusterauthenticationtrust.NewClusterAuthenticationTrustController(m.ClusterAuthenticationInfo, kubeClient)\n\n\t\t// generate a context  from stopCh. This is to avoid modifying files which are relying on apiserver\n\t\t// TODO: See if we can pass ctx to the current method\n\t\tctx, cancel := context.WithCancel(context.Background())\n\t\tgo func() {\n\t\t\tselect {\n\t\t\tcase \u003c-hookContext.StopCh:\n\t\t\t\tcancel() // stopCh closed, so cancel our context\n\t\t\tcase \u003c-ctx.Done():\n\t\t\t}\n\t\t}()\n\n\t\t// prime values and start listeners\n\t\tif m.ClusterAuthenticationInfo.ClientCA != nil {\n\t\t\tm.ClusterAuthenticationInfo.ClientCA.AddListener(controller)\n\t\t\tif controller, ok := m.ClusterAuthenticationInfo.ClientCA.(dynamiccertificates.ControllerRunner); ok {\n\t\t\t\t// runonce to be sure that we have a value.\n\t\t\t\tif err := controller.RunOnce(ctx); err != nil {\n\t\t\t\t\truntime.HandleError(err)\n\t\t\t\t}\n\t\t\t\tgo controller.Run(ctx, 1)\n\t\t\t}\n\t\t}\n\t\tif m.ClusterAuthenticationInfo.RequestHeaderCA != nil {\n\t\t\tm.ClusterAuthenticationInfo.RequestHeaderCA.AddListener(controller)\n\t\t\tif controller, ok := m.ClusterAuthenticationInfo.RequestHeaderCA.(dynamiccertificates.ControllerRunner); ok {\n\t\t\t\t// runonce to be sure that we have a value.\n\t\t\t\tif err := controller.RunOnce(ctx); err != nil {\n\t\t\t\t\truntime.HandleError(err)\n\t\t\t\t}\n\t\t\t\tgo controller.Run(ctx, 1)\n\t\t\t}\n\t\t}\n\n\t\tgo controller.Run(ctx, 1)\n\t\treturn nil\n\t})\n\n\tif utilfeature.DefaultFeatureGate.Enabled(apiserverfeatures.APIServerIdentity) {\n\t\tm.GenericAPIServer.AddPostStartHookOrDie(\"start-kube-apiserver-identity-lease-controller\", func(hookContext genericapiserver.PostStartHookContext) error {\n\t\t\tkubeClient, err := kubernetes.NewForConfig(hookContext.LoopbackClientConfig)\n\t\t\tif err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\n\t\t\tleaseName := m.GenericAPIServer.APIServerID\n\t\t\tholderIdentity := m.GenericAPIServer.APIServerID + \"_\" + string(uuid.NewUUID())\n\n\t\t\tcontroller := lease.NewController(\n\t\t\t\tclock.RealClock{},\n\t\t\t\tkubeClient,\n\t\t\t\tholderIdentity,\n\t\t\t\tint32(IdentityLeaseDurationSeconds),\n\t\t\t\tnil,\n\t\t\t\tIdentityLeaseRenewIntervalPeriod,\n\t\t\t\tleaseName,\n\t\t\t\tmetav1.NamespaceSystem,\n\t\t\t\tlabelAPIServerHeartbeat)\n\t\t\tgo controller.Run(hookContext.StopCh)\n\t\t\treturn nil\n\t\t})\n\t\tm.GenericAPIServer.AddPostStartHookOrDie(\"start-kube-apiserver-identity-lease-garbage-collector\", func(hookContext genericapiserver.PostStartHookContext) error {\n\t\t\tkubeClient, err := kubernetes.NewForConfig(hookContext.LoopbackClientConfig)\n\t\t\tif err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\t\t\tgo apiserverleasegc.NewAPIServerLeaseGC(\n\t\t\t\tkubeClient,\n\t\t\t\tIdentityLeaseGCPeriod,\n\t\t\t\tmetav1.NamespaceSystem,\n\t\t\t\tKubeAPIServerIdentityLeaseLabelSelector,\n\t\t\t).Run(hookContext.StopCh)\n\t\t\treturn nil\n\t\t})\n\t}\n\n\tm.GenericAPIServer.AddPostStartHookOrDie(\"start-legacy-token-tracking-controller\", func(hookContext genericapiserver.PostStartHookContext) error {\n\t\tkubeClient, err := kubernetes.NewForConfig(hookContext.LoopbackClientConfig)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\tgo legacytokentracking.NewController(kubeClient).Run(hookContext.StopCh)\n\t\treturn nil\n\t})\n\n\treturn m, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324113045-n8qq2ds",
+			"Type": "NodeHeading",
+			"HeadingLevel": 5,
+			"Properties": {
+				"id": "20230324113045-n8qq2ds",
+				"updated": "20230324113057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.4.1 m.InstallLegacyAPI"
+				}
+			]
+		},
+		{
+			"ID": "20230324113110-9xpz6er",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324113110-9xpz6er",
+				"updated": "20230324113228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "功能： 将 core API 注册到路由中，是 apiserver 初始化流程中最核心的方法之一，其将 API 注册到路由其最终的目的就是对外提供 RESTful API 来操作对应 resource，注册 API 主要分为两步，第一步是为 API 中的每个 resource 初始化 RESTStorage 以此操作后端存储中数据的变更，第二步是为每个 resource 根据其 verbs 构建对应的路由。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "m.InstallLegacyAPI"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的主要逻辑为："
+				}
+			]
+		},
+		{
+			"ID": "20230324113243-4y80ys4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230324113243-4y80ys4",
+				"updated": "20230324113337"
+			},
+			"Children": [
+				{
+					"ID": "20230324113243-bg1klzj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230324113243-bg1klzj"
+					},
+					"Children": [
+						{
+							"ID": "20230324113243-eayizum",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324113243-eayizum"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1、调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "legacyRESTStorageProvider.NewLegacyRESTStorage"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 为 LegacyAPI 中各个资源创建 RESTStorage，RESTStorage 的目的是将每种资源的访问路径及其后端存储的操作对应起来；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324113243-uvfkt2h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230324113243-uvfkt2h"
+					},
+					"Children": [
+						{
+							"ID": "20230324113243-r36ozco",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324113243-r36ozco"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2、初始化 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "bootstrap-controller"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，并将其加入到 PostStartHook 中，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "bootstrap-controller"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 是 apiserver 中的一个 controller，主要功能是创建系统所需要的一些 namespace 以及创建 kubernetes service 并定期触发对应的 sync 操作，apiserver 在启动后会通过调用 PostStartHook 来启动 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "bootstrap-controller"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324113243-tv5knjm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230324113243-tv5knjm",
+						"updated": "20230324113337"
+					},
+					"Children": [
+						{
+							"ID": "20230324113243-sviy96p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324113243-sviy96p"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "3、在为资源创建完 RESTStorage 后，调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "m.GenericAPIServer.InstallLegacyAPIGroup"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 为 APIGroup 注册路由信息，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "InstallLegacyAPIGroup"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "方法的调用链非常深，主要为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "InstallLegacyAPIGroup--\u0026gt; installAPIResources --\u0026gt; InstallREST --\u0026gt; Install --\u0026gt; registerResourceHandlers"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，最终核心的路由构造在"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "registerResourceHandlers"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "方法内，该方法比较复杂，其主要功能是通过上一步骤构造的 REST Storage 判断该资源可以执行哪些操作（如 create、update等），将其对应的操作存入到 action 中，每一个 action 对应一个标准的 REST 操作，如 create 对应的 action 操作为 POST、update 对应的 action 操作为PUT。最终根据 actions 数组依次遍历，对每一个操作添加一个 handler 方法，注册到 route 中去，再将 route 注册到 webservice 中去，webservice 最终会注册到 container 中，遵循 go-restful 的设计模式；"
+								}
+							]
+						},
+						{
+							"ID": "20230324113319-vo3iwhr",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230324113319-vo3iwhr",
+								"updated": "20230324113337"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "func (m *Instance) InstallLegacyAPI(c *completedConfig, restOptionsGetter generic.RESTOptionsGetter) error {\n\tlegacyRESTStorageProvider := corerest.LegacyRESTStorageProvider{\n\t\tStorageFactory:              c.ExtraConfig.StorageFactory,\n\t\tProxyTransport:              c.ExtraConfig.ProxyTransport,\n\t\tKubeletClientConfig:         c.ExtraConfig.KubeletClientConfig,\n\t\tEventTTL:                    c.ExtraConfig.EventTTL,\n\t\tServiceIPRange:              c.ExtraConfig.ServiceIPRange,\n\t\tSecondaryServiceIPRange:     c.ExtraConfig.SecondaryServiceIPRange,\n\t\tServiceNodePortRange:        c.ExtraConfig.ServiceNodePortRange,\n\t\tLoopbackClientConfig:        c.GenericConfig.LoopbackClientConfig,\n\t\tServiceAccountIssuer:        c.ExtraConfig.ServiceAccountIssuer,\n\t\tExtendExpiration:            c.ExtraConfig.ExtendExpiration,\n\t\tServiceAccountMaxExpiration: c.ExtraConfig.ServiceAccountMaxExpiration,\n\t\tAPIAudiences:                c.GenericConfig.Authentication.APIAudiences,\n\t}\n\tlegacyRESTStorage, apiGroupInfo, err := legacyRESTStorageProvider.NewLegacyRESTStorage(c.ExtraConfig.APIResourceConfigSource, restOptionsGetter)\n\tif err != nil {\n\t\treturn fmt.Errorf(\"error building core storage: %v\", err)\n\t}\n\tif len(apiGroupInfo.VersionedResourcesStorageMap) == 0 { // if all core storage is disabled, return.\n\t\treturn nil\n\t}\n\n\tcontrollerName := \"bootstrap-controller\"\n\tclient := kubernetes.NewForConfigOrDie(c.GenericConfig.LoopbackClientConfig)\n\tbootstrapController, err := c.NewBootstrapController(legacyRESTStorage, client)\n\tif err != nil {\n\t\treturn fmt.Errorf(\"error creating bootstrap controller: %v\", err)\n\t}\n\tm.GenericAPIServer.AddPostStartHookOrDie(controllerName, bootstrapController.PostStartHook)\n\tm.GenericAPIServer.AddPreShutdownHookOrDie(controllerName, bootstrapController.PreShutdownHook)\n\n\tif err := m.GenericAPIServer.InstallLegacyAPIGroup(genericapiserver.DefaultLegacyAPIPrefix, \u0026apiGroupInfo); err != nil {\n\t\treturn fmt.Errorf(\"error in registering group versions: %v\", err)\n\t}\n\treturn nil\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230324114306-axhz938",
+			"Type": "NodeHeading",
+			"HeadingLevel": 5,
+			"Properties": {
+				"id": "20230324114306-axhz938",
+				"updated": "20230324114406"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.4.2  m.InstallAPIs"
+				}
+			]
+		},
+		{
+			"ID": "20230324114546-uh49j4l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324114546-uh49j4l",
+				"updated": "20230324114628"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "installAPIS和InstallLegacyAPI的调用流程类似"
+				}
+			]
+		},
+		{
+			"ID": "20230322143747-rfmn2g5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230322143747-rfmn2g5",
+				"updated": "20230324114748"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.5 创建"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "AggregatorConfig"
+				}
+			]
+		},
+		{
+			"ID": "20230324150154-risar7k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324150154-risar7k",
+				"updated": "20230324170936"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func createAggregatorConfig(\n\tkubeAPIServerConfig genericapiserver.Config,\n\tcommandOptions *options.ServerRunOptions,\n\texternalInformers kubeexternalinformers.SharedInformerFactory,\n\tserviceResolver aggregatorapiserver.ServiceResolver,\n\tproxyTransport *http.Transport,\n\tpluginInitializers []admission.PluginInitializer,\n) (*aggregatorapiserver.Config, error) {\n\t// 浅拷贝kubeAPIServerConfig，修改其中部分配置\n\tgenericConfig.PostStartHooks = map[string]genericapiserver.PostStartHookConfigEntry{}\n\tgenericConfig.RESTOptionsGetter = nil\n\t// 阻止通用 API 服务器安装 OpenAPI 处理程序。Aggregator server有自己的自定义 OpenAPI 处理程序。\n\tgenericConfig.SkipOpenAPIInstallation = true\n\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.StorageVersionAPI) \u0026\u0026\n\t\tutilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIServerIdentity) {\n\t\t// Add StorageVersionPrecondition handler to aggregator-apiserver.\n\t\t// The handler will block write requests to built-in resources until the\n\t\t// target resources' storage versions are up-to-date.\n\t\tgenericConfig.BuildHandlerChainFunc = genericapiserver.BuildHandlerChainWithStorageVersionPrecondition\n\t}\n\n\t// 拷贝etcd参数\n\tetcdOptions := *commandOptions.Etcd\n\tetcdOptions.StorageConfig.Paging = utilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIListChunking)\n\tetcdOptions.StorageConfig.Codec = aggregatorscheme.Codecs.LegacyCodec(v1.SchemeGroupVersion, v1beta1.SchemeGroupVersion)\n\tetcdOptions.StorageConfig.EncodeVersioner = runtime.NewMultiGroupVersioner(v1.SchemeGroupVersion, schema.GroupKind{Group: v1beta1.GroupName})\n\tetcdOptions.SkipHealthEndpoints = true // avoid double wiring of health checks\n\tif err := etcdOptions.ApplyTo(\u0026genericConfig); err != nil {\n\t\treturn nil, err\n\t}\n\n\t// 使用aggregator默认值和注册表覆盖MergedResourceConfig配置\n\tif err := commandOptions.APIEnablement.ApplyTo(\n\t\t\u0026genericConfig,\n\t\taggregatorapiserver.DefaultAPIResourceConfigSource(),\n\t\taggregatorscheme.Scheme); err != nil {\n\t\treturn nil, err\n\t}\n\t// etcd参数配置\n\taggregatorConfig := \u0026aggregatorapiserver.Config{\n\t\tGenericConfig: \u0026genericapiserver.RecommendedConfig{\n\t\t\tConfig:                genericConfig,\n\t\t\tSharedInformerFactory: externalInformers,\n\t\t},\n\t\tExtraConfig: aggregatorapiserver.ExtraConfig{\n\t\t\tProxyClientCertFile:       commandOptions.ProxyClientCertFile,\n\t\t\tProxyClientKeyFile:        commandOptions.ProxyClientKeyFile,\n\t\t\tServiceResolver:           serviceResolver,\n\t\t\tProxyTransport:            proxyTransport,\n\t\t\tRejectForwardingRedirects: commandOptions.AggregatorRejectForwardingRedirects,\n\t\t},\n\t}\n\n\t// 需要清除 poststarthook，这样我们就不会将它们多次添加到所有server（失败后）\n\taggregatorConfig.GenericConfig.PostStartHooks = map[string]genericapiserver.PostStartHookConfigEntry{}\n\n\treturn aggregatorConfig, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230322144433-yyrw2eu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230322144433-yyrw2eu",
+				"updated": "20230327082544"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.6 创建 AggregatorServer"
+				}
+			]
+		},
+		{
+			"ID": "20230324135716-c3mazc8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324135716-c3mazc8",
+				"updated": "20230324135746"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Aggregator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "APIServices"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "对象关联到某个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Service"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "来进行请求的转发，其关联的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Service"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "类型进一步决定了请求转发形式。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Aggregator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "包括一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GenericAPIServer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和维护自身状态的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。其中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GenericAPIServer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "主要处理"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "apiregistration.k8s.io"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "组下的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "APIService"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "资源请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230327082301-983aomr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230327082301-983aomr",
+				"updated": "20230327082315"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "主要实现逻辑："
+				}
+			]
+		},
+		{
+			"ID": "20230327082332-6cap636",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230327082332-6cap636",
+				"updated": "20230327082424"
+			},
+			"Children": [
+				{
+					"ID": "20230327082336-idj97kz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230327082336-idj97kz"
+					},
+					"Children": [
+						{
+							"ID": "20230327082336-cu8buds",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230327082336-cu8buds"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "aggregatorConfig.Complete().NewWithDelegate"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 创建 aggregatorServer；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230327082353-9xk87ie",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230327082353-9xk87ie"
+					},
+					"Children": [
+						{
+							"ID": "20230327082353-ax0g0ws",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230327082353-ax0g0ws",
+								"updated": "20230327082356"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "初始化 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "crdRegistrationController"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "autoRegistrationController"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "crdRegistrationController"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 负责注册 CRD，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "autoRegistrationController"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 负责将 CRD 对应的 APIServices 自动注册到 apiserver 中，CRD 创建后可通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "$ kubectl get apiservices"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 查看是否注册到 apiservices 中；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230327082423-izlr32u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230327082423-izlr32u",
+						"updated": "20230327082424"
+					},
+					"Children": [
+						{
+							"ID": "20230327082423-apf8bwc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230327082423-apf8bwc",
+								"updated": "20230327082424"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "autoRegistrationController"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "crdRegistrationController"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 加入到 PostStartHook 中"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230324135812-sbizyec",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324135812-sbizyec",
+				"updated": "20230324135812"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Aggregator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "除了处理资源请求外还包含几个controller："
+				}
+			]
+		},
+		{
+			"ID": "20230324135819-h558s00",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230324135819-h558s00",
+				"updated": "20230325195651"
+			},
+			"Children": [
+				{
+					"ID": "20230324135819-nb5zpvx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230324135819-nb5zpvx"
+					},
+					"Children": [
+						{
+							"ID": "20230324135819-7b61cq0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324135819-7b61cq0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "apiserviceRegistrationController：负责"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "APIServices"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "中资源的注册与删除；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324135819-wfbetft",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230324135819-wfbetft"
+					},
+					"Children": [
+						{
+							"ID": "20230324135819-g6tpzz5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324135819-g6tpzz5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "availableConditionController：维护"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "APIServices"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "的可用状态，包括其引用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Service"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "是否可用等；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324135819-ucvkd9q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230324135819-ucvkd9q"
+					},
+					"Children": [
+						{
+							"ID": "20230324135819-5oqvnky",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324135819-5oqvnky"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "autoRegistrationController：用于保持API中存在的一组特定的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "APIServices"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324135819-k2y3myl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230324135819-k2y3myl"
+					},
+					"Children": [
+						{
+							"ID": "20230324135819-yp8e6ya",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324135819-yp8e6ya"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "crdRegistrationController：负责将"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CRD GroupVersions"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "自动注册到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "APIServices"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "中；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230324135819-uu4uxjz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230324135819-uu4uxjz",
+						"updated": "20230325195651"
+					},
+					"Children": [
+						{
+							"ID": "20230324135819-4i60krq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230324135819-4i60krq",
+								"updated": "20230325195651"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "openAPIAggregationController：将"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "APIServices"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "资源的变化同步至提供的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "OpenAPI"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "文档； kubernetes中的一些附加组件，比如metrics-server就是通过 Aggregator的方式进行扩展的，实际环境中可以通过使用apiserver-builder工具轻松以Aggregator的扩展方式创建自定义资源。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230324150014-y2precp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324150014-y2precp",
+				"updated": "20230327082133"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func createAggregatorServer(aggregatorConfig *aggregatorapiserver.Config, delegateAPIServer genericapiserver.DelegationTarget, apiExtensionInformers apiextensionsinformers.SharedInformerFactory) (*aggregatorapiserver.APIAggregator, error) {\n\t// 初始化aggregatorServer\n\taggregatorServer, err := aggregatorConfig.Complete().NewWithDelegate(delegateAPIServer)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\t// 创建并初始化 auto-registration\n\tapiRegistrationClient, err := apiregistrationclient.NewForConfig(aggregatorConfig.GenericConfig.LoopbackClientConfig)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tautoRegistrationController := autoregister.NewAutoRegisterController(aggregatorServer.APIRegistrationInformers.Apiregistration().V1().APIServices(), apiRegistrationClient)\n\tapiServices := apiServicesToRegister(delegateAPIServer, autoRegistrationController)\n\tcrdRegistrationController := crdregistration.NewCRDRegistrationController(\n\t\tapiExtensionInformers.Apiextensions().V1().CustomResourceDefinitions(),\n\t\tautoRegistrationController)\n\n\t// Imbue all builtin group-priorities onto the aggregated discovery\n\tif aggregatorConfig.GenericConfig.AggregatedDiscoveryGroupManager != nil {\n\t\tfor gv, entry := range apiVersionPriorities {\n\t\t\taggregatorConfig.GenericConfig.AggregatedDiscoveryGroupManager.SetGroupVersionPriority(metav1.GroupVersion(gv), int(entry.group), int(entry.version))\n\t\t}\n\t}\n\n\terr = aggregatorServer.GenericAPIServer.AddPostStartHook(\"kube-apiserver-autoregistration\", func(context genericapiserver.PostStartHookContext) error {\n\t\tgo crdRegistrationController.Run(5, context.StopCh)\n\t\tgo func() {\n\t\t\t// let the CRD controller process the initial set of CRDs before starting the autoregistration controller.\n\t\t\t// this prevents the autoregistration controller's initial sync from deleting APIServices for CRDs that still exist.\n\t\t\t// we only need to do this if CRDs are enabled on this server.  We can't use discovery because we are the source for discovery.\n\t\t\tif aggregatorConfig.GenericConfig.MergedResourceConfig.ResourceEnabled(apiextensionsv1.SchemeGroupVersion.WithResource(\"customresourcedefinitions\")) {\n\t\t\t\tcrdRegistrationController.WaitForInitialSync()\n\t\t\t}\n\t\t\tautoRegistrationController.Run(5, context.StopCh)\n\t\t}()\n\t\treturn nil\n\t})\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 添加健康检查\n\terr = aggregatorServer.GenericAPIServer.AddBootSequenceHealthChecks(\n\t\tmakeAPIServiceAvailableHealthCheck(\n\t\t\t\"autoregister-completion\",\n\t\t\tapiServices,\n\t\t\taggregatorServer.APIRegistrationInformers.Apiregistration().V1().APIServices(),\n\t\t),\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn aggregatorServer, nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230327082558-3q7h9b3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 5,
+			"Properties": {
+				"id": "20230327082558-3q7h9b3",
+				"updated": "20230327082611"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.1.6.1 aggregatorConfig.Complete().NewWithDelegate"
+				}
+			]
+		},
+		{
+			"ID": "20230327082622-f8bku4l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230327082622-f8bku4l",
+				"updated": "20230327082622"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "aggregatorConfig.Complete().NewWithDelegate"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 是初始化 aggregatorServer 的方法，主要逻辑为："
+				}
+			]
+		},
+		{
+			"ID": "20230327082629-p6qmdkh",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230327082629-p6qmdkh",
+				"updated": "20230327082651"
+			},
+			"Children": [
+				{
+					"ID": "20230327082640-duzvgqp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230327082640-duzvgqp",
+						"updated": "20230327082651"
+					},
+					"Children": [
+						{
+							"ID": "20230327082640-jkcmyl7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230327082640-jkcmyl7",
+								"updated": "20230327082651"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "c.GenericConfig.New"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 初始化 GenericAPIServer；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230327082629-khx6r0v",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230327082629-khx6r0v",
+				"updated": "20230327082642"
+			},
+			"Children": [
+				{
+					"ID": "20230327082642-4n9c1f8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230327082642-4n9c1f8"
+					},
+					"Children": [
+						{
+							"ID": "20230327082642-2y4ck3n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230327082642-2y4ck3n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "apiservicerest.NewRESTStorage"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 为 APIServices 资源创建 RESTStorage，RESTStorage 的目的是将每种资源的访问路径及其后端存储的操作对应起来；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230327082629-yzuqrlm",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230327082629-yzuqrlm",
+				"updated": "20230327082637"
+			},
+			"Children": [
+				{
+					"ID": "20230327082637-1ylheon",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230327082637-1ylheon"
+					},
+					"Children": [
+						{
+							"ID": "20230327082637-96dxqra",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230327082637-96dxqra"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "s.GenericAPIServer.InstallAPIGroup"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 为 APIGroup 注册路由信息；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230327082940-0oe0gxu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230327082940-0oe0gxu",
+				"updated": "20230327084146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// NewWithDelegate returns a new instance of APIAggregator from the given config.\nfunc (c completedConfig) NewWithDelegate(delegationTarget genericapiserver.DelegationTarget) (*APIAggregator, error) {\n\t// 初始化genericServer\n\tgenericServer, err := c.GenericConfig.New(\"kube-aggregator\", delegationTarget)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tapiregistrationClient, err := clientset.NewForConfig(c.GenericConfig.LoopbackClientConfig)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tinformerFactory := informers.NewSharedInformerFactory(\n\t\tapiregistrationClient,\n\t\t5*time.Minute, // this is effectively used as a refresh interval right now.  Might want to do something nicer later on.\n\t)\n\n\n\t// apiServiceRegistrationControllerInitiated 在 APIServiceRegistrationController 完成“installing”所有已知 API 服务时关闭。\n\t// 此时我们知道代理proxy APIServices 可以处理客户端请求。在它可能导致 404 响应出现之前，这可能会对某些控制器（如 GC 和 NS）产生严重后果\n \t// APIServiceRegistrationController 在执行其工作之前会等待 APIServiceInformer 同步。\n\tapiServiceRegistrationControllerInitiated := make(chan struct{})\n\tif err := genericServer.RegisterMuxAndDiscoveryCompleteSignal(\"APIServiceRegistrationControllerInitiated\", apiServiceRegistrationControllerInitiated); err != nil {\n\t\treturn nil, err\n\t}\n\n\ts := \u0026APIAggregator{\n\t\tGenericAPIServer:           genericServer,\n\t\tdelegateHandler:            delegationTarget.UnprotectedHandler(),\n\t\tproxyTransport:             c.ExtraConfig.ProxyTransport,\n\t\tproxyHandlers:              map[string]*proxyHandler{},\n\t\thandledGroups:              sets.String{},\n\t\tlister:                     informerFactory.Apiregistration().V1().APIServices().Lister(),\n\t\tAPIRegistrationInformers:   informerFactory,\n\t\tserviceResolver:            c.ExtraConfig.ServiceResolver,\n\t\topenAPIConfig:              c.GenericConfig.OpenAPIConfig,\n\t\topenAPIV3Config:            c.GenericConfig.OpenAPIV3Config,\n\t\tegressSelector:             c.GenericConfig.EgressSelector,\n\t\tproxyCurrentCertKeyContent: func() (bytes []byte, bytes2 []byte) { return nil, nil },\n\t\trejectForwardingRedirects:  c.ExtraConfig.RejectForwardingRedirects,\n\t}\n\n\t// 稍后过滤已过期的资源\n\tresourceExpirationEvaluator, err := genericapiserver.NewResourceExpirationEvaluator(*c.GenericConfig.Version)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 为API注册路由\n\tapiGroupInfo := apiservicerest.NewRESTStorage(c.GenericConfig.MergedResourceConfig, c.GenericConfig.RESTOptionsGetter, resourceExpirationEvaluator.ShouldServeForVersion(1, 22))\n\tif err := s.GenericAPIServer.InstallAPIGroup(\u0026apiGroupInfo); err != nil {\n\t\treturn nil, err\n\t}\n\n\tenabledVersions := sets.NewString()\n\tfor v := range apiGroupInfo.VersionedResourcesStorageMap {\n\t\tenabledVersions.Insert(v)\n\t}\n\tif !enabledVersions.Has(v1.SchemeGroupVersion.Version) {\n\t\treturn nil, fmt.Errorf(\"API group/version %s must be enabled\", v1.SchemeGroupVersion.String())\n\t}\n\t// 初始化 apiserviceRegistrationController、availableController\n\tapisHandler := \u0026apisHandler{\n\t\tcodecs:         aggregatorscheme.Codecs,\n\t\tlister:         s.lister,\n\t\tdiscoveryGroup: discoveryGroup(enabledVersions),\n\t}\n\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.AggregatedDiscoveryEndpoint) {\n\t\tapisHandlerWithAggregationSupport := aggregated.WrapAggregatedDiscoveryToHandler(apisHandler, s.GenericAPIServer.AggregatedDiscoveryGroupManager)\n\t\ts.GenericAPIServer.Handler.NonGoRestfulMux.Handle(\"/apis\", apisHandlerWithAggregationSupport)\n\t} else {\n\t\ts.GenericAPIServer.Handler.NonGoRestfulMux.Handle(\"/apis\", apisHandler)\n\t}\n\ts.GenericAPIServer.Handler.NonGoRestfulMux.UnlistedHandle(\"/apis/\", apisHandler)\n\n\tapiserviceRegistrationController := NewAPIServiceRegistrationController(informerFactory.Apiregistration().V1().APIServices(), s)\n\tif len(c.ExtraConfig.ProxyClientCertFile) \u003e 0 \u0026\u0026 len(c.ExtraConfig.ProxyClientKeyFile) \u003e 0 {\n\t\taggregatorProxyCerts, err := dynamiccertificates.NewDynamicServingContentFromFiles(\"aggregator-proxy-cert\", c.ExtraConfig.ProxyClientCertFile, c.ExtraConfig.ProxyClientKeyFile)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\t// We are passing the context to ProxyCerts.RunOnce as it needs to implement RunOnce(ctx) however the\n\t\t// context is not used at all. So passing a empty context shouldn't be a problem\n\t\tctx := context.TODO()\n\t\tif err := aggregatorProxyCerts.RunOnce(ctx); err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\taggregatorProxyCerts.AddListener(apiserviceRegistrationController)\n\t\ts.proxyCurrentCertKeyContent = aggregatorProxyCerts.CurrentCertKeyContent\n\n\t\ts.GenericAPIServer.AddPostStartHookOrDie(\"aggregator-reload-proxy-client-cert\", func(postStartHookContext genericapiserver.PostStartHookContext) error {\n\t\t\t// generate a context  from stopCh. This is to avoid modifying files which are relying on apiserver\n\t\t\t// TODO: See if we can pass ctx to the current method\n\t\t\tctx, cancel := context.WithCancel(context.Background())\n\t\t\tgo func() {\n\t\t\t\tselect {\n\t\t\t\tcase \u003c-postStartHookContext.StopCh:\n\t\t\t\t\tcancel() // stopCh closed, so cancel our context\n\t\t\t\tcase \u003c-ctx.Done():\n\t\t\t\t}\n\t\t\t}()\n\t\t\tgo aggregatorProxyCerts.Run(ctx, 1)\n\t\t\treturn nil\n\t\t})\n\t}\n\n\tavailableController, err := statuscontrollers.NewAvailableConditionController(\n\t\tinformerFactory.Apiregistration().V1().APIServices(),\n\t\tc.GenericConfig.SharedInformerFactory.Core().V1().Services(),\n\t\tc.GenericConfig.SharedInformerFactory.Core().V1().Endpoints(),\n\t\tapiregistrationClient.ApiregistrationV1(),\n\t\tc.ExtraConfig.ProxyTransport,\n\t\t(func() ([]byte, []byte))(s.proxyCurrentCertKeyContent),\n\t\ts.serviceResolver,\n\t\tc.GenericConfig.EgressSelector,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 添加 PostStartHook\n\ts.GenericAPIServer.AddPostStartHookOrDie(\"start-kube-aggregator-informers\", func(context genericapiserver.PostStartHookContext) error {\n\t\tinformerFactory.Start(context.StopCh)\n\t\tc.GenericConfig.SharedInformerFactory.Start(context.StopCh)\n\t\treturn nil\n\t})\n\ts.GenericAPIServer.AddPostStartHookOrDie(\"apiservice-registration-controller\", func(context genericapiserver.PostStartHookContext) error {\n\t\tgo apiserviceRegistrationController.Run(context.StopCh, apiServiceRegistrationControllerInitiated)\n\t\tselect {\n\t\tcase \u003c-context.StopCh:\n\t\tcase \u003c-apiServiceRegistrationControllerInitiated:\n\t\t}\n\n\t\treturn nil\n\t})\n\ts.GenericAPIServer.AddPostStartHookOrDie(\"apiservice-status-available-controller\", func(context genericapiserver.PostStartHookContext) error {\n\t\t// if we end up blocking for long periods of time, we may need to increase workers.\n\t\tgo availableController.Run(5, context.StopCh)\n\t\treturn nil\n\t})\n\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.StorageVersionAPI) \u0026\u0026\n\t\tutilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIServerIdentity) {\n\t\t// Spawn a goroutine in aggregator apiserver to update storage version for\n\t\t// all built-in resources\n\t\ts.GenericAPIServer.AddPostStartHookOrDie(StorageVersionPostStartHookName, func(hookContext genericapiserver.PostStartHookContext) error {\n\t\t\t// Wait for apiserver-identity to exist first before updating storage\n\t\t\t// versions, to avoid storage version GC accidentally garbage-collecting\n\t\t\t// storage versions.\n\t\t\tkubeClient, err := kubernetes.NewForConfig(hookContext.LoopbackClientConfig)\n\t\t\tif err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\t\t\tif err := wait.PollImmediateUntil(100*time.Millisecond, func() (bool, error) {\n\t\t\t\t_, err := kubeClient.CoordinationV1().Leases(metav1.NamespaceSystem).Get(\n\t\t\t\t\tcontext.TODO(), s.GenericAPIServer.APIServerID, metav1.GetOptions{})\n\t\t\t\tif apierrors.IsNotFound(err) {\n\t\t\t\t\treturn false, nil\n\t\t\t\t}\n\t\t\t\tif err != nil {\n\t\t\t\t\treturn false, err\n\t\t\t\t}\n\t\t\t\treturn true, nil\n\t\t\t}, hookContext.StopCh); err != nil {\n\t\t\t\treturn fmt.Errorf(\"failed to wait for apiserver-identity lease %s to be created: %v\",\n\t\t\t\t\ts.GenericAPIServer.APIServerID, err)\n\t\t\t}\n\t\t\t// Technically an apiserver only needs to update storage version once during bootstrap.\n\t\t\t// Reconcile StorageVersion objects every 10 minutes will help in the case that the\n\t\t\t// StorageVersion objects get accidentally modified/deleted by a different agent. In that\n\t\t\t// case, the reconciliation ensures future storage migration still works. If nothing gets\n\t\t\t// changed, the reconciliation update is a noop and gets short-circuited by the apiserver,\n\t\t\t// therefore won't change the resource version and trigger storage migration.\n\t\t\tgo wait.PollImmediateUntil(10*time.Minute, func() (bool, error) {\n\t\t\t\t// All apiservers (aggregator-apiserver, kube-apiserver, apiextensions-apiserver)\n\t\t\t\t// share the same generic apiserver config. The same StorageVersion manager is used\n\t\t\t\t// to register all built-in resources when the generic apiservers install APIs.\n\t\t\t\ts.GenericAPIServer.StorageVersionManager.UpdateStorageVersions(hookContext.LoopbackClientConfig, s.GenericAPIServer.APIServerID)\n\t\t\t\treturn false, nil\n\t\t\t}, hookContext.StopCh)\n\t\t\t// Once the storage version updater finishes the first round of update,\n\t\t\t// the PostStartHook will return to unblock /healthz. The handler chain\n\t\t\t// won't block write requests anymore. Check every second since it's not\n\t\t\t// expensive.\n\t\t\twait.PollImmediateUntil(1*time.Second, func() (bool, error) {\n\t\t\t\treturn s.GenericAPIServer.StorageVersionManager.Completed(), nil\n\t\t\t}, hookContext.StopCh)\n\t\t\treturn nil\n\t\t})\n\t}\n\n\treturn s, nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230327084527-i1a421s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230327084527-i1a421s",
+				"updated": "20230327084538"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基本调用链如下："
+				}
+			]
+		},
+		{
+			"ID": "20230327084545-mv08lj8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230327084545-mv08lj8",
+				"updated": "20230327084548"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "                    |--\u003e CreateNodeDialer\n                    |\n                    |--\u003e CreateKubeAPIServerConfig\n                    |\nCreateServerChain --|--\u003e createAPIExtensionsConfig\n                    |\n                    |                                                                       |--\u003e c.GenericConfig.New\n                    |--\u003e createAPIExtensionsServer --\u003e apiextensionsConfig.Complete().New --|\n                    |                                                                       |--\u003e s.GenericAPIServer.InstallAPIGroup\n                    |\n                    |                                                                 |--\u003e c.GenericConfig.New --\u003e legacyRESTStorageProvider.NewLegacyRESTStorage\n                    |                                                                 |\n                    |--\u003e CreateKubeAPIServer --\u003e kubeAPIServerConfig.Complete().New --|--\u003e m.InstallLegacyAPI\n                    |                                                                 |\n                    |                                                                 |--\u003e m.InstallAPIs\n                    |\n                    |\n                    |--\u003e createAggregatorConfig\n                    |\n                    |                                                                             |--\u003e c.GenericConfig.New\n                    |                                                                             |\n                    |--\u003e createAggregatorServer --\u003e aggregatorConfig.Complete().NewWithDelegate --|--\u003e apiservicerest.NewRESTStorage\n                                                                                                  |\n                                                                                                  |--\u003e s.GenericAPIServer.InstallAPIGroup\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230327140022-dzemv1v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230327140022-dzemv1v",
+				"updated": "20230327140046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3.2 prepared.Run"
+				}
+			]
+		},
+		{
+			"ID": "20230327140514-m15kggm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230327140514-m15kggm",
+				"updated": "20230327144904"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Run"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 方法中首先调用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CreateServerChain"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 完成各 server 的初始化，然后调用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "server.PrepareRun"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 完成服务启动前的准备工作，最后调用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "prepared.Run"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 方法来启动安全的 http server。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "server.PrepareRun"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 主要完成了健康检查、存活检查和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "OpenAPI"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "路由的注册工作"
+				}
+			]
+		},
+		{
+			"ID": "20230327140556-l28hpm8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230327140556-l28hpm8",
+				"updated": "20230327144742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// PrepareRun 通过设置 OpenAPI spec和aggregated discovery document  来准备aggregator 运行。\n聚合发现文档并调用通用 PrepareRun。 \nfunc (s *APIAggregator) PrepareRun() (preparedAPIAggregator, error) {\n \t// add post start hook before generic PrepareRun in order to be before /healthz installation\n\tif s.openAPIConfig != nil {\n\t\ts.GenericAPIServer.AddPostStartHookOrDie(\"apiservice-openapi-controller\", func(context genericapiserver.PostStartHookContext) error {\n\t\t\tgo s.openAPIAggregationController.Run(context.StopCh)\n\t\t\treturn nil\n\t\t})\n\t}\n\n\tif s.openAPIV3Config != nil \u0026\u0026 utilfeature.DefaultFeatureGate.Enabled(genericfeatures.OpenAPIV3) {\n\t\ts.GenericAPIServer.AddPostStartHookOrDie(\"apiservice-openapiv3-controller\", func(context genericapiserver.PostStartHookContext) error {\n\t\t\tgo s.openAPIV3AggregationController.Run(context.StopCh)\n\t\t\treturn nil\n\t\t})\n\t}\n\n\tif utilfeature.DefaultFeatureGate.Enabled(genericfeatures.AggregatedDiscoveryEndpoint) {\n\t\ts.discoveryAggregationController = NewDiscoveryManager(\n\t\t\ts.GenericAPIServer.AggregatedDiscoveryGroupManager,\n\t\t)\n\n\t\t// 启动discovery  端点\n\t\ts.GenericAPIServer.AddPostStartHookOrDie(\"apiservice-discovery-controller\", func(context genericapiserver.PostStartHookContext) error {\n\t\t\t// Run discovery manager's worker to watch for new/removed/updated\n\t\t\t// APIServices to the discovery document can be updated at runtime\n\t\t\tgo s.discoveryAggregationController.Run(context.StopCh)\n\t\t\treturn nil\n\t\t})\n\t}\n\n\tprepared := s.GenericAPIServer.PrepareRun()\n\n\t// 延迟OpenAPI直到delegate启动他们的handlers启动后再启动\n\tif s.openAPIConfig != nil {\n\t\tspecDownloader := openapiaggregator.NewDownloader()\n\t\topenAPIAggregator, err := openapiaggregator.BuildAndRegisterAggregator(\n\t\t\t\u0026specDownloader,\n\t\t\ts.GenericAPIServer.NextDelegate(),\n\t\t\ts.GenericAPIServer.Handler.GoRestfulContainer.RegisteredWebServices(),\n\t\t\ts.openAPIConfig,\n\t\t\ts.GenericAPIServer.Handler.NonGoRestfulMux)\n\t\tif err != nil {\n\t\t\treturn preparedAPIAggregator{}, err\n\t\t}\n\t\ts.openAPIAggregationController = openapicontroller.NewAggregationController(\u0026specDownloader, openAPIAggregator)\n\t}\n\n\tif s.openAPIV3Config != nil \u0026\u0026 utilfeature.DefaultFeatureGate.Enabled(genericfeatures.OpenAPIV3) {\n\t\tspecDownloaderV3 := openapiv3aggregator.NewDownloader()\n\t\topenAPIV3Aggregator, err := openapiv3aggregator.BuildAndRegisterAggregator(\n\t\t\tspecDownloaderV3,\n\t\t\ts.GenericAPIServer.NextDelegate(),\n\t\t\ts.GenericAPIServer.Handler.NonGoRestfulMux)\n\t\tif err != nil {\n\t\t\treturn preparedAPIAggregator{}, err\n\t\t}\n\t\ts.openAPIV3AggregationController = openapiv3controller.NewAggregationController(openAPIV3Aggregator)\n\t}\n\n\treturn preparedAPIAggregator{APIAggregator: s, runnable: prepared}, nil\n}\n\nfunc (s preparedAPIAggregator) Run(stopCh \u003c-chan struct{}) error {\n\treturn s.runnable.Run(stopCh)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,263 @@
+{
+	"ID": "20230315174443-sildo81",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230315174443-sildo81",
+		"title": "applyconfigurations",
+		"updated": "20230315180415"
+	},
+	"Children": [
+		{
+			"ID": "20230315174443-td4tthd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230315174443-td4tthd",
+				"updated": "20230315174515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230315174516-8g40eu8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315174516-8g40eu8",
+				"updated": "20230315174629"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用于构建服务端 Apply "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=requests\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "requests"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "（类似于kubectl apply 但是kubectl的是客户端）,通过源码看起来和kubernetes/api的各种类型和结构相似"
+				}
+			]
+		},
+		{
+			"ID": "20230315174446-l1j31m9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315174446-l1j31m9",
+				"updated": "20230315174446"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230315174446-j86bv8w.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230315180326-l5rce7i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230315180326-l5rce7i",
+				"updated": "20230315180334"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Daemonset.go"
+				}
+			]
+		},
+		{
+			"ID": "20230315180033-yr3ge9k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315180033-yr3ge9k",
+				"updated": "20230315180203"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里以appa/v1的Daemonset.go 为例做分析"
+				}
+			]
+		},
+		{
+			"ID": "20230315175154-talpzg7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315175154-talpzg7",
+				"updated": "20230315175740"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type DaemonSetApplyConfiguration struct {\n\tv1.TypeMetaApplyConfiguration    `json:\",inline\"`\n\t*v1.ObjectMetaApplyConfiguration `json:\"metadata,omitempty\"`\n\tSpec                             *DaemonSetSpecApplyConfiguration   `json:\"spec,omitempty\"`\n\tStatus                           *DaemonSetStatusApplyConfiguration `json:\"status,omitempty\"`\n}\n// DaemonSetApplyConfiguration表示用于应用的DaemonSet类型的声明性配置。\nfunc DaemonSet(name, namespace string) *DaemonSetApplyConfiguration {\n\tb := \u0026DaemonSetApplyConfiguration{}\n\tb.WithName(name)\n\tb.WithNamespace(namespace)\n\tb.WithKind(\"DaemonSet\")\n\tb.WithAPIVersion(\"apps/v1\")\n\treturn b\n}\n\nfunc extractDaemonSet(daemonSet *apiappsv1.DaemonSet, fieldManager string, subresource string) (*DaemonSetApplyConfiguration, error) {\n\tb := \u0026DaemonSetApplyConfiguration{}\n\terr := managedfields.ExtractInto(daemonSet, internal.Parser().Type(\"io.k8s.api.apps.v1.DaemonSet\"), fieldManager, b, subresource)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tb.WithName(daemonSet.Name)\n\tb.WithNamespace(daemonSet.Namespace)\n\n\tb.WithKind(\"DaemonSet\")\n\tb.WithAPIVersion(\"apps/v1\")\n\treturn b, nil\n}\n\n//WithKind将声明性配置中的Kind字段设置为给定值并返回接收器，这样就可以通过链接“With”函数调用来构建对象。如果多次调用，Kind字段将设置为上次调用的值。\nfunc (b *DaemonSetApplyConfiguration) WithKind(value string) *DaemonSetApplyConfiguration {\n\tb.Kind = \u0026value\n\treturn b\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315175337-rfty3bd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315175337-rfty3bd",
+				"updated": "20230315175357"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以看到都是设置DaemonSet 相关属性的方法"
+				}
+			]
+		},
+		{
+			"ID": "20230315175231-hzg8m6z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315175231-hzg8m6z",
+				"updated": "20230315175321"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230315175321-p4vhsmh.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230315175333-50gxwhd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315175333-50gxwhd",
+				"updated": "20230315175333"
+			}
+		},
+		{
+			"ID": "20230315180212-4xlyqs0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230315180212-4xlyqs0",
+				"updated": "20230315180340"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.util.go"
+				}
+			]
+		},
+		{
+			"ID": "20230315180221-b9benst",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315180221-b9benst",
+				"updated": "20230315180301"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在此版本中只有一个方法ForKind，通过gvk获取对应的Apply对象"
+				}
+			]
+		},
+		{
+			"ID": "20230315180357-06dnzjp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315180357-06dnzjp",
+				"updated": "20230315180415"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func ForKind(kind schema.GroupVersionKind) interface{} {\n\tswitch kind {\n\t// Group=admissionregistration.k8s.io, Version=v1\n\tcase v1.SchemeGroupVersion.WithKind(\"MutatingWebhook\"):\n\t\treturn \u0026admissionregistrationv1.MutatingWebhookApplyConfiguration{}\n\tcase v1.SchemeGroupVersion.WithKind(\"MutatingWebhookConfiguration\"):\n\t\treturn \u0026admissionregistrationv1.MutatingWebhookConfigurationApplyConfiguration{}\n\tcase v1.SchemeGroupVersion.WithKind(\"Rule\"):\n\t\treturn \u0026admissionregistrationv1.RuleApplyConfiguration{}\n\tcase v1.SchemeGroupVersion.WithKind(\"RuleWithOperations\"):\n\t\treturn \u0026admissionregistrationv1.RuleWithOperationsApplyConfiguration{}\n\tcase v1.SchemeGroupVersion.WithKind(\"ServiceReference\"):\n\t\treturn \u0026admissionregistrationv1.ServiceReferenceApplyConfiguration{}\n\tcase v1.SchemeGroupVersion.WithKind(\"ValidatingWebhook\"):\n\t\treturn \u0026admissionregistrationv1.ValidatingWebhookApplyConfiguration{}\n\tcase v1.SchemeGroupVersion.WithKind(\"ValidatingWebhookConfiguration\"):\n\t\treturn \u0026admissionregistrationv1.ValidatingWebhookConfigurationApplyConfiguration{\n\t‍‍‍‍‍‍```\n\t···\n}\n\n‍‍‍‍‍‍```\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1214 @@
+{
+	"ID": "20230407165728-o4jl630",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230407165728-o4jl630",
+		"title": "Kubernetes开发知识-device-plugin的实现 ",
+		"updated": "20230408150734"
+	},
+	"Children": [
+		{
+			"ID": "20230407165728-6m1tzb9",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230407165728-6m1tzb9"
+			}
+		},
+		{
+			"ID": "20230407165728-z6yrdyj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230407165728-z6yrdyj"
+			},
+			"Children": [
+				{
+					"ID": "20230407165728-28pvg9l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-28pvg9l"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-tqkriaf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-tqkriaf"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.myway5.com/index.php/2020/03/24/kubernetes%e5%bc%80%e5%8f%91%e7%9f%a5%e8%af%86-device-plugin%e7%9a%84%e5%ae%9e%e7%8e%b0/",
+									"TextMarkTextContent": "https://www.myway5.com/index.php/2020/03/24/kubernetes%e5%bc%80%e5%8f%91%e7%9f%a5%e8%af%86-device-plugin%e7%9a%84%e5%ae%9e%e7%8e%b0/ - 一只安静的猫"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-2zu1ghb",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230407165728-2zu1ghb",
+				"updated": "20230407165728"
+			}
+		},
+		{
+			"ID": "20230407165728-z9qb5cc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-z9qb5cc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 作为一个自动化容器编排系统，在调度 pod 的时候会根据容器需要的资源进行节点的选择，节点的选择会分为预选和优选阶段。预选阶段会根据所有节点上剩余的资源量与 pod 需要的资源量进行对比，选出能够满足需求的节点。通常情况下，这里的资源都会包括 CPU 和 Memory，就像下面这样："
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-uuvtf6k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-uuvtf6k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "但是现在我们有了新的需求，我们有一个 tensorflow 的模型需要借助 tensorflow serving 来部署，同时我们希望采用 GPU 部署的方案以加快模型的在线推算速度。这样我们就需要一个 GPU 的资源并借助 Kubernetes 的调度器将容器调度到有空余 GPU 资源的方案。"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-cau7syj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-cau7syj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 1.11 版本之前的 Kubernetes 中，提供了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "alpha.kubernetes.io/nvidia-gpu"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的资源名称来帮助我们根据 GPU 资源调度。但是这也带来了一些问题："
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-qrpcy43",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230407165728-qrpcy43"
+			},
+			"Children": [
+				{
+					"ID": "20230407165728-4d5dxmx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-4d5dxmx"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-668d7ij",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-668d7ij"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubernetes 需要维护 NVIDIA GPU 相关的代码，增加了维护成本。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-o7mwr7w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-o7mwr7w"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-ifyc4xm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-ifyc4xm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "NVIDIA GPU 方面的专家不一定熟悉 Kubernetes，这不符合让最擅长的人做最擅长的事的原则。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-mbu1gtj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-mbu1gtj"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-42y48o5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-42y48o5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "除了 NVIDIA GPU，还会有其他的计算资源需要支持。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-x9g849x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-x9g849x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因此，Kubernetes 在 1.8 版本引入了 device plugin 机制，将第三方的计算资源通过插件的方式引入 Kubernetes，并且由第三方厂商自行维护。Kubernetes 社区的活瞬间就轻松了，第三方厂商也开心了。"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-t3dlvqn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-t3dlvqn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过以上的说明，可以总结出 device plugin 主要用来解耦第三方计算资源和 kubernetes 系统，将第三方的计算资源通过插件的方式引入 Kubernetes。当然 cpu 和 memory 除外，毕竟谁还能少了 CPU 和 Memory 呢。"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-jayegqi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230407165728-jayegqi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "device plugin 能做什么"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-7zfj7v3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-7zfj7v3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目前一些常用的 device plugin 有："
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-ikki6j1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230407165728-ikki6j1"
+			},
+			"Children": [
+				{
+					"ID": "20230407165728-4m6ue5c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-4m6ue5c"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-17b8n6u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-17b8n6u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Nvidia 提供的 GPU 插件："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/NVIDIA/k8s-device-plugin",
+									"TextMarkTextContent": "NVIDIA device plugin for Kubernetes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-mfstl67",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-mfstl67"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-iryf0v9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-iryf0v9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "AMD 提供的 GPU 插件："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/RadeonOpenCompute/k8s-device-plugin",
+									"TextMarkTextContent": "RadeonOpenCompute/k8s-device-plugin"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-44dpp4w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-44dpp4w"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-mmr2rgx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-mmr2rgx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "高性能低延迟 RDMA 卡插件："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/hustcat/k8s-rdma-device-plugin.git",
+									"TextMarkTextContent": "RDMA device plugin for Kubernetes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-k0dx76a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-k0dx76a"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-rjak4vw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-rjak4vw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "低延迟 Solarflare 万兆网卡驱动："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/vikaschoudhary16/sfc-device-plugin",
+									"TextMarkTextContent": "Solarflare Device Plugin"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-imaamjj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-imaamjj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我了解的还有腾讯的 Gaia Scheduler，通过 device plugin 实现的 GPU 虚拟化方案。如果 NVIDIA 的 GPU 方案还不够适合你，可以看看腾讯的这个方案："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/tkestack/gpu-manager",
+					"TextMarkTextContent": "tkestack/gpu-manager"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-54dk71f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-54dk71f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我觉得腾讯的 GPU 虚拟化方案是最能说明 device plugin 使用场景的例子，通过定义 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "tencent.com/vcuda-core"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "tencent.com/vcuda-memory"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 这两个计算资源，来将一个物理 GPU 划分成多个虚拟 GPU 进行调度，这样可以实现一个 GPU 上部署多个 tensorflow serving。你不需要购买特殊的硬件或者修改任何 Kubernetes 的代码，就有了 GPU 虚拟化的能力。"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-31wvgl9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-31wvgl9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面我们开个脑洞，现在我们有了一种叫做 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cola"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的计算资源，可以提高程序的 IO 能力。但是 cola 的资源有限，只分配给特定的容器使用。这时候我们就可以通过实现自己的 device plugin 来满足这个需求。我们的计算资源名就叫做： "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "myway5.com/cola"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，在下面一小节做具体的实现。"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-4q1hr7l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230407165728-4q1hr7l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "device plugin 的实现方案"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-2ne4yhc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-2ne4yhc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "device plugin 的工作原理其实不复杂。主要有以下步骤："
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-c5ww76z",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230407165728-c5ww76z"
+			},
+			"Children": [
+				{
+					"ID": "20230407165728-onjyvew",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-onjyvew"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-i52uw8s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-i52uw8s"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先 device plugin 可以通过手动或 daemonset 部署到需要的节点上。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-kjiwb7t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-kjiwb7t"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-09ulprb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-09ulprb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为了让 Kubernetes 发现 device plugin，需要向 kubelet 的 unix socket。 进行注册，注册的信息包括 device plugin 的 unix socket，API Version，ResourceName。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-6msuypu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-6msuypu"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-01mimmg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-01mimmg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubelet 通过 grpc 向 device plugin 调用 ListAndWatch， 获取当前节点上的资源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-ujq3gii",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-ujq3gii"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-o85ng8e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-o85ng8e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubelet 向 api server 更新节点状态来通知资源变更。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-x2td62a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-x2td62a"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-oj4z569",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-oj4z569"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "用户创建 pod，请求资源并调度到节点上后，kubelet 调用 device plugin 的 Allocate 进行资源分配。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-eui1yzu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-eui1yzu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "时序图如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-ajg80mi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-ajg80mi"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "device plugins"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/device-plugins-20230407165728-mopt05z.svg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-isq4kij",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-isq4kij",
+				"updated": "20230408145240"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 device plugin 的实现中，最关键的两个要实现的方法是 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ListAndWatch"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Allocate"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。除此之外，还要注意监控 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "kubelet 的重启，一般是使用 fsnotify 类似的库监控 kubelet.sock 的重新创建事件。如果重新创建了，则认为 kubelet 是重启了，我们需要重新向 kubelet 注册 device plugin"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-9z596z5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230407165728-9z596z5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ListAndWatch"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-jlwdqei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-jlwdqei",
+				"updated": "20230407165728"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们上面定义的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "myway5.com/cola"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 资源用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/colas"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 下的文件代表。每一个文件代表一个可用的资源。因此实现 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ListAndWatch"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 就是查找该文件夹下的文件，然后添加到设备列表发送给 kubelet，之后调用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "fsnotify"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 去监控文件的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CREATE"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "REMOVE"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 事件。每次设备列表发生变更都重新向 kubelet 发送更新过的设备列表。"
+				}
+			]
+		},
+		{
+			"ID": "20230408145324-q2hx138",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408145324-q2hx138",
+				"updated": "20230408145338"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// ListAndWatch returns a stream of List of Devices\n// Whenever a Device state change or a Device disappears, ListAndWatch\n// returns the new list\nfunc (s *ColaServer) ListAndWatch(e *pluginapi.Empty, srv pluginapi.DevicePlugin_ListAndWatchServer) error {\n    log.Infoln(\"ListAndWatch called\")\n    devs := make([]*pluginapi.Device, len(s.devices))\n\n    i := 0\n    for _, dev := range s.devices {\n        devs[i] = dev\n        i++\n    }\n\n    err := srv.Send(\u0026pluginapi.ListAndWatchResponse{Devices: devs})\n    if err != nil {\n        log.Errorf(\"ListAndWatch send device error: %v\", err)\n        return err\n    }\n\n    // 更新 device list\n    for {\n        log.Infoln(\"waiting for device change\")\n        select {\n        case \u003c-s.notify:\n            log.Infoln(\"开始更新device list, 设备数:\", len(s.devices))\n            devs := make([]*pluginapi.Device, len(s.devices))\n\n            i := 0\n            for _, dev := range s.devices {\n                devs[i] = dev\n                i++\n            }\n\n            srv.Send(\u0026pluginapi.ListAndWatchResponse{Devices: devs})\n        }\n    }\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-40ij3bk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230407165728-40ij3bk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Allocate"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-dgk6t83",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-dgk6t83",
+				"updated": "20230407165728"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在用户创建的 Pod 请求资源时，Kubernetes 的调度器会进行调度，并通过 kubelet 向 device plugin 发出 Allocate 调用，这一步的调用主要是为了让 device plugin 为容器调度资源。 在调度成功后向 kubelet 返回调度结果即可。"
+				}
+			]
+		},
+		{
+			"ID": "20230408145441-p68x7vi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408145441-p68x7vi",
+				"updated": "20230408145442"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Allocate is called during container creation so that the Device\n// Plugin can run device specific operations and instruct Kubelet\n// of the steps to make the Device available in the container\nfunc (s *ColaServer) Allocate(ctx context.Context, reqs *pluginapi.AllocateRequest) (*pluginapi.AllocateResponse, error) {\n    log.Infoln(\"Allocate called\")\n    resps := \u0026pluginapi.AllocateResponse{}\n    for _, req := range reqs.ContainerRequests {\n        log.Infof(\"received request: %v\", strings.Join(req.DevicesIDs, \",\"))\n        resp := pluginapi.ContainerAllocateResponse{\n            Envs: map[string]string{\n                \"COLA_DEVICES\": strings.Join(req.DevicesIDs, \",\"),\n            },\n        }\n        resps.ContainerResponses = append(resps.ContainerResponses, \u0026resp)\n    }\n    return resps, nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-uqaa9zc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230407165728-uqaa9zc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-0auvtmv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-0auvtmv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "device plugin 可以手动部署到机器上，也可以通过 Daemonset 进行部署。这里当然是 Daemonset 进行部署了。部署的时候有几个注意事项："
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-ulnhgdx",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230407165728-ulnhgdx"
+			},
+			"Children": [
+				{
+					"ID": "20230407165728-ozsqtti",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-ozsqtti"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-yneerah",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-yneerah"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "需要挂载 hostPath，其中 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/var/lib/kubelet/device-plugins"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 是必须的。这个文件夹下有 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubelet.sock"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，以及我们也需要将 device plugin 的 unix socket 文件存在这里。使得 kubelet 可以和我们的应用通信。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-3eum1p0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-3eum1p0"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-5j42axb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-5j42axb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为 device plugin 的 Pod 设置调度优先级别，通常设置成 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "priorityClassName: \u0026quot;system-node-critical\u0026quot;"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。这样可以保证不会因为节点利用率过高被逐出。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230407165728-mwkmhyc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230407165728-mwkmhyc"
+					},
+					"Children": [
+						{
+							"ID": "20230407165728-qax6ysd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230407165728-qax6ysd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果资源设备不是每台机器都有，建议使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nodeSelector"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 将 device plugin 调度到指定的机器上。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-il0fhoq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-il0fhoq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "device plugin 的开发源代码可以参考上面的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cola"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 例子："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/joyme123/cola-device-plugin",
+					"TextMarkTextContent": "cola device plugin"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-yxa7xcl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-yxa7xcl",
+				"updated": "20230407165728"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署结束之后，可以查看一下节点的资源情况："
+				}
+			]
+		},
+		{
+			"ID": "20230408145554-56zezf7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408145554-56zezf7",
+				"updated": "20230408145555"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl describe nodes test\nCapacity:\n cpu:                2\n ephemeral-storage:  17784752Ki\n hugepages-2Mi:      0\n memory:             1986740Ki\n myway5.com/cola:    2\n pods:               110\nAllocatable:\n cpu:                2\n ephemeral-storage:  17784752Ki\n hugepages-2Mi:      0\n memory:             1986740Ki\n myway5.com/cola:    2\n pods:               110\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-lmebu43",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-lmebu43",
+				"updated": "20230407165728"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建一个 pod，请求 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "myway5.com/cola"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 资源："
+				}
+			]
+		},
+		{
+			"ID": "20230408145545-tprvkcw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408145545-tprvkcw",
+				"updated": "20230408145548"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl apply -f e2e/pod-with-cola.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230407165728-9bvylcu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407165728-9bvylcu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后查看一下 cola pod 的日志来了解设备发现和调度情况："
+				}
+			]
+		},
+		{
+			"ID": "20230407165910-ub78h1d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230407165910-ub78h1d",
+				"updated": "20230407165926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl -n kube-system logs cola-thtm9 \ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"cola device plugin starting\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"find device 'cocacola'\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"find device 'peisicola'\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"watching devices\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"start GPPC server for 'myway5.com/cola'\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"Register to kubelet with endpoint cola.sock\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"register to kubelet successfully\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"ListAndWatch called\"\ntime=\"2020-03-24T08:16:53Z\" level=info msg=\"waiting for device change\"\ntime=\"2020-03-24T08:17:10Z\" level=info msg=\"Allocate called\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230408145536-1hg1i2o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408145536-1hg1i2o",
+				"updated": "20230408145536"
+			}
+		}
+	]
+}

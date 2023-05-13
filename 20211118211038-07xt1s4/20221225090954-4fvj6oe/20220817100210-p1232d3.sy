@@ -1,0 +1,1607 @@
+{
+	"ID": "20220817100210-p1232d3",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220817100210-p1232d3",
+		"title": "k8s集群优化",
+		"updated": "20220817105943"
+	},
+	"Children": [
+		{
+			"ID": "20220817100210-k1hyljo",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220817100210-k1hyljo"
+			}
+		},
+		{
+			"ID": "20220817100210-eviqywo",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817100210-eviqywo",
+				"updated": "20220817100210"
+			},
+			"Children": [
+				{
+					"ID": "20220817100210-v06id9f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817100210-v06id9f",
+						"updated": "20220817100210"
+					},
+					"Children": [
+						{
+							"ID": "20220817100210-85drzwd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817100210-85drzwd",
+								"updated": "20220817100210"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.notion.so/k8s-_Johnny-Li-CSDN-bf98fac5760846ed9e652e550cf0720f",
+									"TextMarkTextContent": "https://www.notion.so/k8s-_Johnny-Li-CSDN-bf98fac5760846ed9e652e550cf0720f - Notion"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817100210-24wnqsz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817100210-24wnqsz"
+					},
+					"Children": [
+						{
+							"ID": "20220817100210-nidzuvk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817100210-nidzuvk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2022-08-17 10:02:10"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-3ho9xbu",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220817100210-3ho9xbu"
+			}
+		},
+		{
+			"ID": "20220817101017-fh4cbtf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817101017-fh4cbtf",
+				"updated": "20220817101333"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 内核参数优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817101043-tp7k8ln",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817101043-tp7k8ln",
+				"updated": "20220817104459"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "fs.file-max=1000000\n# max-file 表示系统级别的能够打开的文件句柄的数量， 一般如果遇到文件句柄达到上限时，会碰到\n# \"Too many open files\"或者Socket/File: Can’t open so many files等错误。\n# 配置arp cache 大小\nnet.ipv4.neigh.default.gc_thresh1=1024\n# 存在于ARP高速缓存中的最少层数，如果少于这个数，垃圾收集器将不会运行。缺省值是128。\nnet.ipv4.neigh.default.gc_thresh2=4096\n# 保存在 ARP 高速缓存中的最多的记录软限制。垃圾收集器在开始收集前，允许记录数超过这个数字 5 秒。缺省值是 512。\nnet.ipv4.neigh.default.gc_thresh3=8192\n# 保存在 ARP 高速缓存中的最多记录的硬限制，一旦高速缓存中的数目高于此，垃圾收集器将马上运行。缺省值是1024。\n# 以上三个参数，当内核维护的arp表过于庞大时候，可以考虑优化\nnet.netfilter.nf_conntrack_max=10485760\n# 允许的最大跟踪连接条目，是在内核内存中netfilter可以同时处理的“任务”(连接跟踪条目)\nnet.netfilter.nf_conntrack_tcp_timeout_established=300\nnet.netfilter.nf_conntrack_buckets=655360\n# 哈希表大小(只读)(64位系统、8G内存默认 65536，16G翻倍，如此类推)\nnet.core.netdev_max_backlog=10000\n# 每个网络接口接收数据包的速率比内核处理这些包的速率快时，允许送到队列的数据包的最大数目。\nfs.inotify.max_user_instances=524288\n# 默认值: 128 指定了每一个real user ID可创建的inotify instatnces的数量上限\nfs.inotify.max_user_watches=524288\n# 默认值: 8192 指定了每个inotify instance相关联的watches的上限\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817101132-9h842eg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817101132-9h842eg",
+				"updated": "20220817101331"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. etcd性能优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-i3sk580",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-i3sk580",
+				"updated": "20220817101325"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1. Etcd对磁盘写入延迟非常敏感，因此对于负载较重的集群，etcd一定要使用local SSD或者高性能云盘。可以使用fio测量磁盘实际顺序 IOPS。"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-14rtp8n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-14rtp8n",
+				"updated": "20220817101205"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "fio -filename=/dev/sda1 -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=4k -size=60G -numjobs=64 -runtime=10 -group_reporting -name=file"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-uyqkd0u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-uyqkd0u",
+				"updated": "20220817101607"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2.  由于etcd必须将数据持久保存到磁盘日志文件中，因此来自其他进程的磁盘活动可能会导致增加写入时间，结果导致etcd请求超时和临时leader丢失。因此可以给etcd进程更高的磁盘优先级，使etcd服务可以稳定地与这些进程一起运行。"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-ldbpsou",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-ldbpsou",
+				"updated": "20220817101304"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " \t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ionice -c2 -n0 -p $(pgrep etcd) | header"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-w1rclm8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-w1rclm8",
+				"updated": "20220817101606"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3.  默认etcd空间配额大小为 2G，超过 2G 将不再写入数据。通过给etcd配置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "–quota-backend-bytes "
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数增大空间配额，最大支持 8G。"
+				}
+			]
+		},
+		{
+			"ID": "20220817101418-r3m5lik",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817101418-r3m5lik",
+				"updated": "20220817101602"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 . 如果etcd leader处理大量并发客户端请求，可能由于网络拥塞而延迟处理follower对等请求。在follower 节点上可能会产生如下的发送缓冲区错误的消息："
+				}
+			]
+		},
+		{
+			"ID": "20220817104722-t0u2tk3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817104722-t0u2tk3",
+				"updated": "20220817104723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				}
+			]
+		},
+		{
+			"ID": "20220817104724-8kyazsw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817104724-8kyazsw",
+				"updated": "20220817104728"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dropped MsgProp to 247ae21ff9436b2d since streamMsg's sending buffer is full\ndropped MsgAppResp to 247ae21ff9436b2d since streamMsg's sending buffer is full\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-0fmki8u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-0fmki8u",
+				"updated": "20220817104812"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以通过提高etcd对于对等网络流量优先级来解决这些错误。在 Linux 上，可以使用 tc 对对等流量进行优先级排序："
+				}
+			]
+		},
+		{
+			"ID": "20220817104759-hgsww8c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817104759-hgsww8c",
+				"updated": "20220817104800"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "tc qdisc add dev eth0 root handle 1: prio bands 3\ntc filter add dev eth0 parent 1: protocol ip prio 1 u32 match ip sport 2380 0xffff flowid 1:1\ntc filter add dev eth0 parent 1: protocol ip prio 1 u32 match ip dport 2380 0xffff flowid 1:1\ntc filter add dev eth0 parent 1: protocol ip prio 2 u32 match ip sport 2379 0xffff flowid 1:1\ntc filter add dev eth0 parent 1: protocol ip prio 2 u32 match ip dport 2379 0xffff flowid 1:1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-drk7clw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-drk7clw",
+				"updated": "20220817101559"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.5. 为了在大规模集群下提高性能，可以将events存储在单独的 ETCD 实例中，可以配置kube-apiserver参数："
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-ae8p84r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-ae8p84r",
+				"updated": "20220817101756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--etcd-servers=\u0026quot;http://etcd1:2379,http://etcd2:2379,http://etcd3:2379\u0026quot; -etcd-servers-overrides=\u0026quot;/events#http://etcd4:2379,http://etcd5:2379,http://etcd6:2379\u0026quot;"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-"
+				}
+			]
+		},
+		{
+			"ID": "20220817101640-bx745jp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817101640-bx745jp",
+				"updated": "20220817101644"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. docker优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-w9134ca",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-w9134ca",
+				"updated": "20220817101649"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1. 配置docker daemon并行拉取镜像，以提高镜像拉取效率，在/etc/docker/daemon.json中添加以下配置："
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-z2hhtq1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-z2hhtq1",
+				"updated": "20220817101733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026quot;max-concurrent-downloads\u0026quot;: 10"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-4j7fol1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-4j7fol1",
+				"updated": "20220817102057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2. 使用local SSD或者高性能云盘"
+				}
+			]
+		},
+		{
+			"ID": "20220817102058-59i3g1y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817102058-59i3g1y",
+				"updated": "20220817102058"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t可以使用local SSD或者高性能云盘作为docker容器的持久数据目录，在/etc/docker/daemon.json中添加以下配置："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026quot;data-root\u0026quot;: \u0026quot;/ssd_mount_dir\u0026quot;"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-eeot0h8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-eeot0h8",
+				"updated": "20220817102118"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3. 预加载pause镜像"
+				}
+			]
+		},
+		{
+			"ID": "20220817102120-60i6gln",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817102120-60i6gln",
+				"updated": "20220817102120"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t启动pod时都会拉取pause镜像，为了减小拉取pause镜像网络带宽，可以每个node预加载pause镜像，在每个node节点上执行以下命令："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker load -i /tmp/preloaded_pause_image.tar"
+				}
+			]
+		},
+		{
+			"ID": "20220817101703-pukvzi0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817101703-pukvzi0",
+				"updated": "20220817101707"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. kubelet优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-1tn03bc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-1tn03bc",
+				"updated": "20220817102030"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1. 增加拉取镜像并发度 "
+				}
+			]
+		},
+		{
+			"ID": "20220817102031-dxw96ln",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817102031-dxw96ln",
+				"updated": "20220817102031"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t设置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "–serialize-image-pulls=false"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "， 该选项配置串行拉取镜像，默认值时true，配置为false可以增加并发度。但是如果docker daemon 版本小于 1.9，且使用 aufs 存储则不能改动该选项。"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-qsfrvcw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-qsfrvcw",
+				"updated": "20220817101956"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2. 增大大镜像拉取超时时间"
+				}
+			]
+		},
+		{
+			"ID": "20220817101956-8fsywd6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817101956-8fsywd6",
+				"updated": "20220817101956"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t设置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "–image-pull-progress-deadline=30"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "， 配置镜像拉取超时。默认值时1分，对于大镜像拉取需要适量增大超时时间。"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-akm65uz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-akm65uz",
+				"updated": "20220817102222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3. 设置单节点允许运行的最大 Pod 数"
+				}
+			]
+		},
+		{
+			"ID": "20220817102224-td6v34x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817102224-td6v34x",
+				"updated": "20220817102224"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tkubelet 单节点允许运行的最大 Pod 数："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "–max-pods=110"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "(默认是 110，可以根据实际需要设置)"
+				}
+			]
+		},
+		{
+			"ID": "20220817102010-iznafje",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102010-iznafje",
+				"updated": "20220817102202"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. kube-apiserver优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-wamozna",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-wamozna",
+				"updated": "20220817102431"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.1.  设置多个kube-apiserver"
+				}
+			]
+		},
+		{
+			"ID": "20220817102432-pesvnox",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817102432-pesvnox",
+				"updated": "20220817102437"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t设置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " –apiserver-count 和 –endpoint-reconciler-type"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，可使得多个 kube-apiserver 实例加入到 Kubernetes Service 的 endpoints 中，从而实现高可用。"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-6cswhhi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-6cswhhi",
+				"updated": "20220817102459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.2. 设置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " -–max-requests-inflight 和 –max-mutating-requests-inflight"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，默认是 200 和 400。 节点数量在 1000 - 3000 之间时，推荐："
+				}
+			]
+		},
+		{
+			"ID": "20220817102341-oddlj0n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817102341-oddlj0n",
+				"updated": "20220817102351"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--max-requests-inflight=1500--max-mutating-requests-inflight=500\n--max-requests-inflight=3000--max-mutating-requests-inflight=1000\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-76x28t2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-76x28t2",
+				"updated": "20220817102251"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.3、配置kube-apiserver的内存"
+				}
+			]
+		},
+		{
+			"ID": "20220817102251-afyvs01",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817102251-afyvs01",
+				"updated": "20220817102251"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t使用–target-ram-mb配置kube-apiserver的内存，按以下公式得到一个合理的值："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--target-ram-mb=node_nums * 60"
+				}
+			]
+		},
+		{
+			"ID": "20220817102509-d4tz0cn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102509-d4tz0cn",
+				"updated": "20220817102509"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6、kube-controller-manager优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-c1jx9tr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-c1jx9tr",
+				"updated": "20220817102511"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6.1、kube-controller-manager可以通过 leader election 实现高可用，添加以下命令行参数："
+				}
+			]
+		},
+		{
+			"ID": "20220817102519-rmm2ykw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817102519-rmm2ykw",
+				"updated": "20220817102542"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--leader-elect-lease-duration=15s\n--leader-elect-renew-deadline=10s\n--leader-elect-resource-lock=endpoints\n--leader-elect-retry-period=2s\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-ka93hhq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-ka93hhq",
+				"updated": "20220817102524"
+			}
+		},
+		{
+			"ID": "20220817100210-003kx07",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-003kx07",
+				"updated": "20220817102512"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6.2、限制与kube-apiserver通信的qps，添加以下命令行参数："
+				}
+			]
+		},
+		{
+			"ID": "20220817104858-a1tq6iv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817104858-a1tq6iv",
+				"updated": "20220817104859"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--kube-api-qps=100\n--kube-api-burst=150\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817102609-pz4teg0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102609-pz4teg0",
+				"updated": "20220817102926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. kube-scheduler优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-4nj386j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-4nj386j",
+				"updated": "20220817102924"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.1. kube-scheduler可以通过 leader election 实现高可用，添加以下命令行参数："
+				}
+			]
+		},
+		{
+			"ID": "20220817102652-148qoh8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817102652-148qoh8",
+				"updated": "20220817102700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--leader-elect-lease-duration=15s\n--leader-elect-renew-deadline=10s\n--leader-elect-resource-lock=endpoints\n--leader-elect-retry-period=2s\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817104923-aamjova",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817104923-aamjova",
+				"updated": "20220817104929"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.2、限制与kube-apiserver通信的qps，添加以下命令行参数："
+				}
+			]
+		},
+		{
+			"ID": "20220817104923-3e25fji",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817104923-3e25fji",
+				"updated": "20220817104947"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--kube-api-qps=100\n--kube-api-burst=150\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817102814-pg9hfzf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102814-pg9hfzf",
+				"updated": "20220817102919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8. pod优化"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-skzs0dn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-skzs0dn",
+				"updated": "20220817102917"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8.1. 为容器设置资源请求和限制，尤其是一些基础插件服务"
+				}
+			]
+		},
+		{
+			"ID": "20220817102932-766xsz9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817102932-766xsz9",
+				"updated": "20220817102942"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "spec.containers[].resources.limits.cpu\nspec.containers[].resources.limits.memory\nspec.containers[].resources.requests.cpu\nspec.containers[].resources.requests.memory\nspec.containers[].resources.limits.ephemeral-storage\nspec.containers[].resources.requests.ephemeral-storage\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-sdrwpz5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-sdrwpz5",
+				"updated": "20220817100210"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在k8s中，会根据pod的limit 和 requests的配置将pod划分为不同的qos类别："
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-5g5im0p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-5g5im0p",
+				"updated": "20220817103050"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t当机器可用资源不够时，kubelet会根据qos级别划分迁移驱逐pod。被驱逐的优先级："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "BestEffort \u0026gt; Burstable \u0026gt; Guaranteed。"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-h0i1frl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-h0i1frl",
+				"updated": "20220817103120"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8.2. 分散度"
+				}
+			]
+		},
+		{
+			"ID": "20220817103120-983oz05",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817103120-983oz05",
+				"updated": "20220817103120"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t对关键应用使用 nodeAffinity、podAffinity 和 podAntiAffinity 等保护，使其调度分散到不同的node上。比如kube-dns配置"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-1l42qzr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-1l42qzr",
+				"updated": "20220817103130"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8.3. 尽量使用控制器来管理容器(如 Deployment、StatefulSet、DaemonSet、Job 等)"
+				}
+			]
+		},
+		{
+			"ID": "20220817102824-49w9cje",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102824-49w9cje",
+				"updated": "20220817103134"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9. kubernetes集群数据备份与还原"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-ba1wu2j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817100210-ba1wu2j",
+				"updated": "20220817103137"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9.1. etcd数据备份(备份数据前先找到etcd集群当前的leader)"
+				}
+			]
+		},
+		{
+			"ID": "20220817103149-anew95v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817103149-anew95v",
+				"updated": "20220817103214"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key --cacert=/etc/kubernetes/pki/etcd/ca.crt endpoint --cluster status | grep -v 'false' | awk -F '[/ :]' '{print $4}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-yrrdsyx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-yrrdsyx",
+				"updated": "20220817103152"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t然后登录到leader节点，备份snapshot db文件："
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-wyk2l7d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-wyk2l7d",
+				"updated": "20220817103225"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rsync -avp /var/lib/etcd/member/snap/db /tmp/etcd_db.bak"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-sqqutdl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-sqqutdl",
+				"updated": "20220817100210"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "还原 将备份的snaphost db文件上传到各个etcd节点，使用以下命令还原数据："
+				}
+			]
+		},
+		{
+			"ID": "20220817103236-y56dfxo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817103236-y56dfxo",
+				"updated": "20220817105034"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ETCDCTL_API=3 etcdctl snapshot restore \\\n            /tmp/etcd_db.bak \\\n            --endpoints=192.168.0.11:2379 \\\n            --name=192.168.0.11 \\\n            --cert=/etc/kubernetes/pki/etcd/server.crt \\\n            --key=/etc/kubernetes/pki/etcd/server.key \\\n            --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n            --initial-advertise-peer-urls=https://192.168.0.11:2380 \\\n            --initial-cluster-token=etcd-cluster-0 \\\n            --initial-cluster=192.168.0.11=https://192.168.0.11:2380,192.168.0.12=https://192.168.0.12:2380,192.168.0.13=https://192.168.0.13:2380 \\\n            --data-dir=/var/lib/etcd/ \\\n            --skip-hash-check=true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817102830-4t5ccuc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102830-4t5ccuc",
+				"updated": "20220817102830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10、harbor"
+				}
+			]
+		},
+		{
+			"ID": "20220817105120-e6z07sg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817105120-e6z07sg",
+				"updated": "20220817105130"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10.1 备份"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-f3n31mn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-f3n31mn",
+				"updated": "20220817102830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果使用harbor作为镜像仓库与chart仓库，可使用脚本将harbor中所有的镜像和chart导入导出。"
+				}
+			]
+		},
+		{
+			"ID": "20220817103328-9tvykky",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817103328-9tvykky",
+				"updated": "20220817104423"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nharborUsername='admin'\nharborPassword='Harbor12345'\nharborRegistry='registry.test.com'\nharborBasicAuthToken=$(echo -n \"${harborUsername}:${harborPassword}\" | base64)\ndocker login --username ${harborUsername} --password ${harborPassword} ${harborRegistry}\nrm -f dist/images.list\nrm -f dist/charts.list\n# list projects\nprojs=`curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}\"'/api/projects?page=1\u0026page_size=1000' | jq -r '.[] | \"\\(.project_id)=\\(.name)\"'`\nfor proj in ${projs[*]}; do\n  projId=`echo $proj|cut -d '=' -f 1`\n  projName=`echo $proj|cut -d '=' -f 2`\n  # list repos in one project\n  repos=`curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}\"'/api/repositories?page=1\u0026page_size=1000\u0026project_id='\"${projId}\" | jq -r '.[] | \"\\(.id)=\\(.name)\"'`\n  for repo in ${repos[*]}; do\n    repoId=`echo $repo|cut -d '=' -f 1`\n    repoName=`echo $repo|cut -d '=' -f 2`\n    # list tags in one repo\n    tags=`curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}\"'/api/repositories/'\"${repoName}\"'/tags?detail=1' | jq -r '.[].name'`\n    for tag in ${tags[*]}; do\n      #echo ${tag};\n      # pull image\n      docker pull ${harborRegistry}/${repoName}:${tag}\n      # tag image\n      docker tag ${harborRegistry}/${repoName}:${tag} ${repoName}:${tag}\n      # save image\n      mkdir -p $(dirname dist/${repoName})\n      docker save -o dist/${repoName}:${tag}.tar  ${repoName}:${tag}\n      # record image to list file\n      echo \"${repoName}:${tag}\" \u003e\u003e dist/images.list\n    done\n  done\n  # list charts in one project\n  charts=`curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}\"'/api/chartrepo/'\"${projName}\"'/charts' | jq -r '.[].name'`\n  for chart in ${charts[*]}; do\n    #echo ${chart}\n    # list download urls in one chart\n    durls=`curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}\"'/api/chartrepo/'\"${projName}\"'/charts/'\"${chart}\" | jq -r '.[].urls[0]'`\n    #echo ${durl[*]}\n    for durl in ${durls[*]}; do\n        #echo ${durl};\n        # download chart\n        mkdir -p $(dirname dist/${projName}/${durl})\n        curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" -o dist/${projName}/${durl} \"https://${harborRegistry}/chartrepo/${projName}/${durl}\"\n        # record chart to list file\n        echo \"${projName}/${durl}\" \u003e\u003e dist/charts.list\n    \n    done\n  done\ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817105111-avgm41t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817105111-avgm41t",
+				"updated": "20220817105137"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10.2 还原"
+				}
+			]
+		},
+		{
+			"ID": "20220817105145-8ets0vm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817105145-8ets0vm",
+				"updated": "20220817105146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nharborUsername='admin'\nharborPassword='Harbor12345'\nharborRegistry='registry.test.com'\nharborBasicAuthToken=$(echo -n \"${harborUsername}:${harborPassword}\" | base64)\ndocker login --username ${harborUsername} --password ${harborPassword} ${harborRegistry}\nwhile IFS=\"\" read -r image || [ -n \"$image\" ]\ndo\n  projName=${image%%/*}\n  # echo ${projName}\n  # create harbor project\n  curl -k -X POST -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}/api/projects\" -H \"accept: application/json\" -H \"Content-Type: application/json\" -d '{ \"project_name\": \"'\"$projName\"'\", \"metadata\": { \"public\": \"true\" }}'\n  # load image\n  docker load -i dist/${image}.tar\n  # tag image\n  docker tag ${image} ${harborRegistry}/${image}\n  # push image\n  docker push ${harborRegistry}/${image}\ndone \u003c dist/images.list\nwhile IFS=\"\" read -r chart || [ -n \"$chart\" ]\ndo\n  projName=${chart%%/*}\n  # echo ${projName}\n  # create harbor project\n  curl -k -X POST -H \"Authorization: Basic ${harborBasicAuthToken}\" \"https://${harborRegistry}/api/projects\" -H \"accept: application/json\" -H \"Content-Type: application/json\" -d '{ \"project_name\": \"'\"$projName\"'\", \"metadata\": { \"public\": \"true\" }}'\n  # upload chart\n  curl -s -k -H \"Authorization: Basic ${harborBasicAuthToken}\" -X POST \"https://${harborRegistry}/api/chartrepo/${projName}/charts\" -H \"accept: application/json\" -H \"Content-Type: multipart/form-data\" -F \"chart=@dist/${chart};type=application/gzip\"\ndone \u003c dist/charts.list\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817102834-og48eja",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102834-og48eja",
+				"updated": "20220817105943"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "11. pvc对应的存储卷"
+				}
+			]
+		},
+		{
+			"ID": "20220817105654-j2pesvb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220817105654-j2pesvb",
+				"updated": "20220817105731"
+			},
+			"Children": [
+				{
+					"ID": "20220817105731-6q45j25",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20220817105731-6q45j25"
+					},
+					"Children": [
+						{
+							"ID": "20220817105731-qj45oyw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817105731-qj45oyw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "集群中其它应用数据一般是保存在pvc对应的存储卷中的。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-oi028mh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-oi028mh",
+				"updated": "20220817105814"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl -n test get pvc demo-pvc -o jsonpath='{.spec.volumeName}'"
+				}
+			]
+		},
+		{
+			"ID": "20220817105657-xc7ndfm",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220817105657-xc7ndfm",
+				"updated": "20220817105737"
+			},
+			"Children": [
+				{
+					"ID": "20220817105737-xk4j0w0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20220817105737-xk4j0w0"
+					},
+					"Children": [
+						{
+							"ID": "20220817105737-tur3321",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817105737-tur3321"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "找到对应的pv的挂载目录："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-z0aueh7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-z0aueh7",
+				"updated": "20220817105703"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mount | grep pvc-xxxxxxxxxxxxxxxxxxx"
+				}
+			]
+		},
+		{
+			"ID": "20220817105718-cyivvqi",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20220817105718-cyivvqi",
+				"updated": "20220817105752"
+			},
+			"Children": [
+				{
+					"ID": "20220817105742-0x15o8r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20220817105742-0x15o8r",
+						"updated": "20220817105752"
+					},
+					"Children": [
+						{
+							"ID": "20220817105742-motpa5z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817105742-motpa5z",
+								"updated": "20220817105752"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用rsync命令备份数据"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-od71rlh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-od71rlh",
+				"updated": "20220817105757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rsync -avp --delete /var/lib/kubelet/pods/xxxxxx/volumes/xxxxxxx/   /tmp/pvc-data-bak/test/demo-pvc/"
+				}
+			]
+		},
+		{
+			"ID": "20220817102839-qbi1vbp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220817102839-qbi1vbp",
+				"updated": "20220817105834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "12. 备份数据管理"
+				}
+			]
+		},
+		{
+			"ID": "20220817100210-6m8y9e9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100210-6m8y9e9",
+				"updated": "20220817102839"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t所有备份出的数据可以存放在一个目录下，并使用restic工具保存到多个后端存储系统上"
+				}
+			]
+		},
+		{
+			"ID": "20220817105854-cw1315o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220817105854-cw1315o",
+				"updated": "20220817105927"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 初始化备份仓库\nrestic --repo sftp:user@host:/srv/restic-repo init\n# 将目录备份到备份仓库\nrestic --repo sftp:user@host:/srv/restic-repo backup /data/k8s-all-data\n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220817100434-kspijkp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817100434-kspijkp",
+				"updated": "20220817100434"
+			}
+		}
+	]
+}

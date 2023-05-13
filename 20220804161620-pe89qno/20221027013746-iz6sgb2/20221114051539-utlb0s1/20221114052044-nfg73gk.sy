@@ -1,0 +1,1903 @@
+{
+	"ID": "20221114052044-nfg73gk",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221114052044-nfg73gk",
+		"title": "OpenShift4-用ImageStream操作Image",
+		"updated": "20221114182653"
+	},
+	"Children": [
+		{
+			"ID": "20221114052044-k4mdliu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221114052044-k4mdliu",
+				"updated": "20221114052242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ImageStream"
+				}
+			]
+		},
+		{
+			"ID": "20221114052233-5izhp1i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114052233-5izhp1i",
+				"updated": "20221114052429"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tImageStream是OpenShift的一种对象，用来"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "记录并管理Image信息"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。可以通过它统一访问存放在不同Image Registry（OpenShift外部独立运行的Registry、或是OpenShift内置的Registry）上的Image。通过这个视图可以简化对那些来自不同Registry的Image的访问。"
+				}
+			]
+		},
+		{
+			"ID": "20221114052419-o4i5xq2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114052419-o4i5xq2",
+				"updated": "20221114052422"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221114052422-rrtqwmr.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114052458-wemos9m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114052458-wemos9m",
+				"updated": "20221114052648"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ImageStream使用访问标签（ImageStreamTag）和指向信息（ImageStreamImage）记录这种对应关系。"
+				}
+			]
+		},
+		{
+			"ID": "20221114052532-q5k1ugm",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221114052532-q5k1ugm",
+				"updated": "20221114052532"
+			},
+			"Children": [
+				{
+					"ID": "20221114052532-n2192el",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114052532-n2192el"
+					},
+					"Children": [
+						{
+							"ID": "20221114052532-89l829j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114052532-89l829j"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ImageStreamTag：是由用户指定的、有意义的字符串，可用它来表示一个特定Image，我们可以把它想象成DNS的域名地址。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114052549-2tof8f5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221114052549-2tof8f5",
+				"updated": "20221114052549"
+			},
+			"Children": [
+				{
+					"ID": "20221114052549-931nvzu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114052549-931nvzu"
+					},
+					"Children": [
+						{
+							"ID": "20221114052549-kbypy42",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114052549-kbypy42"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ImageStreamImage：一串基于sha256的无意义的字符创，可用它来表示一个特定Image，我们可以把它想象成DNS的IP地址。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114052631-1gpb78q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114052631-1gpb78q",
+				"updated": "20221114052733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t当我们使用ImageStreamTag访问一个Image的时候，其实OpenShift最终会识别出ImageStreamTag对应的ImageStreamImage（就像我们使用DNS域名访问一个地址时，系统需要将其翻译成IP地址访问目标）。ImageStreamTag和ImageStreamImage的这种对应关系可以通过2种方式被解析："
+				}
+			]
+		},
+		{
+			"ID": "20221114052733-hji16w8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221114052733-hji16w8",
+				"updated": "20221114052809"
+			},
+			"Children": [
+				{
+					"ID": "20221114052733-qviqd8h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114052733-qviqd8h",
+						"updated": "20221114052809"
+					},
+					"Children": [
+						{
+							"ID": "20221114052733-ksnordi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114052733-ksnordi",
+								"updated": "20221114052809"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在ImageStream记录了ImageStreamTag和ImageStreamImage这种对应关系。当使用ImageStreamTag访问Image的时候，OpenShift实际是使用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "ImageStreamImage"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "访问该Image。 "
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114052750-ubjrfo5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221114052750-ubjrfo5",
+				"updated": "20221114052901"
+			},
+			"Children": [
+				{
+					"ID": "20221114052753-wcypoxs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114052753-wcypoxs",
+						"updated": "20221114052901"
+					},
+					"Children": [
+						{
+							"ID": "20221114052753-rm162th",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114052753-rm162th",
+								"updated": "20221114052901"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在ImageStream不记录ImageStreamTag和ImageStreamImage这种对应关系，而只记录ImageStreamTag信息。因此每次通过ImageStreamTag访问Image的时候，OpenShift需要"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "直接向Registry询问"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "这个ImageStreamTag对应是哪个ImageStreamImage，然后才能访问该Image。\n "
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "image.png"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image-20221114052901-hwx1nth.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114052857-kjm4flt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114052857-kjm4flt",
+				"updated": "20221114052932"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t根据ImageStream所在项目，可将其分为集群级和项目级的ImageStream。无论当前在哪个项目中，任何用户都可访问到集群级的ImageStream；而项目级ImageStream只能该项目用户或被授权用户才可访问。"
+				}
+			]
+		},
+		{
+			"ID": "20221114052954-yqyxraj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221114052954-yqyxraj",
+				"updated": "20221114052954"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从Image生成ImageStream"
+				}
+			]
+		},
+		{
+			"ID": "20221114053053-j7vq0en",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114053053-j7vq0en",
+				"updated": "20221114053306"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t成功创建应用后可以通过以下命令发现OpenShift会自动生成ImageStream对象，在运行应用前，OpenShift要创建ImageStream并建立App Image的指向关系、"
+				}
+			]
+		},
+		{
+			"ID": "20221114053158-ljq9up7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114053158-ljq9up7",
+				"updated": "20221114053205"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$ oc get is"
+				}
+			]
+		},
+		{
+			"ID": "20221114053206-xjm5gyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114053206-xjm5gyy",
+				"updated": "20221114053247"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tOpenShift除了可以自动创建ImageStream外，我们还可以从定义ImageStream的YAML文件创建它，但是我们通常用以下两种方法手工从Image生成ImageStream："
+				}
+			]
+		},
+		{
+			"ID": "20221114053316-zsubpsq",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114053316-zsubpsq",
+				"updated": "20221114053348"
+			},
+			"Children": [
+				{
+					"ID": "20221114053324-mn6x4u5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114053324-mn6x4u5",
+						"updated": "20221114053348"
+					},
+					"Children": [
+						{
+							"ID": "20221114053333-uerlers",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114053333-uerlers"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首选创建名为imagestream-lab1的OpenShift项目，以下所有操作都缺省在该项目中进行。"
+								}
+							]
+						},
+						{
+							"ID": "20221114053344-xdh0n0s",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114053344-xdh0n0s",
+								"updated": "20221114053348"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ export USER_ID=YOUR-USER-ID\n$ oc new-project ${USER_ID}-imagestream-lab1\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114053412-mlh0kvz",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114053412-mlh0kvz",
+				"updated": "20221114053454"
+			},
+			"Children": [
+				{
+					"ID": "20221114053412-krm0db7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114053412-krm0db7",
+						"updated": "20221114053454"
+					},
+					"Children": [
+						{
+							"ID": "20221114053412-1gq9gwn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114053412-1gq9gwn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过import-image导入镜像的信息并生成ImageStream。以下将docker.io/openshift/deployment-example:v1的镜像信息导入到名为is-example的ImageStream中，并用v1指向该远程镜像。"
+								}
+							]
+						},
+						{
+							"ID": "20221114053451-fu7rta9",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114053451-fu7rta9",
+								"updated": "20221114053454"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc import-image --from=docker.io/openshift/deployment-example:v1 is-example:v1 --confirm -n ${USER_ID}-imagestream-lab1\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114053634-rpeo7pm",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114053634-rpeo7pm",
+				"updated": "20221114053707"
+			},
+			"Children": [
+				{
+					"ID": "20221114053634-62pbtzn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114053634-62pbtzn",
+						"updated": "20221114053707"
+					},
+					"Children": [
+						{
+							"ID": "20221114053634-rvw5ojc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114053634-rvw5ojc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用tag对镜像打标签。下面是将docker.io上的openshift/deployment-example:v2打标签为v2，并保存到名为is-example的ImageStream中。"
+								}
+							]
+						},
+						{
+							"ID": "20221114053652-ltwsuuw",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114053652-ltwsuuw",
+								"updated": "20221114053707"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc tag --source=docker openshift/deployment-example:v2 is-example:v2 -n ${USER_ID}-imagestream-lab1\nTag is-example:v2 set to openshift/deployment-example:v2.\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114053739-ypsleme",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114053739-ypsleme",
+				"updated": "20221114060023"
+			},
+			"Children": [
+				{
+					"ID": "20221114053739-ltrc2if",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114053739-ltrc2if",
+						"updated": "20221114060023"
+					},
+					"Children": [
+						{
+							"ID": "20221114053739-lqddyw4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114053739-lqddyw4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为了在后面证明tag命令的“–source=docker”选项会使用“docker.io”上的镜像，我们执行以下命令，其中“openshift/deployment-example-test:v2”的镜像实际在“docker.io”上并不存在。"
+								}
+							]
+						},
+						{
+							"ID": "20221114053745-il4i04b",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114053745-il4i04b",
+								"updated": "20221114060023"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc tag --source=docker docker.io/openshift/deployment-example:v2 is-example:v3 -n ${USER_ID}-imagestream-lab1\n$ oc tag --source=docker openshift/deployment-example-test:v2 is-example:v4 -n ${USER_ID}-imagestream-lab1\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114053848-cp183i7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221114053848-cp183i7",
+				"updated": "20221114053848"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ImageStream的操作"
+				}
+			]
+		},
+		{
+			"ID": "20221114053907-run6p8i",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114053907-run6p8i",
+				"updated": "20221114053936"
+			},
+			"Children": [
+				{
+					"ID": "20221114053913-ld6v00t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114053913-ld6v00t",
+						"updated": "20221114053936"
+					},
+					"Children": [
+						{
+							"ID": "20221114053913-tp71eq7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114053913-tp71eq7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看ImageStream列表，注意TAGS部分的“v3,v2,v1,v4”"
+								}
+							]
+						},
+						{
+							"ID": "20221114053928-untlvh2",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114053928-untlvh2",
+								"updated": "20221114053936"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc get is -n ${USER_ID}-imagestream-lab1\nNAME         IMAGE REPOSITORY                                                                     TAGS          UPDATED\nis-example   image-registry.openshift-image-registry.svc:5000/user1-imagestream-lab1/is-example   v3,v2,v1,v4   42 minutes ago\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114053915-aawxobv",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114053915-aawxobv",
+				"updated": "20221114054029"
+			},
+			"Children": [
+				{
+					"ID": "20221114054021-s758xvy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114054021-s758xvy",
+						"updated": "20221114054029"
+					},
+					"Children": [
+						{
+							"ID": "20221114054021-p31wkl3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054021-p31wkl3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看名为is-example的ImageStream配置。注意：名为v2和v3的ImageStreamTag都指向ImageStreamImage为“sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b”的镜像；另外，在v4部分提示无法访问“docker.io/openshift/deployment-example-test:v2”，这说明“oc tag”命令的“–source=docker”选项是从“docker.io”获取镜像。"
+								}
+							]
+						},
+						{
+							"ID": "20221114054026-g7erj86",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114054026-g7erj86",
+								"updated": "20221114054029"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc describe is is-example -n ${USER_ID}-imagestream-lab1\nName:                   is-example\nNamespace:              user1-imagestream-lab1\nCreated:                2 hours ago\nLabels:                 \u003cnone\u003e\nAnnotations:            openshift.io/image.dockerRepositoryCheck=2020-12-08T14:58:12Z\nImage Repository:       image-registry.openshift-image-registry.svc:5000/user1-imagestream-lab1/is-example\nImage Lookup:           local=false\nUnique Images:          2\nTags:                   4\n \nv1\n  tagged from docker.io/openshift/deployment-example:v1\n \n  * docker.io/openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n      2 hours ago\n \nv2\n  tagged from openshift/deployment-example:v2\n  \n  * openshift/deployment-example@sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b\n      2 hours ago\n \nv3\n  tagged from docker.io/openshift/deployment-example:v2\n \n  * docker.io/openshift/deployment-example@sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b\n      37 minutes ago\n \nv4\n  tagged from openshift/deployment-example-test:v2\n  \n  ! error: Import failed (Unauthorized): you may not have access to the container image \"docker.io/openshift/deployment-example-test:v2\"\n      5 seconds ago\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054112-gawqcp2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114054112-gawqcp2",
+				"updated": "20221114054117"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get is is-example -o yaml -n ${USER_ID}-imagestream-lab1\napiVersion: image.openshift.io/v1\nkind: ImageStream\nmetadata:\n  annotations:\n    openshift.io/image.dockerRepositoryCheck: \"2020-12-08T13:03:59Z\"\n  creationTimestamp: \"2020-12-08T12:59:18Z\"\n  generation: 3\n  name: is-example\n  namespace: user1-imagestream-lab1\n  resourceVersion: \"232297\"\n  selfLink: /apis/image.openshift.io/v1/namespaces/user1-imagestream-lab1/imagestreams/is-example\n  uid: dd1f8458-3043-4791-b5da-2930ff3524c5\nspec:\n  lookupPolicy:\n    local: false\n  tags:\n  - annotations: null\n    from:\n      kind: DockerImage\n      name: docker.io/openshift/deployment-example:v1\n    generation: 1\n    importPolicy: {}\n    name: v1\n    referencePolicy:\n      type: Source\n  - annotations: null\n    from:\n      kind: DockerImage\n      name: openshift/deployment-example:v2\n    generation: 3\n    importPolicy: {}\n    name: v2\n    referencePolicy:\n      type: Source\n  - annotations: null\n    from:\n      kind: DockerImage\n      name: docker.io/openshift/deployment-example:v2\n    generation: 5\n    importPolicy: {}\n    name: v3\n    referencePolicy:\n      type: Source\n  - annotations: null\n    from:\n      kind: DockerImage\n      name: openshift/deployment-example-test:v2\n    generation: 9\n    importPolicy: {}\n    name: v4\n    referencePolicy:\n      type: Source\nstatus:\n  dockerImageRepository: image-registry.openshift-image-registry.svc:5000/user1-imagestream-lab1/is-example\n  tags:\n  - items:\n    - created: \"2020-12-08T12:59:18Z\"\n      dockerImageReference: docker.io/openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n      generation: 1\n      image: sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n    tag: v1\n  - items:\n    - created: \"2020-12-08T13:03:59Z\"\n      dockerImageReference: openshift/deployment-example@sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b\n      generation: 3\n      image: sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b\n    tag: v2\n  - items:\n    - created: \"2020-12-08T14:20:41Z\"\n      dockerImageReference: docker.io/openshift/deployment-example@sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b\n      generation: 5\n      image: sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b\n    tag: v3\n  - conditions:\n    - generation: 9\n      lastTransitionTime: \"2020-12-08T14:58:12Z\"\n      message: you may not have access to the container image \"docker.io/openshift/deployment-example-test:v2\"\n      reason: Unauthorized\n      status: \"False\"\n      type: ImportSuccess\n    items: null\n    tag: v4\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114054219-kx5ual7",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054219-kx5ual7",
+				"updated": "20221114054237"
+			},
+			"Children": [
+				{
+					"ID": "20221114054219-3z5umhc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114054219-3z5umhc",
+						"updated": "20221114054237"
+					},
+					"Children": [
+						{
+							"ID": "20221114054219-ngujmau",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054219-ngujmau"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看ImageStreamTag列表，确认没有“is-example:v4”的ImageStreamTag。这说明名为v4的ImageStreamTag没有创建成功。"
+								}
+							]
+						},
+						{
+							"ID": "20221114054233-0dhmn2d",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114054233-0dhmn2d",
+								"updated": "20221114054237"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc get istag -n ${USER_ID}-imagestream-lab1\nNAME            IMAGE REFERENCE                                                                                                  UPDATED\nis-example:v1   docker.io/openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b   2 hours ago\nis-example:v2   openshift/deployment-example@sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b             2 hours ago\nis-example:v3   docker.io/openshift/deployment-example@sha256:1318f08b141aa6a4cdca8c09fe8754b6c9f7802f8fc24e4e39ebf93e9d58472b   About an hour ago\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054254-qnjmd9c",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054254-qnjmd9c",
+				"updated": "20221114054254"
+			},
+			"Children": [
+				{
+					"ID": "20221114054254-p0q2s10",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114054254-p0q2s10"
+					},
+					"Children": [
+						{
+							"ID": "20221114054254-qw7shwi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054254-qw7shwi"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看ImageStreamTag配置"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054257-fhr1hhp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114054257-fhr1hhp",
+				"updated": "20221114054317"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc describe istag is-example:v1 -n ${USER_ID}-imagestream-lab1\nImage Name:     sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\nDocker Image:   docker.io/openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\nName:           sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\nCreated:        2 hours ago\nAnnotations:    image.openshift.io/dockerLayersOrder=ascending\nImage Size:     5.77MB in 6 layers\nLayers:         0B      sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4\n                5.77MB  sha256:50438f3701c47319ff1c8189ff19f5a8c779f2479aa2066979b930c7dbb3bde8\n                0B      sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4\n                0B      sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4\n                0B      sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4\n                0B      sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4\nImage Created:  4 years ago\nAuthor:         Clayton Coleman \u003cccoleman@redhat.com\u003e\nArch:           amd64\nEntrypoint:     /deployment v1\nWorking Dir:    \u003cnone\u003e\nUser:           \u003cnone\u003e\nExposes Ports:  8080/tcp\nDocker Labels:  \u003cnone\u003e\nEnvironment:    COLOR=#006e9c\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114054339-har5b3q",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054339-har5b3q",
+				"updated": "20221114054339"
+			},
+			"Children": [
+				{
+					"ID": "20221114054339-2uepks4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114054339-2uepks4"
+					},
+					"Children": [
+						{
+							"ID": "20221114054339-36dqlby",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054339-36dqlby"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "按大小排序查看USER-ID-imagestream-lab1项目中的imagestreams。注意，下面命令必须有“ -n USER-ID-imagestream-lab1”部分来指定查看的项目，否则看到的是“openshift”项目中的imagestreams。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054344-9176xya",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114054344-9176xya",
+				"updated": "20221114054353"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc adm top imagestreams -n ${USER_ID}-imagestream-lab1\nNAME                       \t\t\tSTORAGE  IMAGES LAYERS\nUSER-ID-imagestream-lab1/is-example 5.503MiB 2      12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114054407-7rql9wt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054407-7rql9wt",
+				"updated": "20221114054407"
+			},
+			"Children": [
+				{
+					"ID": "20221114054407-0kq1rr1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221114054407-0kq1rr1",
+						"updated": "20221114054407"
+					},
+					"Children": [
+						{
+							"ID": "20221114054407-rxwz5zy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054407-rxwz5zy",
+								"updated": "20221114054407"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，将“is-example:v1”指向docker.io网站的“openshift/deployment-example:v2”"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054409-9u3ih6x",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114054409-9u3ih6x",
+				"updated": "20221114054428"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc tag --source=docker openshift/deployment-example:v2 is-example:v1 -n ${USER_ID}-imagestream-lab1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114054532-ar8t4c4",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054532-ar8t4c4",
+				"updated": "20221114054653"
+			},
+			"Children": [
+				{
+					"ID": "20221114054532-ro75sft",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20221114054532-ro75sft",
+						"updated": "20221114054653"
+					},
+					"Children": [
+						{
+							"ID": "20221114054532-2zlaz0m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054532-2zlaz0m"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看名为is-example的ImageStream，其中v1的指向的ImageStreamImage记录为2条，当前v1和v2指向的是同一个Image。而v1以前指向的是另一个Image。"
+								}
+							]
+						},
+						{
+							"ID": "20221114054604-oy6uo77",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114054604-oy6uo77",
+								"updated": "20221114054653"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc describe is is-example -n ${USER_ID}-imagestream-lab2\nName:                   is-example\nNamespace:              imagestream-lab2\nCreated:                2 minutes ago\nLabels:                 \u003cnone\u003e\nAnnotations:            openshift.io/image.dockerRepositoryCheck=2020-02-02T11:14:02Z\nImage Repository:       default-route-openshift-image-registry.apps.cluster-beijing-c70a.beijing-c70a.example.opentlc.com/USER-ID-imagestream-lab2/is-example\nImage Lookup:           local=false\nUnique Images:          2\nTags:                   3\n \nv1\n  tagged from openshift/deployment-example:v1\n  * openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n      2 minutes ago\n  \nv2\n  tagged from openshift/deployment-example:v1\n    prefer registry pullthrough when referencing this tag\n  * openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n      2 minutes ago\n \nv3\n  reference to registry openshift/deployment-example:v1\n  * openshift/deployment-example:v1\n      2 minutes ago\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054708-vvkt8gm",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054708-vvkt8gm",
+				"updated": "20221114054708"
+			},
+			"Children": [
+				{
+					"ID": "20221114054708-9f5375q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OC4=",
+						"Num": 8
+					},
+					"Properties": {
+						"id": "20221114054708-9f5375q"
+					},
+					"Children": [
+						{
+							"ID": "20221114054708-8gd24yt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054708-8gd24yt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "删除名为“is-example:v2”的ImageStreamTag"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054712-r477t9g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114054712-r477t9g",
+				"updated": "20221114054715"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc delete istag/is-example:v2 -n ${USER_ID}-imagestream-lab1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114054727-u6nec96",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221114054727-u6nec96",
+				"updated": "20221114054727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成ImageStream过程的选项"
+				}
+			]
+		},
+		{
+			"ID": "20221114054728-4jnpdps",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114054728-4jnpdps",
+				"updated": "20221114054834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在使用“oc tag”和“oc import-image”命令生成ImageStream的时候，可以使用参数“–reference-policy=local”让OpenShift只在本地（其内部的Image Registry）找镜像；另外还可以用“–reference”参数让OpenShift只创建一个非导入的ImageStreamTag，即不导入目标Image的元数据。"
+				}
+			]
+		},
+		{
+			"ID": "20221114054831-et8wtad",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054831-et8wtad",
+				"updated": "20221114054850"
+			},
+			"Children": [
+				{
+					"ID": "20221114054831-w49tfrg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114054831-w49tfrg",
+						"updated": "20221114054850"
+					},
+					"Children": [
+						{
+							"ID": "20221114054831-d6gi8pp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054831-d6gi8pp",
+								"updated": "20221114054843"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "新建imagestream-lab2项目。"
+								}
+							]
+						},
+						{
+							"ID": "20221114054843-sqvk66s",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114054843-sqvk66s",
+								"updated": "20221114054850"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc new-project ${USER_ID}-imagestream-lab2\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054856-27wrpo2",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114054856-27wrpo2",
+				"updated": "20221114054859"
+			},
+			"Children": [
+				{
+					"ID": "20221114054900-vhyklgs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114054900-vhyklgs"
+					},
+					"Children": [
+						{
+							"ID": "20221114054900-byqzzay",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114054900-byqzzay"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行以下命令，使用不同选项生从“openshift/deployment-example:v1”成相关ImageStream资源。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114054924-31lfg64",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114054924-31lfg64",
+				"updated": "20221114054939"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc tag --source=docker openshift/deployment-example:v1 is-example:v1 -n ${USER_ID}-imagestream-lab2\n$ oc tag --source=docker openshift/deployment-example:v1 is-example:v2 --reference-policy=local -n ${USER_ID}-imagestream-lab2\n$ oc tag --source=docker openshift/deployment-example:v1 is-example:v3 --reference=true -n ${USER_ID}-imagestream-lab2\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114055028-dx6d7el",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114055028-dx6d7el",
+				"updated": "20221114055048"
+			},
+			"Children": [
+				{
+					"ID": "20221114055028-dwrswr3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114055028-dwrswr3",
+						"updated": "20221114055048"
+					},
+					"Children": [
+						{
+							"ID": "20221114055028-an4znr0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055028-an4znr0",
+								"updated": "20221114055043"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看ImageStream的信息，注意3个Tags它们之间的差异，其中v3没有相应的镜像ID（"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "说明当使用–reference=true，OpenShift不会主动获取镜像元数据"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）。"
+								}
+							]
+						},
+						{
+							"ID": "20221114055043-u7t4unh",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114055043-u7t4unh",
+								"updated": "20221114055048"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc describe is is-example -n ${USER_ID}-imagestream-lab2\nName:                   is-example\nNamespace:              imagestream-lab2\nCreated:                2 minutes ago\nLabels:                 \u003cnone\u003e\nAnnotations:            openshift.io/image.dockerRepositoryCheck=2020-02-02T11:14:02Z\nImage Repository:       default-route-openshift-image-registry.apps.cluster-beijing-c70a.beijing-c70a.example.opentlc.com/USER-ID-imagestream-lab2/is-example\nImage Lookup:           local=false\nUnique Images:          2\nTags:                   3\n \nv1\n  tagged from openshift/deployment-example:v1\n  * openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n      2 minutes ago\n  \nv2\n  tagged from openshift/deployment-example:v1\n    prefer registry pullthrough when referencing this tag\n  * openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b\n      2 minutes ago\n \nv3\n  reference to registry openshift/deployment-example:v1\n  * openshift/deployment-example:v1\n      2 minutes ago\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114055104-4iyk5j7",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114055104-4iyk5j7",
+				"updated": "20221114055145"
+			},
+			"Children": [
+				{
+					"ID": "20221114055124-mmfex7v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114055124-mmfex7v",
+						"updated": "20221114055145"
+					},
+					"Children": [
+						{
+							"ID": "20221114055124-zpgwo3d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055124-zpgwo3d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看ImageStreamTag列表。确认“is-example:v2”和“is-example:v2”指向的是同一个sha256的ImageStreamImage，但是镜像所在位置不同，前者指向是远程“docker.io”上的镜像，后者则是指向是已经在OpenShift内部Registry的镜像。另外还确认istag列表中没有“is-example:v3”，说明它是无效的"
+								}
+							]
+						},
+						{
+							"ID": "20221114055136-2uiary6",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114055136-2uiary6",
+								"updated": "20221114055145"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc get istag -n ${USER_ID}-imagestream-lab2\nNAME            IMAGE REF                                                                                                                                             UPDATED\nis-example:v1   openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b                                                  2 minutes ago\nis-example:v2   image-registry.openshift-image-registry.svc:5000/USER-ID-imagestream-lab2/is-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b   2 minutes ago\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114055247-53nh3pg",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114055247-53nh3pg",
+				"updated": "20221114055321"
+			},
+			"Children": [
+				{
+					"ID": "20221114055313-es2juqr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114055313-es2juqr",
+						"updated": "20221114055321"
+					},
+					"Children": [
+						{
+							"ID": "20221114055313-bsb712l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055313-bsb712l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在OpenShift控制台也可看到名为is-example的ImageStream的“is-example:v3”的Tag提示以下错误"
+								}
+							]
+						},
+						{
+							"ID": "20221114055319-aqwis8f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055319-aqwis8f",
+								"updated": "20221114055321"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "image.png"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image-20221114055321-52v4a5g.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114055345-mzc222r",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114055345-mzc222r",
+				"updated": "20221114055732"
+			},
+			"Children": [
+				{
+					"ID": "20221114055351-36o9blo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221114055351-36o9blo",
+						"updated": "20221114055509"
+					},
+					"Children": [
+						{
+							"ID": "20221114055351-bqkxg2m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055351-bqkxg2m",
+								"updated": "20221114055454"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行以下命令，根据已有的ImageSteamTag生成新的ImageSteamTag，这次使用了“–reference=true”参数。"
+								}
+							]
+						},
+						{
+							"ID": "20221114055455-q6ozq57",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221114055455-q6ozq57",
+								"updated": "20221114055509"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc tag --source=istag is-example:v1 is-example:v4 --reference=true -n ${USER_ID}-imagestream-lab2\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114055441-45055tq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20221114055441-45055tq",
+						"updated": "20221114055732"
+					},
+					"Children": [
+						{
+							"ID": "20221114055441-vjt7bi1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055441-vjt7bi1",
+								"updated": "20221114055732"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "再次查看ImageStreamTag，确认“is-example:v4”是正常的。虽然这次使用了“–reference=true”参数，即OpenShift不会主动获取镜像元数据，但是由于使用的是“–source=istag”，因此ImageStreamImage信息已经在本地有了（是在创建“is-example:v1”的步骤获取到的）。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114055353-3opc1r6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114055353-3opc1r6",
+				"updated": "20221114055705"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get istag -n ${USER_ID}-imagestream-lab2\nNAME            IMAGE REF                                                                                                                                             UPDATED\nis-example:v1   openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b                                                  22 minutes ago\nis-example:v2   image-registry.openshift-image-registry.svc:5000/USER-ID-imagestream-lab2/is-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b   22 minutes ago\nis-example:v4   openshift/deployment-example@sha256:c505b916f7e5143a356ff961f2c21aee40fbd2cd906c1e3feeb8d5e978da284b                                                  About a minute ago\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114055734-6vgx2y5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221114055734-6vgx2y5",
+				"updated": "20221114055758"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见问题"
+				}
+			]
+		},
+		{
+			"ID": "20221114055809-88atn31",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114055809-88atn31",
+				"updated": "20221114055934"
+			},
+			"Children": [
+				{
+					"ID": "20221114055816-lav1jp8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114055816-lav1jp8"
+					},
+					"Children": [
+						{
+							"ID": "20221114055816-8nfs2tj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055816-8nfs2tj",
+								"updated": "20221114055833"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据远程的Image创建ImageStream的时候，Image是否会下载到本地？\n说明：不会。只有第一次基于这个Image运行应用的时候才去下载这个Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114055834-pch9jwy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114055834-pch9jwy"
+					},
+					"Children": [
+						{
+							"ID": "20221114055834-uvu9z42",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055834-uvu9z42",
+								"updated": "20221114055857"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当使用“–reference-policy=local”参数和不使用它的时候，对使用Image有什么影响？\n说明：当使用“–reference-policy=local”后，OpenShift就不会访问其外部的Registry获得Image了，只会使用其内置的Registry获取Image了。因此需要手动将Image提前push到其内置的Registry才可使用这些Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114055858-9m8mis2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114055858-9m8mis2",
+						"updated": "20221114055934"
+					},
+					"Children": [
+						{
+							"ID": "20221114055858-utex79g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114055858-utex79g",
+								"updated": "20221114055934"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "删除了ImageStreamTag后，对应的本地Image有影响么？\n说明：没有。两者是弱关联关系，删除任何一个不会自动删除相关的另一方。\n"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

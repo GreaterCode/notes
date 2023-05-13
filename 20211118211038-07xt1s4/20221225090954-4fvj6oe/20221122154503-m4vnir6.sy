@@ -1,0 +1,3369 @@
+{
+	"ID": "20221122154503-m4vnir6",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221122154503-m4vnir6",
+		"title": "Kubernetes 中数据包的生命周期 -- 第 1 部分",
+		"updated": "20221122154503"
+	},
+	"Children": [
+		{
+			"ID": "20221122154503-t5t05oc",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221122154503-t5t05oc"
+			}
+		},
+		{
+			"ID": "20221122154503-c1w44f2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221122154503-c1w44f2"
+			},
+			"Children": [
+				{
+					"ID": "20221122154503-5v2by25",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-5v2by25"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-q83k6uy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-q83k6uy"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s?__biz=MzkxOTIwMDgxMg==\u0026mid=2247485756\u0026idx=1\u0026sn=748ce1cf12ed9fb1210deec83cf75547\u0026chksm=c1a4fc7ff6d3756976b6654067a239736396f0d80dbb93a0dc1bfd0af0530d34039c1f903f33\u0026cur_album_id=2342519043662004229\u0026scene=189#wechat_redirect",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s?__biz=MzkxOTIwMDgxMg==\u0026amp;mid=2247485756\u0026amp;idx=1\u0026amp;sn=748ce1cf12ed9fb1210deec83cf75547\u0026amp;chksm=c1a4fc7ff6d3756976b6654067a239736396f0d80dbb93a0dc1bfd0af0530d34039c1f903f33\u0026amp;cur_album_id=2342519043662004229\u0026amp;scene=189#wechat_redirect - 微信公众平台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-ihbsalr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-ihbsalr"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-mtynl7p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-mtynl7p"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubernetes 中数据包的生命周期 -- 第 1 部分：将从 Linux namespace, CNI 入手，对 Kubernetes 网络的底层实现进行介绍。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-7peyupu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-7peyupu"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-2jiaibj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-2jiaibj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2022-11-22 15:45:03"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-g5u6b04",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221122154503-g5u6b04"
+			}
+		},
+		{
+			"ID": "20221122154503-rjpptn2",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221122154503-rjpptn2"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221122154503-s6atxhi",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221122154503-s6atxhi"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本文翻译自："
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "strong",
+							"TextMarkTextContent": "Life of a Packet in Kubernetes — Part 1 [1]"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "\n作者：Dinesh Kumar Ramasamy\n本文在原文的基础上做了适当的修改，如有疑问请查阅原文。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-1cnmgg1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-1cnmgg1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 集群中的网络可能会令人感到有点困惑，即便是对于拥有虚拟网络和路由实践经验的工程师来说也是如此。本系列文章将分为 4 个部分，帮助你理解基本的 Kubernetes 网络，本文属于第一部分。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-ghz4dx9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221122154503-ghz4dx9"
+			},
+			"Children": [
+				{
+					"ID": "20221122154503-i8ihguq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-i8ihguq"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-9udid4t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-9udid4t"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Part 1"
+								}
+							]
+						},
+						{
+							"ID": "20221122154503-hxiu88z",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20221122154503-hxiu88z"
+							},
+							"Children": [
+								{
+									"ID": "20221122154503-swhqlxs",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20221122154503-swhqlxs"
+									},
+									"Children": [
+										{
+											"ID": "20221122154503-28w12h8",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221122154503-28w12h8"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "1.Linux 命名空间（Namespaces）"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20221122154503-zttu2x8",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20221122154503-zttu2x8"
+									},
+									"Children": [
+										{
+											"ID": "20221122154503-zfyrrue",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221122154503-zfyrrue"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "2.容器网络（Network Namespace）"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20221122154503-y8yusna",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20221122154503-y8yusna"
+									},
+									"Children": [
+										{
+											"ID": "20221122154503-e6h5x8u",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221122154503-e6h5x8u"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "3.什么是 CNI？"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20221122154503-p9wa1f0",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20221122154503-p9wa1f0"
+									},
+									"Children": [
+										{
+											"ID": "20221122154503-1g8d8ri",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221122154503-1g8d8ri"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "4.Pod 网络命名空间"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-h0jz2n0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-h0jz2n0"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-ia6gtd4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-ia6gtd4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Part 2"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-cevsgcp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-cevsgcp"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-tcwewuw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-tcwewuw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.Calico CNI"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-ebzm4at",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-ebzm4at"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-ly5416t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-ly5416t"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Part 3"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-efv11ct",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-efv11ct"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-wh8gy57",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-wh8gy57"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.Pod-to-Pod"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-7ailx7l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-7ailx7l"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-lc5ahpf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-lc5ahpf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2.Pod-to-External"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-jv9k1n1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-jv9k1n1"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-k2vmvbx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-k2vmvbx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "3.Pod-to-Service"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-sn4w745",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-sn4w745"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-trauakw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-trauakw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "4.External-to-Pod"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-hl4nvsl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-hl4nvsl"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-xncq6dn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-xncq6dn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5.External Traffic Policy"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-m3kqqix",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-m3kqqix"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-0pml9gl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-0pml9gl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "6.Kube-Proxy"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-mpw59jf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-mpw59jf"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-x8fswcb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-x8fswcb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "7.iptable rules processing flow"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-t4814ms",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-t4814ms"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-jux3v7s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-jux3v7s"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "8.Network Policy basics"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-wf4kw4b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-wf4kw4b"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-0zl0jqx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-0zl0jqx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Part 4"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-md9x7yd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-md9x7yd"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-51qb2dm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-51qb2dm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.Ingress Controller"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-onuytc7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-onuytc7"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-tx2xzir",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-tx2xzir"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2.Ingress Resources Example"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-s8bbm78",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-s8bbm78"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-oo1wein",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-oo1wein"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "3.Nginx"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-rcxrvos",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-rcxrvos"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-5e9lxdf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-5e9lxdf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "4.Envoy+Contour"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-iww37u4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-iww37u4"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-nd9om88",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-nd9om88"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5.Ingress with MetalLB"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-sdenita",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221122154503-sdenita"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux 命名空间（Namespaces）"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-r0salxa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-r0salxa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux namespace 包含了大多数现代容器实现背后的一些基本技术。从高层次来看，它们允许在独立的进程之间隔离全局系统资源。例如，PID namespace 隔离了进程 ID，这意味着在同一主机上运行的两个进程可以具有相同的 PID！"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-gd90lut",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-gd90lut"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这种隔离级别显然在容器领域非常有用。假如没有 namespace 技术，在容器 A 中运行的进程甚至可以 umount 容器 B 中重要的文件系统，或更改容器 C 中的主机名，或从容器 D 中删除网络接口，这将会非常危险！当通过 namespace 技术隔离这些资源后，容器 A 中的进程甚至不知道容器 B, C, D 中进程的存在，这样进程之间进行的操作，都不会互相干扰，安全性可以得到保障。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-h0iskif",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221122154503-h0iskif"
+			},
+			"Children": [
+				{
+					"ID": "20221122154503-o4m23m2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-o4m23m2"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-95qe9dz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-95qe9dz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "Mount"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离文件系统挂载点。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-3x83c9y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-3x83c9y"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-e5v7cjr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-e5v7cjr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "UTS"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离主机名和域名。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-c2x1vfl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-c2x1vfl"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-mmytgx0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-mmytgx0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "3."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "IPC"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离进程间通信资源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-oerctf8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-oerctf8"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-ezxv2dy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-ezxv2dy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "4."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "PID"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离进程 ID。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-9p1vvhd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-9p1vvhd"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-bc4f6dl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-bc4f6dl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "Network"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离网络资源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-qjldujn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-qjldujn"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-tqpb3w8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-tqpb3w8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "6."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "User"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离用户和用户组。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-xobd5et",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-xobd5et"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-m3aewfx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-m3aewfx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "7."
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "Cgroup"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " -- 隔离 Cgroups 根目录。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-l6djsfk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-l6djsfk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "大多数容器实现都使用上述的 namespace，以便在不同的容器进程之间提供最高级别的隔离。由于 Cgroup namespace 比其他 namespace 技术出现得稍晚一些，因此尚未被广泛使用。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-tkxajc1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-tkxajc1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-lytk9th"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-htwtu5o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221122154503-htwtu5o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器网络（Network Namespace）"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-qhfg7jm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-qhfg7jm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在我们开始了解 CNI 和 Docker 提供的各种功能之前，让我们探索一下驱动容器网络的核心技术。Linux 内核已经具有在主机上实现多租户的各种功能。namespace 为不同类型的资源提供了隔离的功能，其中 network namespace 提供了网络资源的隔离。 在 Linux 操作系统中，可以很容易地使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "ip"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令创建 network namespace。让我们创建两个不同的 network namespace，并分别将它们命名为 client 和 server。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-iz5791r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-iz5791r"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip netns add client  \nmaster# ip netns add server  \nmaster# ip netns list  \nserver  \nclient\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-z7ojc9f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-z7ojc9f"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-cret481"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-i5qw760",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-i5qw760"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "veth"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 对来连接这两个 network namespace，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "veth"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 对可以看作是一根网线。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-qzjyu7t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-qzjyu7t"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip link add veth-client type veth peer name veth-server\nmaster# ip link list | grep veth\n4: veth-server@veth-client: \u003cBROADCAST,MULTICAST,M-DOWN\u003e mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000\n5: veth-client@veth-server: \u003cBROADCAST,MULTICAST,M-DOWN\u003e mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-e55kjtr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-e55kjtr"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-v9vapo2"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-psezsfl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-psezsfl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当前 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "veth"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 对在主机的 network namespace 中，现在让我们将 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "veth"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 对的两端分别接在前面创建的两个 namespace 中。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-wu9vkjr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-wu9vkjr"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip link set veth-client netns client  \nmaster# ip link set veth-server netns server  \nmaster# ip link list | grep veth # 此时 veth 对不在主机的 network namespace 中了\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-trnogqz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-trnogqz"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-osh32os"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-vob42uq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-vob42uq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们验证 namespace 中确实存在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "veth"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 对，首先从 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "client"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " namespace 开始。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-zqgxzty",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-zqgxzty"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip netns exec client ip link\n1: lo: \u003cLOOPBACK\u003e mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n5: veth-client@if4: \u003cBROADCAST,MULTICAST\u003e mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000\n    link/ether ca:e8:30:2e:f9:d2 brd ff:ff:ff:ff:ff:ff link-netnsid 1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-78bafir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-78bafir"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接着确认 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "server"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " namespace。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-kf2zlkt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-kf2zlkt"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip netns exec server ip link\n1: lo: \u003cLOOPBACK\u003e mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n4: veth-server@if5: \u003cBROADCAST,MULTICAST\u003e mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000\n    link/ether 42:96:f0:ae:f0:c5 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-k6vp9uv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-k6vp9uv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在让我们为这些接口分配 IP 地址并启用它们。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-b9nsoie",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-b9nsoie"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip netns exec client ip address add 10.0.0.11/24 dev veth-client\nmaster# ip netns exec client ip link set veth-client up\nmaster# ip netns exec server ip address add 10.0.0.12/24 dev veth-server\nmaster# ip netns exec server ip link set veth-server up\nmaster# ip netns exec client ip addr\n1: lo: \u003cLOOPBACK\u003e mtu 65536 qdisc noop state DOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n5: veth-client@if4: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc noqueue state UP group default qlen 1000\n    link/ether ca:e8:30:2e:f9:d2 brd ff:ff:ff:ff:ff:ff link-netnsid 1\n    inet 10.0.0.11/24 scope global veth-client\n       valid_lft forever preferred_lft forever\n    inet6 fe80::c8e8:30ff:fe2e:f9d2/64 scope link\n       valid_lft forever preferred_lft forevermaster# ip netns exec server ip addr\n1: lo: \u003cLOOPBACK\u003e mtu 65536 qdisc noop state DOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n4: veth-server@if5: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc noqueue state UP group default qlen 1000\n    link/ether 42:96:f0:ae:f0:c5 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n    inet 10.0.0.12/24 scope global veth-server\n       valid_lft forever preferred_lft forever\n    inet6 fe80::4096:f0ff:feae:f0c5/64 scope link\n       valid_lft forever preferred_lft forever\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-05e5p2p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-05e5p2p"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-v1v0als"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-mjk63bg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-mjk63bg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 ping 命令，我们可以验证两个 network namespace 已经连接并且可以访问。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-q19l4mz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-q19l4mz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "master# ip netns exec client ping 10.0.0.12  \nPING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.  \n64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=0.101 ms  \n64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.072 ms  \n64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.084 ms  \n64 bytes from 10.0.0.12: icmp_seq=4 ttl=64 time=0.077 ms  \n64 bytes from 10.0.0.12: icmp_seq=5 ttl=64 time=0.079 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-hoz2z9l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-hoz2z9l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果我们想创建更多的 network namespace 并将它们连接在一起，那么为每个 namespace 创建一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "veth"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 对可能不是一个可扩展的解决方案。相反，可以创建一个 Linux 网桥并将这些 network namespace 连接到网桥实现互通。这正是 Docker 在同一主机上运行的容器之间建立网络的方式！ 让我们创建 namespace 并将其添加到网桥中，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "BR"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "HOST_IP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 两个变量根据主机的实际情况进行修改。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-nqm6vlh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-nqm6vlh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 变量\nBR=bridge1 # 网桥名字\nHOST_IP=172.17.0.33  # 主机地址# 创建 veth 对\nip link add client1-veth type veth peer name client1-veth-br  \nip link add server1-veth type veth peer name server1-veth-br  # 创建网桥\nip link add $BR type bridge  # 创建 network namespace\nip netns add client1  \nip netns add server1# 连接 veth 对与 network namespace \nip link set client1-veth netns client1  \nip link set server1-veth netns server1# 连接 veth 对的另一端与网桥\nip link set client1-veth-br master $BR  \nip link set server1-veth-br master $BR# 启用网桥，接口\nip link set $BR up  \nip link set client1-veth-br up  \nip link set server1-veth-br up  \nip netns exec client1 ip link set client1-veth up  \nip netns exec server1 ip link set server1-veth up# 为接口添加 IP 地址\nip netns exec client1 ip addr add 172.30.0.11/24 dev client1-veth  \nip netns exec server1 ip addr add 172.30.0.12/24 dev server1-veth   \nip addr add 172.30.0.1/24 dev $BR\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-3kqxgd1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-3kqxgd1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-yuv3xea"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-kz4kje1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-kz4kje1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 ping 命令，我们可以验证两个 network namespace 已经连接并且可以访问。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-f72l8m1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-f72l8m1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ ip netns exec client1 ping 172.30.0.12 -c 5  \nPING 172.30.0.12 (172.30.0.12) 56(84) bytes of data.  \n64 bytes from 172.30.0.12: icmp_seq=1 ttl=64 time=0.138 ms  \n64 bytes from 172.30.0.12: icmp_seq=2 ttl=64 time=0.091 ms  \n64 bytes from 172.30.0.12: icmp_seq=3 ttl=64 time=0.073 ms  \n64 bytes from 172.30.0.12: icmp_seq=4 ttl=64 time=0.070 ms  \n64 bytes from 172.30.0.12: icmp_seq=5 ttl=64 time=0.107 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-nykpwpq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-nykpwpq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果上面的 ping 命令不通可能是由于 Docker 将 iptables 的 FORWARD 链默认动作设置为 DROP，参见 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Docker 官网 [2]"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。 可以使用以下命令将 FORWARD 设置为 ACCEPT。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-pc88g85",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-pc88g85"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "iptables -P FORWARD ACCEPT \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-nyl669k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-nyl669k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们从 namespace 中 ping 主机地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-4pmg23k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-4pmg23k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ ip netns exec client1 ping $HOST_IP -c 2  \nconnect: Network is unreachable # 网络不可达\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-4z4w2vn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-4z4w2vn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "收到了“网络不可以达“的响应，这是因为在新创建的 namespace 中没有配置路由。让我们添加一条默认路由。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-jdc2zo4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-jdc2zo4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ ip netns exec client1 ip route add default via 172.30.0.1\ncontrolplane $ ip netns exec server1 ip route add default via 172.30.0.1\ncontrolplane $ ip netns exec client1 ping $HOST_IP -c 5\nPING 172.17.0.23 (172.17.0.23) 56(84) bytes of data.\n64 bytes from 172.17.0.23: icmp_seq=1 ttl=64 time=0.053 ms\n64 bytes from 172.17.0.23: icmp_seq=2 ttl=64 time=0.121 ms\n64 bytes from 172.17.0.23: icmp_seq=3 ttl=64 time=0.078 ms\n64 bytes from 172.17.0.23: icmp_seq=4 ttl=64 time=0.129 ms\n64 bytes from 172.17.0.23: icmp_seq=5 ttl=64 time=0.119 ms\n--- 172.17.0.23 ping statistics ---\n5 packets transmitted, 5 received, 0% packet loss, time 3999ms\nrtt min/avg/max/mdev = 0.053/0.100/0.129/0.029 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-7pdy8yz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-7pdy8yz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在通往外部的默认路由指向了网桥，因此在 namespace 中可以访问任何外部服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-lxvraxm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-lxvraxm"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ ping 8.8.8.8 -c 2\nPING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.\n64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=3.40 ms\n64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=3.81 ms\n--- 8.8.8.8 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1001ms\nrtt min/avg/max/mdev = 3.403/3.610/3.817/0.207 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-m5xqkft",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-m5xqkft"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "那么如何从外部访问私有网络呢？"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 如你所见，我们演示的机器已经安装了 Docker，并且 Docker 自动创建了一个名为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "docker0"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的网桥。在 network namespace 中运行 Web 服务并不容易，因为所有的 Linux namespace 都需要互通以模拟这种情况。让我们使用 Docker 来模拟场景。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-hcoendj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-hcoendj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker0   Link encap:Ethernet  HWaddr 02:42:e2:44:07:39\n          inet addr:172.18.0.1  Bcast:172.18.0.255  Mask:255.255.255.0\n          UP BROADCAST MULTICAST  MTU:1500  Metric:1\n          RX packets:0 errors:0 dropped:0 overruns:0 frame:0\n          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:0\n          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-txai4hr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-txai4hr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在让我们启动一个 Nginx 容器并查看它。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-pmfcsb3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-pmfcsb3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 启动 Nginx 容器\ncontrolplane $ docker run -d --name web --rm nginx  \nefff2d2c98f94671f69cddc5cc88bb7a0a5a2ea15dc3c98d911e39bf2764a556  \n# 获取容器 IP\ncontrolplane $ WEB_IP=`docker inspect -f \"{{ .NetworkSettings.IPAddress }}\" web`  \n# 获取容器的 network namespace\ncontrolplane $ docker inspect web --format '{{ .NetworkSettings.SandboxKey }}'  \n/var/run/docker/netns/c009f2a4be71\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-887yd5g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-887yd5g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于 Docker 不会在默认位置（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "var/run/netns/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录）创建  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "netns"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，因此 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "ip netns list"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令不会显示这个 network namespace。我们可以创建符号连接指向预期位置来解决。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-w9xr7cq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-w9xr7cq"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ container_id=web  \ncontrolplane $ container_netns=$(docker inspect ${container_id} --format '{{ .NetworkSettings.SandboxKey }}')  \ncontrolplane $ mkdir -p /var/run/netns  \ncontrolplane $ rm -f /var/run/netns/${container_id}  \ncontrolplane $ ln -sv ${container_netns} /var/run/netns/${container_id}  \n'/var/run/netns/web' -\u003e '/var/run/docker/netns/c009f2a4be71'  \ncontrolplane $ ip netns list  \nweb (id: 3)  # 容器的 network namespace\nserver1 (id: 1)  \nclient1 (id: 0)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-qjvchj0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-qjvchj0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们检查一下 web namespace 中的 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-aih1lkt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-aih1lkt"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ ip netns exec web ip addr\n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n11: eth0@if12: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc noqueue state UP group default\n    link/ether 02:42:ac:12:00:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n    inet 172.18.0.3/24 brd 172.18.0.255 scope global eth0\n       valid_lft forever preferred_lft forever\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-zrdu23h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-zrdu23h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们检查一下 Docker 容器中的 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-16hlb4i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-16hlb4i"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ WEB_IP=`docker inspect -f \"{{ .NetworkSettings.IPAddress }}\" web`\ncontrolplane $ echo $WEB_IP\n172.18.0.3\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-2hjp55e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-2hjp55e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "很明显，Docker 使用了所有的 Linux namespace 并将容器与主机隔离开来。让我们尝试从主机访问运行在 web namespace 中的 Web 服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-cf2xwik",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-cf2xwik"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ curl $WEB_IP\n\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003ctitle\u003eWelcome to nginx!\u003c/title\u003e\n\u003cstyle\u003e\n    body {\n        width: 35em;\n        margin: 0 auto;\n        font-family: Tahoma, Verdana, Arial, sans-serif;\n    }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003ch1\u003eWelcome to nginx!\u003c/h1\u003e\n\u003cp\u003eIf you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.\u003c/p\u003e\n\u003cp\u003eFor online documentation and support please refer to\n\u003ca href=\"http://nginx.org/\"\u003enginx.org\u003c/a\u003e.\u003cbr/\u003e\nCommercial support is available at\n\u003ca href=\"http://nginx.com/\"\u003enginx.com\u003c/a\u003e.\u003c/p\u003e\n\u003cp\u003e\u003cem\u003eThank you for using nginx.\u003c/em\u003e\u003c/p\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-ecuv9fi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-ecuv9fi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "是否可以从外部网络访问这个 Web 服务呢？是的，需要添加端口转发。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-35d280n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-35d280n"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination $WEB_IP:80  \ncontrolplane $ echo $HOST_IP  \n172.17.0.23\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-pow6ndu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-pow6ndu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们尝试在外部主机访问 Web 服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-sqsocin",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-sqsocin"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "node01 $ curl 172.17.0.23\n\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003ctitle\u003eWelcome to nginx!\u003c/title\u003e\n\u003cstyle\u003e\n    body {\n        width: 35em;\n        margin: 0 auto;\n        font-family: Tahoma, Verdana, Arial, sans-serif;\n    }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003ch1\u003eWelcome to nginx!\u003c/h1\u003e\n\u003cp\u003eIf you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.\u003c/p\u003e\n\u003cp\u003eFor online documentation and support please refer to\n\u003ca href=\"http://nginx.org/\"\u003enginx.org\u003c/a\u003e.\u003cbr/\u003e\nCommercial support is available at\n\u003ca href=\"http://nginx.com/\"\u003enginx.com\u003c/a\u003e.\u003c/p\u003e\n\u003cp\u003e\u003cem\u003eThank you for using nginx.\u003c/em\u003e\u003c/p\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-abrc5x1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-abrc5x1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-fflet6n"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-8hibahy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-8hibahy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI 插件执行上述的命令（不完全是，但类似）来设置 loopback 接口，eth0 接口，并将 IP 地址分配给容器。容器运行时（例如 Kubernetes，Podman 等等）利用 CNI 来设置 Pod 网络。让我们在下一个章节讨论 CNI。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-pkjkz9j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221122154503-pkjkz9j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "什么是 CNI？"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-agelz5f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-agelz5f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI 插件负责将网络接口接入容器的 network namespace（例如 veth 对的一端）并在主机上进行任何必要的更改（例如将 veth 的另一端连接到网桥中）。然后调用合适的 IPAM 插件为接口分配 IP 地址并设置路由。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-9zhyasr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-9zhyasr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "等等，似曾相识？"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 是的，我们已经在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "容器网络"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "章节中提到了这一点。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-7xoc7zg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-7xoc7zg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI (Container Network Interface，容器网络接口) 是一个 Cloud Native Computing Foundation（云原生计算基金会）的项目，由一系列规范和库组成，用于编写配置 Linux 容器网络的插件。由于 CNI 规范专注于容器的网络连接，并且易于实现，因此得到了广泛的支持。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-z64csmb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-z64csmb"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-58a4pib"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-8014ptv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-8014ptv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "详情参见："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "CNI 规范 [3]"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。以下是我在第一次通读时发现的一些有趣的点："
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-0mi3sjg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221122154503-0mi3sjg"
+			},
+			"Children": [
+				{
+					"ID": "20221122154503-lkb8ttn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-lkb8ttn"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-n7spelh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-n7spelh"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "规范中将容器定义为 Linux network namespace。我们应该对这个定义感到满意，因为像 Docker 这样的容器运行时会为每个容器创建一个新的 network namespace。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-tq4v0tx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-tq4v0tx"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-k9mnl1a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-k9mnl1a"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "网络配置由 JSON 对象组成。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-946jnfr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-946jnfr"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-y1e2e74",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-y1e2e74"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "网络配置通过 STDIN 输入流的方式传递给插件，也就是说主机上没有用于网络配置的文件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-03yvoqr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-03yvoqr"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-iqete4j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-iqete4j"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "其他参数通过环境变量传递给插件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-b4c7nj8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-b4c7nj8"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-v0czpp9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-v0czpp9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CNI 插件被实现为一个可执行文件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-gy7uxe9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-gy7uxe9"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-hkomv6z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-hkomv6z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CNI 插件负责连接容器，也就是说它需要将容器接入网络。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-ua0luer",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-ua0luer"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-oj0gycj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-oj0gycj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CNI 插件负责调用 IPAM 插件为容器分配 IP 地址并设置路由。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-8t5r9yl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-8t5r9yl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们尝试在没有 Kubernetes 的情况下手动模拟 Pod 的创建，并通过 CNI 插件分配 IP 地址。 第 1 步：下载 CNI 插件。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-0pktydj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-0pktydj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ mkdir cni  \ncontrolplane $ cd cni  \ncontrolplane $ curl -O -L https://github.com/containernetworking/cni/releases/download/v0.4.0/cni-amd64-v0.4.0.tgz  \ncontrolplane $ tar -xvf cni-amd64-v0.4.0.tgz  \n./  \n./macvlan  \n./dhcp  \n./loopback  \n./ptp  \n./ipvlan  \n./bridge  \n./tuning  \n./noop  \n./host-local  \n./cnitool  \n./flannel  \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-98oz4c5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-98oz4c5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第 2 步：创建 JSON 格式的 CNI 配置。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-s85tl1c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-s85tl1c"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat \u003e /tmp/00-demo.conf \u003c\u003c EOF \n{\n    \"cniVersion\": \"0.2.0\",\n    \"name\": \"demo_br\",\n    \"type\": \"bridge\",\n    \"bridge\": \"cni_net0\",\n    \"isGateway\": true,\n    \"ipMasq\": true,\n    \"ipam\": {\n        \"type\": \"host-local\",\n        \"subnet\": \"10.0.10.0/24\",\n        \"routes\": [\n            { \"dst\": \"0.0.0.0/0\" },\n            { \"dst\": \"1.1.1.1/32\", \"gw\":\"10.0.10.1\"}\n        ]\n    }\n}\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-b4mi2kc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-b4mi2kc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI 的配置参数如下："
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-47milx3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-47milx3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "-:CNI 通用参数:-\ncniVersion: 定义 CNI 的版本。\nname: 网络名称。\ntype: 使用的插件名称。在本例中, 是插件可执行文件的名称。\nargs: 可选的附加参数。\nipMasq: 为网络配置源地址转换（SNAT）。\nipam:\n    type: IPAM 插件名称。\n    subnet: 分配的子网。\n    routes:\n        dst: 目的网段。\n        gw: 去往目的网段的下一跳地址，如果没有指定则使用子网的默认网关。\ndns:\n    nameservers: DNS服务器列表。\n    domain: DNS 请求的搜索域。\n    search: DNS 请求的搜索域列表。\n    options: 传递给接收者的选项列表。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-t0l0rsg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-t0l0rsg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第 3 步：创建一个具有 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "none"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 网络类型的容器，这样容器就不会使用任何 IP 地址。你可以使用任何镜像来创建容器，这里我使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "pause"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 容器来模拟 Kubernetes。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-tr2yyay",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-tr2yyay"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建容器\ncontrolplane $ docker run --name pause_demo -d --rm --network none kubernetes/pause# 将 Docker 创建的 network namespace 文件软连接到默认路径\ncontrolplane $ container_id=pause_demo\ncontrolplane $ container_netns=$(docker inspect ${container_id} --format '{{ .NetworkSettings.SandboxKey }}')\ncontrolplane $ mkdir -p /var/run/netns\ncontrolplane $ rm -f /var/run/netns/${container_id}\ncontrolplane $ ln -sv ${container_netns} /var/run/netns/${container_id}\n'/var/run/netns/pause_demo' -\u003e '/var/run/docker/netns/0297681f79b5'# 查看 network namespace\ncontrolplane $ ip netns list\npause_demo# 查看容器接口\ncontrolplane $ ip netns exec $container_id ifconfig\nlo        Link encap:Local Loopback\n          inet addr:127.0.0.1  Mask:255.0.0.0\n          UP LOOPBACK RUNNING  MTU:65536  Metric:1\n          RX packets:0 errors:0 dropped:0 overruns:0 frame:0\n          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:1\n          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-w3cxt7n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-w3cxt7n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第 4 步：用配置文件执行 CNI 插件。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-scnh30u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-scnh30u"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ CNI_CONTAINERID=$container_id \\\nCNI_IFNAME=eth10 CNI_COMMAND=ADD \\\nCNI_NETNS=/var/run/netns/$container_id \\\nCNI_PATH=`pwd` ./bridge \u003c /tmp/00-demo.conf# 返回结果，第一次执行该命令会报错，容器网络仍然会设置成功\n# /var/lib/cni/networks/demo_br/last_reserved_ip 文件用于记录已经分配的 IP 地址\n# 第一次执行以后会自动生成该文件，后续执行就不会报错了\n2020/10/17 17:32:37 Error retriving last reserved ip: Failed to retrieve last reserved ip: open /var/lib/cni/networks/demo_br/last_reserved_ip: no such file or directory\n{\n    \"ip4\": {\n        \"ip\": \"10.0.10.2/24\",\n        \"gateway\": \"10.0.10.1\",\n        \"routes\": [\n            {\n                \"dst\": \"0.0.0.0/0\"\n            },\n            {\n                \"dst\": \"1.1.1.1/32\",\n                \"gw\": \"10.0.10.1\"\n            }\n        ]\n    },\n    \"dns\": {}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-ufow899",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221122154503-ufow899"
+			},
+			"Children": [
+				{
+					"ID": "20221122154503-n59dtqy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-n59dtqy"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-79jleck",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-79jleck"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CNI_COMMAND=ADD"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " — 操作（可选值: ADD/DEL/CHECK）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-c2xmltv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-c2xmltv"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-bf9bqkw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-bf9bqkw"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CNI_CONTAINER=pause_demo"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " — 我们告诉 CNI 插件在名为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "pause_demo"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的 network namespace 进行操作。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-ufbe0ws",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-ufbe0ws"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-e25k3jv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-e25k3jv"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CNI_NETNS=/var/run/netns/pause_demo"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " — namespace 文件所在的路径。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-yzp6jvi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-yzp6jvi"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-q2hka55",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-q2hka55"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CNI_IFNAME=eth10"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " — 希望在容器中设置的网络接口名称。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-oogz6ua",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-oogz6ua"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-05w4zvt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-05w4zvt"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CNI_PATH="
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong code",
+									"TextMarkTextContent": "pwd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " — 告诉 CNI 插件可执行文件所在的路径，由于我们当前正好在 CNI 插件的目录中，因此可以使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "pwd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 获取路径。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-664o1o7",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221122154503-664o1o7"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221122154503-53b89mx",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221122154503-53b89mx"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "我强烈建议你阅读 CNI 规范以获取有关插件及其功能的更多信息。你可以在同一个 JSON 文件中使用多个插件执行一系列操作，例如添加防火墙规则等等。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-n1y08i0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-n1y08i0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第 5 步：运行上述命令会返回一些内容。首先，会返回一个错误，因为 IPAM 驱动程序找不到它用来在本地存储 IP 信息的文件。如果我们为不同的 network namespace 再次运行该命令时，将不会收到此错误，因为该文件是在第一次运行插件时创建的。其次，我们可以得到一个 JSON 对象，表明了插件配置的相关 IP 配置。在本例中，网桥的 IP 地址应当被设置为 10.0.10.1/24，容器接口的 IP 地址应当被设置为 10.0.10.2/24，在容器中还添加了我们在 JSON 配置文件中定义的默认路由和 1.1.1.1/32 的路由。让我们看看它做了什么。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-ut4yo8s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-ut4yo8s"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ ip netns exec pause_demo ifconfig\neth10     Link encap:Ethernet  HWaddr 0a:58:0a:00:0a:02\n          inet addr:10.0.10.2  Bcast:0.0.0.0  Mask:255.255.255.0\n          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1\n          RX packets:18 errors:0 dropped:0 overruns:0 frame:0\n          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:0\n          RX bytes:1476 (1.4 KB)  TX bytes:0 (0.0 B)\nlo        Link encap:Local Loopback\n          inet addr:127.0.0.1  Mask:255.0.0.0\n          UP LOOPBACK RUNNING  MTU:65536  Metric:1\n          RX packets:0 errors:0 dropped:0 overruns:0 frame:0\n          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:1\n          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)\ncontrolplane $ ip netns exec pause_demo ip route\ndefault via 10.0.10.1 dev eth10\n1.1.1.1 via 10.0.10.1 dev eth10\n10.0.10.0/24 dev eth10  proto kernel  scope link  src 10.0.10.2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-j90owbj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-j90owbj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第 6 步：启动 Web 服务容器与 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "pause"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 容器共享 namespace。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-teubdx4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-teubdx4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ docker run --name web_demo -d --rm --network container:$container_id nginx\n8fadcf2925b779de6781b4215534b32231685b8515f998b2a66a3c7e38333e30\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-f6hrkpm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-f6hrkpm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第 7 步：使用 pause 容器的 IP 地址来访问 Web 服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-xvb7jd9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221122154503-xvb7jd9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controlplane $ curl `cat /var/lib/cni/networks/demo_br/last_reserved_ip`\n\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003ctitle\u003eWelcome to nginx!\u003c/title\u003e\n\u003cstyle\u003e\n    body {\n        width: 35em;\n        margin: 0 auto;\n        font-family: Tahoma, Verdana, Arial, sans-serif;\n    }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003ch1\u003eWelcome to nginx!\u003c/h1\u003e\n\u003cp\u003eIf you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.\u003c/p\u003e\n\u003cp\u003eFor online documentation and support please refer to\n\u003ca href=\"http://nginx.org/\"\u003enginx.org\u003c/a\u003e.\u003cbr/\u003e\nCommercial support is available at\n\u003ca href=\"http://nginx.com/\"\u003enginx.com\u003c/a\u003e.\u003c/p\u003e\n\u003cp\u003e\u003cem\u003eThank you for using nginx.\u003c/em\u003e\u003c/p\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-u3f0mp4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-u3f0mp4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在让我们看看下一节中 Pod 的定义。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-0hichyx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221122154503-0hichyx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pod 网络命名空间"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-55wk4ea",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-55wk4ea"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kubernetes 中首先要理解的是，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Pod"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 实际上并不等同于容器，而是容器的集合。并且这些同一个集合的容器都共享一个网络堆栈。Kubernetes 通过在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "pause"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 容器上设置网络来进行管理，你可以在创建的每个 Pod 中找到它。pause 容器本身只负责提供网络，所有其他的容器都连接到 pause 容器所在的网络。因此，在同一个 Pod 中的一个容器也可以通过 localhost 与另一个容器中的服务进行通信。"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-51eu09g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221122154503-51eu09g"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20221122154503-jv38aw5"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-h2op7kc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221122154503-h2op7kc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考资料"
+				}
+			]
+		},
+		{
+			"ID": "20221122154503-vhuwah9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221122154503-vhuwah9"
+			},
+			"Children": [
+				{
+					"ID": "20221122154503-zdlce28",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-zdlce28"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-s6ka1vw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-s6ka1vw"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "[1] 原文链接: https://medium.com/@dramasamy/life-of-a-packet-in-kubernetes-part-1-f9bc0909e051"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-7fqs7w7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-7fqs7w7"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-fost93d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-fost93d"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "[2] Docker 官网: https://docs.docker.com/network/iptables/#docker-on-a-router"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221122154503-1snyuh0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221122154503-1snyuh0"
+					},
+					"Children": [
+						{
+							"ID": "20221122154503-g2fl36c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221122154503-g2fl36c"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "[3] CNI 规范: https://github.com/containernetworking/cni/blob/master/SPEC.md"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

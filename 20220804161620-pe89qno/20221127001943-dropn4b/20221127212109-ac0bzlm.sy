@@ -1,0 +1,1219 @@
+{
+	"ID": "20221127212109-ac0bzlm",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221127212109-ac0bzlm",
+		"title": "4-VPC",
+		"updated": "20221128021008"
+	},
+	"Children": [
+		{
+			"ID": "20221127212109-weog7kl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127212109-weog7kl",
+				"updated": "20221127212131"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-OVN 支持多租户隔离级别的 VPC 网络。不同 VPC 网络相互独立，可以分别配置 Subnet 网段， 路由策略，安全策略，出网网关，EIP 等配置。"
+				}
+			]
+		},
+		{
+			"ID": "20221127212147-54sckx8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127212147-54sckx8",
+				"updated": "20221127212148"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "VPC 主要用于有多租户网络强隔离的场景，部分 Kubernetes 网络功能在多租户网络下存在冲突。 例如节点和 Pod 互访，NodePort 功能，基于网络访问的健康检查和 DNS 能力在多租户网络场景暂不支持。 为了方便常见 Kubernetes 的使用场景，Kube-OVN 默认 VPC 做了特殊设计，该 VPC 下的 Subnet 可以满足 Kubernetes 规范。用户自定义 VPC 支持本文档介绍的静态路由，EIP 和 NAT 网关等功能。 常见隔离需求可通过默认 VPC 下的网络策略和子网 ACL 实现，在使用自定义 VPC 前请明确是否需要 VPC 级别的隔离"
+				}
+			]
+		},
+		{
+			"ID": "20221127212503-ax0f2i0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127212503-ax0f2i0",
+				"updated": "20221127212505"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Properties": {
+						"parent-style": "display: block;"
+					},
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127212505-dq6drrh.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: parent-style=\"display: block;\"}"
+				}
+			]
+		},
+		{
+			"ID": "20221128015407-eouh6r9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128015407-eouh6r9",
+				"updated": "20221128015448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 创建自定义VPC"
+				}
+			]
+		},
+		{
+			"ID": "20221128015456-8f8ylp5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015456-8f8ylp5",
+				"updated": "20221128015511"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建两个VPC:"
+				}
+			]
+		},
+		{
+			"ID": "20221128015511-t3p4h9n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128015511-t3p4h9n",
+				"updated": "20221128015514"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: Vpc\napiVersion: kubeovn.io/v1\nmetadata:\n  name: test-vpc-1\nspec:\n  namespaces:\n  - ns1\n---\nkind: Vpc\napiVersion: kubeovn.io/v1\nmetadata:\n  name: test-vpc-2\nspec:\n  namespaces:\n  - ns2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128015542-k3wfd91",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128015542-k3wfd91",
+				"updated": "20221128015542"
+			},
+			"Children": [
+				{
+					"ID": "20221128015542-bmswv2z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128015542-bmswv2z"
+					},
+					"Children": [
+						{
+							"ID": "20221128015542-y0rczte",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128015542-y0rczte"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "namespaces"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 可以限定只有哪些 Namespace 可以使用当前 VPC，若为空则不限定。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128015554-t8m3zt3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015554-t8m3zt3",
+				"updated": "20221128015737"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建两个子网，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "分属两个不同的 VPC 并有相同的 CIDR:"
+				}
+			]
+		},
+		{
+			"ID": "20221128015607-eqijz85",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128015607-eqijz85",
+				"updated": "20221128015612"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " Subnet\napiVersion: kubeovn.io/v1\nmetadata:\n  name: net1\nspec:\n  vpc: test-vpc-1\n  cidrBlock: 10.0.1.0/24\n  protocol: IPv4\n  namespaces:\n    - ns1\n---\nkind: Subnet\napiVersion: kubeovn.io/v1\nmetadata:\n  name: net2\nspec:\n  vpc: test-vpc-2\n  cidrBlock: 10.0.1.0/24\n  protocol: IPv4\n  namespaces:\n    - ns2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128015638-04dh0hn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015638-04dh0hn",
+				"updated": "20221128015638"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "分别在两个 Namespace 下创建 Pod:"
+				}
+			]
+		},
+		{
+			"ID": "20221128015638-eom0p0b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128015638-eom0p0b",
+				"updated": "20221128015702"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Pod\nmetadata:\n  annotations:\n    ovn.kubernetes.io/logical_switch: net1\n  namespace: ns1\n  name: vpc1-pod\nspec:\n  containers:\n    - name: vpc1-pod\n      image: nginx:alpine\n---\napiVersion: v1\nkind: Pod\nmetadata:\n  annotations:\n    ovn.kubernetes.io/logical_switch: net2\n  namespace: ns2\n  name: vpc2-pod\nspec:\n  containers:\n    - name: vpc2-pod\n      image: nginx:alpine\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128015654-jcc0wzo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015654-jcc0wzo",
+				"updated": "20221128015713"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行成功后可观察两个 Pod 地址属于同一个 CIDR，但由于运行在不同的租户 VPC，两个 Pod 无法相互访问。"
+				}
+			]
+		},
+		{
+			"ID": "20221128015745-0sv2ku9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128015745-0sv2ku9",
+				"updated": "20221128015805"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 创建VPC网关"
+				}
+			]
+		},
+		{
+			"ID": "20221128015812-lvegv7b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015812-lvegv7b",
+				"updated": "20221128015814"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "自定义 VPC 下的子网不支持默认 VPC 下的分布式网关和集中式网关。"
+				}
+			]
+		},
+		{
+			"ID": "20221128015847-6d694xv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015847-6d694xv",
+				"updated": "20221128015848"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "VPC 内容器访问外部网络需要通过 VPC 网关，VPC 网关可以打通物理网络和租户网络，并提供 浮动 IP，SNAT 和 DNAT 功能。"
+				}
+			]
+		},
+		{
+			"ID": "20221128015912-fi0zdhu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128015912-fi0zdhu",
+				"updated": "20221128015912"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "VPC 网关功能依赖 Multus-CNI 的多网卡功能，安装请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/quickstart.md",
+					"TextMarkTextContent": "multus-cni"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221128020057-n3iot14",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020057-n3iot14",
+				"updated": "20221128020113"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 配置外部网络"
+				}
+			]
+		},
+		{
+			"ID": "20221128020113-1z3jiop",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020113-1z3jiop",
+				"updated": "20221128020118"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: ovn-vpc-external-network\nspec:\n  protocol: IPv4\n  provider: ovn-vpc-external-network.kube-system\n  cidrBlock: 192.168.0.0/24\n  gateway: 192.168.0.1  # IP address of the physical gateway\n  excludeIps:\n  - 192.168.0.1..192.168.0.10\n---\napiVersion: \"k8s.cni.cncf.io/v1\"\nkind: NetworkAttachmentDefinition\nmetadata:\n  name: ovn-vpc-external-network\n  namespace: kube-system\nspec:\n  config: '{\n      \"cniVersion\": \"0.3.0\",\n      \"type\": \"macvlan\",\n      \"master\": \"eth1\",\n      \"mode\": \"bridge\",\n      \"ipam\": {\n        \"type\": \"kube-ovn\",\n        \"server_socket\": \"/run/openvswitch/kube-ovn-daemon.sock\",\n        \"provider\": \"ovn-vpc-external-network.kube-system\"\n      }\n    }'\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020231-r3bhit1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020231-r3bhit1",
+				"updated": "20221128020242"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 开启VPC网关功能"
+				}
+			]
+		},
+		{
+			"ID": "20221128020246-mvdtggk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128020246-mvdtggk",
+				"updated": "20221128020246"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "VPC 网关功能需要通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-system"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 下的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn-vpc-nat-gw-config"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 开启："
+				}
+			]
+		},
+		{
+			"ID": "20221128020246-m7co7ug",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020246-m7co7ug",
+				"updated": "20221128020302"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: ConfigMap\napiVersion: v1\nmetadata:\n  name: ovn-vpc-nat-gw-config\n  namespace: kube-system\ndata:\n  image: 'kubeovn/vpc-nat-gateway:v1.10.7' \n  enable-vpc-nat-gw: 'true'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020312-c5n8wcv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128020312-c5n8wcv",
+				"updated": "20221128020312"
+			},
+			"Children": [
+				{
+					"ID": "20221128020312-fcuc1tp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128020312-fcuc1tp"
+					},
+					"Children": [
+						{
+							"ID": "20221128020312-clr82b1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128020312-clr82b1"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "image"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 网关 Pod 所使用的镜像。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128020312-8jptp58",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128020312-8jptp58"
+					},
+					"Children": [
+						{
+							"ID": "20221128020312-ctygenq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128020312-ctygenq"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "enable-vpc-nat-gw"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "： 控制是否启用 VPC 网关功能。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128020314-h7ctbo3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020314-h7ctbo3",
+				"updated": "20221128020338"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 创建 VPC 网关并配置默认路由"
+				}
+			]
+		},
+		{
+			"ID": "20221128020329-19af5eg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020329-19af5eg",
+				"updated": "20221128020421"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: VpcNatGateway\napiVersion: kubeovn.io/v1\nmetadata:\n  name: gw1\nspec:\n  vpc: test-vpc-1\n  subnet: net1\n  lanIp: 10.0.1.254\n  selector:\n    - \"kubernetes.io/hostname: kube-ovn-worker\"\n    - \"kubernetes.io/os: linux\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020423-06l6qw7",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128020423-06l6qw7",
+				"updated": "20221128020423"
+			},
+			"Children": [
+				{
+					"ID": "20221128020423-8r5n0hl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128020423-8r5n0hl"
+					},
+					"Children": [
+						{
+							"ID": "20221128020423-hhef9eb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128020423-hhef9eb"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "subnet"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "： 为 VPC 内某个 Subnet 名，VPC 网关 Pod 会在该子网下用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "lanIp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 来连接租户网络。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128020423-02gcalm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128020423-02gcalm"
+					},
+					"Children": [
+						{
+							"ID": "20221128020423-i64ynb4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128020423-i64ynb4"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "lanIp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "subnet"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 内某个未被使用的 IP，VPC 网关 Pod 最终会使用该 Pod。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128020423-hmmml98",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128020423-hmmml98"
+					},
+					"Children": [
+						{
+							"ID": "20221128020423-xnn3nk3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128020423-xnn3nk3"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "selector"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": VPC 网关 Pod 的节点选择器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128020423-0lrhbya",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128020423-0lrhbya"
+					},
+					"Children": [
+						{
+							"ID": "20221128020423-i1lkl9w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128020423-i1lkl9w"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nextHopIP"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：需和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "lanIp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 相同。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128020532-chun3zy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020532-chun3zy",
+				"updated": "20221128020543"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 创建EIP"
+				}
+			]
+		},
+		{
+			"ID": "20221128020543-w4niv14",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128020543-w4niv14",
+				"updated": "20221128020551"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "EIP 为外部网络段的某个 IP 分配给 VPC 网关后可进行浮动IP，SNAT 和 DNAT 操作。"
+				}
+			]
+		},
+		{
+			"ID": "20221128020602-43denlo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128020602-43denlo",
+				"updated": "20221128020602"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "随机分配一个地址给 EIP："
+				}
+			]
+		},
+		{
+			"ID": "20221128020602-4vs9yfr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020602-4vs9yfr",
+				"updated": "20221128020613"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: IptablesEIP\napiVersion: kubeovn.io/v1\nmetadata:\n  name: eip-random\nspec:\n  natGwDp: gw1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020621-5t8t56t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128020621-5t8t56t",
+				"updated": "20221128020621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "固定 EIP 地址分配："
+				}
+			]
+		},
+		{
+			"ID": "20221128020621-5vn9qiu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020621-5vn9qiu",
+				"updated": "20221128020638"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: IptablesEIP\napiVersion: kubeovn.io/v1\nmetadata:\n  name: eip-static\nspec:\n  natGwDp: gw1\n  v4ip: 10.0.1.111\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020631-slf9kuw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020631-slf9kuw",
+				"updated": "20221128020851"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.5 创建DNAT规则"
+				}
+			]
+		},
+		{
+			"ID": "20221128020851-0yp8h5p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020851-0yp8h5p",
+				"updated": "20221128021008"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: IptablesEIP\napiVersion: kubeovn.io/v1\nmetadata:\n  name: eipd01\nspec:\n  natGwDp: gw1\n\n---\nkind: IptablesDnatRule\napiVersion: kubeovn.io/v1\nmetadata:\n  name: dnat01\nspec:\n  eip: eipd01 \n  externalPort: '8888'\n  internalIp: 10.0.1.10\n  internalPort: '80'\n  protocol: tcp\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020853-jwz98xw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020853-jwz98xw",
+				"updated": "20221128020905"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.6 创建SNAT规则"
+				}
+			]
+		},
+		{
+			"ID": "20221128020905-xtrjeqw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020905-xtrjeqw",
+				"updated": "20221128021206"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\nkind: IptablesEIP\napiVersion: kubeovn.io/v1\nmetadata:\n  name: eips01\nspec:\n  natGwDp: gw1\n---\nkind: IptablesSnatRule\napiVersion: kubeovn.io/v1\nmetadata:\n  name: snat01\nspec\n  eip: eips01\n  internalCIDR: 10.0.1.0/24\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020906-p8rq7p8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020906-p8rq7p8",
+				"updated": "20221128020916"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.7 创建浮动IP"
+				}
+			]
+		},
+		{
+			"ID": "20221128021809-8xk0f0j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128021809-8xk0f0j",
+				"updated": "20221128021809"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "浮动IP，也称为VIP，是一种用于高可用场景的故障转移技术"
+				}
+			]
+		},
+		{
+			"ID": "20221128020916-1u0xoz8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020916-1u0xoz8",
+				"updated": "20221128021215"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\nkind: IptablesEIP\napiVersion: kubeovn.io/v1\nmetadata:\n  name: eipf01\nspec:\n  natGwDp: gw1\n\n---\nkind: IptablesFIPRule\napiVersion: kubeovn.io/v1\nmetadata:\n  name: fip01\nspec:\n  eip: eipf01\n  internalIp: 10.0.1.5\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128020917-057567y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221128020917-057567y",
+				"updated": "20221128020926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 自定义路由"
+				}
+			]
+		},
+		{
+			"ID": "20221128021317-dia4rq0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128021317-dia4rq0",
+				"updated": "20221128021318"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在自定义 VPC 内，用户可以自定义网络内部的路由规则，结合网关实现更灵活的转发。 Kube-OVN 支持静态路由和更为灵活的策略路由。"
+				}
+			]
+		},
+		{
+			"ID": "20221128020926-exl9kbr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020926-exl9kbr",
+				"updated": "20221128020938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 静态路由"
+				}
+			]
+		},
+		{
+			"ID": "20221128020938-kd0dxlm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128020938-kd0dxlm",
+				"updated": "20221128021333"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: Vpc\napiVersion: kubeovn.io/v1\nmetadata:\n  name: test-vpc-1\nspec:\n  staticRoutes:\n    - cidr: 0.0.0.0/0\n      nextHopIP: 10.0.1.254\n      policy: policyDst\n    - cidr: 172.31.0.0/24\n      nextHopIP: 10.0.1.253\n      policy: policySrc\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221128021411-wrro5pt",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221128021411-wrro5pt",
+				"updated": "20221128021411"
+			},
+			"Children": [
+				{
+					"ID": "20221128021411-abo9mlq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128021411-abo9mlq"
+					},
+					"Children": [
+						{
+							"ID": "20221128021411-f17i8t3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128021411-f17i8t3"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "policy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 支持目的地址路由 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "policyDst"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和源地址路由 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "policySrc"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221128021411-hptmqwc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221128021411-hptmqwc"
+					},
+					"Children": [
+						{
+							"ID": "20221128021411-dimfasd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221128021411-dimfasd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当路由规则存在重叠时，CIDR 掩码较长的规则优先级更高，若掩码长度相同则目的地址路由优先于源地址路由。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221128020940-831xabd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221128020940-831xabd",
+				"updated": "20221128020949"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 策略路由"
+				}
+			]
+		},
+		{
+			"ID": "20221128021401-kvfa6k6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221128021401-kvfa6k6",
+				"updated": "20221128021436"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "静态路由匹配的流量，可通过策略路由进行更细粒度的控制。策略路由提供了更精确的匹配规则，优先级控制 和更多的转发动作。该功能为 OVN 内部逻辑路由器策略功能的一个对外暴露，更多使用信息请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://man7.org/linux/man-pages/man5/ovn-nb.5.html#Logical_Router_Policy_TABLE",
+					"TextMarkTextContent": "Logical Router Policy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221128021441-p6t6qsz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221128021441-p6t6qsz",
+				"updated": "20221128021454"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: Vpc\napiVersion: kubeovn.io/v1\nmetadata:\n  name: test-vpc-1\nspec:\n  policyRoutes:\n    - action: drop\n      match: ip4.src==10.0.1.0/24 \u0026\u0026 ip4.dst==10.0.1.250\n      priority: 11\n    - action: reroute\n      match: ip4.src==10.0.1.0/24\n      nextHopIP: 10.0.1.252\n      priority: 10\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

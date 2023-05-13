@@ -1,0 +1,138 @@
+{
+	"ID": "20221124011824-tn607mh",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221124011824-tn607mh",
+		"title": "nmcli",
+		"updated": "20221124012040"
+	},
+	"Children": [
+		{
+			"ID": "20221124011914-herullb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221124011914-herullb",
+				"updated": "20221124011914"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、日常用法"
+				}
+			]
+		},
+		{
+			"ID": "20221124011914-4e929vn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221124011914-4e929vn",
+				"updated": "20221124012040"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "nmcli dev status //查看系统现有网络设备的连接状态\nnmcli conn show //查看已有连接\nnmcli conn delete UUID1 UUID2 UUID3 //删除不需要的连接\nnmcli dev connect ens160 //连接设备ens160，该操作类似于接上网卡网线\nnmcli dev disconnect ens160 //断开设备ens160，类似于拔掉网线\nnmcli conn down ens160 //关闭连接ens160，等同于ifdown ens160\nnmcli conn up ens160 //打开连接ens160，等同于ifup ens160\nnmcli dev show //查看设备详细信息\nnmcli connection add ifname eno33554992 con-name eth1 type ethernet   //查看conn，无device\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221124011914-ic9hj16",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221124011914-ic9hj16",
+				"updated": "20221124011914"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、创建、命名连接，并做基本配置"
+				}
+			]
+		},
+		{
+			"ID": "20221124011914-8m9sokp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221124011914-8m9sokp",
+				"updated": "20221124012013"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nnmcli conn add type ethernet con-name ens160 ifname ens160\n\n#创建新连接con-name是ens160，也可以根据个人习惯改为eth0.连接到的设备是ens160，根据实际情况改成自己使用的网卡\n\nnmcli conn mod ens160 ipv4.method manual //配置IP地址获取方式为手动\nnmcli conn mod ens160 ipv4.addresses \"10.x.x.x/24\" //配置IP和掩码\nnmcli conn mod ens160 ipv4.gateway \"10.x.x.254\" //配置网关\nnmcli conn mod ens160 ipv4.dns \"x.x.x.x\" //配置dns\nnmcli conn mod ens160 connection.autoconnect yes //配置开机自动启动\nnmcli conn up ens160 //启动网卡 .zj\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221124011914-qqojqst",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221124011914-qqojqst",
+				"updated": "20221124011914"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、配置网卡"
+				}
+			]
+		},
+		{
+			"ID": "20221124011914-j6wswv1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221124011914-j6wswv1",
+				"updated": "20221124011914"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "网卡bond是创建一个虚拟链接做为主，若干个连接做为从。从连接关联各自的物理网卡，避免物理网卡的单点故障，提高可用性。\n\n//这里系统有两个网卡enp9s0f1和enp9s0f1\nnmcli conn add type bond con-name bond0 ifname bond0 mode active-backup autoconnect yes\n\n//添加一个连接，类型为bond，连接名bond0,设置连接自动启动.设备指向bond0，将创建出一个虚拟设备bond0\nnmcli conn add type bond-slave con-name eth0 ifname enp9s0f0 master bond0 autoconnect yes\nnmcli conn add type bond-slave con-name eth1 ifname enp9s0f1 master bond0 autoconnect yes\n\n//为bond0添加两个从连接eth0和eth1，分别关联物理网卡enp9s0f1和enp9s0f1，设置连接自动启动.也可以不指定从连接名，会自动命名bond-slave-enp9s0f0和bond-slave-enp9s0f1\nnmcli conn modify bond0 ipv4.addresses \"10.x.x.x/24\"\nnmcli conn modify bond0 ipv4.gateway \"10.x.x.254\"\nnmcli conn modify bond0 ipv4.dns \"x.x.x.x\"\nnmcli conn modify bond0 ipv4.method manual\n\n//为连接bond0配置IP、网关、dns、启动方式\nnmcli connection up eth0\nnmcli connection up eth1\nnmcli connection up bond0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

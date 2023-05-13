@@ -1,0 +1,889 @@
+{
+	"ID": "20230316084633-4uhbyc1",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230316084633-4uhbyc1",
+		"title": "discovery包",
+		"updated": "20230320104513"
+	},
+	"Children": [
+		{
+			"ID": "20230316084633-xhjxp4c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230316084633-xhjxp4c",
+				"updated": "20230316084720"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230316084720-p8akspo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230316084720-p8akspo",
+				"updated": "20230316084812"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "discovery包主要用来发现服务器支持的API组、版本和资源的方法，及服务端支持的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=swagger\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "swagger"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " api"
+				}
+			]
+		},
+		{
+			"ID": "20230319052230-od8t51o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230319052230-od8t51o",
+				"updated": "20230319052236"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码示例："
+				}
+			]
+		},
+		{
+			"ID": "20230319052236-kwnhfo3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230319052236-kwnhfo3",
+				"updated": "20230319052242"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n\t\"fmt\"\n\t\"k8s.io/apimachinery/pkg/runtime/schema\"\n\t\"k8s.io/client-go/discovery\"\n\t\"k8s.io/client-go/tools/clientcmd\"\n\t\"log\"\n)\n\nfunc main() {\n\tconfig, err := clientcmd.BuildConfigFromFlags(\"\", \"./config\")\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tdiscoverClient, err := discovery.NewDiscoveryClientForConfig(config)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\t_, apiResourceList, err := discoverClient.ServerGroupsAndResources()\n\tfor _, v := range apiResourceList {\n\t\tgv, err := schema.ParseGroupVersion(v.GroupVersion)\n\t\tif err != nil {\n\t\t\tlog.Fatal(err)\n\t\t}\n\t\tfor _, resource := range v.APIResources {\n\t\t\tfmt.Println(\"name:\", resource.Name, \"    \", \"group:\", gv.Group, \"    \", \"version:\", gv.Version)\n\t\t}\n\t}\n\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230316084800-uw56q9j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230316084800-uw56q9j",
+				"updated": "20230316125448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 源码解读"
+				}
+			]
+		},
+		{
+			"ID": "20230316125501-2ovzujx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230316125501-2ovzujx",
+				"updated": "20230316125510"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 discovery_client.go"
+				}
+			]
+		},
+		{
+			"ID": "20230316125514-rf810pv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230316125514-rf810pv",
+				"updated": "20230316132807"
+			},
+			"Children": [
+				{
+					"ID": "20230316132807-snshhea",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230316132807-snshhea"
+					},
+					"Children": [
+						{
+							"ID": "20230316132807-4gieill",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230316132807-4gieill"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义全局变量:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230316125524-0h9xkax",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230316125524-0h9xkax",
+				"updated": "20230316130619"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "const (\n\t// defaultRetries指动态获取resource失败，重试的次数（例如CustomResourceDefinitions\n\tdefaultRetries = 2\n\t// protobuf mime 类型\n\topenAPIV2mimePb = \"application/com.github.proto-openapi.spec.v2@v1.0+protobuf\"\n\n\t// defaultTimeout是在RESTClient上未设置超时时每个请求的最大时间。默认为32秒，以便相对于其他存在的超时具有可区分的时间长度。\tdefaultTimeout = 32 * time.Second\n\tdefaultTimeout = 32 * time.Second\n\n\t// defaultBurst是发现客户端的令牌桶速率限制的使用的默认burst\n \tdefaultBurst = 300\n\n\tAcceptV1 = runtime.ContentTypeJSON\n\t// 聚合的discovery类型（当前为v2beta1）。注意：目前，我们假设“g”、“v”和“as”的顺序来自服务器。只有当我们能够做出这样的假设时，我们才能比较这个字符串\n\tAcceptV2Beta1 = runtime.ContentTypeJSON + \";\" + \"g=apidiscovery.k8s.io;v=v2beta1;as=APIGroupDiscoveryList\"\n\t// 通过设置descovery的可接受的类型顺序，确定聚合descovery的优先级\n\tacceptDiscoveryFormats = AcceptV2Beta1 + \",\" + AcceptV1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230316130627-08rxjy6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230316130627-08rxjy6",
+				"updated": "20230316132810"
+			},
+			"Children": [
+				{
+					"ID": "20230316132810-2cin15s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230316132810-2cin15s"
+					},
+					"Children": [
+						{
+							"ID": "20230316132810-c9i2zlo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230316132810-c9i2zlo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "接口："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230316130630-rktztym",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230316130630-rktztym",
+				"updated": "20230316132548"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// DiscoveryInterface 动态发现服务器支持的API groups,versions and resources.\ntype DiscoveryInterface interface {\n\tRESTClient() restclient.Interface\n\tServerGroupsInterface\n\tServerResourcesInterface\n\tServerVersionInterface\n\tOpenAPISchemaInterface\n\tOpenAPIV3SchemaInterface\n\t// 返回仅接收旧版发现格式的当前发现客户端的副本，如果当前发现客户端不支持仅旧版发现，则返回指向该客户端的指针。\n\tWithLegacy() DiscoveryInterface\n}\n\n\n// AggregatedDiscoveryInterface扩展了DiscoveryInterface，使其包括一个可能返回发现资源和发现组的方法，这就是较新的聚合发现格式（APIGroupDiscoveryList）的作用。\ntype AggregatedDiscoveryInterface interface {\n\tDiscoveryInterface\n\n\tGroupsAndMaybeResources() (*metav1.APIGroupList, map[schema.GroupVersion]*metav1.APIResourceList, error)\n}\n\n// CachedDiscoveryInterface 是一个具有缓存失效和刷新的 DiscoveryInterface。\n// 注意：如果ServerResourcesForGroupVersion方法返回缓存未命中错误，\n// 用户需要显式调用Invalidate清除缓存，否则下次会返回同样的缓存未命中错误。\n\ntype CachedDiscoveryInterface interface {\n\tDiscoveryInterface\n\t//如果在缓存未能找到，Fresh 应该告诉调用者是否重试（false = 重试，true = 不需要重试）。\n\n\t// TODO: this needs to be revisited, this interface can't be locked properly\n\t// and doesn't make a lot of sense.\n\tFresh() bool\n\t//Invalidate 强制不使用早于当前时间的缓存数据\n\tInvalidate()\n}\n\n\n// ServerGroupsInterface 具有获取 API 服务器上支持的group的方法\ntype ServerGroupsInterface interface {\n\t// ServerGroups 返回支持的组，包括支持的版本和首选版本等信息。\n\tServerGroups() (*metav1.APIGroupList, error)\n}\n \n// ServerResourcesInterface 具有获取 API 服务器上支持的resource的方法\ntype ServerResourcesInterface interface {\n\t// ServerResourcesForGroupVersion 返回组和版本支持的资源\n\tServerResourcesForGroupVersion(groupVersion string) (*metav1.APIResourceList, error)\n\n\n\t// ServerGroupsAndResources为所有组和版本返回支持的组和资源。\n        // 返回的组和资源列表可能是非零的，即使在非零错误的情况下也会有部分结果\n\tServerGroupsAndResources() ([]*metav1.APIGroup, []*metav1.APIResourceList, error)\n\n\t// ServerPreferredResources使用服务器首选的版本返回支持的资源。\n        // 返回的组和资源列表可能是非零的，即使在非零错误的情况下也会有部分结果。\n\tServerPreferredResources() ([]*metav1.APIResourceList, error)\n\n\t// ServerPreferredNamespacedResources使用服务器首选的版本返回受支持的命名空间资源。\n\t// 返回的资源列表可能是非nil，即使在非nil错误的情况下也会有部分结果。\n\tServerPreferredNamespacedResources() ([]*metav1.APIResourceList, error)\n}\n\n// ServerVersionInterface 有一个检索服务器版本的方法。\ntype ServerVersionInterface interface {\n\t// ServerVersion 检索并解析服务器的版本（git 版本）。\n\tServerVersion() (*version.Info, error)\n}\n\n// OpenAPISchemaInterface 有一个方法来检索open API的schema。\ntype OpenAPISchemaInterface interface {\n\t// OpenAPISchema 检索并解析服务器支持的 swagger API 模式。\n\tOpenAPISchema() (*openapi_v2.Document, error)\n}\n \n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230316131244-ii0av8i",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230316131244-ii0av8i",
+				"updated": "20230319050311"
+			},
+			"Children": [
+				{
+					"ID": "20230319022004-146uhqj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230319022004-146uhqj",
+						"updated": "20230319050109"
+					},
+					"Children": [
+						{
+							"ID": "20230319022004-g2oswpc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230319022004-g2oswpc",
+								"updated": "20230319022024"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Discovery执行内部方法的函数："
+								}
+							]
+						},
+						{
+							"ID": "20230319022025-zmsl6ce",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230319022025-zmsl6ce",
+								"updated": "20230319050109"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "// fetchServerResourcesForGroupVersions使用Discovery客户端并行获取指定组的资源。\nfunc fetchGroupVersionResources(d DiscoveryInterface, apiGroups *metav1.APIGroupList) (map[schema.GroupVersion]*metav1.APIResourceList, map[schema.GroupVersion]error) {\n\tgroupVersionResources := make(map[schema.GroupVersion]*metav1.APIResourceList)\n\tfailedGroups := make(map[schema.GroupVersion]error)\n\n\twg := \u0026sync.WaitGroup{}\n\tresultLock := \u0026sync.Mutex{}\n\tfor _, apiGroup := range apiGroups.Groups {\n\t\t // 遍历每个group中的versions\n\t\tfor _, version := range apiGroup.Versions {\n\t\t\tgroupVersion := schema.GroupVersion{Group: apiGroup.Name, Version: version.Version}\n\t\t\twg.Add(1)\n\t\t\t // 开启goruntime执行\n\t\t\tgo func() {\n\t\t\t\tdefer wg.Done()\n\t\t\t\tdefer utilruntime.HandleCrash()\n\t\t\t\t// 执行DiscoveryClient具体实现的ServerResourcesForGroupVersion\n\t\t\t\tapiResourceList, err := d.ServerResourcesForGroupVersion(groupVersion.String())\n\n\t\t\t\t// lock to record results\n\t\t\t\tresultLock.Lock()\n\t\t\t\tdefer resultLock.Unlock()\n\n\t\t\t\tif err != nil {\n\t\t\t\t\t// TODO: maybe restrict this to NotFound errors\n\t\t\t\t\tfailedGroups[groupVersion] = err\n\t\t\t\t}\n\t\t\t\tif apiResourceList != nil {\n\t\t\t\t\t// 执行DiscoveryClient具体实现的ServerResourcesForGroupVersion\n\t\t\t\t\tgroupVersionResources[groupVersion] = apiResourceList\n\t\t\t\t}\n\t\t\t}()\n\t\t}\n\t}\n\twg.Wait()\n\n\treturn groupVersionResources, failedGroups\n}\n\n\nfunc ServerGroupsAndResources(d DiscoveryInterface) ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\tvar sgs *metav1.APIGroupList\n\tvar resources []*metav1.APIResourceList\n\tvar err error\n\n\t// 如果传递的discover对象实现了AggregatedDiscoveryInterface，则尝试使用组和资源检索聚合发现。\n\tif ad, ok := d.(AggregatedDiscoveryInterface); ok {\n\t\tvar resourcesByGV map[schema.GroupVersion]*metav1.APIResourceList\n\t\tsgs, resourcesByGV, err = ad.GroupsAndMaybeResources()\n\t\tfor _, resourceList := range resourcesByGV {\n\t\t\tresources = append(resources, resourceList)\n\t\t}\n\t} else {\n\t\t// 获取apiGroupList\n\t\tsgs, err = d.ServerGroups()\n\t}\n\n\tif sgs == nil {\n\t\treturn nil, nil, err\n\t}\n \t// 获取sgs中所有apiGroup的地址\n\tresultGroups := []*metav1.APIGroup{}\n\tfor i := range sgs.Groups {\n\t\tresultGroups = append(resultGroups, \u0026sgs.Groups[i])\n\t}\n\tif resources != nil {\n\t\treturn resultGroups, resources, nil\n\t}\n\t // DiscoveryClient并行获取指定组列表的资源\n\tgroupVersionResources, failedGroups := fetchGroupVersionResources(d, sgs)\n\n\t// 按discoveryclient发现的组/版本顺序排列结果\n\tresult := []*metav1.APIResourceList{}\n\tfor _, apiGroup := range sgs.Groups {\n\t\tfor _, version := range apiGroup.Versions {\n\t\t\tgv := schema.GroupVersion{Group: apiGroup.Name, Version: version.Version}\n\t\t\tif resources, ok := groupVersionResources[gv]; ok {\n\t\t\t\tresult = append(result, resources)\n\t\t\t}\n\t\t}\n\t}\n\n\tif len(failedGroups) == 0 {\n\t\treturn resultGroups, result, nil\n\t}\n\n\treturn resultGroups, result, \u0026ErrGroupDiscoveryFailed{Groups: failedGroups}\n}\n\n// ServerPreferredResources使用提供的发现接口查找首选资源\nfunc ServerPreferredResources(d DiscoveryInterface) ([]*metav1.APIResourceList, error) {\n\tvar serverGroupList *metav1.APIGroupList\n\tvar failedGroups map[schema.GroupVersion]error\n\tvar groupVersionResources map[schema.GroupVersion]*metav1.APIResourceList\n\tvar err error\n\n\t// 如果传递的Discovery对象实现了的AggregatedDiscoveryInterface，则尝试检索组和资源。\n\tad, ok := d.(AggregatedDiscoveryInterface)\n\tif ok {\n\t\tserverGroupList, groupVersionResources, err = ad.GroupsAndMaybeResources()\n\t} else {\n\t\tserverGroupList, err = d.ServerGroups()\n\t}\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// DiscoveryClient并行获取指定组列表的资源\n\tif groupVersionResources == nil {\n\t\tgroupVersionResources, failedGroups = fetchGroupVersionResources(d, serverGroupList)\n\t}\n\n\tresult := []*metav1.APIResourceList{}\n\tgrVersions := map[schema.GroupResource]string{}                         // GroupResource 的选定版本\n\tgrAPIResources := map[schema.GroupResource]*metav1.APIResource{}        // selected APIResource GroupResource 的选定APIResource\n\tgvAPIResourceLists := map[schema.GroupVersion]*metav1.APIResourceList{} // 用于稍后分组的 APIResourceList 的蓝图\n\n\tfor _, apiGroup := range serverGroupList.Groups {\n\t\tfor _, version := range apiGroup.Versions {\n\t\t\tgroupVersion := schema.GroupVersion{Group: apiGroup.Name, Version: version.Version}\n\t\t\t  // 判断groupVersionResources是否存在\n\t\t\tapiResourceList, ok := groupVersionResources[groupVersion]\n\t\t\tif !ok {\n\t\t\t\tcontinue\n\t\t\t}\n\n\t\t\t// 创建空列表，稍后在另一个循环中填充\n\t\t\temptyAPIResourceList := metav1.APIResourceList{\n\t\t\t\tGroupVersion: version.GroupVersion,\n\t\t\t}\n\t\t\tgvAPIResourceLists[groupVersion] = \u0026emptyAPIResourceList\n\t\t\tresult = append(result, \u0026emptyAPIResourceList)\n          \t\t  // 遍历上面获取apiResourceList的APIResources\n\n\t\t\tfor i := range apiResourceList.APIResources {\n\t\t\t\tapiResource := \u0026apiResourceList.APIResources[i]\n\t\t\t\t// 判断apiResource是否包含/,因为如果包含，则是子资源，所以舍弃\n\t\t\t\tif strings.Contains(apiResource.Name, \"/\") {\n\t\t\t\t\tcontinue\n\t\t\t\t}\n\t\t\t\t// 形成gv\n\t\t\t\tgv := schema.GroupResource{Group: apiGroup.Name, Resource: apiResource.Name}\n\t\t\t\tif _, ok := grAPIResources[gv]; ok \u0026\u0026 version.Version != apiGroup.PreferredVersion.Version {\n\t\t\t\t\t// only override with preferred version\n\t\t\t\t\tcontinue\n\t\t\t\t}\n\t\t\t\tgrVersions[gv] = version.Version\n\t\t\t\tgrAPIResources[gv] = apiResource\n\t\t\t}\n\t\t}\n\t}\n\n\t// 根据 GroupVersion 将选定的 APIResources 分组到 APIResourceLists（地址变量，改变值也是改变了result的value）\n\tfor groupResource, apiResource := range grAPIResources {\n\t\tversion := grVersions[groupResource]\n\t\tgroupVersion := schema.GroupVersion{Group: groupResource.Group, Version: version}\n\t\tapiResourceList := gvAPIResourceLists[groupVersion]\n\t\tapiResourceList.APIResources = append(apiResourceList.APIResources, *apiResource)\n\t}\n\n\tif len(failedGroups) == 0 {\n\t\treturn result, nil\n\t}\n\n\treturn result, \u0026ErrGroupDiscoveryFailed{Groups: failedGroups}\n}\n\n\n// ServerPreferredNamespacedResources使用提供的discovery接口查找首选的命名空间资源\nfunc ServerPreferredNamespacedResources(d DiscoveryInterface) ([]*metav1.APIResourceList, error) {\n \t// 获取全部的PreferredResources\n\tall, err := ServerPreferredResources(d)\n\t// 调用helper.go的FilteredBy\n\treturn FilteredBy(ResourcePredicateFunc(func(groupVersion string, r *metav1.APIResource) bool {\n\t\treturn r.Namespaced\n\t}), all), err\n}\n\n// withRetries会重试给定的恢复函数，以防ServerGroup（）返回后服务器支持的组发生更改\nfunc withRetries(maxRetries int, f func() ([]*metav1.APIGroup, []*metav1.APIResourceList, error)) ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\tvar result []*metav1.APIResourceList\n\tvar resultGroups []*metav1.APIGroup\n\tvar err error\n\tfor i := 0; i \u003c maxRetries; i++ {\n\t\tresultGroups, result, err = f()\n\t\tif err == nil {\n\t\t\treturn resultGroups, result, nil\n\t\t}\n\t\tif _, ok := err.(*ErrGroupDiscoveryFailed); !ok {\n\t\t\treturn nil, nil, err\n\t\t}\n\t}\n\treturn resultGroups, result, err\n}\n\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230316132813-ng5ccg0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230316132813-ng5ccg0",
+						"updated": "20230319050311"
+					},
+					"Children": [
+						{
+							"ID": "20230316132813-inch4dn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230316132813-inch4dn",
+								"updated": "20230316132904"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "DiscoveryClient实现了discover server支持的API组、版本和资源的方法"
+								}
+							]
+						},
+						{
+							"ID": "20230316132819-cgaozja",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230316132819-cgaozja",
+								"updated": "20230319050311"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "type DiscoveryClient struct {\n\t// restClient http.client的封装\n\trestClient restclient.Interface\n\t// api path的前缀\n\tLegacyPrefix string\n\t// 强制客户端仅请求“未聚合”（旧版）发现。\n\tUseLegacyDiscovery bool\n}\nvar _ AggregatedDiscoveryInterface = \u0026DiscoveryClient{}\n\n// 将metav1.APIVersions转换为metav1.API组。APIVersions由旧版v1使用，因此组将为“”。 \n// 其实是把入参APIVersions中每项的GroupVersion替换为version\nfunc apiVersionsToAPIGroup(apiVersions *metav1.APIVersions) (apiGroup metav1.APIGroup) {\n\tgroupVersions := []metav1.GroupVersionForDiscovery{}\n\tfor _, version := range apiVersions.Versions {\n\t\tgroupVersion := metav1.GroupVersionForDiscovery{\n\t\t\tGroupVersion: version,\n\t\t\tVersion:      version,\n\t\t}\n\t\tgroupVersions = append(groupVersions, groupVersion)\n\t}\n\tapiGroup.Versions = groupVersions\n\t// 在api中应该只返回一个groupVersion\n\tapiGroup.PreferredVersion = groupVersions[0]\n\treturn\n}\n\n// GroupsAndMaybeResources返回discovery组，以及（如果是新的聚合发现格式）由groupversion索引资源。\n// 合并来自api和api的discovery组和资源（聚合或不聚合）。\n// 必须首先对旧组进行排序。服务器将以聚合发现格式或遗留格式返回两个端点（api、apis）。\n// 为了安全起见，只有当两个端点都返回了资源时，才会返回资源。\nfunc (d *DiscoveryClient) GroupsAndMaybeResources() (*metav1.APIGroupList, map[schema.GroupVersion]*metav1.APIResourceList, error) {\n\t// Legacy group ordered first (there is only one -- core/v1 group). Returned groups must\n\t// be non-nil, but it could be empty. Returned resources, apiResources map could be nil.\n\tgroups, resources, err := d.downloadLegacy()\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\t// Discovery groups and (possibly) resources downloaded from /apis.\n\tapiGroups, apiResources, aerr := d.downloadAPIs()\n\tif aerr != nil {\n\t\treturn nil, nil, aerr\n\t}\n\t// Merge apis groups into the legacy groups.\n\tfor _, group := range apiGroups.Groups {\n\t\tgroups.Groups = append(groups.Groups, group)\n\t}\n\t// For safety, only return resources if both endpoints returned resources.\n\tif resources != nil \u0026\u0026 apiResources != nil {\n\t\tfor gv, resourceList := range apiResources {\n\t\t\tresources[gv] = resourceList\n\t\t}\n\t} else if resources != nil {\n\t\tresources = nil\n\t}\n\treturn groups, resources, err\n}\n\n\n// downloadLegacy在api处返回旧版v1 GVR的discovery组和可能的资源，如果发生错误，则返回错误。如果服务器返回未聚合的发现，\n// 则资源映射可能为零。\nfunc (d *DiscoveryClient) downloadLegacy() (*metav1.APIGroupList, map[schema.GroupVersion]*metav1.APIResourceList, error) {\n\taccept := acceptDiscoveryFormats\n\tif d.UseLegacyDiscovery {\n\t\taccept = AcceptV1\n\t}\n\tvar responseContentType string\n\tbody, err := d.restClient.Get().\n\t\tAbsPath(\"/api\").\n\t\tSetHeader(\"Accept\", accept).\n\t\tDo(context.TODO()).\n\t\tContentType(\u0026responseContentType).\n\t\tRaw()\n\t// Special error handling for 403 or 404 to be compatible with older v1.0 servers.\n\t// Return empty group list to be merged with /apis.\n\tif err != nil \u0026\u0026 !errors.IsNotFound(err) \u0026\u0026 !errors.IsForbidden(err) {\n\t\treturn nil, nil, err\n\t}\n\tif err != nil \u0026\u0026 (errors.IsNotFound(err) || errors.IsForbidden(err)) {\n\t\treturn \u0026metav1.APIGroupList{}, nil, nil\n\t}\n\n\tapiGroupList := \u0026metav1.APIGroupList{}\n\tvar resourcesByGV map[schema.GroupVersion]*metav1.APIResourceList\n\t// Switch on content-type server responded with: aggregated or unaggregated.\n\tswitch responseContentType {\n\tcase AcceptV1:\n\t\tvar v metav1.APIVersions\n\t\terr = json.Unmarshal(body, \u0026v)\n\t\tif err != nil {\n\t\t\treturn nil, nil, err\n\t\t}\n\t\tapiGroup := metav1.APIGroup{}\n\t\tif len(v.Versions) != 0 {\n\t\t\tapiGroup = apiVersionsToAPIGroup(\u0026v)\n\t\t}\n\t\tapiGroupList.Groups = []metav1.APIGroup{apiGroup}\n\tcase AcceptV2Beta1:\n\t\tvar aggregatedDiscovery apidiscovery.APIGroupDiscoveryList\n\t\terr = json.Unmarshal(body, \u0026aggregatedDiscovery)\n\t\tif err != nil {\n\t\t\treturn nil, nil, err\n\t\t}\n\t\tapiGroupList, resourcesByGV = SplitGroupsAndResources(aggregatedDiscovery)\n\tdefault:\n\t\treturn nil, nil, fmt.Errorf(\"Unknown discovery response content-type: %s\", responseContentType)\n\t}\n\n\treturn apiGroupList, resourcesByGV, nil\n}\n\n// downloadAPI返回discovery组和（如果是聚合格式）discovery资源。返回的组将始终存在，但资源映射可能为零。\nfunc (d *DiscoveryClient) downloadAPIs() (*metav1.APIGroupList, map[schema.GroupVersion]*metav1.APIResourceList, error) {\n\taccept := acceptDiscoveryFormats\n\tif d.UseLegacyDiscovery {\n\t\taccept = AcceptV1\n\t}\n\tvar responseContentType string\n\tbody, err := d.restClient.Get().\n\t\tAbsPath(\"/apis\").\n\t\tSetHeader(\"Accept\", accept).\n\t\tDo(context.TODO()).\n\t\tContentType(\u0026responseContentType).\n\t\tRaw()\n\t// Special error handling for 403 or 404 to be compatible with older v1.0 servers.\n\t// Return empty group list to be merged with /api.\n\tif err != nil \u0026\u0026 !errors.IsNotFound(err) \u0026\u0026 !errors.IsForbidden(err) {\n\t\treturn nil, nil, err\n\t}\n\tif err != nil \u0026\u0026 (errors.IsNotFound(err) || errors.IsForbidden(err)) {\n\t\treturn \u0026metav1.APIGroupList{}, nil, nil\n\t}\n\n\tapiGroupList := \u0026metav1.APIGroupList{}\n\tvar resourcesByGV map[schema.GroupVersion]*metav1.APIResourceList\n\t// Switch on content-type server responded with: aggregated or unaggregated.\n\tswitch responseContentType {\n\tcase AcceptV1:\n\t\terr = json.Unmarshal(body, apiGroupList)\n\t\tif err != nil {\n\t\t\treturn nil, nil, err\n\t\t}\n\tcase AcceptV2Beta1:\n\t\tvar aggregatedDiscovery apidiscovery.APIGroupDiscoveryList\n\t\terr = json.Unmarshal(body, \u0026aggregatedDiscovery)\n\t\tif err != nil {\n\t\t\treturn nil, nil, err\n\t\t}\n\t\tapiGroupList, resourcesByGV = SplitGroupsAndResources(aggregatedDiscovery)\n\tdefault:\n\t\treturn nil, nil, fmt.Errorf(\"Unknown discovery response content-type: %s\", responseContentType)\n\t}\n\n\treturn apiGroupList, resourcesByGV, nil\n}\n\n// ServerGroups返回支持的组，其中包含支持的版本和首选版本等信息。 实现ServerGroupsInterface接口\nfunc (d *DiscoveryClient) ServerGroups() (*metav1.APIGroupList, error) {\n\tgroups, _, err := d.GroupsAndMaybeResources()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn groups, nil\n}\n\n // 实现了ServerResourcesInterface的ServerResourcesForGroupVersion方法  注意获取resource在不同版本下的path\nfunc (d *DiscoveryClient) ServerResourcesForGroupVersion(groupVersion string) (resources *metav1.APIResourceList, err error) {\n\turl := url.URL{}\n\tif len(groupVersion) == 0 {\n\t\treturn nil, fmt.Errorf(\"groupVersion shouldn't be empty\")\n\t}\n\t   // 这里体现了获取core group的resource的path为/api/v1\n\t // 获取非core group的resource的path为/apis/$GROUP_NAME/$VERSION \n\tif len(d.LegacyPrefix) \u003e 0 \u0026\u0026 groupVersion == \"v1\" {\n\t\turl.Path = d.LegacyPrefix + \"/\" + groupVersion\n\t} else {\n\t\turl.Path = \"/apis/\" + groupVersion\n\t}\n\tresources = \u0026metav1.APIResourceList{\n\t\tGroupVersion: groupVersion,\n\t}\n\terr = d.restClient.Get().AbsPath(url.String()).Do(context.TODO()).Into(resources)\n\tif err != nil {\n\t\t// ignore 403 or 404 error to be compatible with an v1.0 server.\n\t\tif groupVersion == \"v1\" \u0026\u0026 (errors.IsNotFound(err) || errors.IsForbidden(err)) {\n\t\t\treturn resources, nil\n\t\t}\n\t\treturn nil, err\n\t}\n\treturn resources, nil\n}\n\n// ServerGroupsAndResources返回所有组和版本支持的资源。\nfunc (d *DiscoveryClient) ServerGroupsAndResources() ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\treturn withRetries(defaultRetries, func() ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\t\treturn ServerGroupsAndResources(d)\n\t})\n}\n\n\n\n\n// ServerPreferredResources使用服务器首选的版本返回支持的资源。\nfunc (d *DiscoveryClient) ServerPreferredResources() ([]*metav1.APIResourceList, error) {\n\t_, rs, err := withRetries(defaultRetries, func() ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\t // 调用上面函数部分的ServerPreferredResources\n\t\trs, err := ServerPreferredResources(d)\n\t\treturn nil, rs, err\n\t})\n\treturn rs, err\n}\n\n// ServerPreferredNamespacedResources使用服务器首选的版本返回受支持的命名空间资源。\nfunc (d *DiscoveryClient) ServerPreferredNamespacedResources() ([]*metav1.APIResourceList, error) {\n\treturn ServerPreferredNamespacedResources(d)\n}\n\n// ServerPreferredNamespacedResources使用提供的discovery接口查找首选的命名空间资源\nfunc ServerPreferredNamespacedResources(d DiscoveryInterface) ([]*metav1.APIResourceList, error) {\n\tall, err := ServerPreferredResources(d)\n\treturn FilteredBy(ResourcePredicateFunc(func(groupVersion string, r *metav1.APIResource) bool {\n\t\treturn r.Namespaced\n\t}), all), err\n}\n\n// ServerVersion检索并解析服务器的版本（git版本）。\nfunc (d *DiscoveryClient) ServerVersion() (*version.Info, error) {\n\t// 获取服务端的version  等效于kubectl version\n\tbody, err := d.restClient.Get().AbsPath(\"/version\").Do(context.TODO()).Raw()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tvar info version.Info\n\terr = json.Unmarshal(body, \u0026info)\n\tif err != nil {\n\t\treturn nil, fmt.Errorf(\"unable to parse the server version: %v\", err)\n\t}\n\treturn \u0026info, nil\n}\n\n// OpenAPISchema使用rest客户端获取openAPIv2模式，并解析proto。\nfunc (d *DiscoveryClient) OpenAPISchema() (*openapi_v2.Document, error) {\n\tdata, err := d.restClient.Get().AbsPath(\"/openapi/v2\").SetHeader(\"Accept\", openAPIV2mimePb).Do(context.TODO()).Raw()\n\tif err != nil {\n\t\tif errors.IsForbidden(err) || errors.IsNotFound(err) || errors.IsNotAcceptable(err) {\n\t\t\t// 未在旧服务器中找到注册的单个端点，请尝试获取旧端点\n\t\t\t// TODO:当kubectlclient不能与1.9服务器一起使用时删除此端点\n\t\t\tdata, err = d.restClient.Get().AbsPath(\"/swagger-2.0.0.pb-v1\").Do(context.TODO()).Raw()\n\t\t\tif err != nil {\n\t\t\t\treturn nil, err\n\t\t\t}\n\t\t} else {\n\t\t\treturn nil, err\n\t\t}\n\t}\n\tdocument := \u0026openapi_v2.Document{}\n\terr = proto.Unmarshal(data, document)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn document, nil\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230316132955-t8w8kyn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230316132955-t8w8kyn",
+				"updated": "20230316133005"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230316133005-wbwcy3h.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230316133517-trouxr8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230316133517-trouxr8",
+				"updated": "20230319050847"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 设置默认属性\nfunc setDiscoveryDefaults(config *restclient.Config) error {\n\tconfig.APIPath = \"\"\n\tconfig.GroupVersion = nil\n\t// 如果Timeout == 0 设置为defaultTimeout\n\tif config.Timeout == 0 {\n\t\tconfig.Timeout = defaultTimeout\n\t}\n\t// if a burst limit is not already configured\n\tif config.Burst == 0 {\n\t\t// discovery预计是突发的，增加默认突发以适应查找许多API组的资源信息。\n\t\t// 匹配ConfigFlagsToDiscoveryClient（）设置的突发。请参阅https://issue.k8s.io86149\n\t\tconfig.Burst = defaultBurst\n\t}\n\t // 用来编解码\n\tcodec := runtime.NoopEncoder{Decoder: scheme.Codecs.UniversalDecoder()}\n\t// 生成并设置序列化，用来序列化（输入）和反序列化（输出）\n\tconfig.NegotiatedSerializer = serializer.NegotiatedSerializerWrapper(runtime.SerializerInfo{Serializer: codec})\n\tif len(config.UserAgent) == 0 {\n\t\tconfig.UserAgent = restclient.DefaultKubernetesUserAgent()\n\t}\n\treturn nil\n}\n\n// NewDiscoveryClientForConfig 为给定的配置创建一个新的 DiscoveryClient。此客户端可用于发现 API 服务器中支持的资源。\nfunc NewDiscoveryClientForConfig(c *restclient.Config) (*DiscoveryClient, error) {\n\tconfig := *c\n\tif err := setDiscoveryDefaults(\u0026config); err != nil {\n\t\treturn nil, err\n\t}\n\t//  调用rest包下的client.go中的UnversionedRESTClientFor生成restclient\n\thttpClient, err := restclient.HTTPClientFor(\u0026config)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn NewDiscoveryClientForConfigAndClient(\u0026config, httpClient)\n}\n\n// 类似于NewDiscoveryClientForConfig ，区别是此方法如果出现err，则panic\nfunc NewDiscoveryClientForConfigOrDie(c *restclient.Config) *DiscoveryClient {\n\tclient, err := NewDiscoveryClientForConfig(c)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\treturn client\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230319050334-of4ws34",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230319050334-of4ws34",
+				"updated": "20230319050928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 helper.go"
+				}
+			]
+		},
+		{
+			"ID": "20230319052018-v83nbpu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230319052018-v83nbpu",
+				"updated": "20230319052019"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230319052019-5oia407.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230319050929-tnnhvn1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230319050929-tnnhvn1",
+				"updated": "20230319051050"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接口及其结构体："
+				}
+			]
+		},
+		{
+			"ID": "20230319051053-knjkbfl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230319051053-knjkbfl",
+				"updated": "20230319051339"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// ResourcePredicate 有一个方法来检查资源是否匹配给定条件\ntype ResourcePredicate interface {\n\tMatch(groupVersion string, r *metav1.APIResource) bool\n}\n\n// 如果ResourcePredicateFunc与基于自定义条件的资源匹配，则返回true。.\ntype ResourcePredicateFunc func(groupVersion string, r *metav1.APIResource) bool\n\n// Match 是 ResourcePredicateFunc 的包装器.\nfunc (fn ResourcePredicateFunc) Match(groupVersion string, r *metav1.APIResource) bool {\n\treturn fn(groupVersion, r)\n}\n\n// supportsAllVerbs 是一个匹配资源的谓词，如果所有给定的动词都被支持，则匹配\ntype SupportsAllVerbs struct {\n\tVerbs []string\n}\n\n// 匹配检查资源是否包含所有给定的动词。\nfunc (p SupportsAllVerbs) Match(groupVersion string, r *metav1.APIResource) bool {\n\treturn sets.NewString([]string(r.Verbs)...).HasAll(p.Verbs...)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230319052026-dtvu5qc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230319052026-dtvu5qc",
+				"updated": "20230319052035"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "函数"
+				}
+			]
+		},
+		{
+			"ID": "20230319051554-ekznii1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230319051554-ekznii1",
+				"updated": "20230319051920"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//  MatchesServerVersion 查询服务器以将客户端的构建版本(git hash) 与服务器的构建版本进行比较。如果无法链接服务器或版本不完全匹配，则返回错误。\nfunc MatchesServerVersion(clientVersion apimachineryversion.Info, client DiscoveryInterface) error {\n\tsVer, err := client.ServerVersion()\n\tif err != nil {\n\t\treturn fmt.Errorf(\"couldn't read version from server: %v\", err)\n\t}\n\t// GitVersion includes GitCommit and GitTreeState, but best to be safe?\n\tif clientVersion.GitVersion != sVer.GitVersion || clientVersion.GitCommit != sVer.GitCommit || clientVersion.GitTreeState != sVer.GitTreeState {\n\t\treturn fmt.Errorf(\"server version (%#v) differs from client version (%#v)\", sVer, clientVersion)\n\t}\n\n\treturn nil\n}\n\n// 如果服务器没有所需的版本，ServerSupportsVersion 将返回错误\nfunc ServerSupportsVersion(client DiscoveryInterface, requiredGV schema.GroupVersion) error {\n\t// 获取所有的groups\n\tgroups, err := client.ServerGroups()\n\tif err != nil {\n\t\t// 几乎总是一个连接错误\n\t\treturn err\n\t}\n\t// 提取groups中每项的groupversion\n\tversions := metav1.ExtractGroupVersions(groups)\n\t // 去重\n\tserverVersions := sets.String{}\n\tfor _, v := range versions {\n\t\tserverVersions.Insert(v)\n\t}\n\t// 判断是否包含\n\tif serverVersions.Has(requiredGV.String()) {\n\t\treturn nil\n\t}\n\n\t// 如果serverVersions的没有元素，那么可能是403 Forbidden errors\n\tif len(serverVersions) == 0 {\n\t\treturn nil\n\t}\n\n\treturn fmt.Errorf(\"server does not support API version %q\", requiredGV)\n}\n\n\n// GroupVersionResources 将 APIResourceLists 转换为 GroupVersionResources，并作为map的key形成map返回。\nfunc GroupVersionResources(rls []*metav1.APIResourceList) (map[schema.GroupVersionResource]struct{}, error) {\n\tgvrs := map[schema.GroupVersionResource]struct{}{}\n    // 遍历\n\tfor _, rl := range rls {\n        // str的gv转化为GroupVersion\n\t\tgv, err := schema.ParseGroupVersion(rl.GroupVersion)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n        // 遍历APIResources\n\t\tfor i := range rl.APIResources {\n            // 形成gvr并插入map中\n\t\t\tgvrs[schema.GroupVersionResource{Group: gv.Group, Version: gv.Version, Resource: rl.APIResources[i].Name}] = struct{}{}\n\t\t}\n\t}\n\treturn gvrs, nil\n}\n\n// FilteredBy 按给定ResourcePredicate过滤\nfunc FilteredBy(pred ResourcePredicate, rls []*metav1.APIResourceList) []*metav1.APIResourceList {\n\tresult := []*metav1.APIResourceList{}\n\tfor _, rl := range rls {\n\t\tfiltered := *rl\n\t\tfiltered.APIResources = nil\n\t\tfor i := range rl.APIResources {\n\t\t\tif pred.Match(rl.GroupVersion, \u0026rl.APIResources[i]) {\n\t\t\t\tfiltered.APIResources = append(filtered.APIResources, rl.APIResources[i])\n\t\t\t}\n\t\t}\n\t\tif filtered.APIResources != nil {\n\t\t\tresult = append(result, \u0026filtered)\n\t\t}\n\t}\n\treturn result\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230319052212-woykff6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230319052212-woykff6",
+				"updated": "20230319053056"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3  cached"
+				}
+			]
+		},
+		{
+			"ID": "20230319053131-84w5xzy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230319053131-84w5xzy",
+				"updated": "20230320101515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3.1 legacy.go 主要用途是兼容老版本"
+				}
+			]
+		},
+		{
+			"ID": "20230319053138-jpgrig6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230319053138-jpgrig6",
+				"updated": "20230319053246"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//NewMemCacheClient 已弃用。直接使用 memory.NewMemCacheClient \nfunc NewMemCacheClient(delegate discovery.DiscoveryInterface) discovery.CachedDiscoveryInterface {\n\treturn memory.NewMemCacheClient(delegate)\n}\n\n// ErrCacheNotFound 已弃用。直接使用 memory.ErrCacheNotFound 。\nvar ErrCacheNotFound = memory.ErrCacheNotFound\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230319053251-7toho5l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230319053251-7toho5l",
+				"updated": "20230320101522"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3.2 memory"
+				}
+			]
+		},
+		{
+			"ID": "20230319053315-uezixo6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230319053315-uezixo6",
+				"updated": "20230319053316"
+			},
+			"Children": [
+				{
+					"ID": "20230319053315-gpxpkyu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230319053315-gpxpkyu",
+						"updated": "20230319053316"
+					},
+					"Children": [
+						{
+							"ID": "20230319053315-73lvp8c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230319053315-73lvp8c",
+								"updated": "20230319053316"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "memcache.go"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230319053434-h2amnrs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230319053434-h2amnrs",
+				"updated": "20230319053436"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230319053436-nwve2me.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230320083749-ur5akan",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230320083749-ur5akan",
+				"updated": "20230320100958"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 缓存项  内部使用  不暴露\ntype cacheEntry struct {\n\tresourceList *metav1.APIResourceList\n\terr          error\n}\n\n\n \n// memCacheClient可以调用Invalidate（）失效，以保持发现信息的最新状态。\n// TODO:切换到监视接口。现在，它将在每次Invalidate（）调用之后进行轮询。\ntype memCacheClient struct {\n\t// DiscoveryClient 用来动态发现group version resource\n\tdelegate discovery.DiscoveryInterface\n\n\tlock                        sync.RWMutex\n\t// 缓存的对象  key：group value：cacheEntry\n\tgroupToServerResources      map[string]*cacheEntry\n\t// 缓存的group列表\n\tgroupList                   *metav1.APIGroupList\n  \t// 缓存是否有效\n\tcacheValid                  bool\n\topenapiClient               openapi.Client\n\treceivedAggregatedDiscovery bool\n}\n\n\n\nvar _ discovery.CachedDiscoveryInterface = \u0026memCacheClient{}\n\n// isTransientConnectionError检查给定的错误是“连接被拒绝”还是“连接重置”错误，这通常意味着apiserver暂时不可用。\nfunc isTransientConnectionError(err error) bool {\n\tvar errno syscall.Errno\n\tif errors.As(err, \u0026errno) {\n\t\treturn errno == syscall.ECONNREFUSED || errno == syscall.ECONNRESET\n\t}\n\treturn false\n}\n\nfunc isTransientError(err error) bool {\n\tif isTransientConnectionError(err) {\n\t\treturn true\n\t}\n\n\tif t, ok := err.(errorsutil.APIStatus); ok \u0026\u0026 t.Status().Code \u003e= 500 {\n\t\treturn true\n\t}\n\n\treturn errorsutil.IsTooManyRequests(err)\n}\n\n// ServerResourcesForGroupVersion returns the supported resources for a group and version.\nfunc (d *memCacheClient) ServerResourcesForGroupVersion(groupVersion string) (*metav1.APIResourceList, error) {\n\td.lock.Lock()\n\tdefer d.lock.Unlock()\n\tif !d.cacheValid {\n\t\tif err := d.refreshLocked(); err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t}\n\tcachedVal, ok := d.groupToServerResources[groupVersion]\n\tif !ok {\n\t\treturn nil, ErrCacheNotFound\n\t}\n\n\tif cachedVal.err != nil \u0026\u0026 isTransientError(cachedVal.err) {\n\t\tr, err := d.serverResourcesForGroupVersion(groupVersion)\n\t\tif err != nil {\n\t\t\tutilruntime.HandleError(fmt.Errorf(\"couldn't get resource list for %v: %v\", groupVersion, err))\n\t\t}\n\t\tcachedVal = \u0026cacheEntry{r, err}\n\t\td.groupToServerResources[groupVersion] = cachedVal\n\t}\n\n\treturn cachedVal.resourceList, cachedVal.err\n}\n\n// ServerGroupsAndResources returns the groups and supported resources for all groups and versions.\nfunc (d *memCacheClient) ServerGroupsAndResources() ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\treturn discovery.ServerGroupsAndResources(d)\n}\n\n//  GroupsAndMaybeResources返回APIGroups的列表，并可能返回groupversion到资源的映射。返回的组永远不会为nil，但如果没有缓存的资源，则资源映射可以为nil。\nfunc (d *memCacheClient) GroupsAndMaybeResources() (*metav1.APIGroupList, map[schema.GroupVersion]*metav1.APIResourceList, error) {\n\td.lock.Lock()\n\tdefer d.lock.Unlock()\n\n\tif !d.cacheValid {\n\t\tif err := d.refreshLocked(); err != nil {\n\t\t\treturn nil, nil, err\n\t\t}\n\t}\n\t// Build the resourceList from the cache?\n\tvar resourcesMap map[schema.GroupVersion]*metav1.APIResourceList\n\tif d.receivedAggregatedDiscovery \u0026\u0026 len(d.groupToServerResources) \u003e 0 {\n\t\tresourcesMap = map[schema.GroupVersion]*metav1.APIResourceList{}\n\t\tfor gv, cacheEntry := range d.groupToServerResources {\n\t\t\tgroupVersion, err := schema.ParseGroupVersion(gv)\n\t\t\tif err != nil {\n\t\t\t\treturn nil, nil, fmt.Errorf(\"failed to parse group version (%v): %v\", gv, err)\n\t\t\t}\n\t\t\tresourcesMap[groupVersion] = cacheEntry.resourceList\n\t\t}\n\t}\n\treturn d.groupList, resourcesMap, nil\n}\n\nfunc (d *memCacheClient) ServerGroups() (*metav1.APIGroupList, error) {\n\tgroups, _, err := d.GroupsAndMaybeResources()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn groups, nil\n}\n\nfunc (d *memCacheClient) RESTClient() restclient.Interface {\n\treturn d.delegate.RESTClient()\n}\n\nfunc (d *memCacheClient) ServerPreferredResources() ([]*metav1.APIResourceList, error) {\n\treturn discovery.ServerPreferredResources(d)\n}\n\nfunc (d *memCacheClient) ServerPreferredNamespacedResources() ([]*metav1.APIResourceList, error) {\n\treturn discovery.ServerPreferredNamespacedResources(d)\n}\n\nfunc (d *memCacheClient) ServerVersion() (*version.Info, error) {\n\treturn d.delegate.ServerVersion()\n}\n\nfunc (d *memCacheClient) OpenAPISchema() (*openapi_v2.Document, error) {\n\treturn d.delegate.OpenAPISchema()\n}\n\nfunc (d *memCacheClient) OpenAPIV3() openapi.Client {\n\t// 必须锁定，因为Invalidate调用可能会修改openapiClient\n\td.lock.Lock()\n\tdefer d.lock.Unlock()\n\n\tif d.openapiClient == nil {\n\t\td.openapiClient = cachedopenapi.NewClient(d.delegate.OpenAPIV3())\n\t}\n\n\treturn d.openapiClient\n}\n\nfunc (d *memCacheClient) Fresh() bool {\n\td.lock.RLock()\n\tdefer d.lock.RUnlock()\n\t// 返回缓存是否已填充。仍然有可能由于暂时错误而丢失单个条目，并且尝试读取该条目将触发重试。\n\treturn d.cacheValid\n}\n\n// Invalidate强制不使用比当前时间旧的缓存数据\nfunc (d *memCacheClient) Invalidate() {\n\td.lock.Lock()\n\tdefer d.lock.Unlock()\n\td.cacheValid = false\n\td.groupToServerResources = nil\n\td.groupList = nil\n\td.openapiClient = nil\n\td.receivedAggregatedDiscovery = false\n\tif ad, ok := d.delegate.(discovery.CachedDiscoveryInterface); ok {\n\t\tad.Invalidate()\n\t}\n}\n\n// refreshLocked刷新缓存的状态。调用方必须持有d.lock才能进行写入。\nfunc (d *memCacheClient) refreshLocked() error {\n\t// TODO: Could this multiplicative set of calls be replaced by a single call\n\t// to ServerResources? If it's possible for more than one resulting\n\t// APIResourceList to have the same GroupVersion, the lists would need merged.\n\tvar gl *metav1.APIGroupList\n\tvar err error\n\n\tif ad, ok := d.delegate.(discovery.AggregatedDiscoveryInterface); ok {\n\t\tvar resources map[schema.GroupVersion]*metav1.APIResourceList\n\t\tgl, resources, err = ad.GroupsAndMaybeResources()\n\t\tif resources != nil \u0026\u0026 err == nil {\n\t\t\t// 缓存资源\n\t\t\td.groupToServerResources = map[string]*cacheEntry{}\n\t\t\td.groupList = gl\n\t\t\tfor gv, resources := range resources {\n\t\t\t\td.groupToServerResources[gv.String()] = \u0026cacheEntry{resources, nil}\n\t\t\t}\n\t\t\td.receivedAggregatedDiscovery = true\n\t\t\td.cacheValid = true\n\t\t\treturn nil\n\t\t}\n\t} else {\n\t\tgl, err = d.delegate.ServerGroups()\n\t}\n\tif err != nil || len(gl.Groups) == 0 {\n\t\tutilruntime.HandleError(fmt.Errorf(\"couldn't get current server API group list: %v\", err))\n\t\treturn err\n\t}\n\n\twg := \u0026sync.WaitGroup{}\n\tresultLock := \u0026sync.Mutex{}\n\trl := map[string]*cacheEntry{}\n\tfor _, g := range gl.Groups {\n\t\tfor _, v := range g.Versions {\n\t\t\tgv := v.GroupVersion\n\t\t\twg.Add(1)\n\t\t\tgo func() {\n\t\t\t\tdefer wg.Done()\n\t\t\t\tdefer utilruntime.HandleCrash()\n\n\t\t\t\tr, err := d.serverResourcesForGroupVersion(gv)\n\t\t\t\tif err != nil {\n\t\t\t\t\tutilruntime.HandleError(fmt.Errorf(\"couldn't get resource list for %v: %v\", gv, err))\n\t\t\t\t}\n\n\t\t\t\tresultLock.Lock()\n\t\t\t\tdefer resultLock.Unlock()\n\t\t\t\trl[gv] = \u0026cacheEntry{r, err}\n\t\t\t}()\n\t\t}\n\t}\n\twg.Wait()\n\n\td.groupToServerResources, d.groupList = rl, gl\n\td.cacheValid = true\n\treturn nil\n}\n// 实质上还是调用 discovery.DiscoveryInterface的serverResourcesForGroupVersion方法\nfunc (d *memCacheClient) serverResourcesForGroupVersion(groupVersion string) (*metav1.APIResourceList, error) {\n\tr, err := d.delegate.ServerResourcesForGroupVersion(groupVersion)\n\tif err != nil {\n\t\treturn r, err\n\t}\n\tif len(r.APIResources) == 0 {\n\t\treturn r, fmt.Errorf(\"Got empty response for: %v\", groupVersion)\n\t}\n\treturn r, nil\n}\n\n// WithLegacy返回当前内存缓存的discovery客户端；当前客户端不支持仅旧版本。\nfunc (d *memCacheClient) WithLegacy() discovery.DiscoveryInterface {\n\treturn d\n}\n\n// NewMemCacheClient创建了一个新的CachedDiscoveryInterface，它将发现信息缓存在内存中，并且如果定期调用Invalidate，它将保持最新状态。\n// 注意：客户端不会对错误缓存进行实时查找\nfunc NewMemCacheClient(delegate discovery.DiscoveryInterface) discovery.CachedDiscoveryInterface {\n\treturn \u0026memCacheClient{\n\t\tdelegate:                    delegate,\n\t\tgroupToServerResources:      map[string]*cacheEntry{},\n\t\treceivedAggregatedDiscovery: false,\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230320101054-jz2hq8v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230320101054-jz2hq8v",
+				"updated": "20230320101600"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3.3 disk"
+				}
+			]
+		},
+		{
+			"ID": "20230320101132-op2ocjl",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230320101132-op2ocjl",
+				"updated": "20230320104513"
+			},
+			"Children": [
+				{
+					"ID": "20230320101131-6r865zc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230320101131-6r865zc",
+						"updated": "20230320103801"
+					},
+					"Children": [
+						{
+							"ID": "20230320101131-j4dj20f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230320101131-j4dj20f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cached_discovery.go"
+								}
+							]
+						},
+						{
+							"ID": "20230320101213-nxz3jzp",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230320101213-nxz3jzp",
+								"updated": "20230320103801"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "// CachedDiscoveryClient实现了discovery服务器支持的API组、版本和资源的功能。\ntype CachedDiscoveryClient struct {\n\tdelegate discovery.DiscoveryInterface\n\n\t// cacheDirectory是保存discovery缓存的目录。它必须是每个主机唯一的：端口组合才能正常工作。\n\tcacheDirectory string\n\n\t// ttl 缓存被视为有效的时间间隔\n\tttl time.Duration\n\n\t// mutex protects the variables below\n\tmutex sync.Mutex\n\n\t// ourFiles key：进程创建的缓存文件的文件名，\n       // value：如果key包含groupversion则是缓存的APIResourceList的byte数组，否则是APIGroupList的字节数组\n\tourFiles map[string]struct{}\n\t// 如果应该忽略所有不是我们的缓存文件（例如，在调用Invalidate（）之后），则invalided为true\n\tinvalidated bool\n\t// 如果所有使用的缓存文件都是我们的，那么 fresh 为真\n\tfresh bool\n\n\t// 缓存openapi v3客户端，该客户端封装代理的客户端\n\topenapiClient openapi.Client\n}\n\nvar _ discovery.CachedDiscoveryInterface = \u0026CachedDiscoveryClient{}\n\n// ServerResourcesForGroupVersion返回组和版本支持的资源。\nfunc (d *CachedDiscoveryClient) ServerResourcesForGroupVersion(groupVersion string) (*metav1.APIResourceList, error) {\n\t // 构建gv对应的filename，类似于/data/apps/v1/serverresources.json\n\tfilename := filepath.Join(d.cacheDirectory, groupVersion, \"serverresources.json\")\n\t// 获取缓存文件对应的字节数组，判断对应文件是否在缓存map中，且到目前为止是否缓存过期\n\tcachedBytes, err := d.getCachedFile(filename)\n\t// 读取无错误,我们要么没有文件，要么无法运行缓存检查。无论哪种方式，我们都可以后退\n\tif err == nil {\n\t\t// 创建resource列表\n\t\tcachedResources := \u0026metav1.APIResourceList{}\n        \t// 解码字节数组为上面list\n\t\tif err := runtime.DecodeInto(scheme.Codecs.UniversalDecoder(), cachedBytes, cachedResources); err == nil {\n\t\t\tklog.V(10).Infof(\"returning cached discovery info from %v\", filename)\n\t\t\treturn cachedResources, nil\n\t\t}\n\t}\n\n\t// 使用DiscoveryClient读取apiserver获取\n\tliveResources, err := d.delegate.ServerResourcesForGroupVersion(groupVersion)\n\tif err != nil {\n\t\tklog.V(3).Infof(\"skipped caching discovery info due to %v\", err)\n\t\treturn liveResources, err\n\t}\n\tif liveResources == nil || len(liveResources.APIResources) == 0 {\n\t\tklog.V(3).Infof(\"skipped caching discovery info, no resources found\")\n\t\treturn liveResources, err\n\t}\n\t// 写入新的resource列表到filename对应文件中\n\tif err := d.writeCachedFile(filename, liveResources); err != nil {\n\t\tklog.V(1).Infof(\"failed to write cache to %v due to %v\", filename, err)\n\t}\n\n\treturn liveResources, nil\n}\n\n// ServerGroupsAndResources returns the supported groups and resources for all groups and versions.\nfunc (d *CachedDiscoveryClient) ServerGroupsAndResources() ([]*metav1.APIGroup, []*metav1.APIResourceList, error) {\n\treturn discovery.ServerGroupsAndResources(d)\n}\n\n// ServerGroups返回支持的组，其中包含支持的版本和首选版本等信息。\nfunc (d *CachedDiscoveryClient) ServerGroups() (*metav1.APIGroupList, error) {\n\tfilename := filepath.Join(d.cacheDirectory, \"servergroups.json\")\n\tcachedBytes, err := d.getCachedFile(filename)\n\t// don't fail on errors, we either don't have a file or won't be able to run the cached check. Either way we can fallback.\n\tif err == nil {\n\t\tcachedGroups := \u0026metav1.APIGroupList{}\n\t\tif err := runtime.DecodeInto(scheme.Codecs.UniversalDecoder(), cachedBytes, cachedGroups); err == nil {\n\t\t\tklog.V(10).Infof(\"returning cached discovery info from %v\", filename)\n\t\t\treturn cachedGroups, nil\n\t\t}\n\t}\n\n\tliveGroups, err := d.delegate.ServerGroups()\n\tif err != nil {\n\t\tklog.V(3).Infof(\"skipped caching discovery info due to %v\", err)\n\t\treturn liveGroups, err\n\t}\n\tif liveGroups == nil || len(liveGroups.Groups) == 0 {\n\t\tklog.V(3).Infof(\"skipped caching discovery info, no groups found\")\n\t\treturn liveGroups, err\n\t}\n\n\tif err := d.writeCachedFile(filename, liveGroups); err != nil {\n\t\tklog.V(1).Infof(\"failed to write cache to %v due to %v\", filename, err)\n\t}\n\n\treturn liveGroups, nil\n}\n\n// 读取cache文件\nfunc (d *CachedDiscoveryClient) getCachedFile(filename string) ([]byte, error) {\n\t// 校验无效后，忽略此进程未创建的缓存文件\n\td.mutex.Lock()\n\t_, ourFile := d.ourFiles[filename]\n\tif d.invalidated \u0026\u0026 !ourFile {\n\t\td.mutex.Unlock()\n\t\treturn nil, errors.New(\"cache invalidated\")\n\t}\n\td.mutex.Unlock()\n\n\tfile, err := os.Open(filename)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tdefer file.Close()\n\n\tfileInfo, err := file.Stat()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tif time.Now().After(fileInfo.ModTime().Add(d.ttl)) {\n\t\treturn nil, errors.New(\"cache expired\")\n\t}\n\n\t// 缓存存在并且有效。试着阅读并使用它。\n\tcachedBytes, err := io.ReadAll(file)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\td.mutex.Lock()\n\tdefer d.mutex.Unlock()\n\td.fresh = d.fresh \u0026\u0026 ourFile\n\n\treturn cachedBytes, nil\n}\n\n// 写入cache\nfunc (d *CachedDiscoveryClient) writeCachedFile(filename string, obj runtime.Object) error {\n\tif err := os.MkdirAll(filepath.Dir(filename), 0750); err != nil {\n\t\treturn err\n\t}\n\n\tbytes, err := runtime.Encode(scheme.Codecs.LegacyCodec(), obj)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\tf, err := os.CreateTemp(filepath.Dir(filename), filepath.Base(filename)+\".\")\n\tif err != nil {\n\t\treturn err\n\t}\n\tdefer os.Remove(f.Name())\n\t_, err = f.Write(bytes)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\terr = os.Chmod(f.Name(), 0660)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\tname := f.Name()\n\terr = f.Close()\n\tif err != nil {\n\t\treturn err\n\t}\n\n\t// atomic rename\n\td.mutex.Lock()\n\tdefer d.mutex.Unlock()\n\terr = os.Rename(name, filename)\n\tif err == nil {\n\t\td.ourFiles[filename] = struct{}{}\n\t}\n\treturn err\n}\n\n// RESTClient returns a RESTClient that is used to communicate with API server\n// by this client implementation.\nfunc (d *CachedDiscoveryClient) RESTClient() restclient.Interface {\n\treturn d.delegate.RESTClient()\n}\n\n// ServerPreferredResources returns the supported resources with the version preferred by the\n// server.\nfunc (d *CachedDiscoveryClient) ServerPreferredResources() ([]*metav1.APIResourceList, error) {\n\treturn discovery.ServerPreferredResources(d)\n}\n\n// ServerPreferredNamespacedResources returns the supported namespaced resources with the\n// version preferred by the server.\nfunc (d *CachedDiscoveryClient) ServerPreferredNamespacedResources() ([]*metav1.APIResourceList, error) {\n\treturn discovery.ServerPreferredNamespacedResources(d)\n}\n\n// ServerVersion retrieves and parses the server's version (git version).\nfunc (d *CachedDiscoveryClient) ServerVersion() (*version.Info, error) {\n\treturn d.delegate.ServerVersion()\n}\n\n// OpenAPISchema retrieves and parses the swagger API schema the server supports.\nfunc (d *CachedDiscoveryClient) OpenAPISchema() (*openapi_v2.Document, error) {\n\treturn d.delegate.OpenAPISchema()\n}\n\n// OpenAPIV3 retrieves and parses the OpenAPIV3 specs exposed by the server\nfunc (d *CachedDiscoveryClient) OpenAPIV3() openapi.Client {\n\t// Must take lock since Invalidate call may modify openapiClient\n\td.mutex.Lock()\n\tdefer d.mutex.Unlock()\n\n\tif d.openapiClient == nil {\n\t\t// Delegate is discovery client created with special HTTP client which\n\t\t// respects E-Tag cache responses to serve cache from disk.\n\t\td.openapiClient = cachedopenapi.NewClient(d.delegate.OpenAPIV3())\n\t}\n\n\treturn d.openapiClient\n}\n\n// Fresh is supposed to tell the caller whether or not to retry if the cache\n// fails to find something (false = retry, true = no need to retry).\nfunc (d *CachedDiscoveryClient) Fresh() bool {\n\td.mutex.Lock()\n\tdefer d.mutex.Unlock()\n\n\treturn d.fresh\n}\n\n// Invalidate强制要求将来不使用比当前时间更早的缓存数据\nfunc (d *CachedDiscoveryClient) Invalidate() {\n\td.mutex.Lock()\n\tdefer d.mutex.Unlock()\n\n\td.ourFiles = map[string]struct{}{}\n\td.fresh = true\n\td.invalidated = true\n\td.openapiClient = nil\n\tif ad, ok := d.delegate.(discovery.CachedDiscoveryInterface); ok {\n\t\tad.Invalidate()\n\t}\n}\n\n// WithLegacy returns current cached discovery client;\n// current client does not support legacy-only discovery.\nfunc (d *CachedDiscoveryClient) WithLegacy() discovery.DiscoveryInterface {\n\treturn d\n}\n\n// CachedDiscoveryClientForConfig为给定配置创建一个新的DiscoveryClient，\n// 并将创建的客户端封装在CachedDiscoverClient中。\n// 所提供的配置将使用了解缓存响应的自定义传输进行更新。\n// 我们现在收到两个不同的缓存目录，以保留旧的行为，即使用--cache dir标志值来存储来自CacheRoundTripper的缓存数据，\n// 并使用硬编码目的地（~.kubecachediscovery…）来存储CachedDiscoveryClient缓存数据。如果httpCacheDir为空，\n// 那么restconfig的传输将不会使用了解缓存响应的roundripper进行更新。\n// 如果discoveryCacheDir为空，则将在当前目录中查找缓存的服务器资源数据。\nfunc NewCachedDiscoveryClientForConfig(config *restclient.Config, discoveryCacheDir, httpCacheDir string, ttl time.Duration) (*CachedDiscoveryClient, error) {\n\tif len(httpCacheDir) \u003e 0 {\n\t\t// 了解如何处理缓存响应的自定义roundstripper,更新给定的restconfig。\n\t\tconfig = restclient.CopyConfig(config)\n\t\tconfig.Wrap(func(rt http.RoundTripper) http.RoundTripper {\n\t\t\treturn newCacheRoundTripper(httpCacheDir, rt)\n\t\t})\n\t}\n\n\tdiscoveryClient, err := discovery.NewDiscoveryClientForConfig(config)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\t// 代理缓存发现组和资源（memcache）。“ServerGroups”通常只返回（并缓存）组，\n        // 如果服务器支持更新的聚合发现格式，现在也可以存储资源。\n\treturn newCachedDiscoveryClient(memory.NewMemCacheClient(discoveryClient), discoveryCacheDir, ttl), nil\n}\n\n// NewCachedDiscoveryClient创建一个新的DiscoveryClient。cacheDirectory是保存发现文档的目录。它必须是每个主机唯一的：端口组合才能正常工作。\nfunc newCachedDiscoveryClient(delegate discovery.DiscoveryInterface, cacheDirectory string, ttl time.Duration) *CachedDiscoveryClient {\n\treturn \u0026CachedDiscoveryClient{\n\t\tdelegate:       delegate,\n\t\tcacheDirectory: cacheDirectory,\n\t\tttl:            ttl,\n\t\tourFiles:       map[string]struct{}{},\n\t\tfresh:          true,\n\t}\n}\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230320101140-ion93l6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230320101140-ion93l6",
+						"updated": "20230320104513"
+					},
+					"Children": [
+						{
+							"ID": "20230320101140-zomzk21",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230320101140-zomzk21",
+								"updated": "20230320101144"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "round_tripper.go "
+								}
+							]
+						},
+						{
+							"ID": "20230320101353-9s6at6w",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230320101353-9s6at6w",
+								"updated": "20230320104513"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "//  httpcache.Transport的包装结构体\ntype cacheRoundTripper struct {\n\trt *httpcache.Transport\n}\n\n//newCacheRoundTripper创建一个roundripper，读取响应标头上的ETag，并在随后的相应请求上发送If None Match标头\nfunc newCacheRoundTripper(cacheDir string, rt http.RoundTripper) http.RoundTripper {\n\td := diskv.New(diskv.Options{\n\t\tPathPerm: os.FileMode(0750),\n\t\tFilePerm: os.FileMode(0660),\n\t\tBasePath: cacheDir,\n\t\tTempDir:  filepath.Join(cacheDir, \".diskv-temp\"),\n\t})\n\tt := httpcache.NewTransport(\u0026sumDiskCache{disk: d})\n\tt.Transport = rt\n\n\treturn \u0026cacheRoundTripper{rt: t}\n}\n// 执行内部http.Transport,响应request\nfunc (rt *cacheRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {\n\treturn rt.rt.RoundTrip(req)\n}\n\n// 实现http.cancel接口，取消request\nfunc (rt *cacheRoundTripper) CancelRequest(req *http.Request) {\n\ttype canceler interface {\n\t\tCancelRequest(*http.Request)\n\t}\n\tif cr, ok := rt.rt.Transport.(canceler); ok {\n\t\tcr.CancelRequest(req)\n\t} else {\n\t\tklog.Errorf(\"CancelRequest not implemented by %T\", rt.rt.Transport)\n\t}\n}\n\n// 实现kubernetes/apimachinery中的RoundTripperWrapper接口\nfunc (rt *cacheRoundTripper) WrappedRoundTripper() http.RoundTripper { return rt.rt.Transport }\n\n//sumDiskCache是github.comgregjoneshttpcache的缓存后端。\n// 它类似于httpcache的diskcache包，但使用SHA256总和来确保读取时的缓存完整性，\n// 而不是对每个缓存项进行fsyncing，以增加它们在写入时被持久化的可能性。这避免了MacOS的显著性能下降。\n// See https://github.com/kubernetes/kubernetes/issues/110753 for more.\ntype sumDiskCache struct {\n\tdisk *diskv.Diskv\n}\n\n// Get the requested key from the cache on disk. If Get encounters an error, or\n// the returned value is not a SHA256 sum followed by bytes with a matching\n// checksum it will return false to indicate a cache miss.\nfunc (c *sumDiskCache) Get(key string) ([]byte, bool) {\n\tb, err := c.disk.Read(sanitize(key))\n\tif err != nil || len(b) \u003c sha256.Size {\n\t\treturn []byte{}, false\n\t}\n\n\tresponse := b[sha256.Size:]\n\twant := b[:sha256.Size] // The first 32 bytes of the file should be the SHA256 sum.\n\tgot := sha256.Sum256(response)\n\tif !bytes.Equal(want, got[:]) {\n\t\treturn []byte{}, false\n\t}\n\n\treturn response, true\n}\n\n// Set writes the response to a file on disk. The filename will be the SHA256\n// sum of the key. The file will contain a SHA256 sum of the response bytes,\n// followed by said response bytes.\nfunc (c *sumDiskCache) Set(key string, response []byte) {\n\ts := sha256.Sum256(response)\n\t_ = c.disk.Write(sanitize(key), append(s[:], response...)) // Nothing we can do with this error.\n}\n\nfunc (c *sumDiskCache) Delete(key string) {\n\t_ = c.disk.Erase(sanitize(key)) // Nothing we can do with this error.\n}\n\n// 对httpcache密钥进行hash，使其可以用作diskv密钥，该密钥必须是有效的文件名。\n// 根据httpcache.cacheKey函数，httpcache密钥将是请求的URL（如果请求方法是GET），或者对于其他方法，将是“\u003cmethod\u003e\u003cURL\u003e”。\nfunc sanitize(key string) string {\n\t// These keys are not sensitive. We use sha256 to avoid a (potentially\n\t// malicious) collision causing the wrong cache data to be written or\n\t// accessed.\n\treturn fmt.Sprintf(\"%x\", sha256.Sum256([]byte(key)))\n}\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,366 @@
+{
+	"ID": "20221223082314-kbyz9r9",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221223082314-kbyz9r9",
+		"title": "journalctl",
+		"updated": "20230329172410"
+	},
+	"Children": [
+		{
+			"ID": "20221223082401-i8dj2sm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-i8dj2sm",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（0）如何启用journalctl日志\nmkdir /var/log/journal\n验证：\nsystemd-tmpfiles --create --prefix /var/log/journal\necho $?"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-qlwj89w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-qlwj89w",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "强烈建议不安装rsyslog，从而不产生/var/log/messages"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "文件，也不要用/var/log/messages"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "文件调试，只使用journalctl命令。"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-s2wodup",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-s2wodup",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（1）列举boot和按boot显示\njournalctl --list-boots\njournalctl -b\njournalctl -b -1"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-ohnqoey",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-ohnqoey",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（2）截取某个时间段\njournalctl -S '2021-12-17 18:54:12' -U '2021-12-17 19:52:03'\njournalctl -S '2021-12-17 18:54:12'\njournalctl -U '2021-12-17 19:52:03'\njournalctl -S '-10 min'\njournalctl -S '10 sec ago'\n时间表示可以参考man systemd.time"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-8ogel49",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-8ogel49",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（3）日志级别的说明\nman journalctl\nman 2 syslog\nman 3 syslog\ndmesg -h\n从0到7依次为：\nemerg - system is unusable\nalert - action must be taken immediately\ncrit - critical conditions\nerr - error conditions\nwarn - warning conditions\nnotice - normal but significant condition\ninfo - informational\ndebug - debug-level messages"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-gmsj4pg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-gmsj4pg",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "journalctl在控制台上输出日志根据优先级有不同的颜色：\nlevel ERROR and higher(0-3): red\nNOTICE and higher(4-5): "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "highlighted"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nDEBUG(7): lighter grey\nOthers(6): normal"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-11wziz1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-11wziz1",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "列举高优先级消息：\njournalctl -b -p3 ### 列举0-3\njournalctl -b -p2..4 ### 列举2-4\n分类统计各种高优先级消息的方法：\njournalctl -b -p3 | grep ^[A-Z] | cut -d ' ' -f 5- | sort"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-5gmoutf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-5gmoutf",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（4）journalctl按照消息来源过滤\njournalctl -k    ### 跟dmesg效果一样\njournalctl --system    ### 来自kernel和系统服务的消息\njournalctl -u xxx    ### 按照systemd unit过滤\njournalctl --user-unit=xxx    ### 按照user session unit过滤"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-wkdi24s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-wkdi24s",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（5）journalctl按照正则表达式过滤\njournalctl -g xxx\n正则表达式类型是PERL-compatible，语法描述参考man pcre2pattern"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-8h2x7tk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-8h2x7tk",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（6）journalctl --disk-usage\n==\u003e\nArchived and active journals take up 168.0M in the file system."
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-r3ev3b1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-r3ev3b1",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "==========================================================\n《journalctl相关规范的建议》\n消除高级别（emerg，alert，crit，err）message\n控制日志产生速率（建议10min不超过10000）"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-r410a2d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-r410a2d",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法：\njournalctl -b -p3    ### 没有特殊理由，全部消除\njournalctl -S '-10 min' | wc -l    ### 没有特殊理由，不超过10000"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-jc0teve",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-jc0teve",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "==========================================================\nman journalctl"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-ki0f458",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-ki0f458",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "《网上的journalctl教程》\nJournalctl cheat sheet with 10+ commands to filter systemd logs\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.golinuxcloud.com/view-logs-using-journalctl-filter-journald/",
+					"TextMarkTextContent": "https://www.golinuxcloud.com/view-logs-using-journalctl-filter-journald/"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-71a5sfs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-71a5sfs",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "32 Best Journalctl Command Examples in Linux(RedHat/CentOS) Part - 1\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cyberithub.com/journalctl-command-examples-part-1",
+					"TextMarkTextContent": "https://www.cyberithub.com/journalctl-command-examples-part-1"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-7ms37c8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-7ms37c8",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "32 Best Journalctl Command Examples in Linux(RedHat/CentOS) Part - 2\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cyberithub.com/journalctl-command-examples-part-2/",
+					"TextMarkTextContent": "https://www.cyberithub.com/journalctl-command-examples-part-2/"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-2vtdvli",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-2vtdvli",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "=============================================================\n关于日志速率限制的介绍文章\n《How To Change Log Rate Limiting In Linux》\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.rootusers.com/how-to-change-log-rate-limiting-in-linux/",
+					"TextMarkTextContent": "https://www.rootusers.com/how-to-change-log-rate-limiting-in-linux/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nman journald.conf"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-of4z3sa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-of4z3sa",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认值\nsystemd-journald:  30s 10000o"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-s3uoldf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-s3uoldf",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "rsyslog:                    10min 20000\n==\u003e\n建议规范：\n10min 10000"
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-kfzniha",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-kfzniha",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体到某个服务的日志产生速率控制，以kubelet为例，可以参考下面的链接："
+				}
+			]
+		},
+		{
+			"ID": "20221223082401-0b1ha96",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221223082401-0b1ha96",
+				"updated": "20221223082401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Editing kubelet log level verbosity and gathering logs\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://docs.openshift.com/container-platform/4.6/rest_api/editing-kubelet-log-level-verbosity.html",
+					"TextMarkTextContent": "https://docs.openshift.com/container-platform/4.6/rest_api/editing-kubelet-log-level-verbosity.html"
+				}
+			]
+		},
+		{
+			"ID": "20230329172410-znz7xqo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230329172410-znz7xqo",
+				"updated": "20230329172410"
+			}
+		}
+	]
+}

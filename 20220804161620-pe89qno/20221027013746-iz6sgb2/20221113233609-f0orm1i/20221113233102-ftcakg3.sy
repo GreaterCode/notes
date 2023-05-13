@@ -1,0 +1,518 @@
+{
+	"ID": "20221113233102-ftcakg3",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221113233102-ftcakg3",
+		"title": "1. OpenShift 4 - 容器访问限速和Route访问限制流",
+		"updated": "20221114051633"
+	},
+	"Children": [
+		{
+			"ID": "20221113233102-bj7nrsv",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221113233102-bj7nrsv"
+			}
+		},
+		{
+			"ID": "20221113233102-87uwdkc",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221113233102-87uwdkc",
+				"updated": "20221113233102"
+			}
+		},
+		{
+			"ID": "20221113233102-ubhurbz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233102-ubhurbz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器访问限速"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-r9lg0cv",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233102-r9lg0cv"
+			},
+			"Children": [
+				{
+					"ID": "20221113233102-brfms9h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233102-brfms9h"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-bcqv40j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-bcqv40j"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建测试项目"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-p0j665f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-p0j665f"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project limited-bandwidth\n$ oc adm policy add-scc-to-user anyuid -z default\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-7sgoy5d",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233102-7sgoy5d"
+			},
+			"Children": [
+				{
+					"ID": "20221113233102-xfmcq1e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233102-xfmcq1e"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-wg1l5qj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-wg1l5qj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建内容如下的nginx.yaml文件，其中对Pod的进出访问都限制了0.5Mb/s网络带宽。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-77hzz5h",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-77hzz5h"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: apps.openshift.io/v1\nkind: DeploymentConfig\nmetadata:\n  labels:\n    app: nginx\n  name: nginx\nspec:\n  replicas: 1\n  selector:\n    deploymentconfig: nginx\n  template:\n    metadata:\n      annotations:\n        kubernetes.io/egress-bandwidth: 0.5M\n        kubernetes.io/ingress-bandwidth: 0.5M\n      labels:\n        app: nginx\n        deploymentconfig: nginx\n    spec:\n      containers:\n        - image: nginx\n          name: nginx\n12345678910111213141516171819202122\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-5alzb5w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-5alzb5w"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc create -f nginx.yaml -n limited-bandwidth\ndeploymentconfig.apps.openshift.io/nginx created\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-zb4nu08",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233102-zb4nu08"
+			},
+			"Children": [
+				{
+					"ID": "20221113233102-m83h2uk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221113233102-m83h2uk"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-4jjihbq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-4jjihbq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看Pod名称"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-vn5safv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-vn5safv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get pod -n limited-bandwidth\nNAME             READY   STATUS      RESTARTS   AGE\nnginx-1-deploy   0/1     Completed   0          12m\nnginx-1-rcn7j    1/1     Running     0          11m\n1234\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-o1uyh5h",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233102-o1uyh5h"
+			},
+			"Children": [
+				{
+					"ID": "20221113233102-lg593rk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221113233102-lg593rk"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-re1m7iz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-re1m7iz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "进入Pod，然后下载一个文件。如果网络不是瓶颈的话，下载速度会稳定在60KB/s左右。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-haebrwh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-haebrwh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc rsh $(oc get pod -n limited-bandwidth | grep Running | awk '{print $1}')\n# curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-install-linux.tar.gz\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n  0 80.0M    0  400k    0     0  31848      0  0:43:54  0:00:12  0:43:42 59953\n12345\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-y5tzhze",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233102-y5tzhze"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Route访问限流"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-37ac7gb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233102-37ac7gb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OpenShift 使用了基于HAProxy的route实现对容器的Ingress访问，可以设置route的HAProxy相关参数来实现Ingress访问限流。通过设置route的annotion设置HAProxy相关参数。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-a8f18s0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233102-a8f18s0"
+			},
+			"Children": [
+				{
+					"ID": "20221113233102-fm5mczl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233102-fm5mczl"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-nj5aaay",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-nj5aaay"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "部署OpenShift中的cakephp示例。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221113233102-fgpsu1l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233102-fgpsu1l"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-pt58w6q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-pt58w6q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行以下命令修改自动生成的route，在annotations区域增加2个HAProxy的参数，设置客户端每秒只能访问1次route。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-2u53e3b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-2u53e3b"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc annotate route myroute --overwrite haproxy.router.openshift.io/rate-limit-connections=true\n$ oc annotate route myroute --overwrite haproxy.router.openshift.io/rate-limit-connections.rate-http=1\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-qyeihnq",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233102-qyeihnq"
+			},
+			"Children": [
+				{
+					"ID": "20221113233102-f20ghh1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221113233102-f20ghh1"
+					},
+					"Children": [
+						{
+							"ID": "20221113233102-kuf71or",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233102-kuf71or"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "连续执行命令以下访问route，确认不能快速访问cakephp的route。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233102-mn0853p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233102-mn0853p"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -I \u003cCAKEPHP_ROUTE\u003e\nHTTP/1.1 200 OK\nDate: Sun, 16 May 2021 12:57:49 GMT\nServer: Apache/2.4.37 (Red Hat Enterprise Linux) OpenSSL/1.1.1g\nContent-Type: text/html; charset=UTF-8\nSet-Cookie: 7be6a95f3528654dde226a230425d7e3=4288f93c042b36d415cb16a42dc930a9; path=/; HttpOnly\nCache-control: private\n$ curl -I \u003cCAKEPHP_ROUTE\u003e\ncurl: (52) Empty reply from server\n123456789\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

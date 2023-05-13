@@ -1,0 +1,2493 @@
+{
+	"ID": "20230217161242-731v9o5",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230217161242-731v9o5",
+		"title": "zap",
+		"updated": "20230221103817"
+	},
+	"Children": [
+		{
+			"ID": "20230217161341-4omqu7m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230217161341-4omqu7m",
+				"updated": "20230217161415"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 简介"
+				}
+			]
+		},
+		{
+			"ID": "20230217161416-4bupq78",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217161416-4bupq78",
+				"updated": "20230217161417"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  日志记录器应该提供下面的功能："
+				}
+			]
+		},
+		{
+			"ID": "20230217161401-yh9wlbm",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230217161401-yh9wlbm",
+				"updated": "20230217161401"
+			},
+			"Children": [
+				{
+					"ID": "20230217161401-cg7msmb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161401-cg7msmb"
+					},
+					"Children": [
+						{
+							"ID": "20230217161401-yhit5tj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161401-yhit5tj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "能够将事件记录到文件中，而不是应用程序控制台。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230217161401-15haop9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161401-15haop9"
+					},
+					"Children": [
+						{
+							"ID": "20230217161401-bxnwvh7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161401-bxnwvh7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "日志切割-能够根据文件大小、时间或间隔等来切割日志文件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230217161401-jh4y89b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161401-jh4y89b"
+					},
+					"Children": [
+						{
+							"ID": "20230217161401-sxouplv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161401-sxouplv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "支持不同的日志级别。例如INFO，DEBUG，ERROR等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230217161401-bhp5e5j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161401-bhp5e5j"
+					},
+					"Children": [
+						{
+							"ID": "20230217161401-3t0nkbf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161401-3t0nkbf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "能够打印基本信息，如调用文件/函数名和行号，日志时间等。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230217161242-qzasc9j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230217161242-qzasc9j",
+				"updated": "20230217161420"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 标准日志"
+				}
+			]
+		},
+		{
+			"ID": "20230217161324-3wwh3ic",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230217161324-3wwh3ic",
+				"updated": "20230217161328"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/**\n@author:admin\n@date:2023/2/17\n@note\n*/\n\npackage main\n\nimport (\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n)\n\nvar logFile string = \"./test.log\"\nfunc main() {\n\tSetupLogger()\n\tHttpGet(\"https://www.baidu.com\")\n\tHttpGet(\"https://cn.bing.com\")\n\n}\n\nfunc HttpGet(url string) {\n\tres, err := http.Get(url)\n\tif err != nil {\n\t\tlog.Printf(\"Error fetching url %s: %v\", url, err.Error())\n\t}else {\n\t\tlog.Printf(\"Fetching url %s,  status: %d\", url, res.StatusCode)\n\t}\n\tdefer res.Body.Close()\n}\n\nfunc SetupLogger() {\n\n\tlogFileLocation, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0744)\n\tif err != nil {\n\t\tfmt.Errorf(\"Open log file %s: %v\\n\", logFile, err)\n\t}\n\tlog.SetOutput(logFileLocation)\n\n\t/**\n\t* log.SetFlags()仅支持Ldate, Ltime, and so on. log.Llongfile\n\t*/\n\tlog.SetFlags(log.Lshortfile)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230217161438-u56w93d",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230217161438-u56w93d",
+				"updated": "20230217161438"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "优势"
+				}
+			]
+		},
+		{
+			"ID": "20230217161438-sv2i2wm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217161438-sv2i2wm",
+				"updated": "20230217161438"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "它最大的优点是使用非常简单。我们可以设置任何"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "io.Writer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "作为日志记录输出并向其发送要写入的日志。"
+				}
+			]
+		},
+		{
+			"ID": "20230217161438-nslcqck",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230217161438-nslcqck",
+				"updated": "20230217161438"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "劣势"
+				}
+			]
+		},
+		{
+			"ID": "20230217161438-nxy9v06",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230217161438-nxy9v06",
+				"updated": "20230217161438"
+			},
+			"Children": [
+				{
+					"ID": "20230217161438-3u82sld",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161438-3u82sld"
+					},
+					"Children": [
+						{
+							"ID": "20230217161438-7xof8io",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161438-7xof8io"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "仅限基本的日志级别"
+								}
+							]
+						},
+						{
+							"ID": "20230217161438-v389zs2",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230217161438-v389zs2"
+							},
+							"Children": [
+								{
+									"ID": "20230217161438-169xunh",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230217161438-169xunh"
+									},
+									"Children": [
+										{
+											"ID": "20230217161438-75pnlz2",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230217161438-75pnlz2"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "只有一个"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "Print"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "选项。不支持"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "INFO"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "/"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "DEBUG"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "等多个级别。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230217161438-9et46z3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161438-9et46z3"
+					},
+					"Children": [
+						{
+							"ID": "20230217161438-87u7qn3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161438-87u7qn3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于错误日志，它有"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Fatal"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Panic"
+								}
+							]
+						},
+						{
+							"ID": "20230217161438-illxfsn",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230217161438-illxfsn"
+							},
+							"Children": [
+								{
+									"ID": "20230217161438-al2itsf",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230217161438-al2itsf"
+									},
+									"Children": [
+										{
+											"ID": "20230217161438-2r33v6b",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230217161438-2r33v6b"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Fatal日志通过调用"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "os.Exit(1)"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "来结束程序"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230217161438-a0hynyv",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230217161438-a0hynyv"
+									},
+									"Children": [
+										{
+											"ID": "20230217161438-tvrq9kg",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230217161438-tvrq9kg"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Panic日志在写入日志消息之后抛出一个panic"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230217161438-1c1wbxz",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230217161438-1c1wbxz"
+									},
+									"Children": [
+										{
+											"ID": "20230217161438-7z5zvti",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230217161438-7z5zvti"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "但是它缺少一个ERROR日志级别，这个级别可以在不抛出panic或退出程序的情况下记录错误"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230217161438-3ss64o1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161438-3ss64o1"
+					},
+					"Children": [
+						{
+							"ID": "20230217161438-18yf4da",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161438-18yf4da"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "缺乏日志格式化的能力——例如记录调用者的函数名和行号，格式化日期和时间格式。等等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230217161438-gtjdpze",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230217161438-gtjdpze"
+					},
+					"Children": [
+						{
+							"ID": "20230217161438-5ojgjz7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230217161438-5ojgjz7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "不提供日志切割的能力。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230217161632-zu1ou7t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230217161632-zu1ou7t",
+				"updated": "20230217161635"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. Uber-go Zap"
+				}
+			]
+		},
+		{
+			"ID": "20230217161652-0h406wf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217161652-0h406wf",
+				"updated": "20230217161810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/uber-go/zap",
+					"TextMarkTextContent": "Zap"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "是非常快的、结构化的，分日志级别的Go日志库。它同时提供了结构化日志记录和printf风格的日志记录。"
+				}
+			]
+		},
+		{
+			"ID": "20230217161701-xn5mx7o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230217161701-xn5mx7o",
+				"updated": "20230217161827"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 安装\t"
+				}
+			]
+		},
+		{
+			"ID": "20230217161832-vbydvkr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230217161832-vbydvkr",
+				"updated": "20230217161849"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "go get -u go.uber.org/zap\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230217161827-bx5fwjo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230217161827-bx5fwjo",
+				"updated": "20230218181459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 配置zap  logger"
+				}
+			]
+		},
+		{
+			"ID": "20230217161907-29qi9fz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217161907-29qi9fz",
+				"updated": "20230217162008"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Zap提供了两种类型的日志记录器—"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Sugared Logger"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Logger"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230217162006-9na3dt7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217162006-9na3dt7",
+				"updated": "20230217162007"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在性能很好但不是很关键的上下文中，使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SugaredLogger"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。它比其他结构化日志记录包快4-10倍，并且支持结构化和printf风格的日志记录。"
+				}
+			]
+		},
+		{
+			"ID": "20230218184336-but49j7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230218184336-but49j7",
+				"updated": "20230218184337"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在每一微秒和每一次内存分配都很重要的上下文中，使用Logger。它甚至比SugaredLogger更快，内存分配次数也更少，但它只支持强类型的结构化日志记录"
+				}
+			]
+		},
+		{
+			"ID": "20230218182656-krr3eop",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230218182656-krr3eop",
+				"updated": "20230218182710"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.1 Logger"
+				}
+			]
+		},
+		{
+			"ID": "20230218181823-6zqik2j",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230218181823-6zqik2j",
+				"updated": "20230218181823"
+			},
+			"Children": [
+				{
+					"ID": "20230218181823-psm6ait",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218181823-psm6ait"
+					},
+					"Children": [
+						{
+							"ID": "20230218181823-pucmhxe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218181823-pucmhxe",
+								"updated": "20230218182105"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过调用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "zap.NewProduction()"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "/"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "zap.NewDevelopment()"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "或者"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "zap.Example()"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "都可以创建一个Logger，唯一的区别是记录信息不通，production logger默认记录调用函数信息、日期和时间等。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218182120-gruesej",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218182120-gruesej"
+					},
+					"Children": [
+						{
+							"ID": "20230218182121-swdcn4t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218182121-swdcn4t",
+								"updated": "20230218182144"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "默认情况下日志都会打印到应用程序的console界面。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218182144-bcmgrlw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218182144-bcmgrlw"
+					},
+					"Children": [
+						{
+							"ID": "20230218182144-f94p4h8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218182144-f94p4h8",
+								"updated": "20230218182144"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过Logger调用Info/Error等"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218182118-mxdnnqp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218182118-mxdnnqp"
+					},
+					"Children": [
+						{
+							"ID": "20230218182118-vnimnj1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218182118-vnimnj1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "也可以使用zap.New()自定义所有配置"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230218182436-zn95vf4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230218182436-zn95vf4",
+				"updated": "20230218182530"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们首先创建了一个Logger，然后使用Info/ Erro/Debug/Warn/Fatal 等Logger方法记录消息"
+				}
+			]
+		},
+		{
+			"ID": "20230218182541-0u6plgx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230218182541-0u6plgx",
+				"updated": "20230218182542"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "日志记录器方法的语法是这样的："
+				}
+			]
+		},
+		{
+			"ID": "20230218182600-i743z75",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230218182600-i743z75",
+				"updated": "20230218184300"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (log *Logger) MethodXXX(msg string, fields ...Field)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230218182620-9u91oyu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230218182620-9u91oyu",
+				"updated": "20230218182648"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "MethodXXX"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "是一个可变参数函数，可以是Info / Error/ Debug / Panic等。每个方法都接受一个消息字符串和任意数量的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zapcore.Field"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "场参数，每个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zapcore.Field"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "其实就是一组键值对参数。"
+				}
+			]
+		},
+		{
+			"ID": "20230218182748-e5zq09p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230218182748-e5zq09p",
+				"updated": "20230218182757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例如下："
+				}
+			]
+		},
+		{
+			"ID": "20230218182758-et0qx80",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230218182758-et0qx80",
+				"updated": "20230218182807"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/**\n@author:admin\n@date:2023/2/17\n@note\n*/\n\npackage main\n\nimport (\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n)\n\nvar logFile string = \"./test.log\"\nfunc main() {\n\tSetupLogger()\n\tHttpGet(\"https://www.baidu.com\")\n\tHttpGet(\"https://cn.bing.com\")\n\n}\n\nfunc HttpGet(url string) {\n\tres, err := http.Get(url)\n\tif err != nil {\n\t\tlog.Printf(\"Error fetching url %s: %v\", url, err.Error())\n\t}else {\n\t\tlog.Printf(\"Fetching url %s,  status: %d\", url, res.StatusCode)\n\t}\n\tdefer res.Body.Close()\n}\n\nfunc SetupLogger() {\n\n\tlogFileLocation, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0744)\n\tif err != nil {\n\t\tfmt.Errorf(\"Open log file %s: %v\\n\", logFile, err)\n\t}\n\tlog.SetOutput(logFileLocation)\n\n\t/**\n\t* log.SetFlags()仅支持Ldate, Ltime, and so on. log.Llongfile\n\t*/\n\tlog.SetFlags(log.Lshortfile)\n }\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230218183908-jq3parl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230218183908-jq3parl",
+				"updated": "20230218183927"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.2 Sugared Logger"
+				}
+			]
+		},
+		{
+			"ID": "20230218184433-5guwp3s",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230218184433-5guwp3s",
+				"updated": "20230218184456"
+			},
+			"Children": [
+				{
+					"ID": "20230218184456-nuqtgtj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218184456-nuqtgtj"
+					},
+					"Children": [
+						{
+							"ID": "20230218184456-19kq13d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218184456-19kq13d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "与logger惟一的区别是，我们通过调用主logger的. Sugar()方法来获取一个SugaredLogger。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230218184453-fcqifo4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230218184453-fcqifo4",
+				"updated": "20230218185330"
+			},
+			"Children": [
+				{
+					"ID": "20230218184453-141qsa5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218184453-141qsa5",
+						"updated": "20230218185330"
+					},
+					"Children": [
+						{
+							"ID": "20230218184453-t483fop",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218184453-t483fop",
+								"updated": "20230218185249"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "然后使用SugaredLogger以printf格式记录语句："
+								}
+							]
+						},
+						{
+							"ID": "20230218184959-i5eaqli",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218184959-i5eaqli",
+								"updated": "20230218185001"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "image.png"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image-20230218185001-3qq5p9b.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230218185326-17maqd6",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230218185326-17maqd6",
+								"updated": "20230218185330"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "/**\n@author:admin\n@date:2023/2/17\n@note\n*/\n\npackage main\n\nimport (\n\t\"go.uber.org/zap\"\n\t\"net/http\"\n)\n\nvar sugaredlogger *zap.SugaredLogger\n\nfunc main() {\n\tinitLogger()\n\tdefer logger.Sync()\n\thttpGet(\"www.google.com\")\n\thttpGet(\"http://www.baidu.com\")\n}\n\nfunc httpGet(url string) {\n\tsugaredlogger.Debugf(\"Trying to get http url %s\", url)\n\tres, err := http.Get(url)\n\tif err != nil {\n\t\t sugaredlogger.Errorf(\"Error getting http url %s: error:%v\", url, err)\n \t}else {\n\t\t sugaredlogger.Infof(\"Successfully! status %s for URL %s\", res.Status, url)\n\t\t res.Body.Close()\n \t}\n}\n\nfunc initLogger() {\n\ttmp_logger, _  := zap.NewProduction()\n\tsugaredlogger = tmp_logger.Sugar()\n}\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230218185335-sv2jypv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230218185335-sv2jypv",
+				"updated": "20230218185503"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.3 定制logger示例"
+				}
+			]
+		},
+		{
+			"ID": "20230218185503-t6suxnc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230218185503-t6suxnc",
+				"updated": "20230219005639"
+			},
+			"Children": [
+				{
+					"ID": "20230218185506-xmck2e7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218185506-xmck2e7",
+						"updated": "20230218190332"
+					},
+					"Children": [
+						{
+							"ID": "20230218185506-49lwp70",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218185506-49lwp70",
+								"updated": "20230218185707"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用zap.New()方法手动传递所有配置，非zap.NewProduction()采用预制方法，zap.New()函数定义如下："
+								}
+							]
+						},
+						{
+							"ID": "20230218185708-ct5p06j",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230218185708-ct5p06j",
+								"updated": "20230218185720"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "func New(core zapcore.Core, options ...Option) *Logger\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20230218185613-3f5gmcg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218185613-3f5gmcg",
+								"updated": "20230218185821"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "zapcore.Core"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "需要三个配置——"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Encoder"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "WriteSyncer"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "LogLevel"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						},
+						{
+							"ID": "20230218185900-kow7dw3",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230218185900-kow7dw3",
+								"updated": "20230218190332"
+							},
+							"Children": [
+								{
+									"ID": "20230218185857-16bgdmp",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230218185857-16bgdmp",
+										"updated": "20230218190332"
+									},
+									"Children": [
+										{
+											"ID": "20230218185857-obtaoe1",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218185857-obtaoe1",
+												"updated": "20230218211257"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "Encoder"
+												}
+											]
+										},
+										{
+											"ID": "20230218190216-m030mdn",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218190216-m030mdn",
+												"updated": "20230218190332"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": " 编码器(如何写入日志)，可以使用"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "NewJSONEncoder()"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "（开箱即用）或者NewConsoleEncoder，并使用预制的"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "ProductionEncoderConfig()"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "。"
+												}
+											]
+										},
+										{
+											"ID": "20230218211147-tzvlfpc",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218211147-tzvlfpc",
+												"updated": "20230218211158"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "   zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230218211050-4yctjrv",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230218211050-4yctjrv"
+									},
+									"Children": [
+										{
+											"ID": "20230218211050-qdt2eul",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218211050-qdt2eul",
+												"updated": "20230218211254"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "WriterSyncer"
+												}
+											]
+										},
+										{
+											"ID": "20230218211305-cn1wole",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218211305-cn1wole",
+												"updated": "20230218224822"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "指定日志将写到哪里去，使用"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "zapcore.AddSync()"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "函数并且将打开的文件句柄传进去"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "mark",
+													"TextMarkTextContent": "（把日志写入文件）"
+												}
+											]
+										},
+										{
+											"ID": "20230218211324-4ylj9e4",
+											"Type": "NodeCodeBlock",
+											"IsFencedCodeBlock": true,
+											"Properties": {
+												"id": "20230218211324-4ylj9e4",
+												"updated": "20230218211521"
+											},
+											"Children": [
+												{
+													"Type": "NodeCodeBlockFenceOpenMarker",
+													"Data": "```"
+												},
+												{
+													"Type": "NodeCodeBlockFenceInfoMarker",
+													"CodeBlockInfo": "XA=="
+												},
+												{
+													"Type": "NodeCodeBlockCode",
+													"Data": "  file, _ := os.Create(\"./test.log\")\n  writeSyncer := zapcore.AddSync(file)\n"
+												},
+												{
+													"Type": "NodeCodeBlockFenceCloseMarker",
+													"Data": "```"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230218211724-gd4ct6n",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230218211724-gd4ct6n"
+									},
+									"Children": [
+										{
+											"ID": "20230218211724-yi5tzl7",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218211724-yi5tzl7",
+												"updated": "20230218224854"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "LogLevel"
+												}
+											]
+										},
+										{
+											"ID": "20230218215859-pg1397v",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218215859-pg1397v",
+												"updated": "20230218215930"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "设置日志级别"
+												}
+											]
+										},
+										{
+											"ID": "20230218211739-uc5e2iw",
+											"Type": "NodeCodeBlock",
+											"IsFencedCodeBlock": true,
+											"Properties": {
+												"id": "20230218211739-uc5e2iw",
+												"updated": "20230218212122"
+											},
+											"Children": [
+												{
+													"Type": "NodeCodeBlockFenceOpenMarker",
+													"Data": "```"
+												},
+												{
+													"Type": "NodeCodeBlockFenceInfoMarker",
+													"CodeBlockInfo": "XA=="
+												},
+												{
+													"Type": "NodeCodeBlockCode",
+													"Data": "\tDebugLevel\n\t// InfoLevel is the default logging priority.\n\tInfoLevel\n\t// WarnLevel logs are more important than Info, but don't need individual\n\t// human review.\n\tWarnLevel\n\t// ErrorLevel logs are high-priority. If an application is running smoothly,\n\t// it shouldn't generate any error-level logs.\n\tErrorLevel\n\t// DPanicLevel logs are particularly important errors. In development the\n\t// logger panics after writing the message.\n\tDPanicLevel\n\t// PanicLevel logs a message, then panics.\n\tPanicLevel\n\t// FatalLevel logs a message, then calls os.Exit(1).\n\tFatalLevel\n"
+												},
+												{
+													"Type": "NodeCodeBlockFenceCloseMarker",
+													"Data": "```"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218224843-apqljfh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218224843-apqljfh"
+					},
+					"Children": [
+						{
+							"ID": "20230218224843-xhr15yo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218224843-xhr15yo",
+								"updated": "20230218233920"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "修改时间编码器"
+								}
+							]
+						},
+						{
+							"ID": "20230218233920-f32vrqo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218233920-f32vrqo",
+								"updated": "20230218234119"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218233934-j9qt8rv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218233934-j9qt8rv"
+					},
+					"Children": [
+						{
+							"ID": "20230218233934-1fz3xbz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218233934-1fz3xbz",
+								"updated": "20230218233953"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在日志中使用大写字母记录日志级别"
+								}
+							]
+						},
+						{
+							"ID": "20230218233953-kty101n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218233953-kty101n",
+								"updated": "20230218234118"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218234035-0cve0e8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218234035-0cve0e8",
+						"updated": "20230218234151"
+					},
+					"Children": [
+						{
+							"ID": "20230218234035-4r9xxfp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218234035-4r9xxfp",
+								"updated": "20230218234054"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将调用函数记录到日志中"
+								}
+							]
+						},
+						{
+							"ID": "20230218234105-3tg9qrn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218234105-3tg9qrn",
+								"updated": "20230218234151"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "logger := zap.New(core, zap.AddCaller())"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230218234151-qebs71a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230218234151-qebs71a",
+						"updated": "20230219005639"
+					},
+					"Children": [
+						{
+							"ID": "20230218234151-nl2bsr7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230218234151-nl2bsr7",
+								"updated": "20230218234158"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将日志输出到多个位置"
+								}
+							]
+						},
+						{
+							"ID": "20230218234329-7x1clw6",
+							"Type": "NodeSuperBlock",
+							"Properties": {
+								"id": "20230218234329-7x1clw6",
+								"updated": "20230219005639"
+							},
+							"Children": [
+								{
+									"Type": "NodeSuperBlockOpenMarker"
+								},
+								{
+									"Type": "NodeSuperBlockLayoutMarker",
+									"Data": "col"
+								},
+								{
+									"ID": "20230218234334-hlup195",
+									"Type": "NodeSuperBlock",
+									"Properties": {
+										"id": "20230218234334-hlup195",
+										"updated": "20230219005639"
+									},
+									"Children": [
+										{
+											"Type": "NodeSuperBlockOpenMarker"
+										},
+										{
+											"Type": "NodeSuperBlockLayoutMarker",
+											"Data": "row"
+										},
+										{
+											"ID": "20230218234219-zuk6wr6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230218234219-zuk6wr6",
+												"updated": "20230218234237"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "将日志同时写入文件和终端"
+												}
+											]
+										},
+										{
+											"ID": "20230218234217-v2cvpgz",
+											"Type": "NodeCodeBlock",
+											"IsFencedCodeBlock": true,
+											"Properties": {
+												"id": "20230218234217-v2cvpgz"
+											},
+											"Children": [
+												{
+													"Type": "NodeCodeBlockFenceOpenMarker",
+													"Data": "```"
+												},
+												{
+													"Type": "NodeCodeBlockFenceInfoMarker",
+													"CodeBlockInfo": "XA=="
+												},
+												{
+													"Type": "NodeCodeBlockCode",
+													"Data": "\tfile, _ := os.Create(\"./test.log\")\n\t// 利用io.MultiWriter支持文件和终端两个输出目标\n\tws := io.MultiWriter(file, os.Stdout)\n\treturn zapcore.AddSync(ws)"
+												},
+												{
+													"Type": "NodeCodeBlockFenceCloseMarker",
+													"Data": "```"
+												}
+											]
+										},
+										{
+											"Type": "NodeSuperBlockCloseMarker"
+										}
+									]
+								},
+								{
+									"Type": "NodeSuperBlockCloseMarker"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230219005652-8q604u6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230219005652-8q604u6",
+				"updated": "20230219005731"
+			},
+			"Children": [
+				{
+					"ID": "20230219005655-84ziy18",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230219005655-84ziy18",
+						"updated": "20230219005731"
+					},
+					"Children": [
+						{
+							"ID": "20230219005655-1x9o3wv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230219005655-1x9o3wv",
+								"updated": "20230219005716"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "err日志和infor日志单独输出"
+								}
+							]
+						},
+						{
+							"ID": "20230219005726-4pbg3us",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230219005726-4pbg3us",
+								"updated": "20230219005731"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "func InitLogger() {\n\tencoder := getEncoder()\n\t// test.log记录全量日志\n\tlogF, _ := os.Create(\"./test.log\")\n\tc1 := zapcore.NewCore(encoder, zapcore.AddSync(logF), zapcore.DebugLevel)\n\t// test.err.log记录ERROR级别的日志\n\terrF, _ := os.Create(\"./test.err.log\")\n\tc2 := zapcore.NewCore(encoder, zapcore.AddSync(errF), zap.ErrorLevel)\n\t// 使用NewTee将c1和c2合并到core\n\tcore := zapcore.NewTee(c1, c2)\n\tlogger = zap.New(core, zap.AddCaller())\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230219005817-x9vj6n6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230219005817-x9vj6n6",
+				"updated": "20230219012724"
+			},
+			"Children": [
+				{
+					"ID": "20230219005822-2rxufty",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230219005822-2rxufty",
+						"updated": "20230219012724"
+					},
+					"Children": [
+						{
+							"ID": "20230219005822-ugkd01v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230219005822-ugkd01v",
+								"updated": "20230219005827"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "日志归档"
+								}
+							]
+						},
+						{
+							"ID": "20230219012438-0t51enk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230219012438-0t51enk",
+								"updated": "20230219012506"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "zap本身不支持日志归档，只能使用第三方库"
+								}
+							]
+						},
+						{
+							"ID": "20230219012100-7s522g6",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230219012100-7s522g6",
+								"updated": "20230219012724"
+							},
+							"Children": [
+								{
+									"ID": "20230219012119-tqt4v8d",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230219012119-tqt4v8d",
+										"updated": "20230219012724"
+									},
+									"Children": [
+										{
+											"ID": "20230219012119-p4j7lz6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230219012119-p4j7lz6",
+												"updated": "20230219012146"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "按大小切割"
+												}
+											]
+										},
+										{
+											"ID": "20230219012210-1qovz4l",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230219012210-1qovz4l",
+												"updated": "20230219012424"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "使用第三方库"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "https://github.com/natefinch/lumberjack",
+													"TextMarkTextContent": "Lumberjack"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "（只支持按文件大小切割）来实现"
+												}
+											]
+										},
+										{
+											"ID": "20230219012400-o5v34j5",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230219012400-o5v34j5"
+											}
+										},
+										{
+											"ID": "20230219012401-uwb5s3d",
+											"Type": "NodeCodeBlock",
+											"IsFencedCodeBlock": true,
+											"Properties": {
+												"id": "20230219012401-uwb5s3d"
+											},
+											"Children": [
+												{
+													"Type": "NodeCodeBlockFenceOpenMarker",
+													"Data": "```"
+												},
+												{
+													"Type": "NodeCodeBlockFenceInfoMarker",
+													"CodeBlockInfo": "XA=="
+												},
+												{
+													"Type": "NodeCodeBlockCode",
+													"Data": "go get gopkg.in/natefinch/lumberjack.v2"
+												},
+												{
+													"Type": "NodeCodeBlockFenceCloseMarker",
+													"Data": "```"
+												}
+											]
+										},
+										{
+											"ID": "20230219012216-w7qdhqq",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230219012216-w7qdhqq",
+												"updated": "20230219012234"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "使用示例:"
+												}
+											]
+										},
+										{
+											"ID": "20230219012235-y5voldq",
+											"Type": "NodeCodeBlock",
+											"IsFencedCodeBlock": true,
+											"Properties": {
+												"id": "20230219012235-y5voldq",
+												"updated": "20230219012251"
+											},
+											"Children": [
+												{
+													"Type": "NodeCodeBlockFenceOpenMarker",
+													"Data": "```"
+												},
+												{
+													"Type": "NodeCodeBlockFenceInfoMarker",
+													"CodeBlockInfo": "XA=="
+												},
+												{
+													"Type": "NodeCodeBlockCode",
+													"Data": "func getLogWriter() zapcore.WriteSyncer {\n\tlumberJackLogger := \u0026lumberjack.Logger{\n\t\tFilename:   \"./test.log\",\n\t\tMaxSize:    10,\n\t\tMaxBackups: 5,\n\t\tMaxAge:     30,\n\t\tCompress:   false,\n\t}\n\treturn zapcore.AddSync(lumberJackLogger)\n}\n"
+												},
+												{
+													"Type": "NodeCodeBlockFenceCloseMarker",
+													"Data": "```"
+												}
+											]
+										},
+										{
+											"ID": "20230219012534-9g2gd1l",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20230219012534-9g2gd1l",
+												"updated": "20230219012724"
+											},
+											"Children": [
+												{
+													"ID": "20230219012534-xbxdfsz",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230219012534-xbxdfsz"
+													},
+													"Children": [
+														{
+															"ID": "20230219012534-fhhdp2n",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230219012534-fhhdp2n"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "Filename: 日志文件的位置"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230219012534-2a7vyxc",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230219012534-2a7vyxc"
+													},
+													"Children": [
+														{
+															"ID": "20230219012534-cqc5u87",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230219012534-cqc5u87"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "MaxSize：在进行切割之前，日志文件的最大大小（以MB为单位）"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230219012534-tc5kivk",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230219012534-tc5kivk"
+													},
+													"Children": [
+														{
+															"ID": "20230219012534-60x6u0p",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230219012534-60x6u0p"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "MaxBackups：保留旧文件的最大个数"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230219012534-kgjcy55",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230219012534-kgjcy55"
+													},
+													"Children": [
+														{
+															"ID": "20230219012534-w26a3uf",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230219012534-w26a3uf"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "MaxAges：保留旧文件的最大天数"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230219012534-5oazhey",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230219012534-5oazhey"
+													},
+													"Children": [
+														{
+															"ID": "20230219012534-zce7itf",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230219012534-zce7itf"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "Compress：是否压缩/归档旧文件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230219012709-vrj1f9y",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230219012709-vrj1f9y",
+														"updated": "20230219012724"
+													},
+													"Children": [
+														{
+															"ID": "20230219012709-5ec0tys",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230219012709-5ec0tys",
+																"updated": "20230219012724"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "LocalTime：确定用于格式化备份文件中的时间戳的时间是否为计算机的本地时间。默认值是使用UTC时间"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230219012147-zpr7e3s",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230219012147-zpr7e3s"
+									},
+									"Children": [
+										{
+											"ID": "20230219012147-9nz6fc6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230219012147-9nz6fc6",
+												"updated": "20230219012153"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "按日期切割"
+												}
+											]
+										},
+										{
+											"ID": "20230219012339-73fvi52",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230219012339-73fvi52",
+												"updated": "20230219012345"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "使用库："
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "https://github.com/lestrrat-go/file-rotatelogs",
+													"TextMarkTextContent": "github.com/lestrrat-go/file-rotatelogs"
+												}
+											]
+										},
+										{
+											"ID": "20230219012320-1vwdswi",
+											"Type": "NodeCodeBlock",
+											"IsFencedCodeBlock": true,
+											"Properties": {
+												"id": "20230219012320-1vwdswi",
+												"updated": "20230219012327"
+											},
+											"Children": [
+												{
+													"Type": "NodeCodeBlockFenceOpenMarker",
+													"Data": "```"
+												},
+												{
+													"Type": "NodeCodeBlockFenceInfoMarker",
+													"CodeBlockInfo": "XA=="
+												},
+												{
+													"Type": "NodeCodeBlockCode",
+													"Data": "// 使用file-rotatelogs按天切割日志\n\nimport rotatelogs \"github.com/lestrrat-go/file-rotatelogs\"\n\nl, _ := rotatelogs.New(\n\tfilename+\".%Y%m%d%H%M\",\n\trotatelogs.WithMaxAge(30*24*time.Hour),    // 最长保存30天\n\trotatelogs.WithRotationTime(time.Hour*24), // 24小时切割一次\n)\nzapcore.AddSync(l)\n"
+												},
+												{
+													"Type": "NodeCodeBlockFenceCloseMarker",
+													"Data": "```"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230217184700-skj4uj6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230217184700-skj4uj6",
+				"updated": "20230217184705"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/**\n@author:admin\n@date:2023/2/17\n@note\n*/\n\npackage main\n\nimport (\n\t\"go.uber.org/zap\"\n\t\"go.uber.org/zap/zapcore\"\n\t\"gopkg.in/natefinch/lumberjack.v2\"\n\t\"net/http\"\n)\n\nvar sugarLogger *zap.SugaredLogger\n\n\nfunc main() {\n\tInitLogger()\n\tdefer sugarLogger.Sync()\n\tsimpleHttpGet(\"www.baidu.com\")\n\tsimpleHttpGet(\"www.google.com\")\n}\n\nfunc InitLogger()  {\n\twriteSyncer := getLogWriter()\n\tencoder := getEncoder()\n\tcore := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)\n\tlogger := zap.New(core, zap.AddCaller())\n\tsugarLogger = logger.Sugar()\n}\n\nfunc getEncoder()  zapcore.Encoder {\n\tencoderConfig := zap.NewProductionEncoderConfig()\n\tencoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder\n\tencoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder\n \t//return zapcore.NewConsoleEncoder(encoderConfig)\n\treturn zapcore.NewJSONEncoder(encoderConfig)\n}\n\nfunc getLogWriter() zapcore.WriteSyncer {\n\tlumberjackLogger := \u0026lumberjack.Logger{\n\t\tFilename: \"./test.log\",\n\t\tMaxSize: 1,\n\t\tMaxBackups: 5,\n\t\tMaxAge: 30,\n\t\tCompress: false,\n\t}\n\treturn zapcore.AddSync(lumberjackLogger)\n}\n\nfunc simpleHttpGet(url string) {\n\tsugarLogger.Debugf(\"Trying to get http url %s\", url)\n\tres, err := http.Get(url)\n\tif err != nil {\n\t\tsugarLogger.Errorf(\"Error getting http url %s: error:%v\", url, err)\n\t}else {\n\t\tsugarLogger.Infof(\"Successfully! status %s for URL %s\", res.Status, url)\n\t\tres.Body.Close()\n\t}\n }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230220171740-8z5ofvc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230220171740-8z5ofvc",
+				"updated": "20230220171813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 同步日志到redis"
+				}
+			]
+		},
+		{
+			"ID": "20230220171813-koeuggo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230220171813-koeuggo",
+				"updated": "20230220171822"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "import (\n\t\"os\"\n\n\t\"github.com/go-redis/redis\"\n\t\"go.uber.org/zap\"\n\t\"go.uber.org/zap/zapcore\"\n)\n\nfunc NewRedisWriter(key string, cli *redis.Client) *redisWriter{\n\treturn \u0026redisWriter{\n\t\tcli: cli, listKey: key,\n\t}\n}\n// 为 logger 提供写入 redis 队列的 io 接口\ntype redisWriter struct {\n\tcli *redis.Client\n\tlistKey string\n}\n\nfunc (w *redisWriter) Write(p []byte) (int, error) {\n\tn, err := w.cli.RPush(w.listKey, p).Result()\n\treturn int(n), err\n}\n\nfunc NewLogger(writer *redisWriter) *zap.Logger {\n\t// 限制日志输出级别, \u003e= DebugLevel 会打印所有级别的日志\n\t// 生产环境中一般使用 \u003e= ErrorLevel\n\tlowPriority := zap.LevelEnablerFunc(func(lv zapcore.Level) bool {\n\t\treturn lv \u003e= zapcore.DebugLevel\n\t})\n\n\t// 使用 JSON 格式日志\n\tjsonEnc := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())\n\tstdCore := zapcore.NewCore(jsonEnc, zapcore.Lock(os.Stdout), lowPriority)\n\n\t// addSync 将 io.Writer 装饰为 WriteSyncer\n\t// 故只需要一个实现 io.Writer 接口的对象即可\n\tsyncer := zapcore.AddSync(writer)\n\tredisCore := zapcore.NewCore(jsonEnc, syncer, lowPriority)\n\n\t// 集成多个 core\n\tcore := zapcore.NewTee(stdCore, redisCore)\n\n\t// logger 输出到 console 且标识调用代码行\n\treturn zap.New(core).WithOptions(zap.AddCaller())\n}\n\nfunc main() {\n\tcli := redis.NewClient(\u0026redis.Options{\n\t\tAddr: \"127.0.0.1:6379\",\n\t})\n\twriter := NewRedisWriter(\"log_list\", cli)\n\tlogger := NewLogger(writer)\n\n\tlogger.Info(\"test logger info\", zap.String(\"hello\", \"logger\"))\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230220172406-kfouaen",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230220172406-kfouaen",
+				"updated": "20230220172435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "gin项目使用zap"
+				}
+			]
+		},
+		{
+			"ID": "20230220172452-jdtael4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230220172452-jdtael4",
+				"updated": "20230221103800"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "util/zap.go"
+				}
+			]
+		},
+		{
+			"ID": "20230221103800-3z6gswn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230221103800-3z6gswn",
+				"updated": "20230221103817"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若不想手动封装，可以直接使用："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em a",
+					"TextMarkAHref": "https://github.com/gin-contrib/zap",
+					"TextMarkTextContent": "https://github.com/gin-contrib/zap"
+				}
+			]
+		},
+		{
+			"ID": "20230220172436-4d9dg3f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230220172436-4d9dg3f",
+				"updated": "20230220172444"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// GinLogger 接收gin框架默认的日志\nfunc GinLogger() gin.HandlerFunc {\n\treturn func(c *gin.Context) {\n\t\tstart := time.Now()\n\t\tpath := c.Request.URL.Path      // 请求路径 eg: /test\n\t\tquery := c.Request.URL.RawQuery //query类型的请求参数：?name=1\u0026password=2\n\t\t// 挂起当前中间件，执行下一个中间件\n\t\tc.Next()\n\n\t\tcost := time.Since(start)\n\n\t\t// Field 是 Field 的别名。给这个类型起别名极大地提高了这个包的 API 文档的可导航性。\n\t\t// type Field struct {\n\t\t//\tKey       string\n\t\t//\tType      FieldType // 类型，数字对应具体类型，eg: 15---\u003estring\n\t\t//\tInteger   int64\n\t\t//\tString    string\n\t\t//\tInterface interface{}\n\t\t//}\n\t\tlogger.Info(path,\n\t\t\tzap.Int(\"status\", c.Writer.Status()),                                 // 状态码 eg: 200\n\t\t\tzap.String(\"method\", c.Request.Method),                               // 请求方法类型 eg: GET\n\t\t\tzap.String(\"path\", path),                                             // 请求路径 eg: /test\n\t\t\tzap.String(\"query\", query),                                           // 请求参数 eg: name=1\u0026password=2\n\t\t\tzap.String(\"ip\", c.ClientIP()),                                       // 返回真实的客户端IP eg: ::1（这个就是本机IP，ipv6地址）\n\t\t\tzap.String(\"user-agent\", c.Request.UserAgent()),                      // 返回客户端的用户代理。 eg: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36\n\t\t\tzap.String(\"errors\", c.Errors.ByType(gin.ErrorTypePrivate).String()), // 返回Errors 切片中ErrorTypePrivate类型的错误\n\t\t\tzap.Duration(\"cost\", cost),                                           // 返回花费时间\n\t\t)\n\t}\n}\n\n// GinRecovery recover掉项目可能出现的panic，并使用zap记录相关日志\nfunc GinRecovery(stack bool) gin.HandlerFunc {\n\treturn func(c *gin.Context) {\n\t\tdefer func() {\n\t\t\tif err := recover(); interface{}(err) != nil {\n\t\t\t\t// 检查断开的连接，因为它不是保证紧急堆栈跟踪的真正条件。\n\t\t\t\tvar brokenPipe bool\n\t\t\t\t// OpError 是 net 包中的函数通常返回的错误类型。它描述了错误的操作、网络类型和地址。\n\t\t\t\tif ne, ok := interface{}(err).(*net.OpError); ok {\n\t\t\t\t\t// SyscallError 记录来自特定系统调用的错误。\n\t\t\t\t\tif se, ok := ne.Err.(*os.SyscallError); ok {\n\t\t\t\t\t\tif strings.Contains(strings.ToLower(se.Error()), \"broken pipe\") {\n\t\t\t\t\t\t\tbrokenPipe = true\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\t// DumpRequest 以 HTTP/1.x 连线形式返回给定的请求\n\t\t\t\thttpRequest, _ := httputil.DumpRequest(c.Request, false)\n\t\t\t\tif brokenPipe {\n\t\t\t\t\tlogger.Error(c.Request.URL.Path,\n\t\t\t\t\t\tzap.Any(\"error\", err),\n\t\t\t\t\t\tzap.String(\"request\", string(httpRequest)),\n\t\t\t\t\t)\n\t\t\t\t\t// 如果连接死了，我们就不能给它写状态\n\t\t\t\t\tc.Error(interface{}(err).(error))\n\t\t\t\t\tc.Abort() // 终止该中间件\n\t\t\t\t\treturn\n\t\t\t\t}\n\n\t\t\t\tif stack {\n\t\t\t\t\tlogger.Error(\"[Recovery from panic]\",\n\t\t\t\t\t\tzap.Any(\"error\", err),\n\t\t\t\t\t\tzap.String(\"request\", string(httpRequest)),\n\t\t\t\t\t\tzap.String(\"starck\", string(debug.Stack())), // 返回调用它的goroutine的格式化堆栈跟踪。\n\t\t\t\t\t)\n\t\t\t\t} else {\n\t\t\t\t\tlogger.Error(\"[Recovery from panic]\",\n\t\t\t\t\t\tzap.Any(\"error\", err),\n\t\t\t\t\t\tzap.String(\"request\", string(httpRequest)),\n\t\t\t\t\t)\n\t\t\t\t}\n\t\t\t\t// 调用 `Abort()` 并使用指定的状态代码写入标头。\n\t\t\t\t// StatusInternalServerError:500\n\t\t\t\tc.AbortWithStatus(http.StatusInternalServerError)\n\t\t\t}\n\t\t}()\n\t\tc.Next()\n\t}\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230220172523-p6ysuui",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230220172523-p6ysuui",
+				"updated": "20230220172531"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "测试"
+				}
+			]
+		},
+		{
+			"ID": "20230220172505-7f1d1t0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230220172505-7f1d1t0",
+				"updated": "20230220172518"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n    r := gin.New()\n    r.Use(util.GinLogger(), util.GinRecovery(false))\n    r.GET(\"./test\", func(c *gin.Context) {\n        lc := util.LogConfig{\n            Level:      \"debug\",\n            FileName:   fmt.Sprintf(\"./log/%v.log\", time.Now().Unix()),\n            MaxSize:    1,\n            MaxBackups: 5,\n            MaxAge:     30,\n        }\n        err := util.InitLogger(lc)\n        if err != nil {\n            fmt.Println(err)\n        }\n        logger := zap.L().Sugar()\n        // 调用内核的Sync方法，刷新所有缓冲的日志条目。应用程序应该注意在退出之前调用Sync。\n        defer logger.Sync()\n    })\n    r.Run()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230220180536-vbgf4bp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230220180536-vbgf4bp",
+				"updated": "20230220180547"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\"level\":\"INFO\",\"time\":\"2022-09-01T18:11:47.600+0800\",\"caller\":\"util/zap.go:105\",\"msg\":\"/test\",\"status\":200,\"method\":\"GET\",\"path\":\"/test\",\"query\":\"\",\"ip\":\"::1\",\"user-agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36\",\"errors\":\"\",\"cost\":0.0001746}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230220172539-c5y576r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230220172539-c5y576r",
+				"updated": "20230220180544"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\n "
+				}
+			]
+		},
+		{
+			"ID": "20230220172758-axv30y6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230220172758-axv30y6",
+				"updated": "20230220172758"
+			}
+		}
+	]
+}

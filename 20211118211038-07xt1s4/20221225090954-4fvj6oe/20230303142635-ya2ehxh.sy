@@ -1,0 +1,562 @@
+{
+	"ID": "20230303142635-ya2ehxh",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230303142635-ya2ehxh",
+		"title": " hostNetwork和NetworkPolicy",
+		"updated": "20230303144406"
+	},
+	"Children": [
+		{
+			"ID": "20230303142635-tizhj1p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303142635-tizhj1p",
+				"updated": "20230303142751"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. hostNetwork介绍"
+				}
+			]
+		},
+		{
+			"ID": "20230303143747-1dykxwu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303143747-1dykxwu",
+				"updated": "20230303143748"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 k8s 中，若  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "pod 使用主机网络"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，也就是"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "hostNetwork=true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。则该pod会使用主机的dns以及所有网络配置， "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "默认情况下是无法使用 k8s 自带的 dns 解析服务"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，但是可以修改 DNS 策略或者修改主机上的域名解析（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/resolv.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "），使主机可以用 k8s 自身的 dns 服务。"
+				}
+			]
+		},
+		{
+			"ID": "20230303143830-431iuc6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303143830-431iuc6",
+				"updated": "20230303143830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一般通过 DNS 策略（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ClusterFirstWithHostNet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）来使用 k8s DNS 内部域名解析，k8s DNS 策略如下："
+				}
+			]
+		},
+		{
+			"ID": "20230303142830-p472xb9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230303142830-p472xb9",
+				"updated": "20230303144302"
+			},
+			"Children": [
+				{
+					"ID": "20230303142830-qmk4c1n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303142830-qmk4c1n"
+					},
+					"Children": [
+						{
+							"ID": "20230303142830-c5lbjsd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303142830-c5lbjsd"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Default"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "： 继承 Pod 所在宿主机的 DNS 设置，hostNetwork 的默认策略。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303142830-67mkqrp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303142830-67mkqrp"
+					},
+					"Children": [
+						{
+							"ID": "20230303142830-4rm1g5l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303142830-4rm1g5l"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ClusterFirst（默认DNS策略）"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：优先使用 kubernetes 环境的 dns 服务，将无法解析的域名转发到从宿主机继承的 dns 服务器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303142830-y39cka0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303142830-y39cka0"
+					},
+					"Children": [
+						{
+							"ID": "20230303142830-7puz4ay",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303142830-7puz4ay"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ClusterFirstWithHostNet"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：和 ClusterFirst 类似，对于以 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "hostNetwork"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 模式运行的 Pod 应明确知道使用该策略。也是可以同时解析内部和外部的域名。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303142830-t0e7le2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303142830-t0e7le2",
+						"updated": "20230303144302"
+					},
+					"Children": [
+						{
+							"ID": "20230303142830-kq1b6ad",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303142830-kq1b6ad"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "None"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "： 忽略 kubernetes 环境的 dns 配置，通过 spec.dnsConfig 自定义 DNS 配置。"
+								}
+							]
+						},
+						{
+							"ID": "20230303143956-p07fmlm",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230303143956-p07fmlm",
+								"updated": "20230303144302"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n    metadata:\n      labels:\n        app: nginx\n    spec:\n      # 使用主机网络\n      hostNetwork: true\n      # 该设置是使POD使用k8s的dns，dns配置在/etc/resolv.conf文件中\n      # 如果不加，pod默认使用所在宿主主机使用的DNS，这样会导致容器\n      # 内不能通过service name访问k8s集群中其他POD\n      dnsPolicy: ClusterFirstWithHostNet\n      containers:\n      - name: nginx\n        image: nginx:1.7.9\n        ports:\n        - name: metrics\n          # 如果hostNetwork: true，hostPort必须跟containerPort一样，所以hostPort一般不写，端口也是占用宿主机上的端口。\n          hostPort: 80\n          containerPort: 80\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: nginx\nspec:\n  selector:\n    app: nginx\n  type: NodePort\n  ports:\n    - name: http\n      port: 80\n      targetPort: 80\n      protocol: TCP\n      nodePort: 31280\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230303142852-r51poof",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303142852-r51poof",
+				"updated": "20230303143544"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. hostPort和NodePort的区别"
+				}
+			]
+		},
+		{
+			"ID": "20230303143550-dw4r4ad",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230303143550-dw4r4ad",
+				"updated": "20230303143550"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230303143550-eeaqhat",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230303143550-eeaqhat"
+					},
+					"Children": [
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "hostPort"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 只会在运行机器上开启端口， "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "NodePort"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 是所有 Node 上都会开启端口。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230303143558-mivkdnl",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230303143558-mivkdnl",
+				"updated": "20230303143631"
+			},
+			"Children": [
+				{
+					"ID": "20230303143558-zpchhyh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303143558-zpchhyh"
+					},
+					"Children": [
+						{
+							"ID": "20230303143558-dgp15ub",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303143558-dgp15ub"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "hostPort 是由 portmap 这个 cni 提供 portMapping 能力，同时如果想使用这个能力，在配置文件中一定需要开启 portmap。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303143558-y9yhr1e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303143558-y9yhr1e"
+					},
+					"Children": [
+						{
+							"ID": "20230303143558-yz536iv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303143558-yz536iv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用 hostPort 后，会在 iptables 的 nat 链中插入相应的规则，而且这些规则是在 KUBE-SERVICES 规则之前插入的，也就是说会优先匹配 hostPort 的规则，我们常用的 NodePort 规则其实是在 KUBE-SERVICES 之中，也排在其后。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303143558-ztk0cvo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303143558-ztk0cvo"
+					},
+					"Children": [
+						{
+							"ID": "20230303143558-s4xkp99",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303143558-s4xkp99"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "hostport 可以通过 iptables 命令查看到， 但是无法在 ipvsadm 中查看到。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303143558-6cf7ll0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303143558-6cf7ll0"
+					},
+					"Children": [
+						{
+							"ID": "20230303143558-bjr2tex",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303143558-bjr2tex"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用 lsof/netstat 也查看不到这个端口,这是因为 hostport 是通过 iptables 对请求中的目的端口进行转发的，并不是在主机上通过端口监听。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230303143558-p2zwd3x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230303143558-p2zwd3x",
+						"updated": "20230303143631"
+					},
+					"Children": [
+						{
+							"ID": "20230303143558-48vvubh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303143558-48vvubh",
+								"updated": "20230303143631"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "在生产环境中不建议使用 hostPort 。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230303143632-7phekqr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303143632-7phekqr",
+				"updated": "20230303144309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. K8s 网络策略 NetworkPolicy"
+				}
+			]
+		},
+		{
+			"ID": "20230303144334-jl9rbx5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303144334-jl9rbx5",
+				"updated": "20230303144335"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230303144335-fbcvmt4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230303144337-yg8vlo8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303144337-yg8vlo8",
+				"updated": "20230303144406"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "NetworkPolicy"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": " 是一种以应用为中心的结构，允许你设置如何允许 Pod 与网络上的各类网络“实体”"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 通信"
+				}
+			]
+		},
+		{
+			"ID": "20230303144406-u0uhroy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303144406-u0uhroy",
+				"updated": "20230303144406"
+			}
+		}
+	]
+}

@@ -1,0 +1,47 @@
+{
+	"ID": "20230425110137-m1krtgw",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230425110137-m1krtgw",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230425110137-jn8kcbn\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230425110611-02vvr5v\u0026quot;,\u0026quot;scrollTop\u0026quot;:558,\u0026quot;focusId\u0026quot;:\u0026quot;20230425110137-jn8kcbn\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "ctr",
+		"updated": "20230425110611"
+	},
+	"Children": [
+		{
+			"ID": "20230425110137-jn8kcbn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230425110137-jn8kcbn",
+				"linenumber": "true",
+				"updated": "20230425110146"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ctr 命令：\nctr -n k8s.io images ls              #查看镜像\nctr -n k8s.io images pull -k         #拉取镜像，拉取的时候忽略校验\nctr -n k8s.io images pull --tlscacert /etc/....../tls.crt   #拉取镜像，拉镜像的时候使用tls证书进行验证\n \n#导出镜像\nctr -n k8s.io i export pause.tar k8s.gcr.io/pause:3.2\n \n#将离线镜像tar包导入到本地镜像缓存中，打tag并push镜像到镜像仓库\nctr -n k8s.io i import containerd-build-aarch64-1.1.0.tar\nctr -n k8s.io i ls |grep build-aarch64\nctr -n k8s.io i tag docker.io/containerd/build-aarch64:1.1.0 harbor.xxx.com/xx/containerd/build-aarch64:1.1.0\nctr -n k8s.io i push --tlscacert /etc/containerd/certs.d/harbor.xxx.com/tls.crt harbor.xxx.com/xx/containerd/build-aarch64:1.1.0 -u admin:Harbor12345\n \nctr -n k8s.io i push --tlscacert /etc/....../tls.crt  #上传镜像,基于tls验证\nctr -n k8s.io i push -k  #上传镜像,忽略认证\n \nctr -n k8s.io c ls     #查看容器对象元数据，不包含状态\nctr -n k8s.io task ls  #查看容器，包含容器状态\nctr -n k8s.io task kill -a -s 9  {id}     #根据容器id停止容器，停止时会杀死容器中的所有服务\nctr -n k8s.io c rm  {id}    #删除容器对象元数据，注意：如果容器状态为Running，则无法进行删除\n \n*************************************************************************************************************\n#例：创建一个容器对象 \nctr -n k8s.io c create -t  --net-host --privileged --env GOPATH=/go \\\n    --mount type=bind,src=${PWD}/containerd,dst=/go/src/github.com/containerd/containerd,options=rbind:rw \\\n    docker.io/containerd/build-aarch64:1.1.0 containerd-build-aarch64\n \n#这里 --mount 与docker -v 作用相同,\n \n#启动一个容器进程，名称是上一步创建的容器对象的名称\nctr -n k8s.io task start -d containerd-build-aarch64\n \n#连接到一个处于RUNNING状态容器的标准流，注意：如果在这里exit，会退出容器，并删除当前的容器进程，仅容器对象还在\nctr -n k8s.io task attach containerd-build-aarch64\n \n#与docker run 的效果一样，在这里exit，会退出容器，但不会对容器状态产生影响，其还存在且是RUNNING\nctr -n k8s.io task exec -t --exec-id bash_1 containerd-build-aarch64 sh\n \n#杀死一个容器进程中的所有子进程，执行之后容器状态为STOPPED,此时可以使用 task rm 进行删除\nctr -n k8s.io task kill -a -s 9 containerd-build-aarch64\n \n#删除非运行状态的容器，但是不删除容器元数据，使用ctr -n k8s.io -c ls 还可以查看到\nctr -n k8s.io task rm containerd-build-aarch64\n \n#如果要删除容器元数据，下面的命令不光删除容器对象数据，同时还会级联删除对应的容器的task\nctr -n k8s.io c rm containerd-build-aarch64\n \n*************************************************************************************************************\n \nctr --help\nctr i --help\nctr i pull --help\n \n#example: 基于tls证书，使用ctr命令   ctr i pull --help\nctr -n k8s.io i pull -k harbor.xxx.com/k8s-infra/us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.13.15-1\nctr -n k8s.io i pull --tlscacert /etc/containerd/certs.d/harbor.xxx.com/tls.crt harbor.xxx.com/k8s-infra/us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.13.15-1\nctr -n k8s.io i push --tlscacert /etc/containerd/certs.d/harbor.xxx.com/tls.crt harbor.xxx.com/k8s-infra/us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.13.15-1\nctr -n k8s.io i push -k harbor.xxx.com/k8s-infra/us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.13.15-1\n \n特别的:基于私有镜像仓库，如果上面的pull 或 push 报401错误, username与pwd使用对应镜像仓库的用户名和密码替换\nctr -n k8s.io i push -u username:pwd --tlscacert /etc/containerd/certs.d/harbor.xxx.com/tls.crt harbor.xxx.com/k8s-infra/us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.13.15-1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230425110611-02vvr5v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230425110611-02vvr5v"
+			}
+		}
+	]
+}

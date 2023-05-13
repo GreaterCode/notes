@@ -1,0 +1,2002 @@
+{
+	"ID": "20221114171117-ru4v01q",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221114171117-ru4v01q",
+		"title": "OpenShift 4 - 部署Mirror Registry并复制Image",
+		"updated": "20221114182440"
+	},
+	"Children": [
+		{
+			"ID": "20221114171117-fz9b6hg",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221114171117-fz9b6hg"
+			}
+		},
+		{
+			"ID": "20221114171117-5dog05h",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-5dog05h"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-nlx7qa8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-nlx7qa8"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-v5931o9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-v5931o9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "本节我们以将安装OpenShift所需要的基础Image从quay.io镜像复制到运行在本地的Mirror Image Registry中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114171117-hgpdo19",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-hgpdo19"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-pqybes7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-pqybes7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "本地的Mirror Image Registry我们使用Docker Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-x9bm1jw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114171117-x9bm1jw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装Mirror Registry运行环境"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-oc3bqnn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114171117-oc3bqnn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下命令使用root用户执行。"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-5acg70l",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-5acg70l"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-p7fwnoh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-p7fwnoh"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-rrqlb8i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-rrqlb8i"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装必要的软件包。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-0s25434",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-0s25434",
+				"updated": "20221114181658"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ yum -y install podman httpd-tools\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-d45s4az",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-d45s4az"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-xurflx1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-xurflx1"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-o7l8chs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-o7l8chs"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建Registry使用的存储目录。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-jojqhor",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-jojqhor",
+				"updated": "20221114181701"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mkdir -p /opt/registry/{ auth,certs,data}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-iuu18y3",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-iuu18y3"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-hjnnojo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114171117-hjnnojo"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-impdc8o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-impdc8o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获得运行Mirror Registry的主机的完整域名。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-aii4dlj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-aii4dlj",
+				"updated": "20221114181702"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ MIRRIR_REGISTRY=\u003cFULL-DOMAIN-NAME\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-6vvr37r",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-6vvr37r"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-c4t99sn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114171117-c4t99sn"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-oem0zwr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-oem0zwr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建Registry使用的证书（本例为自签名证书），包括私钥registry.key和证书registry.crt。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-5mc7jmk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-5mc7jmk",
+				"updated": "20221114181708"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout /opt/registry/certs/registry.key -x509 -days 365 \\\n  -out /opt/registry/certs/registry.crt \\\n  -subj \"/C=CN/ST=BEIJING/L=BJ/O=RedHat/OU=OpenShift.RedHat/CN=${MIRRIR_REGISTRY}/emailAddress=admin@${MIRRIR_REGISTRY}\"\nGenerating a 4096 bit RSA private key\n..............................................................................................................................................++\n.................................................................................................................................................................................++\nwriting new private key to '/opt/registry/certs/registry.key'\n-----\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-3z5isus",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-3z5isus"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-an98sms",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114171117-an98sms"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-ezvsqna",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-ezvsqna"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将自签名证书加到运行Mirror Registry节点的可信证书中，然后确认前几行就是上一步添加的“OU=OpenShift.RedHat”的证书。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-f89u4qv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-f89u4qv",
+				"updated": "20221114182419"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cp /opt/registry/certs/registry.crt /etc/pki/ca-trust/source/anchors/\n$ update-ca-trust\n$ trust list | head -5\npkcs11:id=%fc%97%20%48%09%ec%49%74%85%87%12%be%d0%24%3a%62%63%a3%f6%7e;type=cert\n    type: certificate\n    label: OpenShift.RedHat\n    trust: anchor\n    category: authority\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-1dbex7p",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-1dbex7p"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-gv39r8m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221114171117-gv39r8m"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-a7hkuo2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-a7hkuo2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建基于密码的认证文件htpasswd，并向其添加用户和密码。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-lfex3gz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-lfex3gz",
+				"updated": "20221114182414"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ htpasswd -bBc /opt/registry/auth/htpasswd \u003cUSER\u003e \u003cPASSWORD\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-oqw6wc6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-oqw6wc6"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-2708lrr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20221114171117-2708lrr"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-swmprum",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-swmprum"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "运行Mirror Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-wyoe9p7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-wyoe9p7"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ podman run --name mirror-registry -p 5000:5000 \\\n     -v /opt/registry/data:/var/lib/registry:z \\\n     -v /opt/registry/auth:/auth:z \\\n     -e \"REGISTRY_AUTH=htpasswd\" \\\n     -e \"REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm\" \\\n     -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \\\n     -v /opt/registry/certs:/certs:z \\\n     -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \\\n     -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \\\n     -e REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED=true \\\n     -d docker.io/library/registry:2 \nTrying to pull docker.io/library/registry:2...\nGetting image source signatures\nCopying blob 3db6272dcbfa done\nCopying blob c1cc712bcecd done\nCopying blob cbdbe7a5bc2a done\nCopying blob 47112e65547d done\nCopying blob 46bcb632e506 done\nCopying config 2d4f4b5309 done\nWriting manifest to image destination\nStoring signatures\n1dbd16a4592bef9f386702b63ad2c67b3e4ccfae3dbbc232857bf3e69c202482\n12345678910111213141516171819202122\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-ond7l9c",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-ond7l9c"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-5la81mb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OC4=",
+						"Num": 8
+					},
+					"Properties": {
+						"id": "20221114171117-5la81mb"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-ioi8700",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-ioi8700"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "打开运行Mirror Registry节点的防火墙端口（或者关闭防火墙）。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-fc89owf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-fc89owf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ firewall-cmd --add-port=5000/tcp --zone=internal --permanent \n$ firewall-cmd --add-port=5000/tcp --zone=public   --permanent \n$ firewall-cmd --reload\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-hx4w1pt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-hx4w1pt"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-3cjfxkg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OS4=",
+						"Num": 9
+					},
+					"Properties": {
+						"id": "20221114171117-3cjfxkg"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-cjciqp9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-cjciqp9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认可以访问Mirror Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-illoze5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-illoze5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -u \u003cUSER\u003e:\u003cPASSWORD\u003e -k https://${MIRRIR_REGISTRY}:5000/v2/_catalog \n{ \"repositories\":[]}\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-ktoj9wb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114171117-ktoj9wb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "复制Image到Mirror Registry"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-m7eyl3x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114171117-m7eyl3x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将Image从远端Registry复制到Mirror Registry可以有以下2种方法："
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-a9ld87p",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-a9ld87p"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-vg9rgpd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-vg9rgpd"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-0ojme8j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-0ojme8j"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果远端Registry和Mirror Registry网络可以互通，可以采用直接复制的方式。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114171117-sj4n80f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-sj4n80f"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-4qneq39",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-4qneq39"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果远端Registry和Mirror Registry网络不能互通，可以先将Image保存到摆渡环境，然后再导入到Mirror Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-3u2mz8q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114171117-3u2mz8q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在以下示例中由于需要访问远端Registry(quay.io)和本地Mirror Registry，所以需要用到2个用来登录的secret文件（local-secret.json和remote-secret.json）。另外由于第一种方式需要在一个命令中同时访问远端Registry(quay.io)和本地Mirror Registry，因此还需要将2个用来登录的secret文件合并成一个all-secret.json文件。\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20200801151621674-20221114171117-nx7plcn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-catt9zk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114171117-catt9zk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "准备登陆认证文件"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-zc6etyf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114171117-zc6etyf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成远程Registry(quay.io)认证文件"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-m3k0yzk",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-m3k0yzk"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-fd531jr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-fd531jr"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-6ppog1a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-6ppog1a"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "打开网页https://cloud.redhat.com/openshift/install/pull-secret，用你的redhat开发账号登录。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114171117-nzbn7ii",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-nzbn7ii"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-neeco53",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-neeco53"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "点击页面上的“Copy pull secret”链接，复制可访问quay.io的认证字符串。\n"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "在这里插入图片描述"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/20200801152452660-20221114171117-i95os2e.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114171117-859pnru",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114171117-859pnru"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-na9ru5d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-na9ru5d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将复制的字符串保存到操作节点的remote-secret.json文件中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114171117-mad9jp7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114171117-mad9jp7"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-0na7c54",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-0na7c54"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看remote-secret.json。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-20xvt28",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-20xvt28"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ jq . remote-secret.json\n{ \n  \"auths\": { \n    \"cloud.openshift.com\": { \n      \"auth\": \"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K2Rhd25saXUxZW8zZmYzOXpvenQ1ZDQ5b2JudGNmM3Rwbm86VDdKSEVKOFpZS1FaNVFSNVFMVDdXRDlZUTFCTENHSlBVSU9LUU0yRUhIMDRHUFVZTUE4TUYwQVA0STdSTlVJMw==\",\n      \"email\": \"xxxx@xxxx.com\"\n    },\n    \"quay.io\": { \n      \"auth\": \"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K2Rhd25saXUxZW8zZmYzOXpvenQ1ZDQ5b2JudGNmM3Rwbm86VDdKSEVKOFpZS1FaNVFSNVFMVDdXRDlZUTFCTENHSlBVSU9LUU0yRUhIMDRHUFVZTUE4TUYwQVA0STdSTlVJMw==\",\n      \"email\": \"xxxx@xxxx.com\"\n    },\n    \"registry.connect.redhat.com\": { \n      \"auth\": \"NTE1MTA1OTN8dWhjLTFFTzNmRjM5ek96dDVENDlvQm50Q0YzdHBObzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSTVNak5oT0dOaFpqRXpPVEEwTUdZMVlqRXhOVGMxWWpBell6WXlZalpqWlNKOS5QOVFtUGJRTHktQ0lEbmV0VjlHVS1fWDY5QklyUEZQRi1idHJ4UGJwU0ZRMHBOQlhla0RoQ1RrZGV5V2lTNnRJaG5KckdFaENuWUhKNXlmcU80QXBHcV83S1U0a0o0WDl5TFB3Q1hlc3hzQWxJa3p1OURNYldBRnd4RmttYVBaLUlYQ2pFV1BSMzhBdEdSdlE4U25aVm5BQ0V0cTFNQTdUUTZSeFBSUUw5ZllMeU5YY3JJYUhQWlc3cUt1dWhTYkdERzVfY190SHQwQkR2TmhZZ1Nhck91X01SMl9jQk9TRllMSHl4TXozTVZQQ3hSMnh5UjB0OWQ2YnZad2dmWTlaTy1EQWV4d29MWVFZVWpDaXdCVl9kRnVhLWZmaFJrUVFLSFpmakk0WXlQSFNnYUVTLUpud21KV2tQdWJORDh6M3U4VWc0ZWJiQ25OZHpOZlUyc1gtOUcxYzR3aUhPYWdhVDdhV3RpNmhNWXpCMmJKcVVjR1RmeFJyZTFFMjA0QTRCTWhHSFA2WUFieUsxRlJxbUY2Tk1PYkN3TFB6SmZsUEZtQVB6aXJyZ0FfME9fZTd4b1NKc2dLUEZuYVRpbDFBVzlNek12TDM3eHlDT25IUE53MFAxLUdIcUVWZklOd2pSOFZ4cS1ZSnplS19jekVMNkhJeldienJaRDBkeTEzaTA0ekFHYi1ha3Zuel9EUUNQRkZCV01XWWdfUDZKYmtHVmwxbG4yaTVBeDJRb1JZX0ktTVk5c3A4OXI2M0ptQW1ucFZfNEtGRUVZSkdTbWh6VVcwOFNCdTVVWDZHRjlMQ1NRVEhmV3MweXAybVM0TzNiRjhnVDF1R1JJSmZueE1YQ05WdlZfQWh1UHgyRnRJSEpCZWtRNEFSUGRSMTRyemFGQk5UX2lQSF81TQ==\",\n      \"email\": \"xxxx@xxxx.com\"\n    },\n    \"registry.redhat.io\": { \n      \"auth\": \"NTE1MTA1OTN8dWhjLTFFTzNmRjM5ek96dDVENDlvQm50Q0YzdHBObzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSTVNak5oT0dOaFpqRXpPVEEwTUdZMVlqRXhOVGMxWWpBell6WXlZalpqWlNKOS5QOVFtUGJRTHktQ0lEbmV0VjlHVS1fWDY5QklyUEZQRi1idHJ4UGJwU0ZRMHBOQlhla0RoQ1RrZGV5V2lTNnRJaG5KckdFaENuWUhKNXlmcU80QXBHcV83S1U0a0o0WDl5TFB3Q1hlc3hzQWxJa3p1OURNYldBRnd4RmttYVBaLUlYQ2pFV1BSMzhBdEdSdlE4U25aVm5BQ0V0cTFNQTdUUTZSeFBSUUw5ZllMeU5YY3JJYUhQWlc3cUt1dWhTYkdERzVfY190SHQwQkR2TmhZZ1Nhck91X01SMl9jQk9TRllMSHl4TXozTVZQQ3hSMnh5UjB0OWQ2YnZad2dmWTlaTy1EQWV4d29MWVFZVWpDaXdCVl9kRnVhLWZmaFJrUVFLSFpmakk0WXlQSFNnYUVTLUpud21KV2tQdWJORDh6M3U4VWc0ZWJiQ25OZHpOZlUyc1gtOUcxYzR3aUhPYWdhVDdhV3RpNmhNWXpCMmJKcVVjR1RmeFJyZTFFMjA0QTRCTWhHSFA2WUFieUsxRlJxbUY2Tk1PYkN3TFB6SmZsUEZtQVB6aXJyZ0FfME9fZTd4b1NKc2dLUEZuYVRpbDFBVzlNek12TDM3eHlDT25IUE53MFAxLUdIcUVWZklOd2pSOFZ4cS1ZSnplS19jekVMNkhJeldienJaRDBkeTEzaTA0ekFHYi1ha3Zuel9EUUNQRkZCV01XWWdfUDZKYmtHVmwxbG4yaTVBeDJRb1JZX0ktTVk5c3A4OXI2M0ptQW1ucFZfNEtGRUVZSkdTbWh6VVcwOFNCdTVVWDZHRjlMQ1NRVEhmV3MweXAybVM0TzNiRjhnVDF1R1JJSmZueE1YQ05WdlZfQWh1UHgyRnRJSEpCZWtRNEFSUGRSMTRyemFGQk5UX2lQSF81TQ==\",\n      \"email\": \"xxxx@xxxx.com\"\n    }\n  }\n}\n123456789101112131415161718192021\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-i5zed1f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114171117-i5zed1f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成Mirror Registry的认证文件"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-tzjaon0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-tzjaon0"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-ym714qn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-ym714qn"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-76bnq64",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-76bnq64"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "登录Mirror Registry，并将登录凭证写到local-secret.json文件中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-wfu7vpv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-wfu7vpv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ podman login -u \u003cUSER\u003e -p \u003cPASSWORD\u003e --authfile local-secret.json ${MIRRIR_REGISTRY}:5000\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-h0omrvt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-h0omrvt"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-uxsfoet",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-uxsfoet"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-87f6xr5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-87f6xr5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看local-secret.json文件内容，其中的\"dXNlcjpwYXNzd29yZA==\"就是登录凭证"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-isn1mpa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-isn1mpa"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat local-secret.json\n{ \n        \"auths\": { \n                \"clientvm.beijing-f5b3.internal:5000\": { \n                        \"auth\": \"dXNlcjpwYXNzd29yZA==\"\n                }\n        }\n}\n12345678\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-tfd0y5a",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-tfd0y5a"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-7jkeknv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114171117-7jkeknv"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-ccphk68",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-ccphk68"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，查看登录凭证包括的信息，确认就是Mirror Registry的登录用户名和密码。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-pjlgkiw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-pjlgkiw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ AUTH=\"dXNlcjpwYXNzd29yZA==\"\n$ echo $AUTH | base64 -d\nuser:password\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-qfjlas8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114171117-qfjlas8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成all-secret.json文件"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-x3y4hub",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-x3y4hub"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-srh4y72",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-srh4y72"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-tr2sj88",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-tr2sj88"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，将local-secret.json的“auths”中的内容和remote-secret.json合并，然后写入all-secret.json文件。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-estby5d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-estby5d"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ LOCAL_SECRET=$(jq .auths local-secret.json)\n$ jq \".auths += $LOCAL_SECRET\" \u003c remote-secret.json \u003e $HOME/all-secret.json\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-gybb48d",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-gybb48d"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-e0wurjp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-e0wurjp"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-nrfvzmc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-nrfvzmc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认all-secret.json文件包括local-secret.json和remote-secret.json的内容。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-xq14y6z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-xq14y6z"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat $HOME/all-secret.json\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-tn4g2zc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114171117-tn4g2zc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "复制Image到Mirror Registry"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-bg1lgax",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114171117-bg1lgax"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "直接复制Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-4z9yhfm",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-4z9yhfm"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-rsxrdqf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-rsxrdqf"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-v6wshje",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-v6wshje"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设置环境变量"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-jh50e9c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-jh50e9c"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ export OCP_RELEASE=4.5.4 \n$ export LOCAL_REGISTRY=${MIRRIR_REGISTRY}:5000\n$ export LOCAL_REPOSITORY=ocp4/openshift4 \n$ export PRODUCT_REPO='openshift-release-dev' \n$ export SECRET_JSON=$HOME/all-secret.json\n$ export RELEASE_NAME=\"ocp-release\" \n$ export ARCHITECTURE=x86_64 \n$ export REMOVABLE_MEDIA_PATH=$HOME \n12345678\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-3fwl2id",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-3fwl2id"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-jbtq32a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-jbtq32a"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-bewhmrb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-bewhmrb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，在2个Registry之间直接复制镜像。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-fqjgds2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-fqjgds2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc adm -a ${SECRET_JSON} release mirror \\\n     --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \\\n     --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \\\n     --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}\n1234\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-d67wemh",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-d67wemh"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-qmwp8cs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114171117-qmwp8cs"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-396ak6s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-396ak6s"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行上述命令后，会将110个OpenShift Image复制到Mirror Registry。成功后会有以下结果，注意提示：提示可在OpenShift创建“ImageContentSourcePolicy”对象，以为OpenShift增加Mirror Registry的配置。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-y7h3ilv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-y7h3ilv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "。。。。\nSuccess\nUpdate image:  clientvm.beijing-959a.internal:5000/ocp4/openshift4:4.5.4-x86_64\nMirror prefix: clientvm.beijing-959a.internal:5000/ocp4/openshift4\n \nTo use the new mirrored repository to install, add the following section to the install-config.yaml:\n \nimageContentSources:\n- mirrors:\n  - clientvm.beijing-959a.internal:5000/ocp4/openshift4\n  source: quay.io/openshift-release-dev/ocp-release\n- mirrors:\n  - clientvm.beijing-959a.internal:5000/ocp4/openshift4\n  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev\n \nTo use the new mirrored repository for upgrades, use the following to create an ImageContentSourcePolicy:\n \napiVersion: operator.openshift.io/v1alpha1\nkind: ImageContentSourcePolicy\nmetadata:\n  name: example\nspec:\n  repositoryDigestMirrors:\n  - mirrors:\n    - clientvm.beijing-959a.internal:5000/ocp4/openshift4\n    source: quay.io/openshift-release-dev/ocp-release\n  - mirrors:\n    - clientvm.beijing-959a.internal:5000/ocp4/openshift4\n    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev\n1234567891011121314151617181920212223242526272829\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-k73ldnu",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-k73ldnu"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-7pcyxm1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114171117-7pcyxm1"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-fnuw5mq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-fnuw5mq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最后验证即可。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-uwmqw9b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-uwmqw9b"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -u \u003cUSER\u003e:\u003cPASSWORD\u003e -k https://${MIRRIR_REGISTRY}:5000/v2/_catalog \n$ oc adm release info -a ${SECRET_JSON} \"${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}\"\n\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-7u2zm25",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114171117-7u2zm25"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "间接复制Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-6rjdal3",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-6rjdal3"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-gv8dmr8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-gv8dmr8"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-y4sbimm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-y4sbimm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在互联网区，先将Image下载到本地文件目录中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-4yq3qy4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-4yq3qy4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc adm release mirror -a ${SECRET_JSON} --to-dir=${REMOVABLE_MEDIA_PATH}/mirror \\\n     --to-dir=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-xcqqe0v",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-xcqqe0v"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-cnn8rqu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-cnn8rqu"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-mj01ptl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-mj01ptl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在网络隔离区，再将下载的Image导入到Mirror Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-zs7yd27",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-zs7yd27"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc image mirror -a ${SECRET_JSON} --from-dir=${REMOVABLE_MEDIA_PATH}/mirror \\\n     'file://openshift/release:${OCP_RELEASE}*' \\\n     ${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}f\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-lvy3ewt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-lvy3ewt"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-7y0lo13",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114171117-7y0lo13"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-bzacw41",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-bzacw41"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最后验证即可。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-e7gsdzj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114171117-e7gsdzj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -u \u003cUSER\u003e:\u003cPASSWORD\u003e -k https://${MIRRIR_REGISTRY}:5000/v2/_catalog \n$ oc adm release info -a ${SECRET_JSON} \"${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}\"\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-2s2jy7f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114171117-2s2jy7f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20221114171117-wom1b5c",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114171117-wom1b5c"
+			},
+			"Children": [
+				{
+					"ID": "20221114171117-d4bla76",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114171117-d4bla76"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-5h9k5zt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-5h9k5zt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/images/index"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114171117-g7i9f8b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114171117-g7i9f8b"
+					},
+					"Children": [
+						{
+							"ID": "20221114171117-ak6wklo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114171117-ak6wklo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://www.openshift.com/blog/openshift-4-2-disconnected-install"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

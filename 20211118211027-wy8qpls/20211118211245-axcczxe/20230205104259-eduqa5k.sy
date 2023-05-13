@@ -1,0 +1,341 @@
+{
+	"ID": "20230205104259-eduqa5k",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230205104259-eduqa5k",
+		"title": "time.After在select中使用的正确姿势",
+		"updated": "20230205111044"
+	},
+	"Children": [
+		{
+			"ID": "20230205104340-i99djtz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230205104340-i99djtz",
+				"updated": "20230205104348"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 前言"
+				}
+			]
+		},
+		{
+			"ID": "20230205104349-qnqcpry",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230205104349-qnqcpry",
+				"updated": "20230205110236"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "每个case都必须是一个通信\n所有channel表达式都会被求值\n所有被发送的表达式都会被求值\n如果任意某个通信可以进行，它就执行；其他被忽略。\n如果有多个case都可以运行，Select会随机公平地选出一个执行。其他不会执行。 \n否则：如果有default子句，则执行该语句。\n如果没有default字句，select将阻塞，直到某个通信可以运行；Go不会重新对channel或值进行求值。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230205110246-k33egb8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230205110246-k33egb8",
+				"updated": "20230205110310"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 实例"
+				}
+			]
+		},
+		{
+			"ID": "20230205110614-3603jvj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110614-3603jvj",
+				"updated": "20230205110614"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "功能描述: 在 goroutine 定时执行一些内容比如: 打印 hello world，然后五分钟或者十分钟后退出 goroutin。"
+				}
+			]
+		},
+		{
+			"ID": "20230205110614-86esi88",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110614-86esi88",
+				"updated": "20230205110631"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "功能实现："
+				}
+			]
+		},
+		{
+			"ID": "20230205110632-hhjth4w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230205110632-hhjth4w",
+				"updated": "20230205110643"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\n\tgo func() {\n\t\tticker := time.NewTicker(time.Second * 1)\n\t\tfor {\n\t\t\tselect {\n\t\t\tcase \u003c-ticker.C:\n\t\t\t\tfmt.Println(\"hello world\")\n\t\t\tcase \u003c-time.After(time.Second * 10):\n\t\t\t\tfmt.Println(\"exit\")\n\t\t\t\treturn\n\t\t\t}\n\t\t}\n\t}()\n\n\ttime.Sleep(time.Second * 15)\n\tfmt.Println(\"main func\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230205110652-4vdt02t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230205110652-4vdt02t",
+				"updated": "20230205110747"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "每个 1s 打印一下 hello world 然后在 10s 后退出 goroutine，15s 后退出程序。我估计大多数同学都会写成这样，输入如下\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nmain func\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230205110748-aj1h3sf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110748-aj1h3sf",
+				"updated": "20230205110800"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从输入内容可以看出，程序根本没有打印 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "exit"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，也证明了 goroutine 不是由 time.After() 退出，而是由于主协程（main） sleep 结束之后退出。"
+				}
+			]
+		},
+		{
+			"ID": "20230205110803-7os3f43",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110803-7os3f43",
+				"updated": "20230205110847"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "什么原因呢？看下底层实现"
+				}
+			]
+		},
+		{
+			"ID": "20230205110826-zwheh2g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230205110826-zwheh2g",
+				"updated": "20230205110836"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func After(d Duration) \u003c-chan Time {\n\treturn NewTimer(d).C\n}\n\nfunc NewTimer(d Duration) *Timer {\n\tc := make(chan Time, 1)\n\tt := \u0026Timer{\n\t\tC: c,\n\t\tr: runtimeTimer{\n\t\t\twhen: when(d),\n\t\t\tf:    sendTime,\n\t\t\targ:  c,\n\t\t},\n\t}\n\tstartTimer(\u0026t.r)\n\treturn t\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230205110913-lm28yiz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110913-lm28yiz",
+				"updated": "20230205110913"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "After() 函数接受一个时长 d，然后 After() 等待 d 时长，等待时间到后，将等待完成时所处时间点写入到 channel 中并返回这个只读 channel。"
+				}
+			]
+		},
+		{
+			"ID": "20230205110913-j1igb72",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110913-j1igb72",
+				"updated": "20230205110913"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "看到这里就明白了为什么我们使用没有生效，通过底层可以看出， NewTimer(d).C 每次都是 return 了一个新的对象。并且我们是在 for 循环中定时执行 select，也就相当于每一次执行 select 我们都重新创建（实例化）了新的 time.After()。换句话说，每一次执行 select time.After() 都会重新开始计时。"
+				}
+			]
+		},
+		{
+			"ID": "20230205110913-2ymmkgs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110913-2ymmkgs",
+				"updated": "20230205110941"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 修正：我们只需要不在 for 循环中初始化 time.After() 即可。修改一下实现"
+				}
+			]
+		},
+		{
+			"ID": "20230205111000-td6t4ej",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230205111000-td6t4ej",
+				"updated": "20230205111010"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\n\tgo func() {\n\t\t// 注释内容也可以使用\n\t\t// idleDuration := time.NewTimer(time.Second * 10).C\n\t\tidleDuration := time.After(time.Second * 10)\n\t\tticker := time.NewTicker(time.Second * 1)\n\n\t\tfor {\n\t\t\tselect {\n\t\t\tcase \u003c-ticker.C:\n\t\t\t\tfmt.Println(\"hello world\")\n\t\t\tcase \u003c-idleDuration:\n\t\t\t\tfmt.Println(\"exit\")\n\t\t\t\treturn\n\t\t\t}\n\t\t}\n\t}()\n\n\ttime.Sleep(time.Second * 15)\n\tfmt.Println(\"main func\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230205110927-wq2uvac",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110927-wq2uvac",
+				"updated": "20230205111033"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "看下输出："
+				}
+			]
+		},
+		{
+			"ID": "20230205111039-frr3j5l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230205111039-frr3j5l",
+				"updated": "20230205111044"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "hello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nexit\nmain func\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230205111033-t7w6i54",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205111033-t7w6i54",
+				"updated": "20230205111033"
+			}
+		},
+		{
+			"ID": "20230205110917-0heqqw1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230205110917-0heqqw1",
+				"updated": "20230205110917"
+			}
+		}
+	]
+}

@@ -1,0 +1,1794 @@
+{
+	"ID": "20230308164110-vf2ecx0",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230308164110-vf2ecx0",
+		"title": "01.配置和使用说明",
+		"updated": "20230308233329"
+	},
+	"Children": [
+		{
+			"ID": "20230308164110-a7y589r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164110-a7y589r",
+				"updated": "20230308164123"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-ipam基于etcd分布式存储实现kubernetes动态IP网络分配管理，确保集群中IP地址的唯一性。Kube-ipam支持给kubernetes集群中的Pod固定IP地址，同时支持resolv.conf的DNS配置。"
+				}
+			]
+		},
+		{
+			"ID": "20230308164132-hu0tn6l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308164132-hu0tn6l",
+				"updated": "20230308164137"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230308164137-4m7h08g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164137-4m7h08g",
+				"updated": "20230308164144"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一些场景往往对IP地址有依赖，需要使用固定IP地址的Pod，可以使用kube-ipam轻松解决这类问题。例如，mysql主从架构的时候，主database与从database之间的同步；例如keepalived做集群HA的时候，两个节点之间检测通信等；例如某些安全防护设备，需要基于IP地址进行网络安全访问策略限制的场景等"
+				}
+			]
+		},
+		{
+			"ID": "20230308164205-s9wnr7l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164205-s9wnr7l",
+				"updated": "20230308164206"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230308164206-l0orml8.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308164222-sbjiift",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164222-sbjiift",
+				"updated": "20230308164222"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Kube-ipam"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 基于etcd分布式存储实现kubernetes动态IP网络分配管理，确保kubernetes集群中的Pod拥有固定的IP地址。在使用kube-ipam配置之后，上图中的fixed-ip Pod在销毁重建之后仍然可以保持原有IP地址的固定不变。"
+				}
+			]
+		},
+		{
+			"ID": "20230308164232-c96hvab",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308164232-c96hvab",
+				"updated": "20230308164236"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 安装kube-ipam"
+				}
+			]
+		},
+		{
+			"ID": "20230308164247-d60u0va",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230308164247-d60u0va",
+				"updated": "20230308164251"
+			},
+			"Children": [
+				{
+					"ID": "20230308164250-wi2seal",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164250-wi2seal",
+						"updated": "20230308164251"
+					},
+					"Children": [
+						{
+							"ID": "20230308164251-vc7y2kp",
+							"Type": "NodeHeading",
+							"HeadingLevel": 2,
+							"Properties": {
+								"id": "20230308164251-vc7y2kp",
+								"updated": "20230308164251"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启用与配置CNI路径"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308164258-4bm8cj6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164258-4bm8cj6",
+				"updated": "20230308164258"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "请确保你的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubelet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "正确的配置了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "network-plugin"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cni-conf-dir"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cni-bin-dir"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数。下面给出一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubelet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的配置示例供你参考："
+				}
+			]
+		},
+		{
+			"ID": "20230308164309-l3j61ww",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308164309-l3j61ww",
+				"updated": "20230308164313"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat /etc/systemd/system/kubelet.service \n...\nExecStart=/usr/local/bin/kubelet \\\n...\n  --network-plugin=cni \\\n  --cni-conf-dir=/etc/cni/net.d \\\n  --cni-bin-dir=/opt/cni/bin/ \\\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308164319-uxttbkw",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230308164319-uxttbkw",
+				"updated": "20230308164321"
+			},
+			"Children": [
+				{
+					"ID": "20230308164320-l1ydq0x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164320-l1ydq0x",
+						"updated": "20230308164321"
+					},
+					"Children": [
+						{
+							"ID": "20230308164321-t3x2uz0",
+							"Type": "NodeHeading",
+							"HeadingLevel": 2,
+							"Properties": {
+								"id": "20230308164321-t3x2uz0",
+								"updated": "20230308164321"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获取和安装kube-ipam"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308164331-ni7vaec",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164331-ni7vaec",
+				"updated": "20230308164332"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/download.md",
+					"TextMarkTextContent": "下载"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "或"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/build.md",
+					"TextMarkTextContent": "编译"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "获得"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的二进制文件，然后将kube-ipam的二进制文件拷贝到kubernetes node主机的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/cni/bin/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录中"
+				}
+			]
+		},
+		{
+			"ID": "20230308164336-srtu3om",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308164336-srtu3om",
+				"updated": "20230308164340"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# wget https://github.com/cloudnativer/kube-ipam/releases/download/v0.2.0/kube-ipam-v0.2.0-x86.tgz\n# tar -zxvf kube-ipam-v0.2.0-x86.tgz\n# mv kube-ipam-v0.2.0-x86/kube-ipam /opt/cni/bin/kube-ipam\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308164353-duanont",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308164353-duanont",
+				"updated": "20230308164358"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. /etc/cni/net.d配置"
+				}
+			]
+		},
+		{
+			"ID": "20230308164421-ccehgrw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308164421-ccehgrw",
+				"updated": "20230308164428"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 子网和etcd配置"
+				}
+			]
+		},
+		{
+			"ID": "20230308164435-mqtu2w3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164435-mqtu2w3",
+				"updated": "20230308164435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "subnet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 参数设置IP子网信息，通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "gateway"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 设置网关信息。你可以通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcdConfig"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 配置etcd的证书和endpoint地址"
+				}
+			]
+		},
+		{
+			"ID": "20230308164552-o5sg3ix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164552-o5sg3ix",
+				"updated": "20230308164558"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编辑所有kubernetes node主机的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/cni/net.d/1-kube-ipam.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件。"
+				}
+			]
+		},
+		{
+			"ID": "20230308164559-ws2ej9a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308164559-ws2ej9a",
+				"updated": "20230308164607"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat /etc/cni/net.d/1-kube-ipam.conf\n{\n        \"cniVersion\":\"0.3.1\",\n        \"name\": \"k8snetwork\",\n        \"type\": \"macvlan\",\n        \"master\": \"eth0\",\n        \"ipam\": {\n                \"name\": \"kube-subnet\",\n                \"type\": \"kube-ipam\",\n\t\t\"kubeConfig\": \"/etc/kubernetes/pki/kubectl.kubeconfig\"\n                \"etcdConfig\": {\n                        \"etcdURL\": \"https://192.168.1.50:2379,https://192.168.1.58:2379,https://192.168.1.63:2379\",\n                        \"etcdCertFile\": \"/etc/kubernetes/pki/etcd.pem\",\n                        \"etcdKeyFile\": \"/etc/kubernetes/pki/etcd-key.pem\",\n                        \"etcdTrustedCAFileFile\": \"/etc/kubernetes/pki/ca.pem\"\n                },\n                \"subnet\": \"10.188.0.0/16\",\n\t\t\"fixedStart\": \"10.188.0.10\",\n\t\t\"fixedEnd\": \"10.188.0.255\",\n                \"rangeStart\": \"10.188.1.0\",\n                \"rangeEnd\": \"10.188.255.254\",\n                \"gateway\": \"10.188.0.1\",\n                \"routes\": [{\n                        \"dst\": \"0.0.0.0/0\"\n                }],\n                \"resolvConf\": \"/etc/resolv.conf\"\n        }\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308164837-p8eflwb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308164837-p8eflwb",
+				"updated": "20230308164845"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 参数说明"
+				}
+			]
+		},
+		{
+			"ID": "20230308164900-x4i0d5m",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230308164900-x4i0d5m",
+				"updated": "20230308164900"
+			},
+			"Children": [
+				{
+					"ID": "20230308164900-pqhowgq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164900-pqhowgq"
+					},
+					"Children": [
+						{
+							"ID": "20230308164900-9t1lewb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308164900-9t1lewb"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "type"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " (string, required): 填写CNI插件的类型, 例如 macvlan、ipvlan、kube-router、bridge、calico等（还可以与"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Multus"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "结合支持更多CNI插件）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230308164900-x5ghd14",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164900-x5ghd14"
+					},
+					"Children": [
+						{
+							"ID": "20230308164900-nhbl0oi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308164900-nhbl0oi"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "routes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " (string, optional): 要添加到容器命名空间的路由列表。 每个路由都是一个带有“dst”和可选“gw”字段。 如果省略“gw”，将使用“网关”的值。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230308164900-9nmdhap",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164900-9nmdhap"
+					},
+					"Children": [
+						{
+							"ID": "20230308164900-17fan1q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308164900-17fan1q"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "resolvConf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " (string, optional): 主机上要解析并作为 DNS 配置返回的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "resolv.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 文件路径。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230308164900-jzf60ks",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164900-jzf60ks"
+					},
+					"Children": [
+						{
+							"ID": "20230308164900-xi5dk50",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308164900-xi5dk50"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcdConfig"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：etcd 地址信息的对象"
+								}
+							]
+						},
+						{
+							"ID": "20230308164900-y8103mk",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230308164900-y8103mk"
+							},
+							"Children": [
+								{
+									"ID": "20230308164900-usj19xj",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-usj19xj"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-scwwlka",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-scwwlka"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcdURL"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, required): etcd的endpoint URL地址。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-scpl9ph",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-scpl9ph"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-vo6iz3g",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-vo6iz3g"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcdCertFile"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, required): etcd的cert文件。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-8h2fjhd",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-8h2fjhd"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-spcb6kg",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-spcb6kg"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcdKeyFile"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, required): etcd的key文件。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-3knxgro",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-3knxgro"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-bysboud",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-bysboud"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcdTrustedCAFileFile"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, required): etcd的ca文件。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-h185vqq",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-h185vqq"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-h6b0ltc",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-h6b0ltc"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "kubeConfig"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, required): kubernetes集群的kubeconfig文件。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230308164900-mr3cq0k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308164900-mr3cq0k"
+					},
+					"Children": [
+						{
+							"ID": "20230308164900-lumx6uc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308164900-lumx6uc"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ranges"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ", (array, required, nonempty) an array of arrays of range objects:"
+								}
+							]
+						},
+						{
+							"ID": "20230308164900-u7ksnrd",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230308164900-u7ksnrd"
+							},
+							"Children": [
+								{
+									"ID": "20230308164900-h0rbyig",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-h0rbyig"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-xk2a1eq",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-xk2a1eq"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, required): 要分配出去的 CIDR 块。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-gyg1742",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-gyg1742"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-nz1y3pw",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-nz1y3pw"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "rangeStart"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, optional): 从"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "子网内开始分配的IP地址，默认为"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "子网段内的“.2”这个IP地址。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-0qbzu60",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-0qbzu60"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-zj5j6uq",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-zj5j6uq"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "rangeEnd"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, optional): 从"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "子网内结束分配的IP地址，默认为"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "子网段内的“.254”这个IP地址。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230308164900-3slhr3a",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230308164900-3slhr3a"
+									},
+									"Children": [
+										{
+											"ID": "20230308164900-z80c9y5",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230308164900-z80c9y5"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "gateway"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " (string, optional): 从"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "子网内分配的网关IP地址，默认为"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "subnet"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "子网段内的“.1”这个IP地址。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308164928-v1niinx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308164928-v1niinx",
+				"updated": "20230308164929"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ranges"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "可以支持多个子网的配置格式，详见"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/multiple-subnets.md",
+					"TextMarkTextContent": "multiple-subnets文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230308164933-9eel96e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308164933-9eel96e",
+				"updated": "20230308164943"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. Kubernetes固定IP容器方法"
+				}
+			]
+		},
+		{
+			"ID": "20230308164947-pyn8tt8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308164947-pyn8tt8",
+				"updated": "20230308165016"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 固定IP地址配置"
+				}
+			]
+		},
+		{
+			"ID": "20230308165043-508lqlo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165043-508lqlo",
+				"updated": "20230308165044"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "pod IP地址的固定分配可以通过在pod的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "annotations"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中配置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam.ip"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam.netmask"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam.gateway"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数来实现。\n在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/cni/net.d/1-kube-ipam.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中，随机IP地址的范围在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rangestart"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rangeend"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中设置。没有设置在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rangestart"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rangeend"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中IP地址段，可以手工分配给固定IP的容器。"
+				}
+			]
+		},
+		{
+			"ID": "20230308165101-460fkmv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165101-460fkmv",
+				"updated": "20230308165102"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你需要保持pod的IP地址固定不变， 请不要将 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam.ip"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的值设置在此"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rangestart"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rangeend"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "范围内。"
+				}
+			]
+		},
+		{
+			"ID": "20230308165135-fvxbqrp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165135-fvxbqrp",
+				"updated": "20230308165139"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "新建一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "fixed-ip-test-Deployment.yaml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，用来创建一个固定IP的Pod:"
+				}
+			]
+		},
+		{
+			"ID": "20230308165139-33aqs1w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308165139-33aqs1w",
+				"updated": "20230308165145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat fixed-ip-test-Deployment.yaml\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: fixed-ip-test\n  namespace: default\n  labels:\n    k8s-app: cloudnativer-test\nspec:\n  replicas: 1\n  strategy:\n    type: RollingUpdate\n    rollingUpdate:\n      maxUnavailable: 1\n  selector:\n    matchLabels:\n      k8s-app: cloudnativer-test\n  template:\n    metadata:\n      labels:\n        k8s-app: cloudnativer-test\n      annotations:\n        kube-ipam.ip: \"10.188.0.216\"\n        kube-ipam.netmask: \"255.255.0.0\"\n        kube-ipam.gateway: \"10.188.0.1\"\n    spec:\n      containers:\n      - name: fixed-ip-test\n        image: nginx:1.7.9\n        imagePullPolicy: IfNotPresent\n        ports:\n        - name: http\n          containerPort: 80  \n---\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308165243-u1rdjus",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165243-u1rdjus",
+				"updated": "20230308165250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明："
+				}
+			]
+		},
+		{
+			"ID": "20230308165251-n2ka21o",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230308165251-n2ka21o",
+				"updated": "20230308165306"
+			},
+			"Children": [
+				{
+					"ID": "20230308165303-rjb8wj9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308165303-rjb8wj9"
+					},
+					"Children": [
+						{
+							"ID": "20230308165303-y84tqu5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308165303-y84tqu5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "我们可以使用10.188.0.0/16网段中，除了10.188.0.10～10.188.0.200之外的IP地址来分配给Pod。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230308165305-ouitg75",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230308165305-ouitg75",
+						"updated": "20230308165306"
+					},
+					"Children": [
+						{
+							"ID": "20230308165305-9vl6skp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230308165305-9vl6skp",
+								"updated": "20230308165306"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果想要创建随机IP的Pod，只需要去掉annotations的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-ipam.ip"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "、"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-ipam.netmask"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-ipam.gateway"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "配置即可"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308165321-glpysfy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308165321-glpysfy",
+				"updated": "20230308165337"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2  创建一个固定IP的Pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308165332-oan7937",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165332-oan7937",
+				"updated": "20230308165353"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply -f"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令来创建固定IP的Pod:"
+				}
+			]
+		},
+		{
+			"ID": "20230308165359-u8u8bei",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308165359-u8u8bei",
+				"updated": "20230308165403"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl apply -f fixed-ip-test-Deployment.yaml\n#\n# kubectl get pod -o wide\n  NAME                             READY   STATUS    RESTARTS   AGE     IP             NODE   \n  fixed-ip-test-6d9b74fd4d-dbbsd   1/1     Running   0          2d23h   10.188.0.216   192.168.20.21\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308165410-8wsaqui",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165410-8wsaqui",
+				"updated": "20230308165410"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个fixed-ip-test-6d9b74fd4d-dbbsd这个Pod就被分配了一个固定不变的IP地址(10.188.0.216)"
+				}
+			]
+		},
+		{
+			"ID": "20230308165412-auhxui3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308165412-auhxui3",
+				"updated": "20230308165420"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 销毁重建Pod，IP保持固定不变"
+				}
+			]
+		},
+		{
+			"ID": "20230308165435-3sif55l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165435-3sif55l",
+				"updated": "20230308165435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl delete"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令来删除上面这个Pod，kubernetes会自动重建一个新的Pod："
+				}
+			]
+		},
+		{
+			"ID": "20230308165439-oauzzws",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308165439-oauzzws",
+				"updated": "20230308165444"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl delete pod fixed-ip-test-6d9b74fd4d-dbbsd\n#\n# kubectl get pod -o wide\n  NAME                             READY   STATUS    RESTARTS   AGE   IP             NODE   \n  fixed-ip-test-6d9b74fd4d-xjhek   1/1     Running   0          1h    10.188.0.216   192.168.30.35\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308165502-wa2b5mx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165502-wa2b5mx",
+				"updated": "20230308165509"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "新启动的fixed-ip-test-6d9b74fd4d-xjhek这个Pod的IP地址依然是10.188.0.216。"
+				}
+			]
+		},
+		{
+			"ID": "20230308165500-r05a6ne",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165500-r05a6ne",
+				"updated": "20230308165500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "calico"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "CNI环境使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "来固定容器IP的例子，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/kubeipam-with-calico.md",
+					"TextMarkTextContent": "请点击这里查看"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "！"
+				}
+			]
+		},
+		{
+			"ID": "20230308165514-o1y3a4l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308165514-o1y3a4l",
+				"updated": "20230308165523"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 查看日志信息"
+				}
+			]
+		},
+		{
+			"ID": "20230308165524-p8rlleu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165524-p8rlleu",
+				"updated": "20230308165529"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看kubernetes node主机上的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/var/log/kube-ipam.log"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "文件，可以获取"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的系统日志信息。"
+				}
+			]
+		},
+		{
+			"ID": "20230308165533-1mgx390",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308165533-1mgx390",
+				"updated": "20230308165541"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 分层网络安全架构"
+				}
+			]
+		},
+		{
+			"ID": "20230308165607-y0b0wqd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165607-y0b0wqd",
+				"updated": "20230308165608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "可以与"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Multus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "结合来进行组网，这样可以支持更多的CNI插件场景下的容器IP地址固定。例如，我们可以基于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ipam"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "与"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Multus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "实现Web和数据库分层网络安全访问架构，让一个Pod同时支持随机IP和固定IP等多个网络接口。这样的部署方式有利于安全人员把应用网络和数据库等多个网络区域进行相互隔离，有效控制容器集群网络架构。"
+				}
+			]
+		},
+		{
+			"ID": "20230308165620-zxxolr3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165620-zxxolr3",
+				"updated": "20230308165621"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230308165621-10f1je3.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230308165626-j0quulk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165626-j0quulk",
+				"updated": "20230308165627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上图中显示了每个Pod具有2个接口：eth0、net1。eth0作为外界用户访问web pod的网络接口；而net1是附加的容器网卡，作为web Pod到database Pod的内部网络通信。"
+				}
+			]
+		},
+		{
+			"ID": "20230308165657-4olhao7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308165657-4olhao7",
+				"updated": "20230308165658"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用户可以通过ingress或service来访问到web服务。web pod可以通过database区域网络，访问固定IP地址的database服务。Database区域网络的database Pod可以互相通过固定IP地址进行集群的通信操作。分层网络安全访问架构的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/Networksecuritylayering-zh.md",
+					"TextMarkTextContent": "安装与部署过程请点击这里查看"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230308174903-g5g9he6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308174903-g5g9he6",
+				"updated": "20230308174903"
+			}
+		}
+	]
+}

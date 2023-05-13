@@ -1,0 +1,1389 @@
+{
+	"ID": "20221117020612-dec89yz",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221117020612-dec89yz",
+		"title": "安装 CoreOS",
+		"updated": "20221117025222"
+	},
+	"Children": [
+		{
+			"ID": "20221117020635-2ld33rj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117020635-2ld33rj",
+				"updated": "20221117021156"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. OpenShift 和 CoreOS"
+				}
+			]
+		},
+		{
+			"ID": "20221117020636-rhruk50",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117020636-rhruk50",
+				"updated": "20221117020925"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tRed Hat Enterprise Linux CoreOS（简称RHCOS）是 OpenShift 4 使用的 Linux 操作系统（虽然在Worker节点中也可以使用红帽的 RHEL 作为底层操作系统，但是大多数用户用的都是 RHCOS）。Fedora CoreOS（简称FCOS）是 RHCOS 的社区版。FCOS/RHCOS 是 Red Hat 在收购 CoreOS 公司后结合 CoreOS Container Linux 和 Fedora Atomic Host 的优点推出的新一代容器操作系统，其目标是提供最佳的容器主机，从而能安全，大规模地运行容器化的工作负载。FCOS/RHCOS 将 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "Ignition 与 rpm-ostree"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 等技术相集成，是一个自动更新的、最小的、整体的、对运行容器和 Kubernetes 进行了优化的操作系统。因为它们更符合“不可变架构（Immutable Infrastructure）” 理念\n\t根据 OpenShift 的文档说明，RHCOS 是无法独立运行安装的，它必须和 OpenShift 4 一起运行。 CoreOS 还提供了可以独立运行的社区版"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "Fedora CoreOS（简称 FCOS）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "可以完全免费使用。"
+				}
+			]
+		},
+		{
+			"ID": "20221117020844-1vtgwxa",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117020844-1vtgwxa",
+				"updated": "20221117021200"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 安装环境说明"
+				}
+			]
+		},
+		{
+			"ID": "20221117021009-b1ujjnl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117021009-b1ujjnl",
+				"updated": "20221117021030"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tFedora CoreOS支持运行在多种IaaS环境下运行。本文安装采用基于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "虚拟化软件模拟BareMetal"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "环境，其他安装环境请查看Fedora CoreOS的文档。另外还要确保虚拟机可以通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "DHCP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "获得IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221117021100-9idx26g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117021100-9idx26g",
+				"updated": "20221117021201"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 下载 Fedora CoreOS 相关介质"
+				}
+			]
+		},
+		{
+			"ID": "20221117021116-21a1af0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117021116-21a1af0",
+				"updated": "20221117021146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t安装 Fedora CoreOS 需要下载2个文件："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "CoreOS ISO和FCCT"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " (Fedora CoreOS Config Transpiler) ，其中Fedora CoreOS ISO文件是用来启动操作系统的，而由FCCT工具生成的Ignition文件是用来提供Fedora CoreOS系统启动参数"
+				}
+			]
+		},
+		{
+			"ID": "20221117021151-etv7g2a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117021151-etv7g2a",
+				"updated": "20221117021207"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1下载 Fedora CoreOS ISO 文件"
+				}
+			]
+		},
+		{
+			"ID": "20221117021450-kyoa3t9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117021450-kyoa3t9",
+				"updated": "20221117021515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://getfedora.org/en/coreos/download?tab=metal_virtualized\u0026stream=stable",
+					"TextMarkTextContent": "Fedora CoreOS ISO下载网站"
+				}
+			]
+		},
+		{
+			"ID": "20221117021146-mztzicv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117021146-mztzicv",
+				"updated": "20221117021541"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t然后下载 “ Bare Metal ” 下的 ISO 文件。 如“ fedora-coreos-32.20200907.3.0-live.x86_64.iso ”"
+				}
+			]
+		},
+		{
+			"ID": "20221117021143-t3ayjhz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117021143-t3ayjhz",
+				"updated": "20221117021605"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 下载 FCCT (Fedora CoreOS Config Transpiler) 文件"
+				}
+			]
+		},
+		{
+			"ID": "20221117021447-ogrwxly",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117021447-ogrwxly",
+				"updated": "20221117021650"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/coreos/fcct/releases",
+					"TextMarkTextContent": "FCC下载地址"
+				}
+			]
+		},
+		{
+			"ID": "20221117021651-kmendek",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117021651-kmendek",
+				"updated": "20221117021717"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t下载“ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "fcct-x86_64-unknown-linux-gnu"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”文件，另存为fcct，该文件是用来将基于YAML格式的配置文件转换成基于JSON格式的Ignition文件。"
+				}
+			]
+		},
+		{
+			"ID": "20221117021702-cesuz34",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117021702-cesuz34",
+				"updated": "20221117021729"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 安装 Fedora CoreOS"
+				}
+			]
+		},
+		{
+			"ID": "20221117021806-hnsc388",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117021806-hnsc388",
+				"updated": "20221117021817"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 准备Ignition文件"
+				}
+			]
+		},
+		{
+			"ID": "20221117021924-bupdy0f",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117021924-bupdy0f",
+				"updated": "20221117022011"
+			},
+			"Children": [
+				{
+					"ID": "20221117021926-dera200",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221117021926-dera200",
+						"updated": "20221117022011"
+					},
+					"Children": [
+						{
+							"ID": "20221117021934-rqmvuie",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117021934-rqmvuie"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行以下命令，然后在“ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "Password:"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ”的提示后面输入密码（本文使用的密码就是“password”）。命令将返回密码加密后的字符串。"
+								}
+							]
+						},
+						{
+							"ID": "20221117021940-4taz9p8",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117021940-4taz9p8",
+								"updated": "20221117022011"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ openssl passwd -1 -salt yoursalt\nPassword:\n$1$yoursalt$7/tmQXmlhL0pYfN/fyBZS1\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117022018-68dzl9d",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022018-68dzl9d",
+				"updated": "20221117022141"
+			},
+			"Children": [
+				{
+					"ID": "20221117022036-wa3xf2p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221117022036-wa3xf2p",
+						"updated": "20221117022141"
+					},
+					"Children": [
+						{
+							"ID": "20221117022036-3f0nwei",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022036-3f0nwei",
+								"updated": "20221117022048"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令生成密钥对。执行后可以在当前目录下生成公钥"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "id_rsa.pub"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和私钥"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "id_rsa"
+								}
+							]
+						},
+						{
+							"ID": "20221117022111-l4avow9",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117022111-l4avow9",
+								"updated": "20221117022141"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ ssh-keygen -N '' -f ./id_rsa\nGenerating public/private rsa key pair.\nYour identification has been saved in ./ssh-key/id_rsa.\nYour public key has been saved in ./ssh-key/id_rsa.pub.\nThe key fingerprint is:\nSHA256:YvrEIpVUwTbJAXZcB+KJEhPPQGIu4XOwWB696Z90sJE root@node1\nThe key's randomart image is:\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117022153-nu2c5a4",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022153-nu2c5a4",
+				"updated": "20221117022219"
+			},
+			"Children": [
+				{
+					"ID": "20221117022156-okqv5pb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221117022156-okqv5pb",
+						"updated": "20221117022219"
+					},
+					"Children": [
+						{
+							"ID": "20221117022202-rqb9i88",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022202-rqb9i88"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看id_rsa.pub公钥。"
+								}
+							]
+						},
+						{
+							"ID": "20221117022215-wbe614z",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117022215-wbe614z",
+								"updated": "20221117022219"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ cat id_rsa.pub\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIBxVOCdtNHBgbEVQseDdRonC/OlP5qm7MoKeuwYFjvg6UKXl8MTplQ4ErV1r994XnkErRBzlxsPdn/s7/alJ8CJ3Po39QDMlJvvy/nG3Vak/naxc6hXwL4to1oJrMhyp7YsY2EzPke+b1FyWD6NZ27mhJnCmNhw4pND6QxfZulVCnlolg9BeTSuXaIRrgLnjdSU+9ojTz6BMVo5MWY+xXRNrydlI4rx19tnd0c62SwQnvjO8i+hCXzNAkwGb8J5KDLs7jYZhjOW4IyHa95NdgWlRDcVICQSbA0makjJyIFK9KDzaTYM0MvCpSkMXo9uTFKwPiKfhBrKw9n8nBegXN root@node1\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117022153-df63op0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022153-df63op0",
+				"updated": "20221117022457"
+			},
+			"Children": [
+				{
+					"ID": "20221117022222-84mkj2l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221117022222-84mkj2l",
+						"updated": "20221117022457"
+					},
+					"Children": [
+						{
+							"ID": "20221117022235-6mqj425",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022235-6mqj425",
+								"updated": "20221117022319"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建内容如下的config.fcc的文件。其中用户名为core，另外需要将“"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "password_hash"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "”和“"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "ssh_authorized_keys"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "”替换前2步生成的密码和公钥字符串。需要注意的是"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "远程登录CoreOS需要使用证书"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，而直接登录CoreOS才可以直接使用用户名和密码。"
+								}
+							]
+						},
+						{
+							"ID": "20221117022257-5w4041s",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117022257-5w4041s",
+								"updated": "20221117022457"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "variant: fcos\nversion: 1.1.0\npasswd:\n  users:\n    - name: core\n      password_hash: \"$1$yoursalt$7/tmQXmlhL0pYfN/fyBZS1\"\n      ssh_authorized_keys:\n        - \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIBxVOCdtNHBgbEVQseDdRonC/OlP5qm7MoKeuwYFjvg6UKXl8MTplQ4ErV1r994XnkErRBzlxsPdn/s7/alJ8CJ3Po39QDMlJvvy/nG3Vak/naxc6hXwL4to1oJrMhyp7YsY2EzPke+b1FyWD6NZ27mhJnCmNhw4pND6QxfZulVCnlolg9BeTSuXaIRrgLnjdSU+9ojTz6BMVo5MWY+xXRNrydlI4rx19tnd0c62SwQnvjO8i+hCXzNAkwGb8J5KDLs7jYZhjOW4IyHa95NdgWlRDcVICQSbA0makjJyIFK9KDzaTYM0MvCpSkMXo9uTFKwPiKfhBrKw9n8nBegXN root@node1\"\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117022247-7jbb7h6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022247-7jbb7h6",
+				"updated": "20221117022530"
+			},
+			"Children": [
+				{
+					"ID": "20221117022453-nax5hm5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221117022453-nax5hm5",
+						"updated": "20221117022530"
+					},
+					"Children": [
+						{
+							"ID": "20221117022510-qglysm4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022510-qglysm4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，使用fcct将config.fcc转换成config.ign。"
+								}
+							]
+						},
+						{
+							"ID": "20221117022527-onk2bf2",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117022527-onk2bf2",
+								"updated": "20221117022530"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ fcct config.fcc -o config.ign\n$ more config.ign\n{\n  \"ignition\": {\n    \"version\": \"3.1.0\"\n  },\n  \"passwd\": {\n    \"users\": [\n      {\n        \"name\": \"core\",\n        \"passwordHash\": \"$1$yoursalt$7/tmQXmlhL0pYfN/fyBZS1\",\n        \"sshAuthorizedKeys\": [\n          \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIBxVOCdtNHBgbEVQseDdRonC/OlP5qm7MoKeuwYFjvg6UKXl8MTplQ4ErV1r994XnkErRBzlxsPdn/s7/alJ8CJ3Po39QDMlJvvy/nG3Vak/naxc6hXwL4to1oJrMhyp7YsY2EzPke+b1FyWD6NZ27mhJnCmNhw4pND6QxfZulVCnlolg9BeTSuXaIRrgLnjdSU+9ojTz6BMVo5MWY+xXRNrydlI4rx19tnd0c62SwQnvjO8i+hCXzNAkwGb8J5KDLs7jYZhjOW4IyHa95NdgWlRDcVICQSbA0makjJyIFK9KDzaTYM0MvCpSkMXo9uTFKwPiKfhBrKw9n8nBegXN root@node1\"\n        ]\n      }\n    ]\n  }\n}\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117021833-hqbd8z8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117021833-hqbd8z8",
+				"updated": "20221117022031"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 安装并访问Fedora CoreOS"
+				}
+			]
+		},
+		{
+			"ID": "20221117022556-txuk0lw",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022556-txuk0lw",
+				"updated": "20221117022646"
+			},
+			"Children": [
+				{
+					"ID": "20221117022622-nn78s96",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221117022622-nn78s96"
+					},
+					"Children": [
+						{
+							"ID": "20221117022622-aftnqvm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022622-aftnqvm",
+								"updated": "20221117022628"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建一个名为Fedora-CoreOS的虚拟机。使用前面下载的Fedora CoreOS ISO文件 - “fedora-coreos-32.20200907.3.0-live.x86_64.iso”- 作为启动盘，然后将系统的启动顺序设为硬盘第一优先，最后使用Bridge类型的网络。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117022628-1i4e35b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221117022628-1i4e35b",
+						"updated": "20221117022646"
+					},
+					"Children": [
+						{
+							"ID": "20221117022628-2ijbh5i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022628-2ijbh5i",
+								"updated": "20221117022646"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动虚拟机，启动完成后虚拟机的控制台会停在以下截图。注意：图上红色提示没有找到Ignition文件。另外根据截图的说明我们可以知道当原始的CoreOS ISO首次启动的时候，它是运行在内存中的。此时我们需要提供给它Ignition文件，CoreOS才可以完成安装。\n"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "image.png"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image-20221117022646-vjx8qcs.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117022556-duoth5t",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022556-duoth5t",
+				"updated": "20221117022651"
+			},
+			"Children": [
+				{
+					"ID": "20221117022651-86sntjo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221117022651-86sntjo",
+						"updated": "20221117022651"
+					},
+					"Children": [
+						{
+							"ID": "20221117022701-wmpwewf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022701-wmpwewf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在CoreOS虚拟机控制台里执行以下命令，将前面生成的config.ign文件从外部宿主机传入CoreOS虚拟机的当前目录下。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117022556-xdegvc9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117022556-xdegvc9",
+				"updated": "20221117022733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "scp root@192.168.1.201:/root/config.ign ./"
+				}
+			]
+		},
+		{
+			"ID": "20221117022736-ggpynwz",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117022736-ggpynwz",
+				"updated": "20221117022926"
+			},
+			"Children": [
+				{
+					"ID": "20221117022758-ogeqytf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221117022758-ogeqytf"
+					},
+					"Children": [
+						{
+							"ID": "20221117022758-gct4v2c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022758-gct4v2c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在CoreOS虚拟机控制台里执行以下命令，根据“config.ign”文件将CoreOS安装到“/dev/sda”硬盘（可以使用“fdisk -l”命令确认有系统中“/dev/sda”）。"
+								}
+							]
+						},
+						{
+							"ID": "20221117022814-eeb3c40",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022814-eeb3c40",
+								"updated": "20221117022858"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "$ sudo  coreos-installer install /dev/sda --ignition-file config.ign "
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117022908-ngdfszc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221117022908-ngdfszc",
+						"updated": "20221117022926"
+					},
+					"Children": [
+						{
+							"ID": "20221117022908-38yb139",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117022908-38yb139",
+								"updated": "20221117022926"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "完成安装后重启coreOS虚拟机"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117021847-35hgns4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117021847-35hgns4",
+				"updated": "20221117021904"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 登陆访问CoreOS"
+				}
+			]
+		},
+		{
+			"ID": "20221117023003-ndymlaz",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117023003-ndymlaz",
+				"updated": "20221117023122"
+			},
+			"Children": [
+				{
+					"ID": "20221117023053-2wo2fsz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221117023053-2wo2fsz",
+						"updated": "20221117023122"
+					},
+					"Children": [
+						{
+							"ID": "20221117023053-m7zoep9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117023053-m7zoep9",
+								"updated": "20221117023122"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在CoreOS虚拟机完成启动后可以在CoreOS虚拟机控制台里用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "core/password"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "登录进CoreOS"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117023150-3kvnqm9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117023150-3kvnqm9",
+				"updated": "20221117023153"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221117023153-zx9num4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117023156-msfnh8u",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117023156-msfnh8u",
+				"updated": "20221117023226"
+			},
+			"Children": [
+				{
+					"ID": "20221117023159-vg86joy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221117023159-vg86joy",
+						"updated": "20221117023226"
+					},
+					"Children": [
+						{
+							"ID": "20221117023159-jbhzqe3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117023159-jbhzqe3",
+								"updated": "20221117023213"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在外部宿主机中执行命令，确认可以使用前面创建的私钥登录CoreOS"
+								}
+							]
+						},
+						{
+							"ID": "20221117023223-qpeyh59",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221117023223-qpeyh59",
+								"updated": "20221117023226"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ ssh core@\u003cCOREOS_IP\u003e -i id_rsa\nFedora CoreOS 32.20200907.3.0\nTracker: https://github.com/coreos/fedora-coreos-tracker\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117023253-3k19lgc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117023253-3k19lgc",
+				"updated": "20221117023300"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				}
+			]
+		},
+		{
+			"ID": "20221117023245-b82swps",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117023245-b82swps",
+				"updated": "20221117023309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在外部宿主机中已经"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "无法直接通过用户名/密码登录CoreOS"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "了,这是因为缺省CoreOS只能通过证书登录"
+				}
+			]
+		},
+		{
+			"ID": "20221117023512-npnrywt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117023512-npnrywt",
+				"updated": "20221117023613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 安装CoreOS的三个工具"
+				}
+			]
+		},
+		{
+			"ID": "20221117023627-rmxumr6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117023627-rmxumr6",
+				"updated": "20221117023745"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t三个工具主要包括："
+				}
+			]
+		},
+		{
+			"ID": "20221117023623-i17e7xc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221117023623-i17e7xc",
+				"updated": "20221117023623"
+			},
+			"Children": [
+				{
+					"ID": "20221117023623-hd3e4e2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117023623-hd3e4e2"
+					},
+					"Children": [
+						{
+							"ID": "20221117023623-nc26mij",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117023623-nc26mij",
+								"updated": "20221117023741"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "coreos-installer: 下载Fedora CoreOS 镜像文件的工具（其实也可以去Fedora网站下载这些镜像）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117023623-ymrelgc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117023623-ymrelgc"
+					},
+					"Children": [
+						{
+							"ID": "20221117023623-arajehm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117023623-arajehm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "fcct: 生成Ignition文件的工具。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117023623-bx9o6p4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221117023623-bx9o6p4",
+						"updated": "20221117023623"
+					},
+					"Children": [
+						{
+							"ID": "20221117023623-uyb5ch8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117023623-uyb5ch8",
+								"updated": "20221117023623"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ignition-validate: 校验Ignition文件合法性的工具"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117023817-yxpuots",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117023817-yxpuots",
+				"updated": "20221117023904"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "容器环境搭建"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ":"
+				}
+			]
+		},
+		{
+			"ID": "20221117023909-4mqiygs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117023909-4mqiygs",
+				"updated": "20221117023931"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ podman pull quay.io/coreos/coreos-installer:latest\n$ podman pull quay.io/coreos/fcct:latest\n$ podman pull quay.io/coreos/ignition-validate:latest\n \n$ alias coreos-installer='podman run --pull=always            \\\n                        --rm --tty --interactive            \\\n                        --security-opt label=disable        \\\n                        --volume ${PWD}:/pwd --workdir /pwd \\\n                        quay.io/coreos/coreos-installer:latest'\n\n$ alias fcct='podman run --rm --tty --interactive \\\n            --security-opt label=disable        \\\n            --volume ${PWD}:/pwd --workdir /pwd \\\n            quay.io/coreos/fcct:latest'\n      \n$ alias ignition-validate='podman run --rm --tty --interactive \\\n                         --security-opt label=disable        \\\n                         --volume ${PWD}:/pwd --workdir /pwd \\\n                         quay.io/coreos/ignition-validate:latest'\n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117023857-vb2nuan",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117023857-vb2nuan",
+				"updated": "20221117023857"
+			}
+		},
+		{
+			"ID": "20221117023311-t37j2uz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117023311-t37j2uz",
+				"updated": "20221117025222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 参考"
+				}
+			]
+		},
+		{
+			"ID": "20221117023332-en3ict6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117023332-en3ict6",
+				"updated": "20221117023423"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "https://www.amitbondwal.com/fedora-coreos-installation-on-bare-metal/\nhttps://docs.fedoraproject.org/en-US/fedora-coreos/fcct-config/\nhttps://www.vultr.com/docs/ignition\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117023409-njjvt56",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117023409-njjvt56",
+				"updated": "20221117023409"
+			}
+		}
+	]
+}

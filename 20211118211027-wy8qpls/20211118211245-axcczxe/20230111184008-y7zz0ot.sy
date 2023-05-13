@@ -1,0 +1,2188 @@
+{
+	"ID": "20230111184008-y7zz0ot",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230111184008-y7zz0ot",
+		"title": "Go语言map的多键索引——多个数值条件可以同时查询",
+		"updated": "20230116123922"
+	},
+	"Children": [
+		{
+			"ID": "20230111184008-r89ro5w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-r89ro5w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在大多数的编程语言中，映射容器的键必须以单一值存在。这种映射方法经常被用在诸如信息检索上，如根据通讯簿的名字进行检索。但随着查询条件越来越复杂，检索也会变得越发困难。下面例子中涉及通讯簿的结构，结构如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-fye9173",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-fye9173"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 人员档案\ntype Profile struct {\n    Name    string   // 名字\n    Age     int      // 年龄\n    Married bool     // 已婚\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-ttg1ycp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-ttg1ycp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "并且准备好了一堆原始数据，需要算法实现构建索引和查询的过程，代码如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-6pszi3v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-6pszi3v"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func main() {\n\n    list := []*Profile{\n        {Name: \"张三\", Age: 30, Married: true},\n        {Name: \"李四\", Age: 21},\n        {Name: \"王麻子\", Age: 21},\n    }\n\n    buildIndex(list)\n\n    queryData(\"张三\", 30)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-hz946qd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-hz946qd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要用算法实现 buildIndex() 构建索引函数及 queryData() 查询数据函数，查询到结果后将数据打印出来。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-tmq87zx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-tmq87zx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面，分别基于传统的基于哈希值的多键索引和利用 map 特性的多键索引进行查询。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-40sx2zb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230111184008-40sx2zb"
+			}
+		},
+		{
+			"ID": "20230111184008-jwfc517",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-jwfc517"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基于哈希值的多键索引及查询"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-6vjbkkm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-6vjbkkm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "传统的数据索引过程是将输入的数据做特征值。这种特征值有几种常见做法："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-5hhextd",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-5hhextd"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-e2ienqm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-e2ienqm"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-51pntpl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-51pntpl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将特征使用某种算法转为整数，即哈希值，使用整型值做索引。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-rj319w2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-rj319w2"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-5x9sf4r",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-5x9sf4r"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将特征转为字符串，使用字符串做索引。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-l5arkhb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-l5arkhb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "数据都基于特征值构建好索引后，就可以进行查询。查询时，重复这个过程，将查询条件转为特征值，使用特征值进行查询得到结果。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-00o171q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-00o171q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基于哈希的传统多键索引和查询的完整代码位于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "./src/chapter12/classic/classic.go"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，下面是对各个部分的分析。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-eisjlh2",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230111184008-eisjlh2"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230111184008-a7io87p",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230111184008-a7io87p"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本套教程所有源码下载地址：https://pan.baidu.com/s/1ORFVTOLEYYqDhRzeq0zIiQ    提取密码：hfyf"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-1twjilv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230111184008-1twjilv"
+			}
+		},
+		{
+			"ID": "20230111184008-ck40p5g",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-ck40p5g"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-owyh38c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230111184008-owyh38c"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-01migqu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-01migqu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "字符串转哈希值"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-tdswyt9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-tdswyt9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本例中，查询键（classicQueryKey）的特征值需要将查询键中每一个字段转换为整型，字符串也需要转换为整型值，这里使用一种简单算法将字符串转换为需要的哈希值，代码如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-zbit8sl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-zbit8sl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func simpleHash(str string) (ret int) {\n\n    // 遍历字符串中的每一个ASCII字符\n    for i := 0; i \u003c len(str); i++ {\n        // 取出字符\n        c := str[i]\n\n        // 将字符的ASCII码相加\n        ret += int(c)\n    }\n\n    return\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-m8akqcf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-m8akqcf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-ey9jr0m",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-ey9jr0m"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-1xvh547",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-1xvh547"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-4wjcy57",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-4wjcy57"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 1 行传入需要计算哈希值的字符串。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-50huifq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-50huifq"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-5zjm012",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-5zjm012"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 4 行，根据字符串的长度，遍历这个字符串的每一个字符，以 ASCII 码为单位。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-0z3d8po",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-0z3d8po"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-evsdy1w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-evsdy1w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 9 行，c 变量的类型为 uint8，将其转为 int 类型并累加。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-i61k6bg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-i61k6bg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "哈希算法有很多，这里只是选用一种大家便于理解的算法。哈希算法的选用的标准是尽量减少重复键的发生，俗称“哈希冲撞”，即同样两个字符串的哈希值重复率降到最低。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-iiiz8n9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230111184008-iiiz8n9"
+			}
+		},
+		{
+			"ID": "20230111184008-007e0hc",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-007e0hc"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-trhz7uw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230111184008-trhz7uw"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-wirlei7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-wirlei7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查询键"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-br48cpz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-br48cpz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有了哈希算法函数后，将哈希函数用在查询键结构中。查询键结构如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-nlg1gxx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-nlg1gxx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 查询键\ntype classicQueryKey struct {\n    Name string  // 要查询的名字\n    Age  int     // 要查询的年龄\n}\n\n// 计算查询键的哈希值\nfunc (c *classicQueryKey) hash() int {\n    // 将名字的Hash和年龄哈希合并\n    return simpleHash(c.Name) + c.Age*1000000\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-zdmxqd1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-zdmxqd1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-qcllz9w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-qcllz9w"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-sgw3r8k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-sgw3r8k"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-ptzfy7c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-ptzfy7c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 2 行，声明查询键的结构，查询键包含需要索引和查询的字段。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-rg5hzeq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-rg5hzeq"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-n0tbyi5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-n0tbyi5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 8 行，查询键的成员方法哈希，通过调用这个方法获得整个查询键的哈希值。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-ci80za8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-ci80za8"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-zmr77pf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-zmr77pf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 10 行，查询键哈希的计算方法：使用 simpleHash() 函数根据给定的名字字符串获得其哈希值。同时将年龄乘以 1000000 与名字哈希值相加。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-43q45gx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-43q45gx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "哈希值构建过程如下图所示"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-anwfalv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-anwfalv"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/1-1PR0153942196-20230111184008-8ay8t8j.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-sg5mm1n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230111184008-sg5mm1n"
+			}
+		},
+		{
+			"ID": "20230111184008-my3vyes",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-my3vyes"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-858o6re",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230111184008-858o6re"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-2dvxsb7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-2dvxsb7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "构建索引"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-evqz511",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-evqz511"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本例需要快速查询，因此需要提前对已有的数据构建索引。前面已经准备好了数据查询键，使用查询键获得哈希即可对数据进行快速索引，参考下面的代码："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-386jw70",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-386jw70"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 创建哈希值到数据的索引关系\nvar mapper = make(map[int][]*Profile)\n\n// 构建数据索引\nfunc buildIndex(list []*Profile) {\n\n    // 遍历所有的数据\n    for _, profile := range list {\n\n        // 构建数据的查询索引\n        key := classicQueryKey{profile.Name, profile.Age}\n\n        // 计算数据的哈希值, 取出已经存在的记录\n        existValue := mapper[key.hash()]\n\n        // 将当前数据添加到已经存在的记录切片中\n        existValue = append(existValue, profile)\n\n        // 将切片重新设置到映射中\n        mapper[key.hash()] = existValue\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-oawt3h6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-oawt3h6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-3qyd1dn",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-3qyd1dn"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-w3hzjee",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-w3hzjee"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-xqsaa31",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-xqsaa31"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 2 行，实例化一个 map，键类型为整型，保存哈希值；值类型为 *Profile，为通讯簿的数据格式。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-ed90d5o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-ed90d5o"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-d0sfp5q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-d0sfp5q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 5 行，构建索引函数入口，传入数据切片。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-jwxgjfz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-jwxgjfz"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-k71aci0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-k71aci0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 8 行，遍历数据切片的所有数据元素。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-cr2me5y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-cr2me5y"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-9oz9yr2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-9oz9yr2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 11 行，使用查询键（classicQueryKey）来辅助计算哈希值，查询键需要填充两个字段，将数据中的名字和年龄赋值到查询键中进行保存。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-3eaxyoi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-3eaxyoi"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-xau33dw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-xau33dw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 14 行，使用查询键的哈希方法计算查询键的哈希值。通过这个值在 mapper 索引中查找相同哈希值的数据切片集合。因为哈希函数不能保证不同数据的哈希值一定完全不同，因此要考虑在发生哈希值重复时的处理办法。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-b8hsfte",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-b8hsfte"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-ltz59j9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-ltz59j9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 17 行，将当前数据添加到可能存在的切片中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-rrhc0dh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-rrhc0dh"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-7y91czn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-7y91czn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 20 行，将新添加好的数据切片重新赋值到相同哈希的 mapper 中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-m0z39yg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-m0z39yg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体哈希结构如下图所示。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-0xvdfhb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-0xvdfhb"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/1-1PR0154524421-20230111184008-0g9cusc.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-yu3o8xf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-yu3o8xf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "图：哈希结构"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-joce01b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-joce01b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这种多键的算法就是哈希算法。map 的多个元素对应哈希的“桶”。哈希函数的选择决定桶的映射好坏，如果哈希冲撞很厉害，那么就需要将发生冲撞的相同哈希值的元素使用切片保存起来。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-fvs7qcn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230111184008-fvs7qcn"
+			}
+		},
+		{
+			"ID": "20230111184008-a770phw",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-a770phw"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-r8jz7zg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230111184008-r8jz7zg"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-xtioaop",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-xtioaop"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查询逻辑"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-5uus8cw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-5uus8cw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从已经构建好索引的数据中查询需要的数据流程如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-ixoi4xb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-ixoi4xb"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-kwqv1y0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230111184008-kwqv1y0"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-q97f4ef",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-q97f4ef"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "给定查询条件（名字、年龄）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-5thyin4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230111184008-5thyin4"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-umw298m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-umw298m"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据查询条件构建查询键。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-5ppozy3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230111184008-5ppozy3"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-w3rjxzb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-w3rjxzb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查询键生成哈希值。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-fmbopxk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230111184008-fmbopxk"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-bp9a4co",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-bp9a4co"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据哈希值在索引中查找数据集合。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-yxsbtov",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230111184008-yxsbtov"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-zfigzw8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-zfigzw8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "遍历数据集合逐个与条件比对。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-pdcgu2c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20230111184008-pdcgu2c"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-fs6rgke",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-fs6rgke"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获得结果。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-hnrgjtr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-hnrgjtr"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func queryData(name string, age int) {\n\n    // 根据给定查询条件构建查询键\n    keyToQuery := classicQueryKey{name, age}\n\n    // 计算查询键的哈希值并查询, 获得相同哈希值的所有结果集合\n    resultList := mapper[keyToQuery.hash()]\n\n    // 遍历结果集合\n    for _, result := range resultList {\n\n        // 与查询结果比对, 确认找到打印结果\n        if result.Name == name \u0026\u0026 result.Age == age {\n            fmt.Println(result)\n            return\n        }\n    }\n\n    // 没有查询到时, 打印结果\n    fmt.Println(\"no found\")\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-uoi20wg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-uoi20wg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-2vmdhrv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-2vmdhrv"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-aqy89s6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-aqy89s6"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-ixzme2q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-ixzme2q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 1 行，查询条件（名字、年龄）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-qzf6xcg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-qzf6xcg"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-gmv83q8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-gmv83q8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 4 行，根据查询条件构建查询键。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-3iix7ai",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-3iix7ai"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-jl3y36f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-jl3y36f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 7 行，使用查询键计算哈希值，使用哈希值查询相同哈希值的所有数据集合。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-1ubi9zt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-1ubi9zt"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-tdu3lpn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-tdu3lpn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 10 行，遍历所有相同哈希值的数据集合。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-8pnchj8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-8pnchj8"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-q11mli2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-q11mli2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 13 行，将每个数据与查询条件进行比对，如果一致，表示已经找到结果，打印并返回。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-v1r69b0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-v1r69b0"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-pvj3845",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-pvj3845"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 20 行，没有找到记录时，打印 no found。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-rbub0kq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230111184008-rbub0kq"
+			}
+		},
+		{
+			"ID": "20230111184008-oadhfw1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-oadhfw1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "利用 map 特性的多键索引及查询"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-xlzok5x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-xlzok5x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用结构体进行多键索引和查询比传统的写法更为简单，最主要的区别是无须准备哈希函数及相应的字段无须做哈希合并。看下面的实现流程。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-8qdlksr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-8qdlksr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "利用map特性的多键索引和查询的代码位于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "./src/chapter12/multikey/multikey.go"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，下面是对各个部分的分析。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-a0xk0my",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230111184008-a0xk0my"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230111184008-ptmol1z",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230111184008-ptmol1z"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本套教程所有源码下载地址：https://pan.baidu.com/s/1ORFVTOLEYYqDhRzeq0zIiQ    提取密码：hfyf"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-ns8x5zf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230111184008-ns8x5zf"
+			}
+		},
+		{
+			"ID": "20230111184008-77jcwe8",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-77jcwe8"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-i99ms7p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230111184008-i99ms7p"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-uxv2vz6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-uxv2vz6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "构建索引"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-77qym25",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-77qym25"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-k5gmfn4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-k5gmfn4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 查询键\ntype queryKey struct {\n    Name string\n    Age  int\n}\n\n// 创建查询键到数据的映射\nvar mapper = make(map[queryKey]*Profile)\n\n// 构建查询索引\nfunc buildIndex(list []*Profile) {\n\n    // 遍历所有数据\n    for _, profile := range list {\n\n        // 构建查询键\n        key := queryKey{\n            Name: profile.Name,\n            Age:  profile.Age,\n        }\n\n        // 保存查询键\n        mapper[key] = profile\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-to7mrb2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-to7mrb2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-4iilyas",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-4iilyas"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-cvfz94f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-cvfz94f"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-4yofu7f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-4yofu7f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 2 行，与基于哈希值的查询键的结构相同。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-5tt7n4y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-5tt7n4y"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-n95hvzg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-n95hvzg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 8 行，在 map 的键类型上，直接使用了查询键结构体。注意，这里不使用查询键的指针。同时，结果只有 *Profile 类型，而不是 *Profile 切片，表示查到的结果唯一。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-hqo3f5u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-hqo3f5u"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-izcsw9m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-izcsw9m"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 17 行，类似的，使用遍历到的数据的名字和年龄构建查询键。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-n8semyx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-n8semyx"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-y0oihrx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-y0oihrx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 23 行，更简单的，直接将查询键保存对应的数据。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-4czfmtg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230111184008-4czfmtg"
+			}
+		},
+		{
+			"ID": "20230111184008-8pn4dcj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230111184008-8pn4dcj"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-iyz33xx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230111184008-iyz33xx"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-30g6unf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-30g6unf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查询逻辑"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-qlrf0d0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-qlrf0d0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 根据条件查询数据\nfunc queryData(name string, age int) {\n\n    // 根据查询条件构建查询键\n    key := queryKey{name, age}\n\n    // 根据键值查询数据\n    result, ok := mapper[key]\n\n    // 找到数据打印出来\n    if ok {\n        fmt.Println(result)\n    } else {\n        fmt.Println(\"no found\")\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-xbnirzk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-xbnirzk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-mbl0ai2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-mbl0ai2"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-ql41dcy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-ql41dcy"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-c4mak2k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-c4mak2k"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 5 行，根据查询条件（名字、年龄）构建查询键。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-8xf7alh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-8xf7alh"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-ojy2dvt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-ojy2dvt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 8 行，直接使用查询键在 map 中查询结果。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-gs0o4on",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-gs0o4on"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-2hbzo0m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-2hbzo0m"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 12 行，找到结果直接打印。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-2hel39d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-2hel39d"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-ytgvjh1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-ytgvjh1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第 14 行，没有找到结果打印 no found。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-5v45r3f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230111184008-5v45r3f"
+			}
+		},
+		{
+			"ID": "20230111184008-r34dzvs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-r34dzvs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-xvvqvpf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-xvvqvpf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基于哈希值的多键索引查询和利用 map 特性的多键索引查询的代码复杂程度显而易见。聪明的程序员都会利用 Go语言的特性进行快速的多键索引查询。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-676zb55",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-676zb55"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其实，利用 map 特性的例子中的 map 类型即便修改为下面的格式，也一样可以获得同样的结果："
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-vfelmg5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230111184008-vfelmg5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "var mapper = make(map[interface{}]*Profile)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-1lk49my",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230111184008-1lk49my"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码量大大减少的关键是：Go语言的底层会为 map 的键自动构建哈希值。能够构建哈希值的类型必须是非动态类型、非指针、函数、闭包。"
+				}
+			]
+		},
+		{
+			"ID": "20230111184008-7znibyw",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230111184008-7znibyw"
+			},
+			"Children": [
+				{
+					"ID": "20230111184008-xhri760",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-xhri760"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-5y1fvvt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-5y1fvvt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "非动态类型：可用数组，不能用切片。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-9ppo252",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-9ppo252"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-hp8p5vc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-hp8p5vc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "非指针：每个指针数值都不同，失去哈希意义。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230111184008-pn4w62v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230111184008-pn4w62v"
+					},
+					"Children": [
+						{
+							"ID": "20230111184008-l4qk8xv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230111184008-l4qk8xv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "函数、闭包不能作为 map 的键。"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

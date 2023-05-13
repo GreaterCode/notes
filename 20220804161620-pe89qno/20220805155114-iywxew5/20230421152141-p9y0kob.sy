@@ -1,0 +1,2134 @@
+{
+	"ID": "20230421152141-p9y0kob",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230421152141-p9y0kob",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230421152141-44v0x4r\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230421153122-soiwled\u0026quot;,\u0026quot;scrollTop\u0026quot;:3100,\u0026quot;focusId\u0026quot;:\u0026quot;20230421152141-yizn7f2\u0026quot;,\u0026quot;focusStart\u0026quot;:129,\u0026quot;focusEnd\u0026quot;:129}",
+		"title": "etcd自动备份与恢复 ",
+		"updated": "20230421153122"
+	},
+	"Children": [
+		{
+			"ID": "20230421152141-44v0x4r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-44v0x4r",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "摘要"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-3z2rmeu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-3z2rmeu",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文档主要介绍"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​集群自动备份及还原方案。"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-oexpzch",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-oexpzch",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "备份"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-n5a4n8v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-n5a4n8v",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubernetes"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中部署的应用的信息都存放在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​里面，这里面的数据非常重要，需要备份，以备不时之需。定时任务的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pod"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​要和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​在同一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "node"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​上面。"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-tldfnrn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-tldfnrn",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "实现原理"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-c5tv51d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-c5tv51d",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "利用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "k8s CronJob"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​来实现"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​集群的自动备份，并基于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "k8s"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​自身特性实现了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​自动备份功能的高可用性。通过以下几点来实现"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​备份："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-s81eiqd",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421152141-s81eiqd",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"ID": "20230421152141-stoyfto",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-stoyfto",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-kk397yg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-kk397yg",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据备份时间策略，定时生成"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd snapshot"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-5l58wsi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-5l58wsi",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-wkakh3m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-wkakh3m",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nodeAffinity"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​将"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​备份"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CronJob"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​调度到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​节点上运行。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-lxiaurt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-lxiaurt",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-jh66sbz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-jh66sbz",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd snapshot"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​统一上传到网络存储（"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "sftp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ceph对象存储"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，其它）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-uk5ugnf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-uk5ugnf",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-1u6kxvh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-1u6kxvh",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据用户自定义的备份保留数量，只保留相应的最新备份数量。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-nrpqzdz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-nrpqzdz",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例说明"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-3fu32bt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-3fu32bt",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​自动备份"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CronJob demo"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-9p19dbe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-9p19dbe",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: cron-sftp\ndata:\n  entrypoint.sh: |\n    #!/bin/bash\n  \n    #variables\n    sftp_user=\"test\"\n    sftp_passwd=\"test\"\n    sftp_url=\"sftp://192.168.x.x:1234\"\n    backup_dir=/etcd-backup/$CLUSTER_NAME\n\n    # backup etcd data\n    mkdir -p /snapshot\n    file=etcd-snapshot-$(date +%Y%m%d-%H%M%S).db\n    etcdctl --endpoints $ENDPOINTS \\\n    --cert=/etc/kubernetes/pki/etcd/server.crt \\\n    --key=/etc/kubernetes/pki/etcd/server.key \\\n    --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n    snapshot save /snapshot/$file\n\n    # upload etcd snapshot file\n    lftp -u $sftp_user,$sftp_passwd $sftp_url\u003c\u003cEOF\n    mkdir -p $backup_dir\n    cd $backup_dir\n    lcd /snapshot\n    put $file\n    by\n    EOF\n\n    # remove the expired snapshot file\n    total_num=$(lftp -u $sftp_user,$sftp_passwd $sftp_url -e \"ls $backup_dir/etcd-snapshot-*.db | wc -l;by\")\n    if [ $total_num -gt $BACKUP_COUNTS ]; then\n      expired_num=$(expr $total_num - $BACKUP_COUNTS)\n      expired_files=$(lftp -u $sftp_user,$sftp_passwd $sftp_url -e \"ls $backup_dir/etcd-snapshot-*.db | head -n $expired_num;by\" | awk '{print $NF}')\n      for f in $expired_files; do\n        to_remove=${backup_dir}/${f}\n        echo \"start to remove $to_remove\"\n        lftp -u $sftp_user,$sftp_passwd $sftp_url -e \"rm -f $to_remove;by\"\n      done\n    fi\n\n    # remove local etcd snapshot file\n    rm -f /snapshot/$file\n---\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: cron-s3\ndata:\n  entrypoint.sh: |\n    #!/bin/bash\n\n    #variables\n    ak=\"test\"\n    sk=\"test\"\n    host_base=\"http://10.20.x.x:7480\"\n    host_bucket=\"10.20.x.x:7480/%(bucket)\"\n    backup_bucket=etcd-backup\n\n    # backup etcd data\n    mkdir -p /snapshot\n    file=etcd-snapshot-$(date +%Y%m%d-%H%M%S).db\n    etcdctl --endpoints $ENDPOINTS \\\n    --cert=/etc/kubernetes/pki/etcd/server.crt \\\n    --key=/etc/kubernetes/pki/etcd/server.key \\\n    --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n    snapshot save /snapshot/$file\n\n    # upload etcd snapshot file\n    backup_path=s3://$backup_bucket/$CLUSTER_NAME/\n    s3cmd --access_key=$ak --secret_key=$sk --host=\"$host_base\" --host-bucket=\"$host_bucket\" --no-ssl put /snapshot/$file $backup_path\n\n    # remove the expired snapshot file\n    total_num=$(s3cmd --access_key=$ak --secret_key=$sk --host=\"$host_base\" --host-bucket=\"$host_bucket\" --no-ssl ls $backup_path | wc -l)\n    if [ $total_num -gt $BACKUP_COUNTS ]; then   \n      expired_num=$(expr $total_num - $BACKUP_COUNTS)\n      echo \"-----------------------------\"\n      expired_files=$(s3cmd --access_key=$ak --secret_key=$sk --host=\"$host_base\" --host-bucket=\"$host_bucket\" --no-ssl ls $backup_path | head -n $expired_num | awk '{print $NF}')\n      for f in $expired_files; do\n        echo \"start to remove $f\"\n        s3cmd --access_key=$ak --secret_key=$sk --host=\"$host_base\" --host-bucket=\"$host_bucket\" --no-ssl rm $f\n      done\n    fi\n\n    # remove local etcd snapshot file\n    rm -f /snapshot/$file\n---\napiVersion: batch/v1beta1\nkind: CronJob\nmetadata:\n  name: etcd-backup-sftp\nspec:\n schedule: \"*/2 * * * *\"\n jobTemplate:\n  spec:\n    template:\n      metadata:\n       labels:\n        app: etcd-backup\n      spec:\n        affinity:\n          nodeAffinity:\n            requiredDuringSchedulingIgnoredDuringExecution:\n                  nodeSelectorTerms:\n                  - matchExpressions:\n                    - key: node-role.kubernetes.io/master\n                      operator: Exists\n        containers:\n        - name: etcd-backup\n          image: etcd-backup:v3.4.9\n          imagePullPolicy: IfNotPresent\n          workingDir: /\n          command: [\"sh\", \"./entrypoint.sh\"]\n          env:\n          - name: ENDPOINTS\n            value: \"192.168.x.x:2379\"\n          - name: ETCDCTL_API\n            value: \"3\"\n          - name: BACKUP_COUNTS\n            value: \"5\"\n          - name: CLUSTER_NAME\n            value: \"cluster1\"\n          volumeMounts:\n            - mountPath: /entrypoint.sh\n              name: configmap-volume\n              readOnly: true\n              subPath: entrypoint.sh\n            - mountPath: /etc/kubernetes/pki/etcd\n              name: etcd-certs\n              readOnly: true\n            - mountPath: /etc/localtime\n              name: lt-config\n            - mountPath: /etc/timezone\n              name: tz-config\n        volumes:\n          - name: configmap-volume\n            configMap:\n              defaultMode: 0777\n              name: cron-sftp\n          - name: etcd-certs\n            hostPath:\n              path: /etc/kubernetes/pki/etcd\n          - name: lt-config\n            hostPath:\n              path: /etc/localtime\n          - name: tz-config\n            hostPath:\n              path: /etc/timezone\n        hostNetwork: true\n        restartPolicy: OnFailure\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-99pdz9e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-99pdz9e",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上述示例说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-idhffpf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421152141-idhffpf",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"ID": "20230421152141-b09ik0b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-b09ik0b",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-l219n1k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-l219n1k",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过nodeAffinity将执行etcd备份的CrobJob调度到任意etcd节点上运行。示例中设置如下："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-0nrh33j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-0nrh33j",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "anM="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: node-role.kubernetes.io/etcd\n    \t  operator: Exists\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-fmrnlah",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421152141-fmrnlah",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"ID": "20230421152141-3lkrn3b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-3lkrn3b",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-xujzwe3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-xujzwe3",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定时任务执行策略在"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "CronJob"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": ".spec.schedule"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​处设置，参考cron表达式语法。示例中"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "schedule: \u0026quot;*/2 * * * *\u0026quot;"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​代表每隔2分钟执行一次备份任务。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-abq3vac",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-abq3vac",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-fr5yoiy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-fr5yoiy",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行备份任务的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Job"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​镜像对应的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​版本，需要和被备份的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​版本一致，本方案也提供了etcd镜像的制作方法。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-bcjp6gs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-bcjp6gs",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-zn0n1dv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-zn0n1dv",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行备份任务的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Job"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​通过调用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "entrypoint.sh"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​来完成"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​的备份，而"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "entrypoint.sh"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​脚本通过"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ConfigMap"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​挂载到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Job"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​对应的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-3uulxlp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-3uulxlp",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-12r471x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-12r471x",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "本例提供"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SFTP"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "s3"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​这两种存储方案来保存"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​备份数据，实现方法分别对应示例中的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "cron-sftp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "cron-s3"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​这两个"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ConfigMap"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。推荐选择独立于本"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "k8s"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​集群之外的存储服务来保存备份数据，保证本k8s集群挂了后仍然可以正常获取到备份数据。如果需要支持其它存储方案，只需通过"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ConfigMap"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​将实现存储对接的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "entrypoint.sh"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​脚本挂载到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Job"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​对应的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​中即可。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-5fle71r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-5fle71r",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-b4shqd0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-b4shqd0",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "volumeMounts"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​将"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​证书信息映射到执行备份任务的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Job"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​对应的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pod"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​目录。例如，本示例中"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​证书位于"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/kubernetes/pki/etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​目录下。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-tlzngq6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-tlzngq6",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-cr7168m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-cr7168m",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "环境变量说明如下："
+								}
+							]
+						},
+						{
+							"ID": "20230421152141-uypci1k",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230421152141-uypci1k",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"ID": "20230421152141-pl1mv9p",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230421152141-pl1mv9p",
+										"updated": "20230421152141"
+									},
+									"Children": [
+										{
+											"ID": "20230421152141-3cto9db",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230421152141-3cto9db",
+												"updated": "20230421152141"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "ENDPOINTS"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​："
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcd endpoints"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​，根据实际情况进行配置，如果配置多个"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "endpoint"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​需通过逗号隔开。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230421152141-2dseoy0",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230421152141-2dseoy0",
+										"updated": "20230421152141"
+									},
+									"Children": [
+										{
+											"ID": "20230421152141-o8dnm9w",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230421152141-o8dnm9w",
+												"updated": "20230421152141"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "ETCDCTL_API"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​："
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcd API"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​版本，根据使用的"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "etcd"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​版本来确定，本例"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "ETCDCTL_API=3"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230421152141-87pw7ie",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230421152141-87pw7ie",
+										"updated": "20230421152141"
+									},
+									"Children": [
+										{
+											"ID": "20230421152141-n05o4wa",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230421152141-n05o4wa",
+												"updated": "20230421152141"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "BACKUP_COUNTS"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​：备份数，只保留最新的备份。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230421152141-rh6a4at",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230421152141-rh6a4at",
+										"updated": "20230421152141"
+									},
+									"Children": [
+										{
+											"ID": "20230421152141-k7ade14",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230421152141-k7ade14",
+												"updated": "20230421152141"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "CLUSTER_NAME"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​：需要备份的本集群名称。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-c51hycm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-c51hycm",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "anM="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "env:\n- name: ENDPOINTS\n  value: \"192.168.x.x:2379\"\n- name: ETCDCTL_API\n  value: \"3\"\n- name: BACKUP_COUNTS\n  value: \"5\"\n- name: CLUSTER_NAME\n  value: \"cluster1\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-hqgj2yg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-hqgj2yg",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd镜像制作"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-3s2c6c1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-3s2c6c1",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本示例中用于制作"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​镜像的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Dockerfile"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​如下："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-d9vl3k6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-d9vl3k6",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "FROM python:3-alpine\n\nRUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories\n\nARG ETCD_VERSION=v3.4.9\n\nRUN apk add -U --no-cache curl lftp ca-certificates openssh\n\nRUN mkdir /root/.ssh  \\\n    \u0026\u0026 touch /root/.ssh/config \\\n    \u0026\u0026 echo -e \"Host *\\n\\tStrictHostKeyChecking no\\n\\tUserKnownHostsFile /dev/null\\n\\tKexAlgorithms +diffie-hellman-group1-sha1\\n\\tPubkeyAcceptedKeyTypes +ssh-rsa\\n\\tHostkeyAlgorithms +ssh-rsa\" \u003e /root/.ssh/config\n\nADD s3cmd-master.zip /s3cmd-master.zip\nRUN unzip /s3cmd-master.zip -d /opt \\\n    \u0026\u0026 cd /opt/s3cmd-master \\\n    \u0026\u0026 python setup.py install \\\n    \u0026\u0026 rm -rf /s3cmd-master.zip\n\nRUN curl -L https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz -o /opt/etcd-${ETCD_VERSION}-linux-amd64.tar.gz \\\n    \u0026\u0026 cd /opt \u0026\u0026 tar xzf etcd-${ETCD_VERSION}-linux-amd64.tar.gz \\\n    \u0026\u0026 mv etcd-${ETCD_VERSION}-linux-amd64/etcdctl /usr/local/bin/etcdctl \\\n    \u0026\u0026 rm -rf etcd-${ETCD_VERSION}-linux-amd64*\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-s2s66t2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-s2s66t2",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-l1ffmfq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421152141-l1ffmfq",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"ID": "20230421152141-wn20og6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-wn20og6",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-yewh6cb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-yewh6cb",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "基础镜像为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "alpine"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​镜像。本示例之所以使用安装了python的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "alpine"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​镜像，是由于存储方案支持"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ceph对象存储"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​备份文件需要通过"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "s3cmd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​来进行上传，而"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "s3cmd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​需要"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "python"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​环境支持。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-e5j1h64",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-e5j1h64",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-i3pveut",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-i3pveut",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "镜像中除了安装对应版本的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "etcdctl"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​以外，还安装了"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "lftp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​和"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "s3cmd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​这两个工具，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "lftp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​用于上传备份文件到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SFTP"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://cloud.tencent.com/product/cvm?from=20065\u0026from_column=20065",
+									"TextMarkTextContent": "服务器"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，而"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "s3cmd"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​用于上传备份文件到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Ceph对象存储"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230421152141-tfz1hcf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421152141-tfz1hcf",
+						"updated": "20230421152141"
+					},
+					"Children": [
+						{
+							"ID": "20230421152141-ct3ghpg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421152141-ct3ghpg",
+								"updated": "20230421152141"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "另外根据实际情况，需要对"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ssh"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​配置进行设置，保证可以正常访问"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "sftp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​服务端。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-qulag93",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-qulag93",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "恢复"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-ues3934",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-ues3934",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​备份文件后，然后依次在每个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​节点上执行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​数据恢复操作。"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-p4j4i6u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-p4j4i6u",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "准备备份文件"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-8ero75x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-8ero75x",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先获取到备份文件，以本示例来进行说明。"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-o77qxz0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-o77qxz0",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SFTP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​服务端下载备份文件，确保本机已经安装了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SFTP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​客户端："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-yizn7f2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-yizn7f2",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# sftp -P 1022 test@192.168.x.x\ntest@192.168.x.x's password: \nConnected to 192.168.x.x.\nsftp\u003e cd /etcd-backup/cluster1/\nsftp\u003e ls -l\n-rw-rw-rw-   1 user     group    42291232 Mar 24 07:42 etcd-snapshot-20220324-154204.db\n-rw-rw-rw-   1 user     group    42291232 Mar 24 07:44 etcd-snapshot-20220324-154405.db\n-rw-rw-rw-   1 user     group    42291232 Mar 24 07:46 etcd-snapshot-20220324-154605.db\n-rw-rw-rw-   1 user     group    42291232 Mar 24 07:48 etcd-snapshot-20220324-154806.db\n-rw-rw-rw-   1 user     group    42291232 Mar 24 07:50 etcd-snapshot-20220324-155006.db\nsftp\u003e lpwd\nLocal working directory: /home/xakdwch/workstation/nfs\nsftp\u003e get etcd-snapshot-20220324-155006.db\nFetching /etcd-backup/cluster1/etcd-snapshot-20220324-155006.db to etcd-snapshot-20220324-155006.db\n/etcd-backup/cluster1/etcd-snapshot-20220324-155006.db                                                                                   100%   40MB  40.3MB/s   00:01  \nsftp\u003e lls\ncron-s3.yaml  cron-sftp.yaml  cron.yaml  Dockerfile  etcd-snapshot-20220324-155006.db  s3cmd-master.zip\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-fxwvwvf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-fxwvwvf",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Ceph"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/product/cos?from=20065\u0026from_column=20065",
+					"TextMarkTextContent": "对象存储"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "下载备份文件，确保本机已经安装了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "s3cmd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​工具："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-guengy1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-guengy1",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# s3cmd --access_key=test --secret_key=test --host=\"http://10.20.x.x:7480\" --host-bucket=\"10.20.x.x:7480/%(bucket)\" --no-ssl ls s3://etcd-backup/cluster1/\n2022-03-24 07:46     42291232  s3://etcd-backup/cluster1/etcd-snapshot-20220324-154605.db\n2022-03-24 07:48     42291232  s3://etcd-backup/cluster1/etcd-snapshot-20220324-154806.db\n2022-03-24 07:50     42291232  s3://etcd-backup/cluster1/etcd-snapshot-20220324-155006.db\n2022-03-24 07:52     42291232  s3://etcd-backup/cluster1/etcd-snapshot-20220324-155206.db\n2022-03-24 07:54     42291232  s3://etcd-backup/cluster1/etcd-snapshot-20220324-155407.db\n\n# s3cmd --access_key=test --secret_key=test --host=\"http://10.20.x.x:7480\" --host-bucket=\"10.20.x.x:7480/%(bucket)\" --no-ssl get s3://etcd-backup/cluster1/etcd-snapshot-20220324-155407.db\ndownload: 's3://etcd-backup/cluster1/etcd-snapshot-20220324-155407.db' -\u003e './etcd-snapshot-20220324-155407.db'  [1 of 1]\n 42291232 of 42291232   100% in    4s     9.14 MB/s  done\n\n# ls\ncron-s3.yaml  cron-sftp.yaml  cron.yaml  Dockerfile  etcd-snapshot-20220324-155407.db  s3cmd-master.zip\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-1oix65h",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230421152141-1oix65h",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开始恢复"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-dejfmob",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-dejfmob",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以本示例为例："
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-mriu7uk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-mriu7uk",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1. 停止所有的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "apiserver"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实例"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-m1js5md",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-m1js5md",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 停止apiserver\nmv /etc/kubernetes/manifests/kube-apiserver.yaml restore/\n\n# 停止etcd\nsystemctl stop etcd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-f0r4fml",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-f0r4fml",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "确认所有的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "apiserver"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​实例已经停止了。"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-9hmua6j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-9hmua6j",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2. 恢复"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "备份数据"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-fz5cy4o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-fz5cy4o",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在其中一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​节点上的操作如下，其它"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​节点操作同理。"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-wtch717",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-wtch717",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 将集群现有数据备份\ncp -rf /var/lib/etcd/ restore/\n\n# 删除集群现有数据\nrm -rf /var/lib/etcd/\n\n# 之前获取的备份文件名为etcd-snapshot-20220324-155407.db，通过该文件进行etcd数据恢复\n# 命令对应的参数必须根据实际情况进行填写\nETCDCTL_API=3 etcdctl snapshot restore etcd-snapshot-20220324-155407.db --data-dir=/var/lib/etcd/ --name etcd-node1 --initial-cluster etcd-node1=https://192.168.180.130:2380 --initial-cluster-token etcd-cluster-token --initial-advertise-peer-urls https://192.168.180.130:2380\n\n# 修改目录权限\nchmod 0755 /var/lib/etcd/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-svmg817",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-svmg817",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3. 启动"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "apiserver"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-glpu0g6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230421152141-glpu0g6",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 启动apiserver\nmv restore/kube-apiserver.yaml /etc/kubernetes/manifests/\n\n# 启动etcd\nsystemctl daemon-reload\nsystemctl restart etcd\n\n# 验证apiserver和etcd是否都已经正常启动运行了，同时也确认其它组件实例是否正常。\n# 通常也会推荐重启其它k8s组件（比如kube-scheduler, kube-controller-manager, kubelet），以确保重启后这些组件运行依赖的数据不是老数据。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-x12zn87",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-x12zn87",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4. 验证服务是否正常"
+				}
+			]
+		},
+		{
+			"ID": "20230421152141-p7gox9p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421152141-p7gox9p",
+				"updated": "20230421152141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后验证"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-system"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​下面的所有"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pod"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubelet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "etcd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​服务日志没有错误信息，所有的应用是否已经启动运行了。"
+				}
+			]
+		},
+		{
+			"ID": "20230421153122-soiwled",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421153122-soiwled"
+			}
+		}
+	]
+}

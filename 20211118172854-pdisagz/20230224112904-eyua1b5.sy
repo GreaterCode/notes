@@ -1,0 +1,562 @@
+{
+	"ID": "20230224112904-eyua1b5",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230224112904-eyua1b5",
+		"title": "goleak",
+		"updated": "20230224114239"
+	},
+	"Children": [
+		{
+			"ID": "20230224113158-553chst",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224113158-553chst",
+				"updated": "20230224113202"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官网：https://pkg.go.dev/go.uber.org/goleak#section-readme"
+				}
+			]
+		},
+		{
+			"ID": "20230224114218-ckpa8dp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224114218-ckpa8dp",
+				"updated": "20230224114239"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "github:https://github.com/uber-go/goleak"
+				}
+			]
+		},
+		{
+			"ID": "20230224112904-y0embdk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230224112904-y0embdk",
+				"updated": "20230224112934"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 背景"
+				}
+			]
+		},
+		{
+			"ID": "20230224112934-it7q6ta",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224112934-it7q6ta",
+				"updated": "20230224112938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "goroutine 作为 golang 并发实现的核心组成部分，非常容易上手使用，但却很难驾驭得好。我们经常会遭遇各种形式的 goroutine 泄漏，这些泄漏的 goroutine 会一直存活直到进程终结。它们的占用的栈内存一直无法释放、关联的堆内存也不能被 GC 清理，系统的可用内存会随泄漏 goroutine 的增多越来越少，直至崩溃！"
+				}
+			]
+		},
+		{
+			"ID": "20230224112946-32ncar3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224112946-32ncar3",
+				"updated": "20230224112947"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "goroutine 的泄漏通常伴随着复杂的协程间通信，代码评审和常规的单元测试通常更专注于业务逻辑正确，很难完全覆盖 goroutine 泄漏的场景；而 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pprof"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 等性能分析工具更多是作用于监控报警/故障之后的复盘。我们需要一款能在编译部署前识别 goroutine 泄漏的工具，从更上游把控工程质量。"
+				}
+			]
+		},
+		{
+			"ID": "20230224112958-jaiw34a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224112958-jaiw34a",
+				"updated": "20230224113151"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "goleak"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  是 Uber 团队开源的一款 goroutine 泄漏检测工具，它可以非常轻量地集成到 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "测试中"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，对于 goroutine 泄漏的防治和工程鲁棒性的提升很有帮助。"
+				}
+			]
+		},
+		{
+			"ID": "20230224113204-yori079",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230224113204-yori079",
+				"updated": "20230224113216"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 安装"
+				}
+			]
+		},
+		{
+			"ID": "20230224113216-1gc2gvk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224113216-1gc2gvk",
+				"updated": "20230224113222"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go get -u go.uber.org/goleak"
+				}
+			]
+		},
+		{
+			"ID": "20230224113223-kw46ele",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230224113223-kw46ele",
+				"updated": "20230224113230"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 验证"
+				}
+			]
+		},
+		{
+			"ID": "20230224113247-fjscm98",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230224113247-fjscm98",
+				"updated": "20230224113503"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func leak() {\n    ch := make(chan struct{})\n    go func() {\n        ch \u003c- struct{}{}\n    }()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230224113847-crd4jbf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224113847-crd4jbf",
+				"updated": "20230224113906"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "逐个用例集成："
+				}
+			]
+		},
+		{
+			"ID": "20230224113917-14mxe3i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230224113917-14mxe3i",
+				"updated": "20230224113917"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func TestLeakWithGoleak(t *testing.T) {\n    defer goleak.VerifyNone(t)\n    leak()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230224113610-92t9w45",
+			"Type": "NodeSuperBlock",
+			"Properties": {
+				"id": "20230224113610-92t9w45",
+				"updated": "20230224113559"
+			},
+			"Children": [
+				{
+					"Type": "NodeSuperBlockOpenMarker"
+				},
+				{
+					"Type": "NodeSuperBlockLayoutMarker",
+					"Data": "col"
+				},
+				{
+					"ID": "20230224113559-yp6bxo1",
+					"Type": "NodeCodeBlock",
+					"IsFencedCodeBlock": true,
+					"Properties": {
+						"id": "20230224113559-yp6bxo1",
+						"updated": "20230224113559"
+					},
+					"Children": [
+						{
+							"Type": "NodeCodeBlockFenceOpenMarker",
+							"Data": "```"
+						},
+						{
+							"Type": "NodeCodeBlockFenceInfoMarker",
+							"CodeBlockInfo": "XA=="
+						},
+						{
+							"Type": "NodeCodeBlockCode",
+							"Data": "$ go test -v -run ^TestLeakWithGoleak$\n=== RUN   TestLeakWithGoleak\n    leaks.go:78: found unexpected goroutines:\n        [Goroutine 19 in state chan send, with cool-go.gocn.vip/goleak.leak.func1 on top of the stack:\n        goroutine 19 [chan send]:\n        cool-go.gocn.vip/goleak.leak.func1(0xc00008c420)\n                /Users/blanet/gocn/goleak/main.go:24 +0x35\n        created by cool-go.gocn.vip/goleak.leak\n                /Users/blanet/gocn/goleak/main.go:23 +0x4e\n        ]\n--- FAIL: TestLeakWithGoleak (0.45s)\nFAIL\nexit status 1\nFAIL    cool-go.gocn.vip/goleak 0.459s"
+						},
+						{
+							"Type": "NodeCodeBlockFenceCloseMarker",
+							"Data": "```"
+						}
+					]
+				},
+				{
+					"ID": "20230224113709-l8amtie",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113709-l8amtie",
+						"updated": "20230224113709"
+					}
+				},
+				{
+					"ID": "20230224113709-26hgfeq",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113709-26hgfeq",
+						"updated": "20230224113709"
+					}
+				},
+				{
+					"ID": "20230224113709-q72dp7l",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113709-q72dp7l",
+						"updated": "20230224113709"
+					}
+				},
+				{
+					"ID": "20230224113710-0j5fdqs",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113710-0j5fdqs",
+						"updated": "20230224113710"
+					}
+				},
+				{
+					"ID": "20230224113710-umt16xp",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113710-umt16xp",
+						"updated": "20230224113710"
+					}
+				},
+				{
+					"ID": "20230224113710-bkt2vzt",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113710-bkt2vzt",
+						"updated": "20230224113710"
+					}
+				},
+				{
+					"ID": "20230224113711-rjs5w9i",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113711-rjs5w9i",
+						"updated": "20230224113711"
+					}
+				},
+				{
+					"ID": "20230224113711-7dpo0qp",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113711-7dpo0qp",
+						"updated": "20230224113711"
+					}
+				},
+				{
+					"ID": "20230224113711-s2bmh9i",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113711-s2bmh9i",
+						"updated": "20230224113711"
+					}
+				},
+				{
+					"ID": "20230224113712-cl79lb7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113712-cl79lb7",
+						"updated": "20230224113712"
+					}
+				},
+				{
+					"ID": "20230224113712-k24nwoc",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113712-k24nwoc",
+						"updated": "20230224113712"
+					}
+				},
+				{
+					"ID": "20230224113713-1r1tmvm",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113713-1r1tmvm",
+						"updated": "20230224113713"
+					}
+				},
+				{
+					"ID": "20230224113612-3npsafr",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113612-3npsafr",
+						"updated": "20230224113612"
+					}
+				},
+				{
+					"ID": "20230224113614-9fef9jt",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113614-9fef9jt",
+						"updated": "20230224113614"
+					}
+				},
+				{
+					"ID": "20230224113615-o7c3rb8",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113615-o7c3rb8",
+						"updated": "20230224113615"
+					}
+				},
+				{
+					"ID": "20230224113615-dqejaz8",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113615-dqejaz8",
+						"updated": "20230224113615"
+					}
+				},
+				{
+					"ID": "20230224113335-ln74mma",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230224113335-ln74mma",
+						"updated": "20230224113634"
+					}
+				},
+				{
+					"Type": "NodeSuperBlockCloseMarker"
+				}
+			]
+		},
+		{
+			"ID": "20230224113558-gnp51f2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224113558-gnp51f2",
+				"updated": "20230224114012"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过TestMain集成"
+				}
+			]
+		},
+		{
+			"ID": "20230224114015-uewoszp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230224114015-uewoszp",
+				"updated": "20230224114017"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func TestMain(m *testing.M) {\n    goleak.VerifyTestMain(m)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230224114034-bhtabnf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230224114034-bhtabnf",
+				"updated": "20230224114034"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ go test -v -run ^TestLeak$\n=== RUN   TestLeak\n--- PASS: TestLeak (0.00s)\nPASS\ngoleak: Errors on successful test run: found unexpected goroutines:\n[Goroutine 19 in state chan send, with cool-go.gocn.vip/goleak.leak.func1 on top of the stack:\ngoroutine 19 [chan send]:\ncool-go.gocn.vip/goleak.leak.func1(0xc00008c2a0)\n        /Users/blanet/gocn/goleak/main.go:24 +0x35\ncreated by cool-go.gocn.vip/goleak.leak\n        /Users/blanet/gocn/goleak/main.go:23 +0x4e\n]\nexit status 1\nFAIL    cool-go.gocn.vip/goleak 0.455s"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230224114040-fm7gtlc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224114040-fm7gtlc",
+				"updated": "20230224114057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "oleak.VerifyTestMain"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 会先报告用例执行的结果，然后再进行泄漏分析。如果单次测试执行了多个用例且最终发生泄漏，那么以 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "TestMain"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 方式集成的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "goleak"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 并不能精准定位发生 goroutine 泄漏的用例"
+				}
+			]
+		},
+		{
+			"ID": "20230224114059-o2usl26",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230224114059-o2usl26",
+				"updated": "20230224114201"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用如下脚本进一步推断具体发生goroutine泄露的用例，逐一执行所有用例进行分析"
+				}
+			]
+		},
+		{
+			"ID": "20230224113336-ue9nrxw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230224113336-ue9nrxw",
+				"updated": "20230224113336"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# Create a test binary which will be used to run each test individually\n$ go test -c -o tests\n\n# Run each test individually, printing \".\" for successful tests, or the test name\n# for failing tests.\n$ for test in $(go test -list . | grep -E \"^(Test|Example)\"); do ./tests -test.run \"^$test\\$\" \u0026\u003e/dev/null \u0026\u0026 echo -n \".\" || echo -e \"\\n$test failed\"; done"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

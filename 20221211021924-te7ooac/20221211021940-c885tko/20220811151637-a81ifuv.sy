@@ -1,0 +1,413 @@
+{
+	"ID": "20220811151637-a81ifuv",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220811151637-a81ifuv",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220811151725-krnyf4u\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20220811161155-vmvqcrz\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20220811151725-wjl4jy0\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "controller-runtime原理controller",
+		"updated": "20220811161421"
+	},
+	"Children": [
+		{
+			"ID": "20220811151725-krnyf4u",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20220811151725-krnyf4u",
+				"updated": "20220811151725"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20220811151725-wjl4jy0",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20220811151725-wjl4jy0"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本节主要介绍contrller-runtime框架的基本使用与原理"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220811151725-z0vljhf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811151725-z0vljhf",
+				"updated": "20220811151725"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tcontroller-runtime("
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github/kubernetes-sigs/controller-runtime",
+					"TextMarkTextContent": "https://github/kubernetes-sigs/controller-runtime"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ")框架实际上是社区帮我们封装的一个控制器处理的框架，底层核心实现原理和我们前面去定义一个controller控制器逻辑是一样的，只是在这个基础上新增了一些概念，开发者使用这个框架去开发控制器会更加简单方便。包括kubebuilder、operator-sdk这些框架其实都是在controller-runtime基础上做了一层封装，方便开发者快速生成项目的脚手架而已。下面我们就来分析下controller-time是如何实现控制器处理。"
+				}
+			]
+		},
+		{
+			"ID": "20220811151740-h7q1oe8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220811151740-h7q1oe8",
+				"updated": "20220811151756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. controller的实现\t"
+				}
+			]
+		},
+		{
+			"ID": "20220811151758-vbfr32k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811151758-vbfr32k",
+				"updated": "20220811151758"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t首先我们还是去看喜爱控制器的定义以及控制器是如何启动的。控制器的定义结构体如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20220811153033-wmyi9pg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220811153033-wmyi9pg",
+				"updated": "20220811154707"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " type Controller struct {\n \t//  Name 用于跟踪、记录和监控中控制器的唯一标识，必填字段\n\tName string\n\n \t// 可以运行的最大并发 Reconciles 数量，默认值为1\n\tMaxConcurrentReconciles int\n\n \t// 确保系统的状态与对象中指定的状态一致，默认为 DefaultReconcileFunc 函数\n\tDo reconcile.Reconciler\n\n\t// MakeQueue constructs the queue for this controller once the controller is ready to start.\n\t// This exists because the standard Kubernetes workqueues start themselves immediately, which\n\t// leads to goroutine leaks if something calls controller.New repeatedly.\n\t// 一旦控制器准备好启动，MakeQueue 就会为这个控制器构造工作队列。这是因为标准的Kubernetes工作队列会立即启动，如果有东西调用controller.New，这会导致goroutine泄漏。这是一个反复出现的新问题。\n\tMakeQueue func() workqueue.RateLimitingInterface\n\n\t// Queue是一个ListingQueue，它侦听来自Informers 的事件，并将对象键添加到队列中进行处理\n\tQueue workqueue.RateLimitingInterface\n\n\n\t// SetFields用于将依赖项注入其他对象，如Sources、EventHandler和Predicates。不推荐使用：调用者应自行处理注入的字段。\n\tSetFields func(i interface{}) error\n\n\t// 同步控制器配置\n\tmu sync.Mutex\n\n \t// 如果controller已经启动，则Started为true\n\tStarted bool\n\n \t// ctx是传递给Start（）,并在启动watches时使用的上下文。\n\tctx context.Context\n\n\n\t// CacheSyncTimeout是指在等待缓存同步时设置的时间限制。如果未设置，则默认为2分钟。\n\tCacheSyncTimeout time.Duration\n\n \t// startWatches维护在控制器启动时启动的sources、handlers和predicates。\n\tstartWatches []watchDescription\n\n\t// LogConstructor用于构造一个logger，以便在协调期间或在启动watch时向用户记录消息。注意：LogConstructor必须能够处理nil请求，因为我们也在协调上下文之外使用它。\n\tLogConstructor func(request *reconcile.Request) logr.Logger\n\n \t// RecoverPanic表示是否应恢复由reconcile引起的panic。\n\tRecoverPanic bool\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220811155427-s4yh6fk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811155427-s4yh6fk",
+				"updated": "20220811155837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t从上面的结构体中，可以看到结构体中仍然有一个限速的工作队列，没有资源对象的  Informer 或者 Indexer 的数据，实际上在这里通过startWatches属性做了封装，该属性是一个 watchDescription 列表，一个 watchDescription 包含了所有需要 watch 的信息："
+				}
+			]
+		},
+		{
+			"ID": "20220811155859-olzi04z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811155859-olzi04z",
+				"updated": "20220811155901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				}
+			]
+		},
+		{
+			"ID": "20220811155902-2wgvi5j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220811155902-2wgvi5j",
+				"updated": "20220811155902"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// watchDescription contains all the information necessary to start a watch.\ntype watchDescription struct {\n\tsrc        source.Source\n\thandler    handler.EventHandler\n\tpredicates []predicate.Predicate\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220811152620-fanygyz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811152620-fanygyz",
+				"updated": "20220811152620"
+			}
+		},
+		{
+			"ID": "20220811151744-ri94d5e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220811151744-ri94d5e",
+				"updated": "20220811160151"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.Watch函数实现\t"
+				}
+			]
+		},
+		{
+			"ID": "20220811161421-024juyw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811161421-024juyw",
+				"updated": "20220811161421"
+			}
+		},
+		{
+			"ID": "20220811161423-9eiip9u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220811161423-9eiip9u",
+				"updated": "20220811163639"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//  pkg/internal/controller/controller.go\nfunc (c *Controller) Watch(src source.Source, evthdler handler.EventHandler, prct ...predicate.Predicate) error {\n\tc.mu.Lock()\n\tdefer c.mu.Unlock()\n\n\t// I注入参数到cache\n\tif err := c.SetFields(src); err != nil {\n\t\treturn err\n\t}\n\tif err := c.SetFields(evthdler); err != nil {\n\t\treturn err\n\t}\n\tfor _, pr := range prct {\n\t\tif err := c.SetFields(pr); err != nil {\n\t\t\treturn err\n\t\t}\n\t}\n\n\t// 控制器尚未启动，请将watches存储在本地并返回。这些watches将保留在controller结构上，直到manager 或user 调用Start（…）。\n\tif !c.Started {\n\t\tc.startWatches = append(c.startWatches, watchDescription{src: src, handler: evthdler, predicates: prct})\n\t\treturn nil\n\t}\n\n\tc.LogConstructor(nil).Info(\"Starting EventSource\", \"source\", src)\n\t// 调用src.Start()\n\treturn src.Start(c.ctx, evthdler, c.Queue, prct...)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220811160419-kfq9wq9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811160419-kfq9wq9",
+				"updated": "20220811163653"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t上面的 Watch 函数可以看到最终是去调用的 Source 这个参数的 Start 函数，"
+				}
+			]
+		},
+		{
+			"ID": "20220811163736-tyll2rk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811163736-tyll2rk",
+				"updated": "20220811163736"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Source 是事件的源，如对资源对象的 Create、Update、Delete 操作，需要由event.EventHandlers 将 reconcile.Requests 入队列进行处理"
+				}
+			]
+		},
+		{
+			"ID": "20220811160409-s7zuuvk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220811160409-s7zuuvk",
+				"updated": "20220811161024"
+			},
+			"Children": [
+				{
+					"ID": "20220811160410-2t1lfeu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220811160410-2t1lfeu"
+					},
+					"Children": [
+						{
+							"ID": "20220811160410-t0tne6a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811160410-t0tne6a",
+								"updated": "20220811160910"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kind：对源自集群的事件（例如，Pod创建、Pod更新、部署更新）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220811160415-x82uhun",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220811160415-x82uhun",
+						"updated": "20220811161024"
+					},
+					"Children": [
+						{
+							"ID": "20220811160415-usl5hfy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811160415-usl5hfy",
+								"updated": "20220811160856"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Channel：用于集群之外的事件（例如GitHub Webhook回调，轮询外部URL）。 用户可以构建自己的源代码实现。"
+								}
+							]
+						},
+						{
+							"ID": "20220811160950-dbor5vg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220811160950-dbor5vg",
+								"updated": "20220811161024"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果它们的实现实现了任何注入包接口，那么当调用Watch时，依赖项将由控制器注入。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220811160205-dkkt8u1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220811160205-dkkt8u1",
+				"updated": "20220811161112"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// pkg/source/source.go\ntype Source interface {\n\t// Start是内部的，应仅由controller调用，以向informer注册EventHandler，从而将Conference.Requests入队\n\tStart(context.Context, handler.EventHandler, workqueue.RateLimitingInterface, ...predicate.Predicate) error\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220811161129-8okm2b7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811161129-8okm2b7",
+				"updated": "20220811161131"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tsource.Source 是一个接口，它是Controller.Watch 的一个参数，所以要看具体的如何实现的 Source.Start 函数，我们需要去看传入Controller.Watch 的参数，在 controller-runtime 中调用控制器的 Watch 函数的入口实际上位于 pkg/builder/controller.go 文件中的 doWatch()函数："
+				}
+			]
+		},
+		{
+			"ID": "20220811161129-e2lukj0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811161129-e2lukj0",
+				"updated": "20220811161129"
+			}
+		},
+		{
+			"ID": "20220811151744-i8k4t6j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220811151744-i8k4t6j",
+				"updated": "20220811151744"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.Start函数实现"
+				}
+			]
+		},
+		{
+			"ID": "20220811161155-vmvqcrz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220811161155-vmvqcrz",
+				"updated": "20220811161155"
+			}
+		}
+	]
+}

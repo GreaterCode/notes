@@ -1,0 +1,329 @@
+{
+	"ID": "20230214104718-duj08ed",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230214104718-duj08ed",
+		"title": "containerd数据残留问题解决方法 ",
+		"updated": "20230214104951"
+	},
+	"Children": [
+		{
+			"ID": "20230214104718-yik71uq",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230214104718-yik71uq"
+			}
+		},
+		{
+			"ID": "20230214104718-6zn19hq",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230214104718-6zn19hq"
+			}
+		},
+		{
+			"ID": "20230214104718-uwxzbcz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230214104718-uwxzbcz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "问题背景：containerd反复启动失败，报错信息如下："
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-lqxsf76",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230214104718-lqxsf76"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-9-14_9-19-19-20230214104718-73xyvoz.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-t2fm2zj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230214104718-t2fm2zj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方法(只适用当前节点容器很少的情况，且没有harbor关键服务)："
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-jlhx2kf",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230214104718-jlhx2kf",
+				"updated": "20230214104949"
+			},
+			"Children": [
+				{
+					"ID": "20230214104949-zg6n8a1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230214104949-zg6n8a1"
+					},
+					"Children": [
+						{
+							"ID": "20230214104949-d3naw6o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230214104949-d3naw6o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "systemctl stop containerd.service"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-xj5s3z0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230214104718-xj5s3z0",
+				"updated": "20230214104951"
+			},
+			"Children": [
+				{
+					"ID": "20230214104951-udy7cc1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230214104951-udy7cc1"
+					},
+					"Children": [
+						{
+							"ID": "20230214104951-nq9rfjp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230214104951-nq9rfjp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行清理进程脚本"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230214104804-jlv2kj2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230214104804-jlv2kj2",
+				"updated": "20230214104808"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nset -ex\n \nlist=$(runc --root /run/containerd/runc/k8s.io/ list|grep -v ID|awk '{print$1}')\n \nif [[ -z $list ]]; then\n   echo \"no runc process\"\n   exit 0\nfi\n \nfor cid in $list; do\n    runc --root /run/containerd/runc/k8s.io/ delete -f $cid\ndone\n \n \nlist1=$(ps aux |grep /usr/bin/containerd-shim-runc-v2|grep -v auto|awk '{print$2}'|xargs echo)\n \nkill -9 $list1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-0lir4zl",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230214104718-0lir4zl",
+				"updated": "20230214104944"
+			},
+			"Children": [
+				{
+					"ID": "20230214104944-ds1vhlu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230214104944-ds1vhlu"
+					},
+					"Children": [
+						{
+							"ID": "20230214104944-aqv8bbx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230214104944-aqv8bbx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "mv /var/lib/containerd /var/lib/containerd.bak"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-7jixes4",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230214104718-7jixes4",
+				"updated": "20230214104941"
+			},
+			"Children": [
+				{
+					"ID": "20230214104941-p2pn19r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230214104941-p2pn19r"
+					},
+					"Children": [
+						{
+							"ID": "20230214104941-0rz705g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230214104941-0rz705g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "mv /run/containerd/   /run/containerd.bak"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230214104718-hcqmhae",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230214104718-hcqmhae",
+				"updated": "20230214104939"
+			},
+			"Children": [
+				{
+					"ID": "20230214104939-2qws5jk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230214104939-2qws5jk"
+					},
+					"Children": [
+						{
+							"ID": "20230214104939-5vsa8q7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230214104939-5vsa8q7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "systemctl start containerd.service"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230214104936-tcmx0j1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230214104936-tcmx0j1",
+				"updated": "20230214104936"
+			}
+		}
+	]
+}

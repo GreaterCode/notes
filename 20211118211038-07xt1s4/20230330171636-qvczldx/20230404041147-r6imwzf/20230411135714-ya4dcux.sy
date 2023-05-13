@@ -1,0 +1,1429 @@
+{
+	"ID": "20230411135714-ya4dcux",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230411135714-ya4dcux",
+		"title": "003-k8s部署",
+		"updated": "20230411154255"
+	},
+	"Children": [
+		{
+			"ID": "20230411135714-soj7l3s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230411135714-soj7l3s",
+				"updated": "20230411135735"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. Helm部署"
+				}
+			]
+		},
+		{
+			"ID": "20230411135802-h8fyw8b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411135802-h8fyw8b",
+				"updated": "20230411135810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 简介"
+				}
+			]
+		},
+		{
+			"ID": "20230411135742-fgjfdlf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411135742-fgjfdlf",
+				"updated": "20230411135742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了将Ceph部署到K8S集群中，可以利用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/ceph/ceph-helm/",
+					"TextMarkTextContent": "ceph-helm项目"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。 目前此项目存在一些限制："
+				}
+			]
+		},
+		{
+			"ID": "20230411135742-0s4t64a",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230411135742-0s4t64a",
+				"updated": "20230411135742"
+			},
+			"Children": [
+				{
+					"ID": "20230411135742-kp8t7ad",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230411135742-kp8t7ad"
+					},
+					"Children": [
+						{
+							"ID": "20230411135742-l9zq8qx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411135742-l9zq8qx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "public和cluster网络必须一样"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230411135742-tnizvuf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230411135742-tnizvuf"
+					},
+					"Children": [
+						{
+							"ID": "20230411135742-hmted22",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411135742-hmted22"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果Storage的用户不是admin，你需要在Ceph集群中手工创建用户，并在K8S中创建对应的Secrets"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230411135742-vo0ifao",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230411135742-vo0ifao"
+					},
+					"Children": [
+						{
+							"ID": "20230411135742-4gaipo4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411135742-4gaipo4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ceph-mgr只能运行单副本"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230411141315-k0tugcu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411141315-k0tugcu",
+				"updated": "20230411141322"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 仓库"
+				}
+			]
+		},
+		{
+			"ID": "20230411135754-dtkq5m9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411135754-dtkq5m9",
+				"updated": "20230411141326"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行下面的命令把ceph-helm添加到本地Helm仓库："
+				}
+			]
+		},
+		{
+			"ID": "20230411141335-jclpcur",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141335-jclpcur",
+				"updated": "20230411141342"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " # 此项目使用Helm本地仓库保存Chart，如果没有启动本地存储，请启动\nnohup /usr/local/bin/helm serve  --address 0.0.0.0:8879 \u003e /dev/null 2\u003e\u00261 \u0026\n \ngit clone https://github.com/ceph/ceph-helm\npushd ceph-helm/ceph\nmake\npopd\n# 构建成功后Chart归档文件位于 ./ceph-0.1.0.tgz\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141420-byo049g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411141420-byo049g",
+				"updated": "20230411141422"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "覆盖值"
+				}
+			]
+		},
+		{
+			"ID": "20230411141429-783bpzo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141429-783bpzo",
+				"updated": "20230411141430"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可用值的说明如下："
+				}
+			]
+		},
+		{
+			"ID": "20230411141445-hdkdx1z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141445-hdkdx1z",
+				"updated": "20230411141517"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ceph.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20230411141423-hvh3psa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141423-hvh3psa",
+				"updated": "20230411141536"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 部署哪些组件\ndeployment:\n  ceph: true\n  storage_secrets: true\n  client_secrets: true\n  rbd_provisioner: true\n  rgw_keystone_user_and_endpoints: false\n \n# 修改这些值可以指定其它镜像\nimages:\n  ks_user: docker.io/kolla/ubuntu-source-heat-engine:3.0.3\n  ks_service: docker.io/kolla/ubuntu-source-heat-engine:3.0.3\n  ks_endpoints: docker.io/kolla/ubuntu-source-heat-engine:3.0.3\n  bootstrap: docker.io/ceph/daemon:tag-build-master-luminous-ubuntu-16.04\n  dep_check: docker.io/kolla/ubuntu-source-kubernetes-entrypoint:4.0.0\n  daemon: docker.io/ceph/daemon:tag-build-master-luminous-ubuntu-16.04\n  ceph_config_helper: docker.io/port/ceph-config-helper:v1.7.5\n  # 如果使用官方提供的StorageClass，你需要扩展kube-controller镜像，否则报executable file not found in $PATH\n  rbd_provisioner: quay.io/external_storage/rbd-provisioner:v0.1.1\n  minimal: docker.io/alpine:latest\n  pull_policy: \"IfNotPresent\"\n \n# 不同Ceph组件使用什么节点选择器\nlabels:\n  jobs:\n    node_selector_key: ceph-mon\n    node_selector_value: enabled\n  mon:\n    node_selector_key: ceph-mon\n    node_selector_value: enabled\n  mds:\n    node_selector_key: ceph-mds\n    node_selector_value: enabled\n  osd:\n    node_selector_key: ceph-osd\n    node_selector_value: enabled\n  rgw:\n    node_selector_key: ceph-rgw\n    node_selector_value: enabled\n  mgr:\n    node_selector_key: ceph-mgr\n    node_selector_value: enabled\n \npod:\n  dns_policy: \"ClusterFirstWithHostNet\"\n  replicas:\n    rgw: 1\n    mon_check: 1\n    rbd_provisioner: 2\n    mgr: 1\n  affinity:\n      anti:\n        type:\n          default: preferredDuringSchedulingIgnoredDuringExecution\n        topologyKey:\n          default: kubernetes.io/hostname\n  # 如果集群资源匮乏，可以调整下面的资源请求\n  resources:\n    enabled: false\n    osd:\n      requests:\n        memory: \"256Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"1024Mi\"\n        cpu: \"1000m\"\n    mds:\n      requests:\n        memory: \"10Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"50Mi\"\n        cpu: \"500m\"\n    mon:\n      requests:\n        memory: \"50Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"100Mi\"\n        cpu: \"500m\"\n    mon_check:\n      requests:\n        memory: \"5Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"50Mi\"\n        cpu: \"500m\"\n    rgw:\n      requests:\n        memory: \"5Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"50Mi\"\n        cpu: \"500m\"\n    rbd_provisioner:\n      requests:\n        memory: \"5Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"50Mi\"\n        cpu: \"500m\"\n    mgr:\n      requests:\n        memory: \"5Mi\"\n        cpu: \"100m\"\n      limits:\n        memory: \"50Mi\"\n        cpu: \"500m\"\n    jobs:\n      bootstrap:\n        limits:\n          memory: \"1024Mi\"\n          cpu: \"2000m\"\n        requests:\n          memory: \"128Mi\"\n          cpu: \"100m\"\n      secret_provisioning:\n        limits:\n          memory: \"1024Mi\"\n          cpu: \"2000m\"\n        requests:\n          memory: \"128Mi\"\n          cpu: \"100m\"\n      ks_endpoints:\n        requests:\n          memory: \"128Mi\"\n          cpu: \"100m\"\n        limits:\n          memory: \"1024Mi\"\n          cpu: \"2000m\"\n      ks_service:\n        requests:\n          memory: \"128Mi\"\n          cpu: \"100m\"\n        limits:\n          memory: \"1024Mi\"\n          cpu: \"2000m\"\n      ks_user:\n        requests:\n          memory: \"128Mi\"\n          cpu: \"100m\"\n        limits:\n          memory: \"1024Mi\"\n          cpu: \"2000m\"\n \nsecrets:\n  keyrings:\n    mon: ceph-mon-keyring\n    mds: ceph-bootstrap-mds-keyring\n    osd: ceph-bootstrap-osd-keyring\n    rgw: ceph-bootstrap-rgw-keyring\n    mgr: ceph-bootstrap-mgr-keyring\n    admin: ceph-client-admin-keyring\n  identity:\n    admin: ceph-keystone-admin\n    user: ceph-keystone-user\n    user_rgw: ceph-keystone-user-rgw\n \n# !! 根据实际情况网络配置\nnetwork:\n  public:   10.0.0.0/16\n  cluster:  10.0.0.0/16\n  port:\n    mon: 6789\n    rgw: 8088\n \n# !! 在此添加需要的Ceph配置项\nconf:\n  # 对象存储网关服务相关\n  rgw_ks:\n    config:\n      rgw_keystone_api_version: 3\n      rgw_keystone_accepted_roles: \"admin, _member_\"\n      rgw_keystone_implicit_tenants: true\n      rgw_s3_auth_use_keystone: true\n  ceph:\n    override:\n    append:\n    config:\n      global:\n        mon_host: null\n      osd:\n        ms_bind_port_max: 7100\n \nceph:\n  rgw_keystone_auth: false\n  enabled:\n    mds: true\n    rgw: true\n    mgr: true\n  storage:\n    # 基于目录的OSD，在宿主机上存储的路径\n    # /var/lib/ceph-helm/osd会挂载到容器的/var/lib/ceph/osd目录\n    osd_directory: /var/lib/ceph-helm\n    mon_directory: /var/lib/ceph-helm\n    # 将日志收集到/var/log，便于fluentd来采集\n    mon_log: /var/log/ceph/mon\n    osd_log: /var/log/ceph/osd\n \n# !! 是否启用基于目录的OSD，需要配合节点标签ceph-osd=enabled\n# 存储的位置由上面的storage.osd_directory确定，沿用现有的文件系统\nosd_directory:\n  enabled: false\n \n# 如果设置为1，则允许Ceph格式化磁盘，这会导致数据丢失\nenable_zap_and_potentially_lose_data: true\n# !! 基于块设备的OSD，需要配合节点标签ceph-osd-device-dev-***=enabled\nosd_devices:\n  - name: dev-vdb\n    # 使用的块设备\n    device: /dev/vdb\n    # 日志可以存储到独立块设备上，提升性能，如果不指定，存放在device\n    journal: /dev/vdc\n    # 是否删除其分区表\n    zap: \"1\"\n \nbootstrap:\n  enabled: false\n  script: |\n    ceph -s\n    function ensure_pool () {\n      ceph osd pool stats $1 || ceph osd pool create $1 $2\n    }\n    ensure_pool volumes 8\n \n# 启用的mgr模块\nceph_mgr_enabled_modules:\n  - restful\n  - status\n \n# 配置mgr模块\nceph_mgr_modules_config:\n  dashboard:\n    port: 7000\n  localpool:\n    failure_domain: host\n    subtree: rack\n    pg_num: \"128\"\n    num_rep: \"3\"\n    min_size: \"2\"\n \n# 在部署/升级后，执行下面的命令\n# 这些命令通过kubectl来执行\nceph_commands:\n- ceph osd pool create  pg_num\n- ceph osd crush tunables \n \n# Kubernetes 存储类配置\nstorageclass:\n  provision_storage_class: true\n  provisioner: ceph.com/rbd\n  # 存储类名称\n  name: ceph-rbd\n  monitors: nullcurshmap.src\n  # 使用的RBD存储池的名称\n  pool: rbd\n  admin_id: admin\n  admin_secret_name: pvc-ceph-conf-combined-storageclass\n  admin_secret_namespace: ceph\n  user_id: admin\n  user_secret_name: pvc-ceph-client-key\n  # RBD设备的镜像格式和特性\n  image_format: \"2\"\n  image_features: layering\n \nendpoints:\n  # 集群域名后缀\n  cluster_domain_suffix: k8s.gmem.cc\n  identity:\n    name: keystone\n    namespace: null\n    auth:\n      admin:\n        region_name: RegionOne\n        username: admin\n        password: password\n        project_name: admin\n        user_domain_name: default\n        project_domain_name: default\n      user:\n        role: admin\n        region_name: RegionOne\n        username: swift\n        password: password\n        project_name: service\n        user_domain_name: default\n        project_domain_name: default\n    hosts:\n      default: keystone-api\n      public: keystone\n    host_fqdn_override:\n      default: null\n    path:\n      default: /v3\n    scheme:\n      default: http\n    port:\n      admin:\n        default: 35357\n      api:\n        default: 80\n  object_store:\n    name: swift\n    namespace: null\n    hosts:\n      default: ceph-rgw\n    host_fqdn_override:\n      default: null\n    path:\n      default: /swift/v1\n    scheme:\n      default: http\n    port:\n      api:\n        default: 8088\n  ceph_mon:\n    namespace: null\n    hosts:\n      default: ceph-mon\n    host_fqdn_override:\n      default: null\n    port:\n      mon:\n        default: 6789\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141652-zp9713c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141652-zp9713c",
+				"updated": "20230411141653"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Ext4文件系统上基于目录的OSD配置，覆盖值示例："
+				}
+			]
+		},
+		{
+			"ID": "20230411141656-ohxqdct",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141656-ohxqdct",
+				"updated": "20230411141704"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "network:\n  public: 10.0.0.0/8\n  cluster: 10.0.0.0/8\n \nconf:\n  ceph:\n    config:\n      global:\n        # Ext4文件系统\n        filestore_xattr_use_omap: true\n      osd:\n        ms_bind_port_max: 7100\n        # Ext4文件系统\n        osd_max_object_name_len: 256\n        osd_max_object_namespace_len: 64\n        osd_crush_update_on_start : false\n \nceph:\n  storage:\n    osd_directory: /var/lib/ceph-helm\n    mon_directory: /var/lib/ceph-helm\n    mon_log: /var/log/ceph/mon\n    osd_log: /var/log/ceph/osd\n \n# 和操作系统共享一个分区，基于目录的OSD\nosd_directory:\n  enabled: true\n \nstorageclass:\n  name: ceph-rbd\n  pool: rbd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141703-jlv3g4p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411141703-jlv3g4p",
+				"updated": "20230411141802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.4 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "创建K8S资源"
+				}
+			]
+		},
+		{
+			"ID": "20230411141803-jhcnosw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141803-jhcnosw",
+				"updated": "20230411141807"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为Ceph创建名字空间："
+				}
+			]
+		},
+		{
+			"ID": "20230411141810-ggleb0k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141810-ggleb0k",
+				"updated": "20230411141812"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl create namespace ceph\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141819-r9hnnvq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141819-r9hnnvq",
+				"updated": "20230411141820"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建RBAC资源："
+				}
+			]
+		},
+		{
+			"ID": "20230411141821-hdevmru",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141821-hdevmru",
+				"updated": "20230411141827"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl create -f ceph-helm/ceph/rbac.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141833-7o9xqn2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141833-7o9xqn2",
+				"updated": "20230411141833"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "了部署Ceph集群，需要为K8S集群中，不同角色（参与到Ceph集群中的角色）的节点添加标签："
+				}
+			]
+		},
+		{
+			"ID": "20230411141833-xb6ub2q",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230411141833-xb6ub2q",
+				"updated": "20230411141833"
+			},
+			"Children": [
+				{
+					"ID": "20230411141833-lqeczi2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230411141833-lqeczi2"
+					},
+					"Children": [
+						{
+							"ID": "20230411141833-zca9uvv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411141833-zca9uvv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ceph-mon=enabled，部署mon的节点上添加"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230411141833-4jjo8o0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230411141833-4jjo8o0"
+					},
+					"Children": [
+						{
+							"ID": "20230411141833-okmnkts",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411141833-okmnkts"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ceph-mgr=enabled，部署mgr的节点上添加"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230411141833-3qh6oay",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230411141833-3qh6oay"
+					},
+					"Children": [
+						{
+							"ID": "20230411141833-ib6oxc9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411141833-ib6oxc9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ceph-osd=enabled，部署基于设备、基于目录的OSD的节点上添加"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230411141833-8mdl0hw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230411141833-8mdl0hw"
+					},
+					"Children": [
+						{
+							"ID": "20230411141833-8yqhb0h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411141833-8yqhb0h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ceph-osd-device-NAME=enabled。部署基于设备的OSD的节点上添加，其中NAME需要替换为上面 ceph-overrides.yaml中的OSD设备名，即："
+								}
+							]
+						},
+						{
+							"ID": "20230411141833-txnwx3j",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20230411141833-txnwx3j"
+							},
+							"Children": [
+								{
+									"ID": "20230411141833-qh9udgo",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "MS4=",
+										"Num": 1
+									},
+									"Properties": {
+										"id": "20230411141833-qh9udgo"
+									},
+									"Children": [
+										{
+											"ID": "20230411141833-00vct3e",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230411141833-00vct3e"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ceph-osd-device-dev-vdb=enabled"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230411141833-t5rwb8x",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "Mi4=",
+										"Num": 2
+									},
+									"Properties": {
+										"id": "20230411141833-t5rwb8x"
+									},
+									"Children": [
+										{
+											"ID": "20230411141833-kn7ng65",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230411141833-kn7ng65"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ceph-osd-device-dev-vdc=enabled"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230411141851-f37uezc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141851-f37uezc",
+				"updated": "20230411141855"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对应的K8S命令："
+				}
+			]
+		},
+		{
+			"ID": "20230411141903-k4qb5v0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141903-k4qb5v0",
+				"updated": "20230411141904"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 部署Ceph Monitor的节点\nkubectl label node xenial-100 ceph-mon=enabled ceph-mgr=enabled\n# 对于每个OSD节点\nkubectl label node xenial-100 ceph-osd=enabled ceph-osd-device-dev-vdb=enabled ceph-osd-device-dev-vdc=enabled\nkubectl label node xenial-101 ceph-osd=enabled ceph-osd-device-dev-vdb=enabled ceph-osd-device-dev-vdc=enabled\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141909-m81fhf4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411141909-m81fhf4",
+				"updated": "20230411141917"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.5 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Release"
+				}
+			]
+		},
+		{
+			"ID": "20230411141922-7oqsi6t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141922-7oqsi6t",
+				"updated": "20230411141924"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "helm install --name=ceph local/ceph --namespace=ceph -f ceph-overrides.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411141929-b4y32e3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411141929-b4y32e3",
+				"updated": "20230411141936"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.6 检查状态"
+				}
+			]
+		},
+		{
+			"ID": "20230411141936-c2w0e6m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411141936-c2w0e6m",
+				"updated": "20230411141949"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "确保所有Pod正常运行："
+				}
+			]
+		},
+		{
+			"ID": "20230411141950-axa62ig",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411141950-axa62ig",
+				"updated": "20230411142004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " # kubectl -n ceph get pods\nNAME                                    READY     STATUS    RESTARTS   AGE\nceph-mds-7cb7c647c7-7w6pc               0/1       Pending   0          18h\nceph-mgr-66cb85cbc6-hsm65               1/1       Running   3          1h\nceph-mon-check-758b88d88b-2r975         1/1       Running   1          1h\nceph-mon-gvtq6                          3/3       Running   3          1h\nceph-osd-dev-vdb-clj5f                  1/1       Running   15         1h\nceph-osd-dev-vdb-hldw5                  1/1       Running   15         1h\nceph-osd-dev-vdb-l4v6t                  1/1       Running   15         1h\nceph-osd-dev-vdb-v5jmd                  1/1       Running   15         1h\nceph-osd-dev-vdb-wm4v4                  1/1       Running   15         1h\nceph-osd-dev-vdb-zwr65                  1/1       Running   15         1h\nceph-osd-dev-vdc-27wfk                  1/1       Running   15         1h\nceph-osd-dev-vdc-4w4fn                  1/1       Running   15         1h\nceph-osd-dev-vdc-cpkxh                  1/1       Running   15         1h\nceph-osd-dev-vdc-twmwq                  1/1       Running   15         1h\nceph-osd-dev-vdc-x8tpb                  1/1       Running   15         1h\nceph-osd-dev-vdc-zfrll                  1/1       Running   15         1h\nceph-rbd-provisioner-5544dcbcf5-n846s   1/1       Running   4          18h\nceph-rbd-provisioner-5544dcbcf5-t84bz   1/1       Running   3          18h\nceph-rgw-7f97b5b85d-nc5fq               0/1       Pending   0          18h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142012-d1395e3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142012-d1395e3",
+				"updated": "20230411142013"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中MDS、RGW的Pod处于Pending状态，这是由于没有给任何节点添加标签："
+				}
+			]
+		},
+		{
+			"ID": "20230411142019-qtqfz46",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142019-qtqfz46",
+				"updated": "20230411142026"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# rgw即RADOS Gateway，是Ceph的对象存储网关服务，它是基于librados接口封装的FastCGI服务\n# 提供存储和管理对象数据的REST API。对象存储适用于图片、视频等各类文件\n# rgw兼容常见的对象存储API，例如绝大部分Amazon S3 API、OpenStack Swift API\nceph-rgw=enabled\n# mds即Metadata Server，用于支持文件系统\nceph-mds=enabled\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142036-j54c5gp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142036-j54c5gp",
+				"updated": "20230411142037"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在从监控节点，检查一下Ceph集群的状态："
+				}
+			]
+		},
+		{
+			"ID": "20230411142047-zlyjlp1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142047-zlyjlp1",
+				"updated": "20230411142049"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl -n ceph exec -ti ceph-mon-gvtq6 -c ceph-mon -- ceph -s\n  cluster:\n    # 集群标识符\n    id:     08adecc5-72b1-4c57-b5b7-a543cd8295e7\n    health: HEALTH_OK\n \n  services:\n    # 监控节点\n    mon: 1 daemons, quorum xenial-100\n    # 管理节点\n    mgr: xenial-100(active)\n    # OSD（Ceph Data Storage Daemon）\n    osd: 12 osds: 12 up, 12 in\n  \n  data:\n    # 存储池、PG数量\n    pools:   0 pools, 0 pgs\n    # 对象数量\n    objects: 0 objects, 0 bytes\n    # 磁盘的用量，如果是基于文件系统的OSD，则操作系统用量也计算在其中\n    usage:   1292 MB used, 322 GB / 323 GB avail\n \n    # 所有PG都未激活，不可用\n    pgs:     100.000% pgs not active\n             # undersize是由于OSD数量不足（复制份数3，此时仅仅一个OSD），peerd表示128个PG配对到OSD\n             128 undersized+peered\n    # 将复制份数设置为1后，输出变为\n    pgs:     100.000% pgs not active\n             128 creating+peering\n    # 过了一小段时间后，输出变为\n    pgs: 128 active+clean\n    # 到这里，PVC才能被提供，否则PVC状态显示 Provisioning，Provisioner日志中出现类似下面的：\n    # attempting to acquire leader lease...\n    # successfully acquired lease to provision for pvc ceph/ceph-pvc\n    # stopped trying to renew lease to provision for pvc ceph/ceph-pvc, timeout reached\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142109-w7fm29a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142109-w7fm29a",
+				"updated": "20230411142109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果K8S集群没有默认StorageClass，可以设置："
+				}
+			]
+		},
+		{
+			"ID": "20230411142115-ukv5mjf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142115-ukv5mjf",
+				"updated": "20230411142117"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl patch storageclass ceph-rbd -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142121-i856jxk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142121-i856jxk",
+				"updated": "20230411142128"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样没有显式声明StorageClass的PVC将自动通过ceph-rbd进行卷提供。"
+				}
+			]
+		},
+		{
+			"ID": "20230411142131-cwpbslx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411142131-cwpbslx",
+				"updated": "20230411142137"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.7 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "创建存储池"
+				}
+			]
+		},
+		{
+			"ID": "20230411142143-p5uqhrj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142143-p5uqhrj",
+				"updated": "20230411142145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建具有384个PG的名为rbd的复制存储池\nceph osd pool create rbd 384 replicated\nceph osd pool set rbd min_size 1\n \n# 开发环境下，可以把Replica份数设置为1\nceph osd pool set rbd size 1\n# min_size 会自动被设置的比size小\n# 减小size后，可以立即看到ceph osd status的used变小\n \n# 初始化池，最好在所有节点加入后，调整好CURSH Map后执行\nrbd pool init rbd\n \n# 可以创建额外的用户，例如下面的，配合Value storageclass.user_id=k8s使用\nceph auth get-or-create-key client.k8s mon 'allow r' osd 'allow rwx pool=rbd' | base64\n# 如果使用默认用户admin，则不需要生成上面这步。admin权限也是足够的\n \n \n# 其它命令\n# 查看块设备使用情况（需要MGR）\nceph osd status\n+----+------------+-------+-------+--------+---------+--------+---------+-----------+\n| id |    host    |  used | avail | wr ops | wr data | rd ops | rd data |   state   |\n+----+------------+-------+-------+--------+---------+--------+---------+-----------+\n| 0  | xenial-100 |  231M | 26.7G |    0   |  3276   |    0   |     0   | exists,up |\n| 1  | xenial-103 |  216M | 26.7G |    0   |   819   |    0   |     0   | exists,up |\n| 2  | xenial-101 |  253M | 26.7G |    0   |     0   |    0   |     0   | exists,up |\n| 3  | xenial-103 |  286M | 26.7G |    0   |     0   |    0   |     0   | exists,up |\n| 4  | xenial-101 |  224M | 26.7G |    0   |  1638   |    0   |     0   | exists,up |\n| 5  | xenial-105 |  211M | 26.7G |    0   |     0   |    0   |     0   | exists,up |\n| 6  | xenial-100 |  243M | 26.7G |    0   |     0   |    0   |     0   | exists,up |\n| 7  | xenial-102 |  224M | 26.7G |    0   |  2457   |    0   |     0   | exists,up |\n| 8  | xenial-102 |  269M | 26.7G |    0   |  1638   |    0   |     0   | exists,up |\n| 9  | xenial-104 |  252M | 26.7G |    0   |  2457   |    0   |     0   | exists,up |\n| 10 | xenial-104 |  231M | 26.7G |    0   |     0   |    0   |     0   | exists,up |\n| 11 | xenial-105 |  206M | 26.7G |    0   |     0   |    0   |     0   | exists,up |\n+----+------------+-------+-------+--------+---------+--------+---------+-----------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142156-i2bk3hb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411142156-i2bk3hb",
+				"updated": "20230411142209"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.8 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用存储池"
+				}
+			]
+		},
+		{
+			"ID": "20230411142212-7hihji9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142212-7hihji9",
+				"updated": "20230411142212"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以先使用ceph命令尝试创建RBD并挂载："
+				}
+			]
+		},
+		{
+			"ID": "20230411142213-4imqzi3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142213-4imqzi3",
+				"updated": "20230411142226"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 镜像格式默认2\n# format 1 - 此格式兼容所有版本的 librbd 和内核模块，但是不支持较新的功能，像克隆。此格式目前已经废弃\n# 2 - librbd 和 3.11 版以上内核模块才支持。此格式增加了克隆支持，未来扩展更容易\nrbd create  test --size 1G --image-format 2 --image-feature layering\n \n# 映射为本地块设备，如果卡住，可能有问题，一段时间后会有提示\nrbd map test\n# CentOS 7 下可能出现如下问题：\n#   rbd: sysfs write failed\n#   In some cases useful info is found in syslog - try \"dmesg | tail\".\n#   rbd: map failed: (5) Input/output error\n# dmesg | tail\n#   [1180891.928386] libceph: mon0 10.5.39.41:6789 feature set mismatch, \n#     my 2b84a042a42 \u003c server's 40102b84a042a42, missing 401000000000000                                        \n#   [1180891.934804] libceph: mon0 10.5.39.41:6789 socket error on read\n# 解决办法是把Bucket算法从straw2改为straw\n \n# 挂载为目录\nfdisk /dev/rbd0\nmkfs.ext4 /dev/rbd0\nmkdir /test\nmount /dev/rbd0 /test\n \n# 测试性能\n# 1MB块写入\nsync; dd if=/dev/zero of=/test/data bs=1M count=512; sync\n# 512+0 records in\n# 512+0 records out\n# 536870912 bytes (537 MB) copied, 4.44723 s, 121 MB/s\n# 16K随机写\nfio -filename=/dev/rbd0 -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=16k -size=512M -numjobs=30 -runtime=60 -name=test\n# WRITE: bw=35.7MiB/s (37.5MB/s), 35.7MiB/s-35.7MiB/s (37.5MB/s-37.5MB/s), io=2148MiB (2252MB), run=60111-60111msec \n# 16K随机读\nfio -filename=/dev/rbd0 -direct=1 -iodepth 1 -thread -rw=randread -ioengine=psync -bs=16k -size=512M -numjobs=30 -runtime=60 -name=test\n# READ: bw=110MiB/s (116MB/s), 110MiB/s-110MiB/s (116MB/s-116MB/s), io=6622MiB (6943MB), run=60037-60037msec\n \n# 删除测试镜像\numount /test\nrbd unmap test\nrbd remove test \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142242-j3i7q76",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142242-j3i7q76",
+				"updated": "20230411142251"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "确认Ceph RBD可以挂载、读写后，创建一个PVC："
+				}
+			]
+		},
+		{
+			"ID": "20230411142252-0lxkygg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142252-0lxkygg",
+				"updated": "20230411142258"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n  name: ceph-pvc\n  namespace: ceph\nspec:\n  accessModes:\n   - ReadWriteOnce\n  resources:\n    requests:\n       storage: 1Gi\n  storageClassName: ceph-rbd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142300-vi9ssw4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142300-vi9ssw4",
+				"updated": "20230411142309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看PVC是否绑定到PV："
+				}
+			]
+		},
+		{
+			"ID": "20230411142316-z6xcm7r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142316-z6xcm7r",
+				"updated": "20230411142324"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n ceph create -f ceph-pvc.yaml\n \nkubectl -n ceph get pvc\n \n# NAME       STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE\n# ceph-pvc   Bound     pvc-43caef06-46b4-11e8-bed8-deadbeef00a0   1Gi        RWO            ceph-rbd       3s\n \n# 在Monitor节点上确认RBD设备已经创建\nrbd ls\n# kubernetes-dynamic-pvc-fbddb77d-46b5-11e8-9204-8a12961e4b47\nrbd info kubernetes-dynamic-pvc-fbddb77d-46b5-11e8-9204-8a12961e4b47\n# rbd image 'kubernetes-dynamic-pvc-fbddb77d-46b5-11e8-9204-8a12961e4b47':\n#         size 128 MB in 32 objects\n#         order 22 (4096 kB objects)\n#         block_name_prefix: rbd_data.11412ae8944a\n#         format: 2\n#         features: layering\n#         flags: \n#         create_timestamp: Mon Apr 23 05:20:07 2018\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142335-j9gxrtf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142335-j9gxrtf",
+				"updated": "20230411142336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要在其它命名空间中使用此存储池时，拷贝一下Secret："
+				}
+			]
+		},
+		{
+			"ID": "20230411142339-cni6gjj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142339-cni6gjj",
+				"updated": "20230411142342"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n ceph get secrets/pvc-ceph-client-key -o json --export | jq '.metadata.namespace = \"default\"' | kubectl create -f - \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142348-8ieo3o7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411142348-8ieo3o7",
+				"updated": "20230411142408"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.9 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "卸载"
+				}
+			]
+		},
+		{
+			"ID": "20230411142413-4i7paqc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142413-4i7paqc",
+				"updated": "20230411142419"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "helm delete ceph --purge\nkubectl delete namespace ceph\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142423-g1wyra9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142423-g1wyra9",
+				"updated": "20230411142425"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此外，如果要重新安装，一定要把所有节点的一下目录清除掉："
+				}
+			]
+		},
+		{
+			"ID": "20230411142430-uymvll8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230411142430-uymvll8",
+				"updated": "20230411142434"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "rm -rf /var/lib/ceph-helm\nrm -rf /var/lib/ceph\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230411142439-ka1r7p2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230411142439-ka1r7p2",
+				"updated": "20230411142458"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 使用 已存在Ceph集群"
+				}
+			]
+		},
+		{
+			"ID": "20230411142506-jtslqvw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142506-jtslqvw",
+				"updated": "20230411142506"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只需要安装相应的Provisioner，配置适当的StorageClass即可。示例："
+				}
+			]
+		},
+		{
+			"ID": "20230411142506-a38hx1f",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230411142506-a38hx1f",
+				"updated": "20230411142506"
+			},
+			"Children": [
+				{
+					"ID": "20230411142506-mvul0hs",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230411142506-mvul0hs"
+					},
+					"Children": [
+						{
+							"ID": "20230411142506-s0yqj00",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411142506-s0yqj00"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Provisioner："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://git.gmem.cc/alex/helm-charts/src/branch/master/ceph-provisioners",
+									"TextMarkTextContent": "https://git.gmem.cc/alex/helm-charts/src/branch/master/ceph-provisioners"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230411142506-noz9ysu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230411142506-noz9ysu"
+					},
+					"Children": [
+						{
+							"ID": "20230411142506-dohg11c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230411142506-dohg11c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装脚本："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://git.gmem.cc/alex/k8s-init/src/branch/master/4.infrastructure/0.ceph-external.sh",
+									"TextMarkTextContent": "https://git.gmem.cc/alex/k8s-init/src/branch/master/4.infrastructure/0.ceph-external.sh"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230411142512-jl63omv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230411142512-jl63omv",
+				"updated": "20230411142551"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 基于CephFS的卷"
+				}
+			]
+		},
+		{
+			"ID": "20230411142520-mvnloph",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142520-mvnloph",
+				"updated": "20230411142520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes卷的动态Provisioning，目前需要依赖于external-storage项目，K8S没有提供内置的Provisioner。此项目存在不少问题，生产环境下可以考虑"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.gmem.cc/kubernetes-study-note#static-provisioning-ceph",
+					"TextMarkTextContent": "静态提供"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230411142520-p33dfl8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142520-p33dfl8",
+				"updated": "20230411142520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Provisioner会自动在Ceph集群的默认CephFS中创建“卷”，Ceph支持基于libcephfs+librados来实现一个基于CephFS目录的虚拟卷。"
+				}
+			]
+		},
+		{
+			"ID": "20230411142520-udtwq5k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411142520-udtwq5k",
+				"updated": "20230411142520"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你可以在默认CephFS中看到volumes/kubernetes目录。kubernetes目录对应一个虚拟卷组。每个PV对应了它的一个子目录。"
+				}
+			]
+		},
+		{
+			"ID": "20230411145359-825dpc7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230411145359-825dpc7",
+				"updated": "20230411145359"
+			}
+		}
+	]
+}

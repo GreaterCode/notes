@@ -1,0 +1,936 @@
+{
+	"ID": "20230415185726-2jx0dof",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230415185726-2jx0dof",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230415185726-eaa8hs6\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230415185726-k2xbnhp\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230415185726-eaa8hs6\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "性能调优之 ETCD",
+		"updated": "20230415185726"
+	},
+	"Children": [
+		{
+			"ID": "20230415185726-eaa8hs6",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230415185726-eaa8hs6",
+				"updated": "20230415185726"
+			}
+		},
+		{
+			"ID": "20230415185726-9bf6fh5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415185726-9bf6fh5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "磁盘 IOPS 调整"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-yulckqw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-yulckqw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd 对磁盘写入延迟非常敏感，通常需要 50 顺序写入 IOPS(例如: 7200RPM 磁盘)。对于负载较重的集群，建议使用 500 顺序写入 IOPS(例如，典型的本地 SSD 或高性能虚拟化块设备)。请注意，大多数云服务器或者云存储提供并发 IOPS 而不是顺序 IOPS，提供的并发 IOPS 可能比顺序 IOPS 大 10 倍。为了测量实际的顺序 IOPS，建议使用磁盘基准测试工具，如"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/ongardie/diskbenchmark",
+					"TextMarkTextContent": "diskbench"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "或"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/axboe/fio",
+					"TextMarkTextContent": "fio"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-4oyf89w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-4oyf89w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见磁盘平均物理寻道时间约为："
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-m31n45m",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415185726-m31n45m"
+			},
+			"Children": [
+				{
+					"ID": "20230415185726-6eurrrt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-6eurrrt"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-7qpombx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-7qpombx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "7200 转/分的 STAT 硬盘平均物理寻道时间是 9ms；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415185726-7p9tpwu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-7p9tpwu"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-shszqh1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-shszqh1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "10000 转/分的 STAT 硬盘平均物理寻道时间是 6ms；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415185726-appkmds",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-appkmds"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-zn31cr6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-zn31cr6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "15000 转/分的 SAS 硬盘平均物理寻道时间是 4ms；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-6q2sczv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-6q2sczv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见硬盘的旋转延迟时间约为："
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-oxfve3o",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415185726-oxfve3o"
+			},
+			"Children": [
+				{
+					"ID": "20230415185726-sydi3jw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-sydi3jw"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-vxefdnv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-vxefdnv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "7200 rpm 的磁盘平均旋转延迟大约为 60X1000/7200/2=4.17ms；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415185726-fmr30x0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-fmr30x0"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-rys1h6q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-rys1h6q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "10000 rpm 的磁盘平均旋转延迟大约为 60X1000/10000/2=3ms；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415185726-neig3lh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-neig3lh"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-gdi2sb4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-gdi2sb4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "15000 rpm 的磁盘其平均旋转延迟约为 60X1000/15000/2=2ms。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-2uym7c5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-2uym7c5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最大 IOPS 的理论计算方法：IOPS=1000ms/(寻道时间+旋转延迟)，数据传输时间忽略不计。"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-1oqkbcj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415185726-1oqkbcj"
+			},
+			"Children": [
+				{
+					"ID": "20230415185726-gr0f9xb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-gr0f9xb"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-blio54t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-blio54t"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "7200 rpm 的磁盘 IOPS=1000/(9+4.17)=76IOPS；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415185726-1llxjk8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-1llxjk8"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-hgsq78o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-hgsq78o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "10000 rpm 的磁盘 IOPS=1000/(6+3)=111IOPS；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230415185726-1g4k5mz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-1g4k5mz"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-a77i7ic",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-a77i7ic"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "15000 rpm 的磁盘 IOPS=1000/(4+2)=166IOPS。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-koqjzj4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415185726-koqjzj4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU 优先级调整"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-zf0it2r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415185726-zf0it2r"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo renice -n -20 -P $(pgrep etcd)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-t0qa8pj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-t0qa8pj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中 nice 值可以由用户指定，默认值为 0，root 用户的取值范围是[-20, 19]，普通用户的值取值范围是[0, 19]，数字越小，CPU 执行优先级越高。"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-mxzqs8b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415185726-mxzqs8b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "磁盘 IO 优先级调整"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-tp9z2ds",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-tp9z2ds"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于 etcd 必须将数据持久保存到磁盘日志文件中，因此来自其他进程的磁盘活动可能会导致增加"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "写入时间"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，结果可能会导致 etcd 请求超时和临时"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "leader"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "丢失。当给定高磁盘优先级时，etcd 服务可以稳定地与这些进程一起运行。"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-oyswstk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-oyswstk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Linux 上，etcd 的磁盘优先级可以配置为 ionice："
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-3wk6e7i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415185726-3wk6e7i"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo ionice -c2 -n0 -p $(pgrep etcd)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-ew8e02g",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230415185726-ew8e02g"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230415185726-s58dxeb",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230415185726-s58dxeb"
+					},
+					"Children": [
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "strong",
+							"TextMarkTextContent": "温馨提示"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " : 因为主机重启或者容器重启后，容器中进程的 PID 会发生变化，所以建议把以上命令放在系统的启动脚本中（比如 Ubuntu 的"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "/etc/init.d/rc.local"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "脚本中），并且把命令配置在 crontab 定时任务中。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-rsof8iv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415185726-rsof8iv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "空间配额大小调整"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-rte7zpa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-rte7zpa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认 ETCD 空间配额大小为 2G，超过 2G 将不再写入数据。通过给 ETCD 配置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--quota-backend-bytes"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "参数增大空间配额,最大支持 8G。"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-xgcc6g9",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230415185726-xgcc6g9"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230415185726-mb24f6v",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230415185726-mb24f6v"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "静态Pod yaml 文件中指定以下参数"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-rb3yjbx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415185726-rb3yjbx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "services:\n  etcd:\n    # 开启自动备份\n    backup_config:\n      enabled: true # 设置true启用ETCD自动备份，设置false禁用；\n      interval_hours: 12 # 快照创建间隔时间，不加此参数，默认5分钟；\n      retention: 6 # etcd备份保留份数；\n      ### S3配置选项\n      s3backupconfig:\n        access_key: \"myaccesskey\"\n        secret_key: \"myaccesssecret\"\n        bucket_name: \"my-backup-bucket\"\n        folder: \"folder-name\" \n        endpoint: \"s3.eu-west-1.amazonaws.com\"\n        region: \"eu-west-1\"\n    snapshot: true\n    creation: 5m0s\n    retention: 24h\n    # 修改空间配额为$((6*1024*1024*1024))，默认2G,最大8G\n    extra_args:\n      quota-backend-bytes: \"6442450944\"\n      auto-compaction-retention: 240 #(单位小时)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-jxyq6bj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230415185726-jxyq6bj"
+			},
+			"Children": [
+				{
+					"ID": "20230415185726-kicnbj0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230415185726-kicnbj0"
+					},
+					"Children": [
+						{
+							"ID": "20230415185726-i8tkm3c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230415185726-i8tkm3c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "磁盘碎片整理"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-g6xkkw7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-g6xkkw7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "auto-compaction-retention"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "对历史数据压缩后，后端数据库可能会出现内部碎片。内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间，碎片整理过程将此存储空间释放回文件系统。"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-ru7cir6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-ru7cir6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要对 etcd 进行碎片整理，需手动在 etcd 容器中执行以下命令："
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-vsvn4u6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415185726-vsvn4u6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "etcdctl defrag\n\nFinished defragmenting etcd member[127.0.0.1:2379]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-qgo79ip",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230415185726-qgo79ip"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "网络优先级调整"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-n7tzscw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-n7tzscw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果有大量并发客户端请求 etcd leader 服务，则可能由于网络拥塞而延迟处理"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "follower"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "对等请求。在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "follower"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "节点上的发送缓冲区错误消息："
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-f295tj0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415185726-f295tj0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dropped MsgProp to 247ae21ff9436b2d since streamMsg's sending buffer is full\ndropped MsgAppResp to 247ae21ff9436b2d since streamMsg's sending buffer is full\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-ni39iww",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-ni39iww"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以通过在客户端提高 etcd 对等网络流量优先级来解决这些错误。在 Linux 上，可以使用流量控制机制对对等流量进行优先级排序（请根据实际情况修改接口名称）："
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-vbjb3ji",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230415185726-vbjb3ji"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "NETWORK_INTERFACE=eth0\n\ntc qdisc add dev ${NETWORK_INTERFACE} root handle 1: prio bands 3\ntc filter add dev ${NETWORK_INTERFACE} parent 1: protocol ip prio 1 u32 match ip sport 2380 0xffff flowid 1:1\ntc filter add dev ${NETWORK_INTERFACE} parent 1: protocol ip prio 1 u32 match ip dport 2380 0xffff flowid 1:1\ntc filter add dev ${NETWORK_INTERFACE} parent 1: protocol ip prio 2 u32 match ip sport 2739 0xffff flowid 1:1\ntc filter add dev ${NETWORK_INTERFACE} parent 1: protocol ip prio 2 u32 match ip dport 2739 0xffff flowid 1:1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-le412uk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-le412uk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t     「如果这篇文章对你有用,请随意打赏」"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-k8zltc2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-k8zltc2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t如果这篇文章对你有用,请随意打赏"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-61of85a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-61of85a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t\t使用微信扫描二维码完成支付"
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-k2xbnhp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-k2xbnhp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/wechat-2-20230415185726-f67geip.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230415185726-pl13hpv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230415185726-pl13hpv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "                ---"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,6192 @@
+{
+	"ID": "20221229103145-sikpefa",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221229103145-sikpefa",
+		"title": "使用 kubebuilder 开发k8s CRD（二） ",
+		"updated": "20221229103145"
+	},
+	"Children": [
+		{
+			"ID": "20221229103145-d6trvpl",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221229103145-d6trvpl",
+				"updated": "20221229103145"
+			}
+		},
+		{
+			"ID": "20221229103145-m3egzzg",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221229103145-m3egzzg"
+			}
+		},
+		{
+			"ID": "20221229103145-5zrg2w0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103145-5zrg2w0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "背景："
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-72zpunw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-72zpunw",
+				"updated": "20221229103802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 该页wiki主要体现如何调试一个Operator，完整的安装、部署CRD的步骤"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-25rggib",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103145-25rggib"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "环境准备："
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-g6hz6vq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-g6hz6vq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）软件"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-uedh6qb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-uedh6qb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/kubernetes-sigs/kubebuilder/releases/tag/v3.4.1",
+					"TextMarkTextContent": "kubebuilder"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/kubernetes-sigs/kubebuilder/releases/tag/v3.4.1",
+					"TextMarkTextContent": "https://github.com/kubernetes-sigs/kubebuilder/releases/tag/v3.4.1"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mnjb8b2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mnjb8b2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kustomize: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/kubernetes-sigs/kustomize",
+					"TextMarkTextContent": "https://github.com/kubernetes-sigs/kustomize"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-87ggiov",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-87ggiov"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "go :"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://golang.google.cn/dl/",
+					"TextMarkTextContent": "https://golang.google.cn/dl/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  You should still be using go versions 1.17+ \u003c 1.18 with this release."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-q6jszo3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-q6jszo3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "gcc: yum -y "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "install"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " gcc"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ba5hjtr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ba5hjtr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "mv kubebuilder_linux_amd64 /usr/local/bin/"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-buccm74",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-buccm74"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "chmod +x kubebuilder_linux_amd64"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-z3j50wc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-z3j50wc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "mv kubebuilder_linux_amd64  kubebuilder"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-jn41swo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-jn41swo",
+				"updated": "20221229103145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）软件版本"
+				}
+			]
+		},
+		{
+			"ID": "20221229103418-7l93v5i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221229103418-7l93v5i",
+				"updated": "20221229103436"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "`# kubebuilder version`\n\n`Version: main.version{KubeBuilderVersion:``\"3.4.1\"``, KubernetesVendor:``\"1.23.5\"``, GitCommit:``\"d59d7882ce95ce5de10238e135ddff31d8ede026\"``, BuildDate:``\"2022-05-06T13:58:56Z\"``, GoOs:``\"linux\"``, GoArch:``\"amd64\"``}`\n\n`[root``@k18``-``5` `local]# kustomize version`\n\n`{Version:kustomize/v4.``0.5` `GitCommit:9e8e7a7fe99ec9fbf801463e8607928322fc5245 BuildDate:``2021``-``03``-08T20:``53``:03Z GoOs:linux GoArch:amd64}`\n\n`[root``@k18``-``5` `local]# kubectl version`\n\n`Client Version: version.Info{Major:``\"1\"``, Minor:``\"21\"``, GitVersion:``\"v1.21.5\"``, GitCommit:``\"aea7bbadd2fc0cd689de94a54e5b7b758869d691\"``, GitTreeState:``\"clean\"``, BuildDate:``\"2021-09-15T21:10:45Z\"``, GoVersion:``\"go1.16.8\"``, Compiler:``\"gc\"``, Platform:``\"linux/amd64\"``}`\n\n`Server Version: version.Info{Major:``\"1\"``, Minor:``\"21\"``, GitVersion:``\"v1.21.5\"``, GitCommit:``\"aea7bbadd2fc0cd689de94a54e5b7b758869d691\"``, GitTreeState:``\"clean\"``, BuildDate:``\"2021-09-15T21:04:16Z\"``, GoVersion:``\"go1.16.8\"``, Compiler:``\"gc\"``, Platform:``\"linux/amd64\"``}`\n\n`[root``@k18``-``5` `local]# go version`\n\n`go version go1.``17.11` `linux/amd64`\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221229103425-qu6f0kk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103425-qu6f0kk",
+				"updated": "20221229103439"
+			}
+		},
+		{
+			"ID": "20221229103145-z59x02w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-z59x02w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3）环境变量"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-h6j0z3n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-h6j0z3n"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "alias v=vim"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mnjhr27",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mnjhr27"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "alias kdp=``'kubectl delete pod --force --grace-period=0'"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-v7gpbot",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-v7gpbot"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "alias kn=``'kubectl config set-context --current --namespace'"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-8dm4yb6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-8dm4yb6"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "source \u0026lt;(kubectl completion bash)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9a6n3yj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9a6n3yj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "alias k=kubectl"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-2w9owgt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-2w9owgt"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "complete -F __start_kubectl k"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-clydujo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-clydujo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "export PATH=$PATH:/usr/local/go/bin"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-zxvtjxp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-zxvtjxp"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "export GO111MODULE=on"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1bac1ns",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1bac1ns"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "export GOPROXY=https:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-8rl7xjl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103145-8rl7xjl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、Operator 项目："
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9xkf0ac",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-9xkf0ac"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）demo项目"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-t6r6cqr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-t6r6cqr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://wiki.cestc.cn/download/attachments/170546356/mysql-writer-operator.zip?version=1\u0026modificationDate=1657096619000\u0026api=v2",
+					"TextMarkTextContent": "   mysql-writer-operator.zip"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-wlprzcu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-wlprzcu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）项目结构"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-y3bspmz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-y3bspmz"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-eik6ltr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-eik6ltr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── api"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-hgjq9kc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-hgjq9kc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   └── v1"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9jo95x5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9jo95x5"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│       ├── groupversion_info.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-616qc59",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-616qc59"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│       ├── mysqlwriter_types.go        # 定义Kind  CRD 字段"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-v2l3egx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-v2l3egx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│       └── zz_generated.deepcopy.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-z06zpxo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-z06zpxo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── bin"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-dwvhjkt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-dwvhjkt"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── controller-gen"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-yk6m7zw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-yk6m7zw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   └── kustomize"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-zhq9zxa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-zhq9zxa"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── config"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-tn4u4dk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-tn4u4dk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── crd"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-4graqh9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-4graqh9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── bases"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-77wm1gm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-77wm1gm"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   │   └── demo.zoe.k8s.test.com_mysqlwriters.yaml   # CRD DEFINE"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-p2d7pwn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-p2d7pwn"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── kustomization.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xksox0e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xksox0e"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── kustomizeconfig.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vkekv6g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-vkekv6g"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   └── patches"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5xer90b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5xer90b"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │       ├── cainjection_in_mysqlwriters.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-0fc77aq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-0fc77aq"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │       └── webhook_in_mysqlwriters.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-faj20p4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-faj20p4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── ``default"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-emxxgj1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-emxxgj1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── kustomization.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mt32vln",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mt32vln"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── manager_auth_proxy_patch.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-n8l2et8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-n8l2et8"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   └── manager_config_patch.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5mi2y5v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5mi2y5v"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── manager"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-h4gyhv8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-h4gyhv8"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── controller_manager_config.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-grky9ds",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-grky9ds"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── kustomization.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gu15ki2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gu15ki2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   └── manager.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qm56zhg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qm56zhg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── prometheus"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9exl18d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9exl18d"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── kustomization.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-87vusl1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-87vusl1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   └── monitor.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qm9gqsy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qm9gqsy"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── rbac"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-f5x76mu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-f5x76mu"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── auth_proxy_client_clusterrole.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-j2s1u87",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-j2s1u87"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── auth_proxy_role_binding.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-v7j00dj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-v7j00dj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── auth_proxy_role.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gx0jfll",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gx0jfll"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── auth_proxy_service.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-q8vwxpv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-q8vwxpv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── kustomization.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-frpp7vi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-frpp7vi"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── leader_election_role_binding.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-3bf2wm3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-3bf2wm3"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── leader_election_role.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5whvdki",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5whvdki"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── mysqlwriter_editor_role.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-67fgaor",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-67fgaor"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── mysqlwriter_viewer_role.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-o8krsif",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-o8krsif"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── role_binding.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ghfnxcv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ghfnxcv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   ├── role.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-0lo6a76",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-0lo6a76"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   │   └── service_account.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-01ttboy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-01ttboy"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   └── samples"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1eo19fz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1eo19fz"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│       └── demo_v1_mysqlwriter.yaml # CRD demo"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qujaulq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qujaulq"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── controllers"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-r6dezgk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-r6dezgk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   ├── mysqlwriter_controller.go  # 核心业务逻辑文件，编写Reconcile方法 实现Operator核心业务逻辑"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cugwvpb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cugwvpb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   └── suite_test.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-4i3r9h4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-4i3r9h4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── Dockerfile"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vmv9hsi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-vmv9hsi"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── go.mod"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-kuvg61v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-kuvg61v"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── go.sum"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vaeaua3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-vaeaua3"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── hack"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-rems8cb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-rems8cb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "│   └── boilerplate.go.txt"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-685aftw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-685aftw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── main.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-30c1zsq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-30c1zsq"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── Makefile"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-c7ltwtc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-c7ltwtc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "├── PROJECT"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-t3qs60w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-t3qs60w"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "└── README.md"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-4no38mj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-4no38mj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "14"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "directories, ``41"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "files"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5ry49o1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5ry49o1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "目录说明："
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-l8lr10d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-l8lr10d"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "api/v1/*.go ——此目录包含与定义我们的 MysqlWriter 资源相关的所有文件。我们将相应地编辑mysqlwriter_types.go并定义type  MysqlWriter struct我们希望我们的 MysqlWriter 资源具有的结构/模式。由于api/v1/mysqlwriter_types.go仅包含我们自定义资源的确切定义（通过各种结构），kubebuilder将 MysqlWriter 仅基于此文件生成CRD。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-crtgpn4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-crtgpn4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bin/* ——它只是包含了像其他一些工具的二进制文件controller-gen，并kustomize将于自举代码的某些部分和部署我们的操作是必需的。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-iwa2wa9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-iwa2wa9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "config/* —— 此目录包含围绕我们的operator和自定义资源的所有 YAML相关内容。YAML 清单类似于roles、rolebindings、CRD、示例演示 YAML 等，都位于此目录下。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-85uftbo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-85uftbo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controllers/* ——这是将包含我们的operator的源代码的地方，即我们operator的协调循环背后的逻辑/代码，关于观察 MysqlWriter 资源和将我们的operator与“管理器”（稍后定义）连接的东西将在这里编程."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qzmlkkl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qzmlkkl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "main.go ——这是我们运行operator的项目的入口点。这是我们的operator被实例化并附加到我们的“管理器”并执行的地方。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-rziloek",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-rziloek"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "“Manager”是包装一个或多个控制器/operator并将它们注册到 Kubernetes集群的组件。在我们的例子中，它只是包装和注册一个operator/控制器，即  MysqlWriter 。所以基本上，流程是：定义operator/控制器，将其附加/与管理器一起设置并执行管理器。“定义operator/控制器”和“定义与管理器一起设置的方法”在controllers/mysqlwriter_controller.go文件中完成（分别查看Reconcile和SetupWithManager方法）。实例化oeprator，用管理器设置它并执行管理器在main.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-7q9ng05",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-7q9ng05"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "hack/* ——此目录旨在存储基本的shell脚本或任何其他类型的“hacky”脚本，以自动化我们oeprator周围的任何类型的操作。例如，运行某些检查背后的脚本、递归格式化/linting代码的脚本、安装和设置必备工具的脚本等都将放置在这里。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-t40eim4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-t40eim4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Makefile ——此文件包含make围绕构建和部署我们的operator的所有相关目标以及其他内容，例如引导 CRD、实用程序代码（如带有控制器生成的 DeepCopy 方法等）。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-sviahjf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-sviahjf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Dockerfile —— 该文件包含 Dockerfile 脚本/指令，用于将我们的管理器（附有我们的operator并指示运行它）打包到一个 docker 镜像中，该镜像可以稍后部署在Kubernetes 集群上。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-8gg82sf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103145-8gg82sf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、开发业务逻辑"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-bzkoq08",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-bzkoq08"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们只需要处理两个文件:"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controllers/mysqlwriter_controller.go 、 ``api/v1/mysqlwriter_types.go"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。写出整个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "operator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-7qslhnn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-7qslhnn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该demo 实现功能是，针对创建的CRD ，在Operator 的Reconcile方法中捕捉创建CR和删除CR 的事件，创建一条CR 插入数据库一条对应的记录（命名空间 + CR 名称 为唯一主键） ，删除一条CR的同时 删除该条数据库记录。（由于是demo项目，业务逻辑中没有实现insert，delete的 数据库操作，获取spec 字段数据，模拟打印了日志）"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-rvv5lwl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103145-rvv5lwl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、集群中Operator调试"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mxfun5n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mxfun5n",
+				"updated": "20221229103145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1) 创建目录"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-x7jivah",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-x7jivah"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mkdir -p mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qb2o0cs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qb2o0cs"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cd mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-oxvzl8c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-oxvzl8c"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go mod init mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-diwvt7g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-diwvt7g"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;br/\u0026gt;2) 执行kubebuilder init 初始化项目"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-scjqxzl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-scjqxzl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubebuilder init \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-zikx63s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-zikx63s"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--domain zoe.k8s.test.com \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lldg2b2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lldg2b2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--repo github.com/herozdz/mysql-writer-operator.git \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gwithe7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gwithe7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--license apache2 \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-4oof4wa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-4oof4wa"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--skip-go-version-check"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mk3xqwf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mk3xqwf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "说明：此命令定义与我们的项目相关的基本通用文件并设置基本依赖项。基本上，它只是一些与您的项目相关的元信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1ggv7tx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1ggv7tx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "      ``随意更改--repo``--domain"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-i8mkm0e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-i8mkm0e"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# kubebuilder init \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ib3e10x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ib3e10x"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --domain zoe.k8s.test.com \\   "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-a7ztts3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-a7ztts3"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --repo github.com/herozdz/mysql-writer-operator.git \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-0g89tlx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-0g89tlx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --license apache2 \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-clb26x6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-clb26x6"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --skip-go-version-check"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-v66039h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-v66039h"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Writing scaffold ``for"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "you to edit..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-57u1xps",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-57u1xps"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Get controller runtime:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-6uxvjoj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-6uxvjoj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$ go get sigs.k8s.io/controller-runtime``@v0``.``5.0"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-i585vfo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-i585vfo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Update go.mod:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-e9xo3xg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-e9xo3xg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$ go mod tidy"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-pwhwacf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-pwhwacf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Running make:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-eaf3pp6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-eaf3pp6"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$ make"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gfmsasq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gfmsasq"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "which: no controller-gen in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin:/usr/local/kubebuilder/bin:/root/bin)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mro79nv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mro79nv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: creating ``new"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go.mod: module tmp"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-v9gurbk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-v9gurbk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-trp4p01",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-trp4p01"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd/controller-gen v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5p288q1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5p288q1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-s291mzf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-s291mzf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/root/go/bin/controller-gen object:headerFile=``\u0026quot;hack/boilerplate.go.txt\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "paths=``\u0026quot;./...\u0026quot;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-puqb46c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-puqb46c"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go fmt ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-wa3yaao",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-wa3yaao"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go vet ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-r7puhrb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-r7puhrb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go build -o bin/manager main.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-b2xvy8k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-b2xvy8k"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Next: define a resource with:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-2no5b37",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-2no5b37"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$ kubebuilder create api"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-b33xt5f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-b33xt5f"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;br/\u0026gt;\u0026lt;span\u0026gt;3) 执行：kubebuilder create api 创建API\u0026lt;/span\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-kr6g3dm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-kr6g3dm"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubebuilder create api \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-jywkwjg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-jywkwjg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--group demo \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-f4kgm3f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-f4kgm3f"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--version v1 \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-922wlcl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-922wlcl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--kind MysqlWriter \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-nvj1dx2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-nvj1dx2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--resource ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-i6ccttk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-i6ccttk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--controller ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-09km77h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-09km77h"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--namespaced ``true"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ha4uxle",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ha4uxle"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "说明：上面的命令将引导所有与CRD资源相关的所需文件和代码，并将其附加到我们的operator中，使我们可以轻松开始编写我们operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-tc1i5ge",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-tc1i5ge"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "create api ——这意味着在我们的项目中执行创建(引导)自定义资源的操作。但是为什么叫它“创建api”而不是“创建operator”呢?这是因为Kubernetes本身就是一个API驱动的工具，即使通过创建/部署一个operator，我们也只是向Kubernetes添加了一些新的API端点。这就是为什么Kubernetes认为我们在“创建api”。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-f4hfbpo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-f4hfbpo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--group demo "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ojq8m0b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ojq8m0b"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--version v1 "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-en3svgl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-en3svgl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--kind  MysqlWriter ——Kubernetes 中的每种资源type/kind都通过其 group-version-kind（或 GVK）的组合进行唯一标识。因此，Kubernetes API以分层的方式组织资源,而且，GVK 旨在以有组织的方式在 Kubernetes API中放置和集成资源。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-efvjdjx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-efvjdjx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "要在Kubernetes中识别任何资源的GVK，只需查看其YAML中的apiVersion和kind字段。例如，对于Kubernetes中的Deployment资源，apiVersion是apps/v1，表示它属于apps组，它的Kind类型是Deployment，它的版本是v1。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-tuo82cd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-tuo82cd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "在我们的例子中，如果你看下面与我们的CRD对应的样例YAML，组是demo.zoe.k8s.test.com(命令中的``\u0026quot; kubebuilder create api group \u0026quot;``参数 + ``\u0026quot; kubebuilder init domain \u0026quot;``参数)，kind是 MysqlWriter ，version是v1"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-32katyu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-32katyu"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--resource ``true``———通过这个，我们告诉 Kubebuilder 我们正在尝试构建一个自定义资源  MysqlWriter ，并且我们希望一些样板代码和文件也围绕我们的自定义资源进行 boostrapped。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-d405vuf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-d405vuf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--controller ``true`` —— 通过这种方式，我们告诉 Kubebuilder 我们希望我们的operator监视我们的 MysqlWriter 资源并通过controller协调它来对它采取行动。这将使 Kubebuilder 引导一些围绕“Reconcile()”方法（协调循环）的样板代码，以及使用我们项目的controller runtime管理器设置我们的operator/controller的方法。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-n45quwk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-n45quwk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--namespaced ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "——通过这种方式，我们告诉 Kubebuilder 考虑 MysqlWriter 将其用作命名空间资源，这与 ClusterRoles、ClusterRoleBindings 等集群范围的资源不同。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-it3khp0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-it3khp0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "有了上述所有参数和信息，Kubebuilder 将引导基本 CRD、RBAC、Makefile、Reconciliation Loop 周围的代码等等。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mm94r0w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mm94r0w"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "名字解释："
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mitbs3e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mitbs3e"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Kind，对象类型（schema）名称，例如“Cat”和“Dog”种类，不同的对象将具有不同的属性和特性，首字母需要大写"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-hktipfs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-hktipfs"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Resource，对象、类型的实体，每个资源（Resource）通常接受并返回单一种类的数据。一个种类（kind）可以接受和返回多个资源。例如，“Pod”种类作为“Pod”资源公开，允许用户创建、更新和删除 Pod，而单独的“Pod 状态”资源（作用于“Pod”种类）允许自动化流程更新该资源中的字段。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-z3ayagj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-z3ayagj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "API Group，一组资源的统称，资源在 API 组中绑定在一起，每个组可能有一个或多个独立于其他 API 组的版本，并且组内的每个版本都有一个或多个资源。组名通常采用域名形式，Kubernetes 项目保留使用空组、所有单字名称（“扩展”、“应用程序”）以及任何以“*.k8s.io”结尾的组名供其内部单独使用。选择群组名称时，建议选择群组或组织拥有的子域，例如“widget.mycompany.com”。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qdzqngn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qdzqngn"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CRD，即CustomResourceDefinitions，一种扩展K8s的方式，通过CRD为K8s定义新的资源类型"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xcna0bp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xcna0bp"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "CR，即CustomResources，是由CRD定义的一种资源类型的实例"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-naxfkvt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-naxfkvt"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GVK，Group、Version和Kind组合的缩写，定义了一种资源类型"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-sh631f0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-sh631f0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GVR，Group、Version和Resource组合的缩写，如果说GVK是一种类型，则GVR是这个类型的一个实例"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1dhy7zf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1dhy7zf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# kubebuilder create api \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9cm05tj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9cm05tj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --group demo \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-77wqxyv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-77wqxyv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --version v1 \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gfsmsx0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gfsmsx0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --kind MysqlWriter \\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-e8alyim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-e8alyim"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --resource ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xngqp2f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xngqp2f"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --controller ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\\"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-n3v18sl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-n3v18sl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026gt; --namespaced ``true"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-71wal99",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-71wal99"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Writing scaffold ``for"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "you to edit..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-o9qhtah",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-o9qhtah"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "api/v1/mysqlwriter_types.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-oplk314",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-oplk314"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controllers/mysqlwriter_controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qvbo7j2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qvbo7j2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Running make:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-6xnzjem",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-6xnzjem"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$ make"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-3laoxnd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-3laoxnd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "which: no controller-gen in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin:/usr/local/kubebuilder/bin:/root/bin)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-je1tem9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-je1tem9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: creating ``new"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go.mod: module tmp"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-kry1vyb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-kry1vyb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-0pji10l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-0pji10l"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd/controller-gen v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-2dd7x9r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-2dd7x9r"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vnym3ay",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-vnym3ay"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/root/go/bin/controller-gen object:headerFile=``\u0026quot;hack/boilerplate.go.txt\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "paths=``\u0026quot;./...\u0026quot;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-x0i34sf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-x0i34sf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go fmt ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qesz1pi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qesz1pi"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go vet ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-pqbjik1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-pqbjik1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go build -o bin/manager main.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-0qt0qhj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-0qt0qhj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;4) 修改代码\u0026lt;br/\u0026gt;   \u0026lt;/span\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qjxmpnk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qjxmpnk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;只参见源码中\u0026lt;span\u0026gt;:\u0026lt;code\u0026gt;controllers/mysqlwriter_controller.go 、 \u0026lt;/code\u0026gt;\u0026lt;code\u0026gt;api/v1/mysqlwriter_types.go \u0026lt;/code\u0026gt;\u0026lt;/span\u0026gt;\u0026lt;/span\u0026gt;``\u0026lt;span\u0026gt;\u0026lt;span\u0026gt;两个文件\u0026lt;/span\u0026gt;\u0026lt;/span\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-madmgxc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-madmgxc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;br/\u0026gt;5) \u0026lt;span\u0026gt;运行如下命令生成\u0026lt;/span\u0026gt;\u0026lt;code\u0026gt;CRD :\u0026lt;/code\u0026gt; make manifests "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-zyue7so",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-zyue7so"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# pwd"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-zg8u76a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-zg8u76a"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-2iapa9e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-2iapa9e"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# make manifests"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vwqtrtx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-vwqtrtx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "which: no controller-gen in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin:/usr/local/kubebuilder/bin:/root/bin)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-y9s3ee4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-y9s3ee4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: creating ``new"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go.mod: module tmp"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-q6541e2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-q6541e2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd/controller-gen v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-rp69tu8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-rp69tu8"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xamxqro",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xamxqro"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-652s19g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-652s19g"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/root/go/bin/controller-gen ``\u0026quot;crd:trivialVersions=true\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rbac:roleName=manager-role webhook paths=``\u0026quot;./...\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "output:crd:artifacts:config=config/crd/bases"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qj1n2a7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qj1n2a7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-up51asa",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-up51asa"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;\u0026lt;br/\u0026gt;\u0026lt;/span\u0026gt;\u0026lt;span\u0026gt;6）部署的 \u0026lt;/span\u0026gt;\u0026lt;code\u0026gt;\u0026lt;span\u0026gt;CRD ：\u0026lt;/span\u0026gt;\u0026lt;span\u0026gt;\u0026lt;span\u0026gt;make install\u0026lt;/span\u0026gt;\u0026lt;br/\u0026gt;\u0026lt;/span\u0026gt;\u0026lt;/code\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-01wctot",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-01wctot"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# pwd"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-jyktozo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-jyktozo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gka54ju",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gka54ju"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# make install"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-2mya4fx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-2mya4fx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "which: no controller-gen in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin:/usr/local/kubebuilder/bin:/root/bin)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qw0g0ql",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-qw0g0ql"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: creating ``new"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go.mod: module tmp"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ocmc9wa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ocmc9wa"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-oz9tu0s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-oz9tu0s"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd/controller-gen v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cm2208x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cm2208x"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go: finding sigs.k8s.io/controller-tools/cmd v0.``2.5"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-efx1gv6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-efx1gv6"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/root/go/bin/controller-gen ``\u0026quot;crd:trivialVersions=true\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "rbac:roleName=manager-role webhook paths=``\u0026quot;./...\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "output:crd:artifacts:config=config/crd/bases"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-k965zra",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-k965zra"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kustomize build config/crd | kubectl apply -f -"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1ewmncl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1ewmncl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Warning: apiextensions.k8s.io/v1beta1 CustomResourceDefinition is deprecated in v1.``16``+, unavailable in v1.``22``+; use apiextensions.k8s.io/v1 CustomResourceDefinition"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ufpy8oc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ufpy8oc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "customresourcedefinition.apiextensions.k8s.io/mysqlwriters.demo.zoe.k8s.test.com configured"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-bc7jzey",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-bc7jzey"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]#"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-uz1z08p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-uz1z08p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看系统支持的资源"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-juc74b0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-juc74b0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "~]# kubectl api-resources"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lv3d5fl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lv3d5fl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-als5n6u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-als5n6u"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysqlwriters                                   demo.zoe.k8s.test.com/v1               ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "         "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "MysqlWriter        #该resources为我们自定义的CRD"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-zow06x4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-zow06x4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mykinds                                        mygroup.ips.com.cn/v1                  ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "         "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Mykind"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-d6dhmgk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-d6dhmgk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "deployments                       deploy       apps/v1                                ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "         "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Deployment"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ghbn7v5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ghbn7v5"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pods                              po           v1                                     ``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "         "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Pod"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ivn3zc7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ivn3zc7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "                                      ``... ..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-pbf3isb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-pbf3isb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "namespaces                        ns           v1                                     ``false"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "        "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Namespace"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-tl5k5un",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-tl5k5un"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;br/\u0026gt;\u0026lt;span\u0026gt;7) 运行\u0026lt;span\u0026gt;controller\u0026lt;/span\u0026gt;\u0026lt;code\u0026gt; : \u0026lt;/code\u0026gt;make run \u0026lt;/span\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-tzwdcxv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-tzwdcxv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "注意：运行make run的作用是启动Operator 程序，在k8s中调试该程序，运行该命令后，需要重新在开一个shell 窗口，对这个Operator程序联调，比如kubectl apply -f xxx.yaml。 正常生产操作是将该Operator打包镜像上传到镜像仓库中，在k8s中进行安装。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-kmtcv1v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-kmtcv1v"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# make run"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9etbb80",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9etbb80"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GOBIN=/opt/mysql-writer-operator/bin go install sigs.k8s.io/controller-tools/cmd/controller-gen``@v0``.``8.0"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-2q7p2x9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-2q7p2x9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator/bin/controller-gen rbac:roleName=manager-role crd webhook paths=``\u0026quot;./...\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "output:crd:artifacts:config=config/crd/bases"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-p10c236",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-p10c236"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator/bin/controller-gen object:headerFile=``\u0026quot;hack/boilerplate.go.txt\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "paths=``\u0026quot;./...\u0026quot;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-pl7os7g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-pl7os7g"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go fmt ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-s2kxjjw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-s2kxjjw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controllers/mysqlwriter_controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cqdcixr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cqdcixr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go vet ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-dzpc2jx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-dzpc2jx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "# github.com/herozdz/mysql-writer-operator.git/controllers"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-pmp0ll4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-pmp0ll4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controllers/mysqlwriter_controller.go:``117``:``14``: Sprintf format %d has arg table of wrong type string"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1q8fmxl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1q8fmxl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "make: *** [Makefile:``56``: vet] Error ``2"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ix1gd0j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ix1gd0j"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# make run"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-4wnt4ld",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-4wnt4ld"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator/bin/controller-gen rbac:roleName=manager-role crd webhook paths=``\u0026quot;./...\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "output:crd:artifacts:config=config/crd/bases"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-33vy2ea",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-33vy2ea"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator/bin/controller-gen object:headerFile=``\u0026quot;hack/boilerplate.go.txt\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "paths=``\u0026quot;./...\u0026quot;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-j12aevs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-j12aevs"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go fmt ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-feobdbb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-feobdbb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controllers/mysqlwriter_controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-e0oech2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-e0oech2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go vet ./..."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9fjyo3y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9fjyo3y"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go run ./main.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-nfb6qx5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-nfb6qx5"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657092964722726e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller-runtime.metrics  Metrics server is starting to listen    {``\u0026quot;addr\u0026quot;``: ``\u0026quot;:8080\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-yjzwv4w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-yjzwv4w"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657092964723067e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    setup   starting manager"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-0mnbqjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-0mnbqjd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657092964724069e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    Starting server {``\u0026quot;path\u0026quot;``: ``\u0026quot;/metrics\u0026quot;``, ``\u0026quot;kind\u0026quot;``: ``\u0026quot;metrics\u0026quot;``, ``\u0026quot;addr\u0026quot;``: ``\u0026quot;[::]:8080\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-463iboj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-463iboj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570929647241013e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    Starting server {``\u0026quot;kind\u0026quot;``: ``\u0026quot;health probe\u0026quot;``, ``\u0026quot;addr\u0026quot;``: ``\u0026quot;[::]:8081\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-8g8ne7i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-8g8ne7i"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570929647244153e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Starting EventSource    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;source\u0026quot;``: ``\u0026quot;kind source: *v1.MysqlWriter\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cvyoyyr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cvyoyyr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570929647244318e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Starting Controller {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-f4d76ca",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-f4d76ca"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570929648281682e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Starting workers    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;worker count\u0026quot;``: ``1``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-qpkscfd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-qpkscfd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "8) 调试Operator\u0026lt;br/\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ffno26l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-ffno26l"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "8.1 kubectl apply -f mysqlwriter.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ikfzrnk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ikfzrnk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "/opt/mysql-writer-operator/config/samples 路径中有demo yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-8le56l2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-8le56l2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "apiVersion: demo.zoe.k8s.test.com/v1"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1neplos",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1neplos"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kind: MysqlWriter"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-blortpx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-blortpx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metadata:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-nrqhql7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-nrqhql7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``name: zoudezhu-student"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9ea8er9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9ea8er9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``namespace: ``default"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-z009ikh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-z009ikh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "spec:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-j3sqsat",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-j3sqsat"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``table: student"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-hoalitw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-hoalitw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``name: zoudezhu"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lwzjz67",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lwzjz67"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``age: ``18"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mjz3667",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mjz3667"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``country: china"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-4vzcfrp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-4vzcfrp"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "8.2 捕捉Operator创建事件日志"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-buum4uy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-buum4uy"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "opt]# kubectl apply -f mysqlwriter.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ybjx8vm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ybjx8vm"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysqlwriter.demo.zoe.k8s.test.com/zoudezhu-student created"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-a9wofil",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-a9wofil"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570938442338233e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  synchronizeResourceToDB Insert name: zoudezhu age: ``18"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "country: china into table: student with id as ``default``/zoudezhu-student    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-uqbhhn6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-uqbhhn6"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657093844233969e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  sychronized the resource ``default``/zoudezhu-student with the DB successfully  {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-etl0kam",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-etl0kam"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570938442340033e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  synchronizeResourceToDB Insert name: zoudezhu age: ``18"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "country: china into table: student with id as ``default``/zoudezhu-student    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ftfujz0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ftfujz0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570938442340074e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  sychronized the resource ``default``/zoudezhu-student with the DB successfully  {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-bf7cgla",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-bf7cgla"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8.3 查看创建的CR"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-g3ntm1i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-g3ntm1i"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "opt]# kubectl get mysqlwriters -A"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lskvnfh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lskvnfh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NAMESPACE   NAME               AGE"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-nrxvugl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-nrxvugl"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "default"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "     "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zoudezhu-student   3m7s"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-jfx6e42",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-jfx6e42"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8.4 提交修改后的yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-i4i3nwt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-i4i3nwt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改yaml 中age字段 18--\u003e30   ，提交"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply -f mysqlwriter.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-s836vxe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-s836vxe"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "apiVersion: demo.zoe.k8s.test.com/v1"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-6g1m5ky",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-6g1m5ky"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kind: MysqlWriter"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-kmf88ke",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-kmf88ke"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metadata:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-dzmnukj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-dzmnukj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``name: zoudezhu-student"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-fv5ex2p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-fv5ex2p"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``namespace: ``default"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-6z0hb7x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-6z0hb7x"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "spec:"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5pfaku1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5pfaku1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``table: student"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9d6golc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9d6golc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``name: zoudezhu"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cmmw5mt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cmmw5mt"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``age: ``30"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "#######################修改年龄"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gakzq1e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gakzq1e"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "  ``country: china"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gzz3lo7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-gzz3lo7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "8.5 捕捉Operator更新事件日志"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-joq4vi6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-joq4vi6"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570945603502667e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  synchronizeResourceToDB Insert name: zoudezhu age: ``30"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "country: china into table: student with id as ``default``/zoudezhu-student    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-acu56i1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-acu56i1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657094560350289e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  sychronized the resource ``default``/zoudezhu-student with the DB successfully  {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-crj6c4i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-crj6c4i"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8.6 删除CR实例"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5fhtxcb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5fhtxcb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "opt]# kubectl get mysqlwriters"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ywa9sgc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ywa9sgc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NAME               AGE"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cm9qui4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cm9qui4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zoudezhu-student   24m"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-7u4mc3b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-7u4mc3b"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "opt]# kubectl delete mysqlwriter zoudezhu-student "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-n3ndt4n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-n3ndt4n"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysqlwriter.demo.zoe.k8s.test.com ``\u0026quot;zoudezhu-student\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "deleted"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-3aroo4z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-3aroo4z"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "opt]# kubectl get mysqlwriters"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-17hn2wf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-17hn2wf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "No resources found in ``default"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "namespace."
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-3rnbebg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-3rnbebg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "opt]#"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vfy891y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103145-vfy891y"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "8.7 捕捉Operator删除事件日志"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-313oaui",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-313oaui"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657095308694504e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Deletion detected! Proceeding to cleanup the finalizers...  {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-g0xeh89",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-g0xeh89"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570953086945498e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  cleanupRowFinalizerCallback DELETE id: ``default``/zoudezhu-student table: student      {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-z94oa6w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-z94oa6w"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6570953087092404e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  cleaned up the ``'finalizers.postgreswriters.demo.yash.com/cleanup-row'"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "finalizer successfully    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cl5avga",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103145-cl5avga"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、本地调试"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-er4ovl0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-er4ovl0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）k8s安装dlv调试工具"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-7ee2zby",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-7ee2zby"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go install github.com/go-delve/delve/cmd/dlv``@latest"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ska1f7z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ska1f7z"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "查看gopath路径"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ggn5cri",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ggn5cri"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go env"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xhemuw9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xhemuw9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "GOPATH=``\u0026quot;/root/go\u0026quot;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gnsgvom",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gnsgvom"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cd /root/go/bin"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-p9xfe1c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-p9xfe1c"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bin]# ll"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lxbcok9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lxbcok9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "total ``36776"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-h3fv1fn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-h3fv1fn"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-rwxr-xr-x ``1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "root root ``20966753"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Jul  ``6"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "14``:``50"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "controller-gen"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-avzjwrd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-avzjwrd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-rwxr-xr-x ``1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "root root ``16687632"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Jul ``11"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "19``:``01"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "dlv"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-3iixf4m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-3iixf4m"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ln -s /root/go/bin/dlv /usr/bin/dlv"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-15kiuop",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-15kiuop"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）进入k8s远程项目路径"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-p4b9atm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-p4b9atm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重要：k8s远程项目目录的go代码必须保持跟本地开发环境 项目go代码一致！！！"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xiawiza",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xiawiza"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行远程监控命令：dlv debug --headless --listen=:2345 --api-version=2 --accept-multiclient"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ygy6fj7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ygy6fj7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# pwd"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-n2ccgmg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-n2ccgmg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-yethume",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-yethume"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# dlv debug --headless --listen=:``2345"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--api-version=``2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--accept-multiclient"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-m2t7ema",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-m2t7ema"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "API server listening at: [::]:``2345"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lwr1v1y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lwr1v1y"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "2022``-``07``-11T19:``45``:``17``+``08``:``00"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "warning layer=rpc Listening ``for"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "remote connections (connections are not authenticated nor encrypted)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-8jjkf9f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-8jjkf9f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3）windows本地goLang开发环境创建go remote"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-48q2fwv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-48q2fwv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "填写远程k8shost 192.168.56.5  ,和dlv debug 远程服务端调试的端口： 2345"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9tvbtu7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9tvbtu7"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-11_19-46-1-20221229103145-bhmbmfp.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-238nldz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-238nldz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4）go remote 链接 远程dlv 调试程序日志"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-cpb5t3q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-cpb5t3q"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysql-writer-operator]# dlv debug --headless --listen=:``2345"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--api-version=``2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--accept-multiclient"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-pdennn7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-pdennn7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "API server listening at: [::]:``2345"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-rc2t4kn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-rc2t4kn"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "2022``-``07``-11T19:``45``:``17``+``08``:``00"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "warning layer=rpc Listening ``for"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "remote connections (connections are not authenticated nor encrypted)"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-f4v21qx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-f4v21qx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400056205235e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller-runtime.metrics  Metrics server is starting to listen    {``\u0026quot;addr\u0026quot;``: ``\u0026quot;:8080\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-09rdnk2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-09rdnk2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400056213129e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    setup   starting manager"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-1oukg8h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-1oukg8h"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400056246505e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    Starting server {``\u0026quot;path\u0026quot;``: ``\u0026quot;/metrics\u0026quot;``, ``\u0026quot;kind\u0026quot;``: ``\u0026quot;metrics\u0026quot;``, ``\u0026quot;addr\u0026quot;``: ``\u0026quot;[::]:8080\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-lv1bwxo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-lv1bwxo"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400056247022e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    Starting server {``\u0026quot;kind\u0026quot;``: ``\u0026quot;health probe\u0026quot;``, ``\u0026quot;addr\u0026quot;``: ``\u0026quot;[::]:8081\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-xbp82ia",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-xbp82ia"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400056247566e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Starting EventSource    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;source\u0026quot;``: ``\u0026quot;kind source: *v1.MysqlWriter\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-13wmc6k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-13wmc6k"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657540005624934e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Starting Controller {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-515bz1p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-515bz1p"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400057262325e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Starting workers    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;worker count\u0026quot;``: ``1``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-6pjturc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-6pjturc"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657540005726402e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  synchronizeResourceToDB Insert name: zoudezhu age: ``30"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "country: china into table: student with id as ``default``/zoudezhu-student    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-5xgttnk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-5xgttnk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400057264154e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  sychronized the resource ``default``/zoudezhu-student with the DB successfully  {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gvcl1i9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gvcl1i9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657540005739173e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  synchronizeResourceToDB Insert name: zoudezhu age: ``30"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "country: china into table: student with id as ``default``/zoudezhu-student1   {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mqvs76l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mqvs76l"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400057392008e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  sychronized the resource ``default``/zoudezhu-student1 with the DB successfully {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-3k103e9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-3k103e9"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400057392447e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  synchronizeResourceToDB Insert name: zoudezhu age: ``30"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "country: china into table: student with id as ``default``/zoudezhu-student1   {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ghw4ui1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ghw4ui1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575400057392511e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  sychronized the resource ``default``/zoudezhu-student1 with the DB successfully {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-s8n3yfh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103145-s8n3yfh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5）kubectl操作CRD实例（删除，创建）"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-o2bewaj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-o2bewaj"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bin]# kubectl get mysqlwriters"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-9zuifdq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-9zuifdq"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NAME                AGE"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-nwvvjgb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-nwvvjgb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zoudezhu-student    5d2h"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ged2u33",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ged2u33"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zoudezhu-student1   5d1h"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-gzhfiz8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-gzhfiz8"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bin]# kubectl delete mysqlwriter zoudezhu-student"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ey2brt1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ey2brt1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zoudezhu-student   zoudezhu-student1  "
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-q6npluv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-q6npluv"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bin]# kubectl delete mysqlwriter zoudezhu-student1"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-mllsgh7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-mllsgh7"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mysqlwriter.demo.zoe.k8s.test.com ``\u0026quot;zoudezhu-student1\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "deleted"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-boajlvf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-boajlvf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "[root``@k18``-``5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bin]# kubectl get mysqlwriters"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-d5xy84l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-d5xy84l"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NAME               AGE"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ok5q58l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ok5q58l"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "zoudezhu-student   5d2h"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-7cjn6dl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-7cjn6dl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "触发本地golang IDE中项目的debug ,就可以在本地调试了。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-oolcaka",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-oolcaka"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-11_20-3-15-20221229103145-xgby3kf.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-31ow5ks",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-31ow5ks"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-11_20-4-57-20221229103145-zjmgzzt.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-l5ioh8q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-l5ioh8q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "服务端debug日志："
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-sy582yx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-sy582yx"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575410755247972e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  Deletion detected! Proceeding to cleanup the finalizers...  {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-w36smgr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-w36smgr"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.6575411604670293e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  cleanupRowFinalizerCallback DELETE id: ``default``/zoudezhu-student1 table: student     {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-ohr8ma3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-ohr8ma3"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1``.657541160481105e+``09"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "   "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "INFO    controller.mysqlwriter  cleaned up the ``'finalizers.postgreswriters.demo.yash.com/cleanup-row'"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "finalizer successfully    {``\u0026quot;reconciler group\u0026quot;``: ``\u0026quot;demo.zoe.k8s.test.com\u0026quot;``, ``\u0026quot;reconciler kind\u0026quot;``: ``\u0026quot;MysqlWriter\u0026quot;``, ``\u0026quot;name\u0026quot;``: ``\u0026quot;zoudezhu-student1\u0026quot;``, ``\u0026quot;namespace\u0026quot;``: ``\u0026quot;default\u0026quot;``}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103145-vv3vnha",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103145-vv3vnha"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-11_20-6-51-20221229103145-v4efg05.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		}
+	]
+}

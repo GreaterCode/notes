@@ -1,0 +1,2573 @@
+{
+	"ID": "20230203103855-crofv8p",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230203103855-crofv8p",
+		"title": "容器原理（搞懂 layerID，diffID，chainID，cache-id）_oceanweave的博客-CSDN博客_docker diffid是什么",
+		"updated": "20230203103855"
+	},
+	"Children": [
+		{
+			"ID": "20230203103855-1poh2s1",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230203103855-1poh2s1"
+			}
+		},
+		{
+			"ID": "20230203103855-50qcxg5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-50qcxg5"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-74dph6i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-74dph6i"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-18plf4h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-18plf4h"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/qq_24433609/article/details/120763486",
+									"TextMarkTextContent": "https://blog.csdn.net/qq_24433609/article/details/120763486"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-u7pvj2m",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230203103855-u7pvj2m"
+			}
+		},
+		{
+			"ID": "20230203103855-uzrw7df",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-uzrw7df",
+				"updated": "20230203103855"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-uvwjmse",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-uvwjmse",
+				"updated": "20230203103855"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-fkq9b2v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-fkq9b2v"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-tvvbcep",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-tvvbcep"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.cnblogs.com/koktlzz/p/14365025.html#repository",
+									"TextMarkTextContent": "Docker核心原理：镜像和容器"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-3lpjo64",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-3lpjo64"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-p3biclm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-p3biclm"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.jianshu.com/p/b0b079753958",
+									"TextMarkTextContent": "docker文件中layerID-diffID-chainID-cacheID 关系"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-jn28i9b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-jn28i9b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总览"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-c8di93q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-c8di93q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "镜像目录及文件说明"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-jov07wr",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-jov07wr"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-5c4rpnb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-5c4rpnb"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-f6dwj3h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-f6dwj3h"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "/var/lib/docker/image/overlay2 目录"
+								}
+							]
+						},
+						{
+							"ID": "20230203103855-ecahe54",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230203103855-ecahe54"
+							},
+							"Children": [
+								{
+									"ID": "20230203103855-wb5thnn",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230203103855-wb5thnn"
+									},
+									"Children": [
+										{
+											"ID": "20230203103855-sw56ysj",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230203103855-sw56ysj"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "distribution 目录"
+												}
+											]
+										},
+										{
+											"ID": "20230203103855-3qmkns6",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20230203103855-3qmkns6"
+											},
+											"Children": [
+												{
+													"ID": "20230203103855-cj1edq0",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-cj1edq0"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-h02neu4",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-h02neu4"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "code",
+																	"TextMarkTextContent": "diffid-by-digest"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": " 保存了"
+																},
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "code",
+																	"TextMarkTextContent": "digest(layerID)-\u0026gt;diffID"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": "的映射关系"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-ym307xz",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-ym307xz"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-naa8r0i",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-naa8r0i"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "code",
+																	"TextMarkTextContent": "v2metadata-by-diffid"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": " 保存了"
+																},
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "code",
+																	"TextMarkTextContent": "diffid -\u0026gt; (digest,repository)"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": "的映射关系"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-1hqtmsq",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-1hqtmsq"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-nunuprv",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-nunuprv"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "code",
+																	"TextMarkTextContent": "digest(layerID)"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": " 就是 pull 镜像时的 hash ID，拉取是 镜像层文件是压缩文件，压缩态"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-hfef6pc",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-hfef6pc"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-pg3h1wn",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-pg3h1wn"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "code",
+																	"TextMarkTextContent": "diffid"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": " 是 docker inspect 查看到的 镜像层 hash ID，此时 镜像层文件是解压缩的，解压缩态"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-bijkh77",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-bijkh77"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-et8h2bm",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-et8h2bm"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "因此虽说这两种 ID 都表示 镜像层 hash ID，但一个是压缩的，一个是解压缩的，所以 hash 运算后不一致"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230203103855-z6080by",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230203103855-z6080by"
+									},
+									"Children": [
+										{
+											"ID": "20230203103855-2wxb87l",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230203103855-2wxb87l"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "imagedb 目录"
+												}
+											]
+										},
+										{
+											"ID": "20230203103855-cgototr",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20230203103855-cgototr"
+											},
+											"Children": [
+												{
+													"ID": "20230203103855-vcnso7q",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-vcnso7q"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-ti8h5p1",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-ti8h5p1"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "保存镜像的元数据信息"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-7kqsd65",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-7kqsd65"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-v1fid1v",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-v1fid1v"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "两个子文件夹 content/ 和 metadata/"
+																}
+															]
+														},
+														{
+															"ID": "20230203103855-x86d1xs",
+															"Type": "NodeList",
+															"ListData": {},
+															"Properties": {
+																"id": "20230203103855-x86d1xs"
+															},
+															"Children": [
+																{
+																	"ID": "20230203103855-lninyjl",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-lninyjl"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-9ci0va7",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-9ci0va7"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "tree /var/lib/docker/image/overlay2/imagedb 可以查看此目录的结构"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-2r1q4jq",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-2r1q4jq"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-f0br9lr",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-f0br9lr"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "打开"
+																},
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "content/sha256"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": "目录下以镜像ID命名的文件，我们 "
+																},
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "可以看到镜像的元数据信息"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": " ，包括了镜像架构、操作系统 、默认配置、创建时间、历史信息和"
+																},
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "rootfs"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": "等"
+																}
+															]
+														},
+														{
+															"ID": "20230203103855-oemz9uu",
+															"Type": "NodeList",
+															"ListData": {},
+															"Properties": {
+																"id": "20230203103855-oemz9uu"
+															},
+															"Children": [
+																{
+																	"ID": "20230203103855-tt31u9v",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-tt31u9v"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-oqolbn2",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-oqolbn2"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "cat /var/lib/docker/image/overlay2/imagedb/content/sha256/（目录下任一镜像ID） | python -mjson.tool"
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"ID": "20230203103855-ktoaier",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-ktoaier"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-8hr39pt",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-8hr39pt"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "image元数据中layer的diffID是以低层到高层的顺序记录的"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230203103855-u7mddbv",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230203103855-u7mddbv"
+									},
+									"Children": [
+										{
+											"ID": "20230203103855-ryj6die",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230203103855-ryj6die"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "layerdb 目录"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "（ chainID、cacah-id）"
+												}
+											]
+										},
+										{
+											"ID": "20230203103855-3piyhoy",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20230203103855-3piyhoy"
+											},
+											"Children": [
+												{
+													"ID": "20230203103855-q5rpnis",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-q5rpnis"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-vwiybpb",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-vwiybpb"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "保存镜像层的关联关系"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-7hadqr9",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-7hadqr9"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-khgr320",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-khgr320"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "layerdb/sha256"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": "下的目录名称是 "
+																},
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "以layer的chainID来命名的"
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": " ，它的计算方式为："
+																}
+															]
+														},
+														{
+															"ID": "20230203103855-wahpcbv",
+															"Type": "NodeList",
+															"ListData": {},
+															"Properties": {
+																"id": "20230203103855-wahpcbv"
+															},
+															"Children": [
+																{
+																	"ID": "20230203103855-frx51g0",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-frx51g0"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-0hs35he",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-0hs35he"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "如果layer是最底层，没有任何父layer，那么 "
+																				},
+																				{
+																					"Type": "NodeTextMark",
+																					"TextMarkType": "strong",
+																					"TextMarkTextContent": "diffID = chainID"
+																				},
+																				{
+																					"Type": "NodeText",
+																					"Data": " ;"
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"ID": "20230203103855-brr82yj",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-brr82yj"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-1ijtkn7",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-1ijtkn7"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "否则，"
+																				},
+																				{
+																					"Type": "NodeTextMark",
+																					"TextMarkType": "strong",
+																					"TextMarkTextContent": "chainID(n)=sha256sum(chainID(n-1)) diffID(n))"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-qxhqa52",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-qxhqa52"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-o1re6ye",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-o1re6ye"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "查看： tree /var/lib/docker/image/overlay2/layerdb -L 2"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-feqzfhg",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-feqzfhg"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-537oc70",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-537oc70"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "举例，查看某一镜像层 chainID 目录下的内容： cat /var/lib/docker/image/overlay2/layerdb/sha256/（任一chainID）"
+																}
+															]
+														},
+														{
+															"ID": "20230203103855-a9ym30s",
+															"Type": "NodeList",
+															"ListData": {},
+															"Properties": {
+																"id": "20230203103855-a9ym30s"
+															},
+															"Children": [
+																{
+																	"ID": "20230203103855-oehe1h7",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-oehe1h7"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-tp22729",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-tp22729"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "parent：父layer的chainID"
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"ID": "20230203103855-yeyjmdy",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-yeyjmdy"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-ztrgb1w",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-ztrgb1w"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "size：layer文件的大小"
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"ID": "20230203103855-hfx2txz",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-hfx2txz"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-zlbxqmh",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-zlbxqmh"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeTextMark",
+																					"TextMarkType": "strong",
+																					"TextMarkTextContent": "cache-id：存储驱动通过cache-id索引到layer的实际文件内容"
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"ID": "20230203103855-objso4n",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-objso4n"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-bvlkpr3",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-bvlkpr3"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "diff（猜测） ： 此层解压缩的 id"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230203103855-g83w6jw",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230203103855-g83w6jw"
+									},
+									"Children": [
+										{
+											"ID": "20230203103855-vesgloh",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230203103855-vesgloh"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "strong",
+													"TextMarkTextContent": "repositories.json 文件"
+												}
+											]
+										},
+										{
+											"ID": "20230203103855-gsc75jt",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20230203103855-gsc75jt"
+											},
+											"Children": [
+												{
+													"ID": "20230203103855-u49aitg",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-u49aitg"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-l8w6izj",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-l8w6izj"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "这个需要先搞清楚 registry 是镜像仓库，而 repository 代表镜像组（比如不同版本的 nginx 镜像）"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-vzws2hw",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-vzws2hw"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-appn7t5",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-appn7t5"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "该文件中描述了宿主机上所有镜像的repository元数据，主要包括镜像名、tag和镜像ID"
+																}
+															]
+														},
+														{
+															"ID": "20230203103855-r9lhf5w",
+															"Type": "NodeList",
+															"ListData": {},
+															"Properties": {
+																"id": "20230203103855-r9lhf5w"
+															},
+															"Children": [
+																{
+																	"ID": "20230203103855-87lbw9z",
+																	"Type": "NodeListItem",
+																	"ListData": {
+																		"BulletChar": 42,
+																		"Marker": "Kg=="
+																	},
+																	"Properties": {
+																		"id": "20230203103855-87lbw9z"
+																	},
+																	"Children": [
+																		{
+																			"ID": "20230203103855-mn4na9u",
+																			"Type": "NodeParagraph",
+																			"Properties": {
+																				"id": "20230203103855-mn4na9u"
+																			},
+																			"Children": [
+																				{
+																					"Type": "NodeText",
+																					"Data": "镜像ID是Docker采用SHA256算法"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20230203103855-6cskxdx",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20230203103855-6cskxdx"
+													},
+													"Children": [
+														{
+															"ID": "20230203103855-yh1z75j",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20230203103855-yh1z75j"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "查看：cat /var/lib/docker/image/overlay2/repositories.json | python -mjson.tool"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-9wibru1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-9wibru1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "镜像"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-jbv8ntw",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230203103855-jbv8ntw"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230203103855-ftplof5",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230203103855-ftplof5"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "Docker镜像是一个只读的容器模板，含有启动Docker容器所需的文件系统。Docker镜像的文件内容和一些运行容器的配置文件组成了Docker容器的文件系统运行环境——rootfs。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-bnech57",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-bnech57"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当我们使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "docker pull"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "下载一个nginx镜像后，可以在Docker的工作目录"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "/var/lib/docker/image/overlay2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "下找到它的相关信息（路径中的overlay2是Docker目前使用的一种存储驱动，我们后面会详细讲解这项技术）："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-i7p29lg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-i7p29lg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# docker images\nREPOSITORY   TAG       IMAGE ID       CREATED       SIZE\nnginx        latest    f6d0b4767a6c   3 weeks ago   133MB\n[root@localhost ~]# ls /var/lib/docker/image/overlay2\ndistribution  imagedb  layerdb  repositories.json\n12345\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-7cmpbq0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-7cmpbq0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Repository"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-obneigx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-obneigx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Docker的镜像管理系统中，registry代表镜像仓库，如官方的Docker Hub。而repository则代表镜像组，即包含了不同版本的镜像集合。repositories.json文件中描述了宿主机上所有镜像的repository元数据，主要包括镜像名、tag和镜像ID。而镜像ID是Docker采用SHA256算法，根据镜像元数据配置文件计算得出的。"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-q6w0n9f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-q6w0n9f"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# cat /var/lib/docker/image/overlay2/repositories.json | python -mjson.tool\n{ \n    \"Repositories\": { \n        \"nginx\": { \n            \"nginx:latest\": \"sha256:f6d0b4767a6c466c178bf718f99bea0d3742b26679081e52dbf8e0c7c4c42d74\",\n            \"nginx@sha256:10b8cc432d56da8b61b070f4c7d2543a9ed17c2b23010b43af434fd40e2ca4aa\": \"sha256:f6d0b4767a6c466c178bf718f99bea0d3742b26679081e52dbf8e0c7c4c42d74\"\n        }\n    }\n}\n123456789\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-fvs6xbx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-fvs6xbx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Image"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-zpp5gtw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-zpp5gtw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "镜像的元数据信息保存在imagedb目录中，其文件结构如下："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-rkftfc2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-rkftfc2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# tree  /var/lib/docker/image/overlay2/imagedb\n/var/lib/docker/image/overlay2/imagedb\n├── content\n│   └── sha256\n│       └── f6d0b4767a6c466c178bf718f99bea0d3742b26679081e52dbf8e0c7c4c42d74\n└── metadata\n    └── sha256\n\n4 directories, 1 file\n123456789\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-jrx38oq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-jrx38oq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "打开"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "content/sha256"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "目录下以镜像ID命名的文件，我们可以看到镜像的元数据信息，包括了镜像架构、操作系统 、默认配置、创建时间、历史信息和rootfs等："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-imrg7mj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-imrg7mj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# cat /var/lib/docker/image/overlay2/imagedb/content/sha256/f6d0b4* | python -mjson.tool\n{ \n    \"architecture\": \"amd64\",\n    ...\n    \"created\": \"2021-01-12T10:17:41.649267496Z\",\n    \"docker_version\": \"19.03.12\",\n    ...\n    \"os\": \"linux\",\n    \"rootfs\": { \n        \"diff_ids\": [\n            \"sha256:cb42413394c4059335228c137fe884ff3ab8946a014014309676c25e3ac86864\",\n            \"sha256:1c91bf69a08b515a1f9c36893d01bd3123d896b38b082e7c21b4b7cc7023525a\",\n            \"sha256:56bc37de0858bc2a5c94db9d69b85b4ded4e0d03684bb44da77e0fe93a829292\",\n            \"sha256:3e5288f7a70f526d6bceb54b3568d13c72952936cebfe28ddcb3386fe3a236ba\",\n            \"sha256:85fcec7ef3efbf3b4e76a0f5fb8ea14eca6a6c7cbc0c52a1d401ad5548a29ba5\"\n        ],\n        \"type\": \"layers\"\n    }\n123456789101112131415161718\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-o54x82m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-o54x82m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这些信息中，我们最关心的是rootfs。上文提到，rootfs是容器运行的文件系统环境。而从上面的元数据信息中我们发现，rootfs是由多个layer文件组成的。元数据记录了这些layer的diffID，它们是Docker使用SHA256算法根据layer文件内容计算得到的。这样做的好处是可以根据diffID检查layer文件的完整性，并且可以让相同diffID的layer文件被不同镜像共享。"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-eh5m3ni",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-eh5m3ni"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Layer"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-m4ulsgw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-m4ulsgw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "layerdb/sha256"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "下的目录名称是以layer的chainID来命名的，它的计算方式为："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-6rjt24p",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-6rjt24p"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-frebt4w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-frebt4w"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-5vuiu4c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-5vuiu4c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果layer是最底层，没有任何父layer，那么 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "diffID = chainID"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ;"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-9y85dqa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-9y85dqa"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-5zi1tpa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-5zi1tpa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "否则，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "chainID(n)=sha256sum(chainID(n-1)) diffID(n))"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-idrgpz5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-idrgpz5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# tree  /var/lib/docker/image/overlay2/layerdb -L 2\n/var/lib/docker/image/overlay2/layerdb\n├── sha256\n│   ├── 3c90a0917c79b758d74b7040f62d17a7680cd14077f734330b1994a2985283b8\n│   ├── 4dfe71c4470c5920135f00af483556b09911b72547113512d36dc29bfc5f7445\n│   ├── a1c538085c6f891424160d8db120ea093d4dda393e94cd4713e3fff3c82299b5\n│   ├── a3ee2510dcf02c980d7aff635909612006fd1662084d6225e52e769b984abeb5\n│   └── cb42413394c4059335228c137fe884ff3ab8946a014014309676c25e3ac86864\n└── tmp\n123456789\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-sf65nwa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-sf65nwa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以发现只有layercb42413394c*的diffID和chainID相等，因为它就是镜像的最底层。实际上image元数据中layer的diffID是以低层到高层的顺序记录的，我们可以根据公式计算出倒数第二层的chainID："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-z8mlqmu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-z8mlqmu"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# echo -n \"sha256:cb42413394c4059335228c137fe884ff3ab8946a014014309676c25e3ac86864 sha256:1c91bf69a08b515a1f9c36893d01bd3123d896b38b082e7c21b4b7cc7023525a\" | sha256sum -\na3ee2510dcf02c980d7aff635909612006fd1662084d6225e52e769b984abeb5  -\n[root@localhost ~]# ls /var/lib/docker/image/overlay2/layerdb/sha256 | grep a3ee2510dcf0*\na3ee2510dcf02c980d7aff635909612006fd1662084d6225e52e769b984abeb5\n1234\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-p47n0px",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-p47n0px"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每一个以layer的chainID命名的目录下都保存了镜像层layer的元数据信息："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-yh169hs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-yh169hs"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# ls  /var/lib/docker/image/overlay2/layerdb/sha256/a3ee2510dcf02c980d7*\ncache-id  diff  parent  size  tar-split.json.gz\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-gj9md54",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-gj9md54"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-tk56isv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-tk56isv"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-qed4tcw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-qed4tcw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "parent：父layer的chainID"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-r37to4j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-r37to4j"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-ay422ze",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-ay422ze"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "size：layer文件的大小"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-y5gium2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-y5gium2"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-b84iu4u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-b84iu4u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cache-id：存储驱动通过cache-id索引到layer的实际文件内容"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-eoycra4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-eoycra4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# cat /var/lib/docker/image/overlay2/layerdb/sha256/a3ee2510dcf02c980d7*/parent\nsha256:cb42413394c4059335228c137fe884ff3ab8946a014014309676c25e3ac86864\n[root@localhost ~]# cat /var/lib/docker/image/overlay2/layerdb/sha256/a3ee2510dcf02c980d7*/size\n63704232\n[root@localhost ~]# cat /var/lib/docker/image/overlay2/layerdb/sha256/a3ee2510dcf02c980d7*/cache-id\n0363fcae3b4410c394b8a99e0a24d1ec01eb5198c82d3422f9c411ceaad98286\n123456\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-n2n0tx2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-n2n0tx2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果我们启动一个容器，便可以发现Docker会在layerdb目录下新生成一个mounts目录："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-wym4evj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-wym4evj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# docker run -d --name=nginx -v /home:/home nginx\n45f30cb6a063a7251db4388f17f85c1226d96277cb74693c1f38bef1d17b6193\n[root@localhost ~]#  tree  /var/lib/docker/image/overlay2/layerdb -L 2\n/var/lib/docker/image/overlay2/layerdb\n├── mounts\n│   └── 45f30cb6a063a7251db4388f17f85c1226d96277cb74693c1f38bef1d17b6193\n├── sha256\n│   ├── 3c90a0917c79b758d74b7040f62d17a7680cd14077f734330b1994a2985283b8\n│   ├── 4dfe71c4470c5920135f00af483556b09911b72547113512d36dc29bfc5f7445\n│   ├── a1c538085c6f891424160d8db120ea093d4dda393e94cd4713e3fff3c82299b5\n│   ├── a3ee2510dcf02c980d7aff635909612006fd1662084d6225e52e769b984abeb5\n│   └── cb42413394c4059335228c137fe884ff3ab8946a014014309676c25e3ac86864\n└── tmp\n\n9 directories, 0 files\n123456789101112131415\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-3t6o02c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-3t6o02c"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "mounts目录下有着以容器ID命名的文件，其内部记录了容器层layer的元数据信息："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-awcb8o9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-awcb8o9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# ls /var/lib/docker/image/overlay2/layerdb/mounts/45f30cb6a063*\ninit-id  mount-id  parent\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-cl5vlu9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-cl5vlu9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那么容器到底是什么呢？"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-b6mdldv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-b6mdldv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/koktlzz/p/14365025.html#%E5%AE%B9%E5%99%A8",
+					"TextMarkTextContent": "#"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-v0x6t20",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-v0x6t20"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过上面的一些探索，我们已经知道了镜像是由多个layer组成的文件，并在容器启动时成为容器文件系统的运行环境——只读的rootfs。而容器其实就是Dokcer利用存储驱动在只读rootfs上挂载一个可读写层后的结果。"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-oehjt02",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-oehjt02"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "联合挂载"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-2cd8pbk",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230203103855-2cd8pbk"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230203103855-wzdxslc",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230203103855-wzdxslc"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "联合挂载技术可以在一个挂载点同时挂载多个文件系统，将挂载点的原目录与被挂载内容进行整合，使得最终可见的文件系统将会包含整合之后的各层的文件和目录。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-wpks3e7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-wpks3e7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Overlay2是Docker目前使用的一种联合挂载技术,它主要通过四类目录完成工作："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-getssex",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-getssex"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-ufrb1lj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-ufrb1lj"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-i21jty6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-i21jty6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "lower：底层文件系统。对于Docker来说，就是只读的镜像层；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-wbxksup",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-wbxksup"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-x5hhw1g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-x5hhw1g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "upper：上层文件系统。对于Docker来说，就是可读写的容器层；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-goe8fwz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-goe8fwz"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-zwrdmat",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-zwrdmat"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "merged：作为统一视图的联合挂载点。对于Docker来说，就是用户视角下的文件系统；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-zlpmgqm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-zlpmgqm"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-0qaoc9z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-0qaoc9z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "work：提供辅助功能。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-s0m8f6s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-s0m8f6s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们启动一个容器，观察系统中overlay2类型的挂载情况："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-rwu25fc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-rwu25fc"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# docker run -d --name=nginx -v /home:/home nginx\n45f30cb6a063a7251db4388f17f85c1226d96277cb74693c1f38bef1d17b6193\n[root@localhost ~]# mount -t overlay\noverlay on /var/lib/docker/overlay2/dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4/merged type overlay (rw,relatime,seclabel,lowerdir=/var/lib/docker/overlay2/l/U7ZXQ4ZL7TLD6XEBUVLR77LKS4:/var/lib/docker/overlay2/l/BXVB3Q7277EPHJEMMHKEOR6YS5:/var/lib/docker/overlay2/l/5K76AX5UNX35LFXZKLATNWHOIK:/var/lib/docker/overlay2/l/QTGJLTLBMEML5OGHHZUYM3GHTR:/var/lib/docker/overlay2/l/55T5LSGE3C2NFFQ54FHM7YDNKY:/var/lib/docker/overlay2/l/R2AW2LUWRDIV7DLJFYMS67LB3L,upperdir=/var/lib/docker/overlay2/dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4/diff,workdir=/var/lib/docker/overlay2/dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4/work)\n1234\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-ji2f5w0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-ji2f5w0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据输出结果我们可以找到overlay2的挂载点位置："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-zxugrcz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-zxugrcz"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# ll /var/lib/docker/overlay2/l\n总用量 0\nlrwxrwxrwx. 1 root root 72 2月   2 07:37 55T5LSGE3C2NFFQ54FHM7YDNKY -\u003e ../0363fcae3b4410c394b8a99e0a24d1ec01eb5198c82d3422f9c411ceaad98286/diff\nlrwxrwxrwx. 1 root root 72 2月   2 07:37 5K76AX5UNX35LFXZKLATNWHOIK -\u003e ../14faccdb685b520f09148aaafec45dd31d2e6aa96516b60deaf59228ae9dbe66/diff\nlrwxrwxrwx. 1 root root 72 2月   2 07:37 BXVB3Q7277EPHJEMMHKEOR6YS5 -\u003e ../82a99d340893301cf33c79588042cd7d5db55cbcf34ca4b7a6ade609b6d28c96/diff\nlrwxrwxrwx. 1 root root 72 2月   2 10:02 M5NBJHQ4ICWANIEYBYMJ5FLCZO -\u003e ../dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4/diff\nlrwxrwxrwx. 1 root root 72 2月   2 07:37 QTGJLTLBMEML5OGHHZUYM3GHTR -\u003e ../5b75a3d9c3881dd8041cdc3fa73679a9f1e4f1052d4548e22b5f4e4ccce7c2d0/diff\nlrwxrwxrwx. 1 root root 72 2月   2 07:37 R2AW2LUWRDIV7DLJFYMS67LB3L -\u003e ../bd47b78b55e951d504c6e70c0e7af451b020a5741f71ed0e91cb8f8dc77a8664/diff\nlrwxrwxrwx. 1 root root 77 2月   2 10:02 U7ZXQ4ZL7TLD6XEBUVLR77LKS4 -\u003e ../dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4-init/diff\n123456789\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-mw4s45i",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230203103855-mw4s45i"
+			},
+			"Children": [
+				{
+					"ID": "20230203103855-1p8boo4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-1p8boo4"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-v1r25vh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-v1r25vh"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "/var/lib/docker/overlay2/l"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "目录下保存的均是软链接文件，其文件名是避免使用mount命令时输出结果达到页面大小限制而生成的短名称；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-w1szivd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-w1szivd"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-qgc020j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-qgc020j"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在lowerdir中的软链接，除U7ZXQ4ZL7TLD6XEBUVLR77LKS4外，均指向了只读镜像层文件的挂载点，分别对应了我们下载的ngingx镜像的五层layer；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-wvsv42l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-wvsv42l"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-ojm3wvm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-ojm3wvm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "上文提到，layer元数据中的cache-id会索引到layer的实际文件，其路径为：/var/lib/docker/overlay2//diff；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230203103855-ag6nd8u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230203103855-ag6nd8u"
+					},
+					"Children": [
+						{
+							"ID": "20230203103855-72k353o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230203103855-72k353o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "U7ZXQ4ZL7TLD6XEBUVLR77LKS4指向的是容器启动时自动生成一层的以读写层cache-id-init命名的init-layer，其中的文件配置了容器的主机名，DNS服务等。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-vc2o51v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-vc2o51v"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# cd /var/lib/docker/overlay2/l\n[root@localhost l]# ls ../bd47b78b55e951d504c6e70c0e7af451b020a5741f71ed0e91cb8f8dc77a8664/diff\nbin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var\n[root@localhost l]# ls ../0363fcae3b4410c394b8a99e0a24d1ec01eb5198c82d3422f9c411ceaad98286/diff\ndocker-entrypoint.d  etc  lib  tmp  usr  var\n[root@localhost l]# ls ../dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4-init/diff\ndev  etc\n[root@localhost l]# ls ../dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4-init/diff/etc\nhostname  hosts  mtab  resolv.conf\n...\n12345678910\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-lybafwb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-lybafwb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们更加深刻地意识到，镜像层就是多个layer文件经过联合挂载后得到的文件系统。而M5NBJHQ4ICWANIEYBYMJ5FLCZO指向的目录（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "mount -t overlay"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令输出的upperdir）便是读写层，也就是容器层的文件系统："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-9c9vmmj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-9c9vmmj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost l]# ls ../dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4/diff\netc  run  var\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-0ix0apj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-0ix0apj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "overlay2将upper和lower的文件系统联合挂载，就得到了用户视角下的文件系统："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-wlnwglw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-wlnwglw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost l]# ls ../dabd31fb6ad636b16b6f01f2332d068888de1e3e41a53751a35206e266b5dad4/merged\nbin   dev                  docker-entrypoint.sh  home  lib64  mnt  proc  run   srv  tmp  var\nboot  docker-entrypoint.d  etc\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-yopdo0o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-yopdo0o"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "20210203011643"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/a546c88708fd9bd30d96e0b36baa8e21-20230203103855-2ici9oy.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cdn.jsdelivr.net/gh/koktlzz/ImgBed@master/20210203011643.png",
+					"TextMarkTextContent": "https://cdn.jsdelivr.net/gh/koktlzz/ImgBed@master/20210203011643.png"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-csto8ld",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-csto8ld"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用户在容器中修改文件，其实只对读写层进行了变动，不会覆盖下层只读层的文件系统。读写层会把只读层的原始版本文件隐藏，所以用户发现文件系统已改变。而如果我们使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "docker commit"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令生成新镜像，保存内容仅为读写层更新的文件。"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-da84xvn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230203103855-da84xvn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器信息"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-feghqwx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-feghqwx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "/var/lib/docker/containers/容器ID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "目录下看到容器的相关信息："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-t986ej0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-t986ej0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# tree /var/lib/docker/containers\n/var/lib/docker/containers\n└── 45f30cb6a063a7251db4388f17f85c1226d96277cb74693c1f38bef1d17b6193\n    ├── 45f30cb6a063a7251db4388f17f85c1226d96277cb74693c1f38bef1d17b6193-json.log\n    ├── checkpoints\n    ├── config.v2.json\n    ├── hostconfig.json\n    ├── hostname\n    ├── hosts\n    ├── mounts\n    ├── resolv.conf\n    └── resolv.conf.hash\n\n3 directories, 7 files\n1234567891011121314\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-55fy1r3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-55fy1r3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目录下的config.v2.json文件描述了容器的详细配置信息，和使用**docker inspect **命令对容器的查看结果是基本一致的："
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-7s4ylgj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-7s4ylgj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat /var/lib/docker/containers/45f30cb6a063a7*/config.v2.json | python -mjson.tool\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-k4n6fxq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203103855-k4n6fxq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "还可以在hostname、hosts和resolv.conf文件中看到容器的主机名，DNS配置等，它们和init-layer文件系统中的内容一致。"
+				}
+			]
+		},
+		{
+			"ID": "20230203103855-2d6qwc7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203103855-2d6qwc7"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# cat /var/lib/docker/containers/45f30cb6a063a7*/hostname\n45f30cb6a063\n[root@localhost ~]# cat /var/lib/docker/containers/45f30cb6a063a7*/hosts\n127.0.0.1\tlocalhost\n::1\tlocalhost ip6-localhost ip6-loopback\nfe00::0\tip6-localnet\nff00::0\tip6-mcastprefix\nff02::1\tip6-allnodes\nff02::2\tip6-allrouters\n172.17.0.2\t45f30cb6a063\n[root@localhost ~]# cat /var/lib/docker/containers/45f30cb6a063a7*/resolv.conf\n# Generated by NetworkManager\nnameserver 192.168.1.1\nnameserver 192.168.0.1\n1234567891011121314\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

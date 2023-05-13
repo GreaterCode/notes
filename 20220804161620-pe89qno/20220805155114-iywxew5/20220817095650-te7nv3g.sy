@@ -1,0 +1,717 @@
+{
+	"ID": "20220817095650-te7nv3g",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220817095650-te7nv3g",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220817095701-12uuu8l\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230417224843-w3pfepu\u0026quot;,\u0026quot;scrollTop\u0026quot;:251,\u0026quot;focusId\u0026quot;:\u0026quot;20220817095701-dlswnub\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "etcd问题排查",
+		"updated": "20230417224843"
+	},
+	"Children": [
+		{
+			"ID": "20220817095701-12uuu8l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-12uuu8l",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd基于raft算法（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://web.stanford.edu/~ouster/cgi-bin/papers/raft-atc14.pdf",
+					"TextMarkTextContent": "paper链接"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "），提供分布式强一致KV存储服务，CAP原则中牺牲了可用性（Availability），确保一致性（Consistency）和分区容错（Partition tolerance）。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-31dm7tn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-31dm7tn",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "K8s集群所有状态和管理数据存储在etcd中，常见问题是etcd服务不稳定、不可用，直接导致集群管理操作（kubectl）响应慢、访问apiserver超时等。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-zysqefa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-zysqefa",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "排查etcd问题，思路比较清晰，这里按排查顺序分别描述。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-86nrykc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095701-86nrykc",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "存储IO性能"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-9u83sl9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-9u83sl9",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据笔者经验，绝大部分etcd问题均由存储IO性能不足所致。良好的存储IO性能对etcd稳定性起到至关重要的作用，etcd对存储的要求详见"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/hardware/#disks",
+					"TextMarkTextContent": "官方文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-85d6pen",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-85d6pen",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过etcd如下指标可以快速判断是否遇到存储IO性能问题（参见"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "%5B%3Chttp://%E9%80%9A%E8%BF%87etcd%E5%A6%82%E4%B8%8B%E6%8C%87%E6%A0%87%E5%8F%AF%E4%BB%A5%E5%BF%AB%E9%80%9F%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E9%81%87%E5%88%B0%E5%AD%98%E5%82%A8IO%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%3E%5D(http://xn--etcdio-lp7i81d8zgtue1dz6urua931dvpghpum3ah29agimkocb5o7m7llc3c5vb6d68bq03ivup/)%EF%BC%9A",
+					"TextMarkTextContent": "指标说明"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）："
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-6k1a7yw",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095701-6k1a7yw",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"ID": "20220817095701-1vwp2s2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095701-1vwp2s2"
+					},
+					"Children": [
+						{
+							"ID": "20220817095701-7cg2jj9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095701-7cg2jj9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "disk_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "backend_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "commit_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "duration_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "seconds，正常情况下要求p99在25ms以内，参见"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://etcd.io/docs/v3.4/faq/#what-does-the-etcd-warning-apply-entries-took-too-long-mean",
+									"TextMarkTextContent": "官方文档"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095701-gzen93q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095701-gzen93q",
+						"updated": "20220817095701"
+					},
+					"Children": [
+						{
+							"ID": "20220817095701-abjea7k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095701-abjea7k",
+								"updated": "20220817095701"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "disk_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "wal_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "fsync_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "duration_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "seconds，正常情况下要求p99在10ms以内。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-bsbnalp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-bsbnalp",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上述指标正常，就能确定存储符合要求，否则需要根据"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/hardware/#disks",
+					"TextMarkTextContent": "官方文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的要求，优先解决存储性能问题。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-91aabqu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095701-91aabqu",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "网络性能"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-zmqr8br",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-zmqr8br",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd采用集群方式时，由于raft算法使然，peer间存在频繁的网络通信，因此网络性能（延迟、带宽）和稳定性也很重要。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-hgu4kv8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-hgu4kv8",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过etcd如下指标可以大致判断网络性能（参见"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/metrics/#network",
+					"TextMarkTextContent": "指标说明"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）："
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-3mcg0ga",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095701-3mcg0ga",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"ID": "20220817095701-hwo8cc9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095701-hwo8cc9"
+					},
+					"Children": [
+						{
+							"ID": "20220817095701-gsbrx0q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095701-gsbrx0q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "network_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "peer_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "round_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "trip_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "time_"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "seconds"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-snwyret",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-snwyret",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若rtt时间显著较大，例如百ms量级，需要首先使用ping等工具检查peer间网络的延迟/rtt时间。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-mxh2jju",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-mxh2jju",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若peer间网络延迟/rtt时间大，则优先排查网络问题。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-8xmoz6n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-8xmoz6n",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "否则etcd peer处理/响应慢所致，继续检查etcd本身的问题。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-2qdy3tj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095701-2qdy3tj",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd性能和BUG"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-m86fzv1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-m86fzv1",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据笔者经验，存储性能和网络性能不足/不稳定，导致了80%以上的etcd问题。剩下为使用场景和etcd自身所致，主要有如下三个方面："
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-5nwya9f",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220817095701-5nwya9f",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"ID": "20220817095701-er8epya",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095701-er8epya"
+					},
+					"Children": [
+						{
+							"ID": "20220817095701-roqba9g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095701-roqba9g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "存储的数据量过大"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095701-o9dz8cy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095701-o9dz8cy"
+					},
+					"Children": [
+						{
+							"ID": "20220817095701-t8ud84d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095701-t8ud84d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "读写负载过大"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220817095701-rj2phw0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220817095701-rj2phw0"
+					},
+					"Children": [
+						{
+							"ID": "20220817095701-i78d65v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220817095701-i78d65v"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "BUG"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-xvon5x0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-xvon5x0",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先，检查etcd存储的key数量，就规模为几十个节点K8s集群而言，key数量差不多在几K的量级，当key超过这个数量后就需要排查为什么存储有这么多key。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-dlswnub",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-dlswnub",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后，检查读写负载，可依据etcd_"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "server_"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "client_"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "requests_"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "total指标判断。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-cbsjn8p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-cbsjn8p",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后，结合etcd版本和日志信息，检索是否存在已知问题。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-ob34upq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220817095701-ob34upq",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运维方面"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-75jn7np",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-75jn7np",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd常见运维操作，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/maintenance/",
+					"TextMarkTextContent": "参见文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-we1abxp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-we1abxp",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd监控，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/monitoring/",
+					"TextMarkTextContent": "参见文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-t01ecns",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-t01ecns",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官网就etcd遇到的故障进行了说明，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/failures/",
+					"TextMarkTextContent": "参见文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220817095701-gh84idh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220817095701-gh84idh",
+				"updated": "20220817095701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd灾难恢复（即拿着数据重建etcd集群），"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/recovery/",
+					"TextMarkTextContent": "参见文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230417224843-w3pfepu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230417224843-w3pfepu"
+			}
+		}
+	]
+}

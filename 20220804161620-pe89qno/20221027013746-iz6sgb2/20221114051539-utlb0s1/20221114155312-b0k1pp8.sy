@@ -1,0 +1,2799 @@
+{
+	"ID": "20221114155312-b0k1pp8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221114155312-b0k1pp8",
+		"title": "OpenShift 4 - 向OpenShift内部Image Registry推送Image_dawnsky.liu的博客-CSDN博客",
+		"updated": "20221114161829"
+	},
+	"Children": [
+		{
+			"ID": "20221114155312-7jht59m",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221114155312-7jht59m"
+			}
+		},
+		{
+			"ID": "20221114155312-6uz8cqv",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221114155312-6uz8cqv"
+			}
+		},
+		{
+			"ID": "20221114155312-6684et6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-6684et6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_43902588/article/details/105060359",
+					"TextMarkTextContent": "OpenShift 4.x HOL教程汇总"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》\n 说明：本文已经在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=OpenShift\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "OpenShift"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 4.6环境中验证"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-rj411cl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-rj411cl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "了解OpenShift内部Image Registry"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-u70yk26",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-u70yk26"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OpenShift容器平台提供了一个内置的Container Image Registry，该Image Registry用户提供了一个开箱即用的解决方案来管理运行OpenShift工作负载所用到的Image。Image Registry可以像其他任何集群工作负载一样扩展，不需要特定的基础设施配置。此外，它集成到了集群用户认证和授权系统中，这意味着通过定义Image资源的用户权限来控制创建和检索Image的访问。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-74m1u1y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-74m1u1y"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Image Registry Operator在 openshift-image-registry 命名空间中运行，并在该位置管理Image Registry实例。Image Registry的所有配置和工作负载资源都位于该命名空间中。Image数据存储在两个位置。实际的Image数据存储在可配置的存储位置，如云存储或文件系统卷等。Image元数据被存储为标准的API资源，这些API资源包括Image和ImageStream。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-3jtn6dt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-3jtn6dt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当使用podman工具向OpenShift内部Image Registry推送Image的时候，OpenShift会自动为Image创建对应的ImageStream，这样在OpenShift中就可以使用ImageStream访问这些保存在本地的Image了。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-p1yiflf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-p1yiflf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "podman push命令会将外部Image传到内部Image Registry中并保存，并根据Image的元数据生成对应的ImageStream对象；而oc import-image命令只是根据外部镜像的元数据生成ImageStream对象，ImageSteam还是指向外部镜像。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-fcf94ls",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-fcf94ls"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "向内部Image Registry推送Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-5t0tksx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-5t0tksx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "登录OpenShift"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-mbq93gu",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-mbq93gu"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-426spi7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-426spi7"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-bcq6s7o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-bcq6s7o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，用集群管理员（例如admin）登录OpenShift。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-xhj542m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-xhj542m",
+				"updated": "20221114155354"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc login -u admin -p \u003cpassword\u003e https://api-int.\u003ccluster_name\u003e.\u003cbase_domain\u003e:6443\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-sr9gtjt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-sr9gtjt"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-4q9le5w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-4q9le5w"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-xczkc1e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-xczkc1e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，查看该用户登录的“ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "TOKEN"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ”。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-6y7hekc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-6y7hekc",
+				"updated": "20221114155356"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc whoami -t\njbwPGpIzDra8XCNIrBjsWkKhdHEEugBpuqNUHLVVH00\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-2mgiwyw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-2mgiwyw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为podman的pull/push操作赋权"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-z5zftnh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-z5zftnh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了能操作内部Image Registry，首先要有权限。用OpenShift集群管理员（例如admin）登录后执行命令，为自己赋权"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-38bhzof",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-38bhzof",
+				"updated": "20221114155358"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc policy add-role-to-user registry-viewer $(oc whoami)\n$ oc policy add-role-to-user registry-editor $(oc whoami)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-1tcil9y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-1tcil9y"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "新建测试项目"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-wff1d48",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-wff1d48",
+				"updated": "20221114155453"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文未来手动导入到内部Image Registry的Image是被放在以下命令新建的特定的新建项目中。其实导入的Image也可放在所有用户都可访问的公共项目中。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-xnrwkss",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-xnrwkss",
+				"updated": "20221114155402"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project myproject \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-y93m8h1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-y93m8h1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pull Image/Push Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-yjjk6da",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114155312-yjjk6da"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法1：用podman在集群节点内部操作"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-860di1s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221114155312-860di1s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "进入OpenShift集群内部"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-gabrpfx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-gabrpfx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先需要进入的某个OpenShift节点，这样我们就可以用OpenShift集群内部地址访问Image Registry了。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-elasmaa",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-elasmaa"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-ta3ywtp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-ta3ywtp"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-sbgalw5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-sbgalw5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看集群节点名称"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-hr2qw9i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-hr2qw9i",
+				"updated": "20221114155406"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get nodes\nNAME                           STATUS   ROLES    AGE    VERSION\nip-10-0-133-204.ec2.internal   Ready    master   3d8h   v1.17.1\nip-10-0-134-17.ec2.internal    Ready    worker   3d7h   v1.17.1\nip-10-0-147-125.ec2.internal   Ready    master   3d8h   v1.17.1\nip-10-0-154-19.ec2.internal    Ready    worker   3d7h   v1.17.1\nip-10-0-161-178.ec2.internal   Ready    master   3d8h   v1.17.1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-rx704w6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-rx704w6"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-af935dx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-af935dx"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-o0e4wjh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-o0e4wjh"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用节点名称进入一个节点，例如第一个master节点。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-gjrrdoj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-gjrrdoj",
+				"updated": "20221114155408"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc debug nodes/ip-10-0-133-204.ec2.internal\nStarting pod/ip-10-0-133-204ec2internal-debug ...\nTo use host binaries, run `chroot /host`\nPod IP: 10.0.133.204\nIf you don't see a command prompt, try pressing enter.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-ht7i5kh",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-ht7i5kh"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-0wa2ba5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114155312-0wa2ba5"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-jsvybot",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-jsvybot"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为了运行可执行程序，要先执行以下命令。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-9qsdsso",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-9qsdsso",
+				"updated": "20221114155411"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.2# chroot /host\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-9rzyzhu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221114155312-9rzyzhu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pull Image/Push Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-ka25t90",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-ka25t90"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-tkzquwu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-tkzquwu"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-cqgmsvp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-cqgmsvp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行podman pull命令，将远程Image拉到本地。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-onp9kvc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-onp9kvc"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "44CB"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4#  podman pull openshift/hello-openshift\nTrying to pull registry.access.redhat.com/openshift/hello-openshift...\n  name unknown: Repo not found\nTrying to pull docker.io/openshift/hello-openshift...\nGetting image source signatures\nCopying blob 4f4fb700ef54 done\nCopying blob 8b32988996c5 done\nCopying config 7af3297a3f done\nWriting manifest to image destination\nStoring signatures\n7af3297a3fb4487b740ed6798163f618e6eddea1ee5fa0ba340329fcae31c8f6\n1234567891011\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-4018hpj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-4018hpj"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-6lh0vg8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-6lh0vg8"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-ebzr0vt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-ebzr0vt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认本地已有该openshift/hello-openshift镜像。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-o8sfu1k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-o8sfu1k",
+				"updated": "20221114155417"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# podman images | grep hello-openshift\ndocker.io/openshift/hello-openshift                        latest       7af3297a3fb4   2 years ago     6.1 MB\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-k7geyr3",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-k7geyr3"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-upt34ra",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114155312-upt34ra"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-wpu5wg7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-wpu5wg7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对本地的镜像重新打tag标签。注意：在Image的新标签中使用了名为myproject的项目名作为Image Repository。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-m89wh3q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-m89wh3q",
+				"updated": "20221114155539"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# podman tag docker.io/openshift/hello-openshift:latest image-registry.openshift-image-registry.svc:5000/myproject/hello-openshift-1:latest\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-g5utbh9",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-g5utbh9"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-fauf8g8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114155312-fauf8g8"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-7937o4q",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-7937o4q"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "再次查看本地镜像，确认hello-openshift镜像已经有新标签了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-tvz1ckc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-tvz1ckc",
+				"updated": "20221114155433"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# podman images | grep hello-openshift\nimage-registry.openshift-image-registry.svc:5000/myproject/hello-openshift-1                latest       7af3297a3fb4   2 years ago     6.1 MB\ndocker.io/openshift/hello-openshift                                                         latest       7af3297a3fb4   2 years ago     6.1 MB\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-mfmfuqa",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-mfmfuqa"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-tvm8ckw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114155312-tvm8ckw"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-86zdjxl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-86zdjxl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "用admin用户和对应的“ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "TOKEN"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ”登录内部的Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-vbk0wlf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-vbk0wlf",
+				"updated": "20221114155431"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# podman login image-registry.openshift-image-registry.svc:5000 -u admin -p \u003cTOKEN\u003e\nLogin Succeeded!\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-mz43jvy",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-mz43jvy"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-wqs8rzd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221114155312-wqs8rzd"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-k56soz6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-k56soz6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "把打过新标签的Image推送到OpenShift内部Image Registry，其中myproject是上面创建的项目。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-qy1v4gr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-qy1v4gr",
+				"updated": "20221114155428"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Lw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# podman push image-registry.openshift-image-registry.svc:5000/myproject/hello-openshift-1:latest\nGetting image source signatures\nCopying blob 5f70bf18a086 skipped: already exists\nCopying blob da0e4d9121c7 [--------------------------------------] 0.0b / 0.0b\nCopying config 7af3297a3f [--------------------------------------] 0.0b / 1.3KiB\nWriting manifest to image destination\nStoring signatures\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-f07f640",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221114155312-f07f640"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查询内部镜像仓库"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-rs2rs3r",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-rs2rs3r"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-65r7j11",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-65r7j11"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-lqd3uri",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-lqd3uri"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用“ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "TOKEN"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ”查询OpenShift内部Registry中的Repositries。确认返回结果中包含“myproject/hello-openshift-1”。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-gpqoi5d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-gpqoi5d",
+				"updated": "20221114155800"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4# curl -s -k -H \"Authorization: Bearer \u003cTOKEN\u003e\" https://image-registry.openshift-image-registry.svc:5000/v2/_catalog | jq\n{\n  \"repositories\": [\n    \"myproject/hello-openshift-1\",\n    \"openshift/apicast-gateway\",\n    \"openshift/apicurito-ui\",\n    \"openshift/cli\",\n    \"openshift/cli-artifacts\",\n    \"openshift/dotnet\",\n    \"openshift/dotnet-runtime\",\n    \"openshift/eap-cd-openshift\",\n    \"openshift/fis-java-openshift\",\n    \"openshift/fis-karaf-openshift\",\n    \"openshift/fuse-apicurito-generator\",\n    \"openshift/fuse7-console\",\n    \"openshift/fuse7-eap-openshift\",\n    \"openshift/fuse7-java-openshift\",\n。。。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-pg1cd6n",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-pg1cd6n"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-fbyamrb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-fbyamrb"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-3fqg5df",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-3fqg5df"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用“ "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "TOKEN"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ”查询myproject/hello-openshift-1。返回结果中第一个是“myproject/hello-openshift-1”。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-u1w58im",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-u1w58im",
+				"updated": "20221114155825"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sh-4.4#curl -s -k -H \"Authorization: Bearer \u003cTOKEN\u003e\" https://image-registry.openshift-image-registry.svc:5000/v2/myproject/hello-openshift-1/manifests/latest | jq\n{\n  \"schemaVersion\": 1,\n  \"name\": \"myproject/hello-openshift-1\",\n  \"tag\": \"latest\",\n  \"architecture\": \"amd64\",\n  \"fsLayers\": [\n    {\n      \"blobSum\": \"sha256:ffbad57ff065cbecdd369f56b40d42e3434ecc70d048f57a7391000911ebd7a7\"\n    },\n    {\n      \"blobSum\": \"sha256:ff53f95d20d5f6ca55d46980861da4798ee325927876aa53bfc5e2a32a864dc7\"\n    }\n  ],\n  \"history\": [\n    {\n      \"v1Compatibility\": \"{\\\"architecture\\\":\\\"amd64\\\",\\\"author\\\":\\\"Jessica Forrester \\\\u003cjforrest@redhat.com\\\\u003e\\\",\\\"config\\\":{\\\"Hostname\\\":\\\"\\\",\\\"Domainname\\\":\\\"\\\",\\\"User\\\":\\\"1001\\\",\\\"AttachStdin\\\":false,\\\"AttachStdout\\\":false,\\\"AttachStderr\\\":false,\\\"ExposedPorts\\\":{\\\"8080/tcp\\\":{},\\\"8888/tcp\\\":{}},\\\"Tty\\\":false,\\\"OpenStdin\\\":false,\\\"StdinOnce\\\":false,\\\"Env\\\":[\\\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\\\"],\\\"Cmd\\\":null,\\\"Image\\\":\\\"\\\",\\\"Volumes\\\":null,\\\"WorkingDir\\\":\\\"\\\",\\\"Entrypoint\\\":[\\\"/hello-openshift\\\"],\\\"OnBuild\\\":null,\\\"Labels\\\":{}},\\\"container\\\":\\\"64ede50d59ead12e9e867f6c48681b3cde9e0c920db433666fc20cd7c322de02\\\",\\\"container_config\\\":{\\\"Hostname\\\":\\\"64ede50d59ea\\\",\\\"Domainname\\\":\\\"\\\",\\\"User\\\":\\\"\\\",\\\"AttachStdin\\\":false,\\\"AttachStdout\\\":false,\\\"AttachStderr\\\":false,\\\"Tty\\\":false,\\\"OpenStdin\\\":false,\\\"StdinOnce\\\":false,\\\"Env\\\":null,\\\"Cmd\\\":null,\\\"Image\\\":\\\"scratchljl6nbgci72oxgam2jh83pe3\\\",\\\"Volumes\\\":null,\\\"WorkingDir\\\":\\\"\\\",\\\"Entrypoint\\\":[\\\"/bin/sh\\\",\\\"-c\\\",\\\"# NOP\\\"],\\\"OnBuild\\\":null,\\\"Labels\\\":{}},\\\"created\\\":\\\"2018-04-18T10:38:59.552935845Z\\\",\\\"docker_version\\\":\\\"1.13.1\\\",\\\"id\\\":\\\"a510d6aa46bf3dbf2fa761156d12d79e3d1b44f2bda36fb7e8b9c23c7bdb41de\\\",\\\"os\\\":\\\"linux\\\",\\\"parent\\\":\\\"a5d5ba10159cb80b424cb96a62c273468b681298895860aa2ac28e62f0ae6d6f\\\"}\"\n    },\n    {\n      \"v1Compatibility\": \"{\\\"id\\\":\\\"a5d5ba10159cb80b424cb96a62c273468b681298895860aa2ac28e62f0ae6d6f\\\",\\\"comment\\\":\\\"Imported from -\\\",\\\"created\\\":\\\"2018-04-18T10:38:57.341799685Z\\\",\\\"container_config\\\":{\\\"Cmd\\\":[\\\"\\\"]}}\"\n    }\n  ],\n  \"signatures\": [\n    {\n      \"header\": {\n        \"jwk\": {\n          \"crv\": \"P-256\",\n          \"kid\": \"EQAM:NVI4:I73M:JKBT:VO3P:QXMN:WVTW:5CNZ:QIZ5:2I3M:EFYN:PGTF\",\n          \"kty\": \"EC\",\n          \"x\": \"cRUOvyQ4YmzipMvs0HFx6u_mSJ0lh77CVTo4JWfZy_Q\",\n          \"y\": \"t1FC6F3k0KvVAcjvpHPQ7WW0QdrLWtfp3qSt7tkq8O8\"\n        },\n        \"alg\": \"ES256\"\n      },\n      \"signature\": \"k_pNCjBHQZBn9ssK76DWIYQVB7zjwGZ5Qgqwe49Nb-MbewZJNqVdkV2eD7rFh2WmwQVqV1pVps0ZKT6r9-Ux_w\",\n      \"protected\": \"eyJmb3JtYXRMZW5ndGgiOjE5NDcsImZvcm1hdFRhaWwiOiJDbjAiLCJ0aW1lIjoiMjAyMC0wNy0wN1QxNTo0MDowMVoifQ\"\n    }\n  ]\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-kgj0dbl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114155312-kgj0dbl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法2：用podman在集群节点外部操作"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-5dqjzwb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-5dqjzwb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本方法是将OpenShift内部镜像Registry通过Route暴露出来，可以从集群外部访直接问到内部镜像Registry。\n 操作前确保已经在集群外部的执行节点中安装了podman。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-j390kxt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221114155312-j390kxt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "允许在集群外登录内部Image Registry"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-moeoara",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-moeoara"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-2xatonq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-2xatonq"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-tvfry0s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-tvfry0s"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先允许通过OpenShift的DefaultRoute访问内部Image Registry。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-t9zqa1v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-t9zqa1v",
+				"updated": "20221114160256"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc patch configs.imageregistry.operator.openshift.io/cluster --patch '{\"spec\":{\"defaultRoute\":true}}' --type=merge\nconfig.imageregistry.operator.openshift.io/cluster patched\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-7f6ih98",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-7f6ih98"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-3wr4x1u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-3wr4x1u"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-hcc2n8e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-hcc2n8e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获得OpenShift内部Image Registry对外的访问主机。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-c3i1d7q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-c3i1d7q",
+				"updated": "20221114160252"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ REGISTRY=$(oc get route default-route -n openshift-image-registry --template='{ { .spec.host }}')\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-k33b6sq",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-k33b6sq"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-qxblcpg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114155312-qxblcpg"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-rj6dect",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-rj6dect"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，查看内部Image Registry的Repository镜像。确认有上一步刚刚导入的myproject/hello-openshift-1镜像。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-2cwv1zb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-2cwv1zb",
+				"updated": "20221114160242"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -s -k -H \"Authorization: Bearer $(oc whoami -t) \" https://$REGISTRY/v2/_catalog | jq\n{ \n  \"repositories\": [\n    \"myproject/hello-openshift-1\",\n    \"openshift/apicast-gateway\",\n    \"openshift/apicurito-ui\",\n    \"openshift/cli\",\n    \"openshift/cli-artifacts\",\n    。。。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-fzvozx3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-fzvozx3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.还可执行以下命令查看其它Image信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-5u9u07s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-5u9u07s",
+				"updated": "20221114160240"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ export IMAGE=openshift/python\n$ curl -s -k -H \"Authorization: Bearer $(oc whoami -t) \" https://$REGISTRY/v2/$IMAGE/tags/list\n$ curl -s -k -H \"Authorization: Bearer $(oc whoami -t) \" https://$REGISTRY/v2/$IMAGE/manifests/latest\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-5sxr0hn",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-5sxr0hn"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-e07u3on",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114155312-e07u3on"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-84zfzck",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-84zfzck"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用podman登录Image Registry对外的访问地址。注意：登录成功后会将认证信息通过“–authfile”参数放到指定“$HOME/registry-secret.json”文件中以在本文后面使用。如果只是用podman登录Registry，可以不需要指定“–authfile”参数。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-kdncqjm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-kdncqjm",
+				"updated": "20221114160235"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo podman login -u $(oc whoami) -p $(oc whoami -t) --tls-verify=false --authfile=$HOME/registry-secret.json ${REGISTRY} \nLogin Succeeded!\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-o94lt42",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221114155312-o94lt42"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pull Image/Push Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-qm4lbjj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-qm4lbjj"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-543hln6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-543hln6"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-7fnk1qe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-7fnk1qe"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行podman pull命令，将远程Image拉到本地。说明：我们可以从返回结果看到，由于pull命令中没有提供完整的外部Registry地址，因此podman命令首先去registry.access.redhat.com、registry.fedoraproject.org和registry.centos.org查找镜像，最后在docker.io查找到openshift/hello-openshift，然后pull到本地。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-7p3agdl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-7p3agdl",
+				"updated": "20221114160306"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo podman pull openshift/hello-openshift\nTrying to pull registry.access.redhat.com/openshift/hello-openshift...\n  name unknown: Repo not found\nTrying to pull registry.fedoraproject.org/openshift/hello-openshift...\n  manifest unknown: manifest unknown\nTrying to pull registry.centos.org/openshift/hello-openshift...\n  manifest unknown: manifest unknown\nTrying to pull docker.io/openshift/hello-openshift...\nGetting image source signatures\nCopying blob 4f4fb700ef54 done\nCopying blob 8b32988996c5 done\nCopying config 7af3297a3f done\nWriting manifest to image destination\nStoring signatures\n7af3297a3fb4487b740ed6798163f618e6eddea1ee5fa0ba340329fcae31c8f6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-dir1td6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-dir1td6"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-9sws405",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-9sws405"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-t7w7rw9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-t7w7rw9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认本地已有该openshift/hello-openshift镜像。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-ztmn0uq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-ztmn0uq",
+				"updated": "20221114160310"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo podman images | grep hello-openshift\ndocker.io/openshift/hello-openshift   latest   7af3297a3fb4   2 years ago   6.1 MB\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-24k00ik",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-24k00ik"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-nb8yhoh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114155312-nb8yhoh"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-uiedsx8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-uiedsx8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对本地的镜像重新打tag标签。注意：在Image的新标签中使用了名为myproject的项目名作为Image Repository。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-rnpeh9z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-rnpeh9z",
+				"updated": "20221114160314"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo podman tag docker.io/openshift/hello-openshift:latest ${REGISTRY}/myproject/hello-openshift-2:latest\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-f80ude0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-f80ude0"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-wm7fbgf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114155312-wm7fbgf"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-k2rxc2o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-k2rxc2o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "再次查看本地镜像，确认hello-openshift镜像已经有新标签了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-grwlbgb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-grwlbgb",
+				"updated": "20221114160317"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo podman images | grep hello-openshift\ndefault-route-openshift-image-registry.apps.cluster-beijing-1374.beijing-1374.example.opentlc.com/myproject/hello-openshift-2   latest   7af3297a3fb4   2 years ago   6.1 MB\ndocker.io/openshift/hello-openshift                                                                                             latest   7af3297a3fb4   2 years ago   6.1 MB\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-buwlkxh",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-buwlkxh"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-eqshfz3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114155312-eqshfz3"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-i6l2sq1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-i6l2sq1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "把打过新标签的Image推送到OpenShift内部Image Registry，其中myproject是上面创建的项目。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-eu3i6js",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-eu3i6js",
+				"updated": "20221114160323"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo podman push ${REGISTRY}/myproject/hello-openshift-2:latest --tls-verify=false --authfile=$HOME/registry-secret.json\nGetting image source signatures\nCopying blob da0e4d9121c7 done\nCopying blob 5f70bf18a086 done\nCopying config 7af3297a3f done\nWriting manifest to image destination\nStoring signatures\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-vgn3x99",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221114155312-vgn3x99"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查询内部镜像仓库"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-7qnetm1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-7qnetm1"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-dkncem2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-dkncem2"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-nog75xf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-nog75xf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令查询镜像仓库中所有的镜像列表，确认已经有了myproject/hello-openshift-2镜像。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-5gayxoq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-5gayxoq",
+				"updated": "20221114160330"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -k -H \"Authorization: Bearer $(oc whoami -t)\" https://${REGISTRY}/v2/_catalog | jq\n{ \n  \"repositories\": [\n    \"myproject/hello-openshift-1\",\n    \"myproject/hello-openshift-2\",\n    \"openshift/apicast-gateway\",\n    \"openshift/apicurito-ui\",\n    \"openshift/cli\",\n    \"openshift/cli-artifacts\",\n    。。。\n  ]\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-jb9e0hn",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-jb9e0hn"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-9drvvw4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-9drvvw4"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-3cqdk1k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-3cqdk1k"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，查询openshift/dotnet镜像的信息。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-022qwz3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-022qwz3",
+				"updated": "20221114161829"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -k -H \"Authorization: Bearer $(oc whoami -t)\" https://${REGISTRY}/v2/openshift/dotnet/tags/list\n{ \"name\":\"openshift/dotnet\",\"tags\":[\"2.1\",\"2.1-el7\",\"2.1-ubi8\",\"3.1\",\"3.1-el7\",\"3.1-ubi8\",\"latest\"]}\n \n$ curl -k -H \"Authorization: Bearer $(oc whoami -t)\" https://${REGISTRY}/v2/openshift/dotnet/manifests/latest\n{ \n   \"schemaVersion\": 1,\n   \"name\": \"openshift/dotnet\",\n   \"tag\": \"latest\",\n   \"architecture\": \"amd64\",\n   \"fsLayers\": [\n      { \n         \"blobSum\": \"sha256:052baad69940cbd05bf4d96c1294ece0f7a46d51feec6ddb433484ad02890256\"\n      },\n      { \n         \"blobSum\": \"sha256:37bc9f2a67ce21d557f8cecf46b5d6d58e41d033f994f42a5fbbdd070dbf48d6\"\n      },\n      { \n         \"blobSum\": \"sha256:6500ac87b29ffd00c8655be65a6824dfcf9fc0accc625158ef1060bcedc84ca8\"\n      },\n      { \n         \"blobSum\": \"sha256:1b8dabac56ed728c17a670d327474ab87dc392dc17721854ea599a7753326579\"\n      }\n   ],\n   \"history\": [\n      { \n   ....\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-a39b3sz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114155312-a39b3sz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法3：用skopeo在集群节点外部操作"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-hquq265",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-hquq265"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意：需要先完成“方法2“中的”允许在集群外登录内部Image Registry”操作。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-sx1cdh5",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-sx1cdh5"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-7ng4jea",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-7ng4jea"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-i0e56t7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-i0e56t7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行skopeo命令，把docker.io/openshift/hello-openshift镜像直接复制到OpenShift的myproject项目中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-uh45wte",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-uh45wte"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ skopeo copy --dest-creds=$(oc whoami):$(oc whoami -t) --dest-tls-verify=false docker://docker.io/openshift/hello-openshift docker://${REGISTRY}/myproject/hello-openshift-skopeo\nGetting image source signatures\nCopying blob 4f4fb700ef54 done\nCopying blob 8b32988996c5 done\nCopying config 7af3297a3f done\nWriting manifest to image destination\nStoring signatures\n1234567\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-q3iilve",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-q3iilve"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-a1ds44x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-a1ds44x"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-33fxlw7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-33fxlw7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认hello-openshift-skopeo镜像已经在OpenShift内部Registry中了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-tqszbc5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-tqszbc5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -k -H \"Authorization: Bearer $(oc whoami -t)\" https://${REGISTRY}/v2/_catalog | jq | grep hello-openshift-skopeo\n    \"myproject/hello-openshift-skopeo\",\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-uwiyxgf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114155312-uwiyxgf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法4：用oc在集群节点外部操作"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-1aigvb5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-1aigvb5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意：需要先完成“方法2“中的”允许在集群外登录内部Image Registry”操作。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-8w4m06r",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-8w4m06r"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-8kisv8p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-8kisv8p"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-xwr9m2f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-xwr9m2f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行命令，将Image复制到OpenShift内部的Image Registry。注意：在命令中“-a $HOME/registry-secret.json”使用的是前面用“podman login”登录内部Image Registry生成的登录凭证文件。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-6s1a05a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-6s1a05a"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project myproject\n$ oc image mirror -a $HOME/registry-secret.json --insecure=true \\\n     docker.io/openshift/hello-openshift:latest \\\n     ${REGISTRY}/myproject/hello-openshift:latest\ndefault-route-openshift-image-registry.apps.cluster-beijing-f5b3.beijing-f5b3.sandbox1120.opentlc.com/\n  myproject/hello-openshift\n    blobs:\n      docker.io/openshift/hello-openshift sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B\n      docker.io/openshift/hello-openshift sha256:7af3297a3fb4487b740ed6798163f618e6eddea1ee5fa0ba340329fcae31c8f6 1.336KiB\n      docker.io/openshift/hello-openshift sha256:8b32988996c5d776076ea3cd672855f6d0faac87510064a15cce4bd02cdc9d13 2.067MiB\n    manifests:\n      sha256:aaea76ff622d2f8bcb32e538e7b3cd0ef6d291953f3e7c9f556c1ba5baf47e2e -\u003e latest\n  stats: shared=0 unique=3 size=2.068MiB ratio=1.00\n \nphase 0:\n  default-route-openshift-image-registry.apps.cluster-beijing-f5b3.beijing-f5b3.sandbox1120.opentlc.com myproject/hello-openshift blobs=3 mounts=0 manifests=1 shared=0\n \ninfo: Planning completed in 3.28s\nuploading: default-route-openshift-image-registry.apps.cluster-beijing-f5b3.beijing-f5b3.sandbox1120.opentlc.com/myproject/hello-openshift sha256:8b32988996c5d776076ea3cd672855f6d0faac87510064a15cce4bd02cdc9d13 2.067MiB\nsha256:aaea76ff622d2f8bcb32e538e7b3cd0ef6d291953f3e7c9f556c1ba5baf47e2e default-route-openshift-image-registry.apps.cluster-beijing-f5b3.beijing-f5b3.sandbox1120.opentlc.com/myproject/hello-openshift:latest\ninfo: Mirroring completed in 2.16s (1.003MB/s)\n123456789101112131415161718192021\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-b88uw4l",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-b88uw4l"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-nm17655",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-nm17655"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-0l1uouo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-0l1uouo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认hello-openshift-mirror镜像已经在OpenShift内部Registry中了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-hkhe2xs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-hkhe2xs"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -k -H \"Authorization: Bearer $(oc whoami -t)\" https://${REGISTRY}/v2/_catalog | jq | grep hello-openshift-mirror\n    \"myproject/hello-openshift-mirror\",\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-836ugqb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-836ugqb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证推送的Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-o47glqi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-o47glqi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下从OpenShift集群外部的节点操作。"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-knza8fx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-knza8fx"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-an2wwkm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114155312-an2wwkm"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-9u5pgci",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-9u5pgci"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看OpenShift的myproject项目中是否有名为hello-openshift的Image。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-vmq07t3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-vmq07t3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get image -n myproject | grep hello-openshift\nsha256:a79c6182e8581564bcdd6c6c91e3a9bfe5acc3e48903a1640f6effe12243cb7f   image-registry.openshift-image-registry.svc:5000/myproject/hello-openshift-1@sha256:a79c6182e8581564bcdd6c6c91e3a9bfe5acc3e48903a1640f6effe12243cb7f\nsha256:03e2cf83f6ec05a187a86bbbde9a2d47f62463ace5308a2446b828b2aeefe04e   image-registry.openshift-image-registry.svc:5000/myproject/hello-openshift-2@sha256:03e2cf83f6ec05a187a86bbbde9a2d47f62463ace5308a2446b828b2aeefe04e\n123\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-iv2fcmp",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-iv2fcmp"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-o7jw9rm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114155312-o7jw9rm"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-spmm6wn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-spmm6wn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看OpenShift的myproject项目中已经有了ImageStream。说明：这说明OpenShift会根据Push到Image Registry的Image自动创建ImageStream对象。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-8h31fdd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-8h31fdd"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get is -n myproject\nNAME              IMAGE REPOSITORY                                                                                                                TAGS     UPDATED\nhello-openshift-1   default-route-openshift-image-registry.apps.cluster-beijing-1374.beijing-1374.example.opentlc.com/myproject/hello-openshift-1   latest   11 seconds ago\nhello-openshift-2   default-route-openshift-image-registry.apps.cluster-beijing-fd91.beijing-fd91.example.opentlc.com/myproject/hello-openshift-2   latest   About a minute ago\n1234\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-9yoza8f",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-9yoza8f"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-eii0w35",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114155312-eii0w35"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-z1c9ru0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-z1c9ru0"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "基于名为hello-openshift-1的Image或名为hello-openshift-2的ImageSteam，部署podhello-openshift-1和podhello-openshift-2应用。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-kpqww9e",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-kpqww9e"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-app hello-openshift-1 --docker-image=image-registry.openshift-image-registry.svc:5000/myproject/hello-openshift-1:latest\n$ oc new-app hello-openshift-2 --image-stream=myproject/hello-openshift-2:latest\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-3orp3t2",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-3orp3t2"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-fowvniv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114155312-fowvniv"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-nc12l36",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-nc12l36"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据Service生成Route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-cpi7x9g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-cpi7x9g"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc expose svc hello-openshift-1\n$ oc expose svc hello-openshift-2\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-ys8bpwx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114155312-ys8bpwx"
+			},
+			"Children": [
+				{
+					"ID": "20221114155312-xamqohd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114155312-xamqohd"
+					},
+					"Children": [
+						{
+							"ID": "20221114155312-zd45mx7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114155312-zd45mx7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最后访问hello-openshift-1和hello-openshift-2的route查看结果"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-oe2dusv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114155312-oe2dusv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl $(oc get route hello-openshift-1 -o template --template '{ {.spec.host}}')\nHello OpenShift!\n$ curl $(oc get route hello-openshift-2 -o template --template '{ {.spec.host}}')\nHello OpenShift!\n1234\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-xhq5vzn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114155312-xhq5vzn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20221114155312-fa13mvb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114155312-fa13mvb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "https://www.gnulinuxmate.com/posts/2021/05/02/explore-openshift-4-x-internal-registry/"
+				}
+			]
+		}
+	]
+}

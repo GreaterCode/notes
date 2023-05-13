@@ -1,0 +1,781 @@
+{
+	"ID": "20221117110813-7i7zhp8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221117110813-7i7zhp8",
+		"title": "MachineConfig ",
+		"updated": "20221118105422"
+	},
+	"Children": [
+		{
+			"ID": "20221117110813-kmr1s99",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117110813-kmr1s99",
+				"updated": "20221117111025"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tOpenShift 4 和RHCOS（Red Hat CoreOS）操作系统是紧密依赖关系，它们是一起安装、一起运行。官方建议通过OpenShift 4的Operator机制修改和操作RHCOS的配置（kubelet、CRI-O用到的Registry配置、Kernel、NetworkManager或系统时间同步）"
+				}
+			]
+		},
+		{
+			"ID": "20221117111504-jvc7eb8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221117111504-jvc7eb8",
+				"updated": "20221117111531"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. MachineConfigOperator 及相关对象"
+				}
+			]
+		},
+		{
+			"ID": "20221117111535-stagxwp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117111535-stagxwp",
+				"updated": "20221117111641"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tpenShift 4 是使用系统级的Machine Config Operator（MCO）相关对象实现集群对节点的RHCOS管理。MCO及其相关组件都运行在openshift-machine-config-operator项目中，可以执行以下命令查看该项目下的主要对象。"
+				}
+			]
+		},
+		{
+			"ID": "20221117111656-s7s8sgu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221117111656-s7s8sgu",
+				"updated": "20221117111702"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get all -n openshift-machine-config-operator\nNAME                                             READY   STATUS    RESTARTS   AGE\npod/etcd-quorum-guard-7666889cd6-2hch9           1/1     Running   0          20h\npod/etcd-quorum-guard-7666889cd6-c6m8k           1/1     Running   0          20h\npod/etcd-quorum-guard-7666889cd6-ht7bb           1/1     Running   0          20h\npod/machine-config-controller-7574fd5777-zssfz   1/1     Running   0          20h\npod/machine-config-daemon-2bfzg                  2/2     Running   0          21h\npod/machine-config-daemon-2g5kw                  2/2     Running   0          21h\npod/machine-config-daemon-dw2r9                  2/2     Running   0          21h\npod/machine-config-daemon-gg5vd                  2/2     Running   0          21h\npod/machine-config-daemon-w6cg2                  2/2     Running   0          21h\npod/machine-config-operator-6477b6c7c8-vcxrt     1/1     Running   0          20h\npod/machine-config-server-5bxmf                  1/1     Running   0          20h\npod/machine-config-server-8h78p                  1/1     Running   0          20h\npod/machine-config-server-lqxql                  1/1     Running   0          20h\n \nNAME                            TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE\nservice/machine-config-daemon   ClusterIP   172.30.9.67   \u003cnone\u003e        9001/TCP   9d\n \nNAME                                   DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                     AGE\ndaemonset.apps/machine-config-daemon   5         5         5       5            5           kubernetes.io/os=linux            9d\ndaemonset.apps/machine-config-server   3         3         3       3            3           node-role.kubernetes.io/master=   9d\n \nNAME                                        READY   UP-TO-DATE   AVAILABLE   AGE\ndeployment.apps/etcd-quorum-guard           3/3     3            3           9d\ndeployment.apps/machine-config-controller   1/1     1            1           9d\ndeployment.apps/machine-config-operator     1/1     1            1           9d\n \nNAME                                                   DESIRED   CURRENT   READY   AGE\nreplicaset.apps/etcd-quorum-guard-5fc4989788           0         0         0       9d\nreplicaset.apps/etcd-quorum-guard-7666889cd6           3         3         3       20h\nreplicaset.apps/machine-config-controller-67b8b87bb8   0         0         0       9d\nreplicaset.apps/machine-config-controller-7574fd5777   1         1         1       21h\nreplicaset.apps/machine-config-operator-5b87d8f4c5     0         0         0       9d\nreplicaset.apps/machine-config-operator-6477b6c7c8     1         1         1       21h\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221117111829-ftzg46s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117111829-ftzg46s",
+				"updated": "20221117112022"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在MCO中包括以下三个子组件，MCS、MCC和MCD"
+				}
+			]
+		},
+		{
+			"ID": "20221117111830-uln6va0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221117111830-uln6va0",
+				"updated": "20221117111853"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221117111853-alpjszu.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117111831-l5f246x",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117111831-l5f246x",
+				"updated": "20221118100705"
+			},
+			"Children": [
+				{
+					"ID": "20221117112107-94e25dm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221117112107-94e25dm"
+					},
+					"Children": [
+						{
+							"ID": "20221117112107-4690ibv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117112107-4690ibv",
+								"updated": "20221117175252"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "MCS（MachineConfigServer）：为新加入集群的新Machine"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "提供Ignition配置"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。在openshift-machine-config-operator项目中它是以"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "DaemonSet"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "的形式运行在。可以看到MCS会在每个Master节点上都运行一份，新加入节点是通过haproxy访问MCS的"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117175252-3qwi399",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221117175252-3qwi399",
+						"updated": "20221118100705"
+					},
+					"Children": [
+						{
+							"ID": "20221117175252-shfysk2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117175252-shfysk2",
+								"updated": "20221117175309"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "MCC（MachineConfigController）：当使用MachineConfig定义了配置，MCC负责协调所有的Machines进行升级。它在openshift-machine-config-operator项目是以Deployment的方式存在的"
+								}
+							]
+						},
+						{
+							"ID": "20221117175326-jnvu3um",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20221117175326-jnvu3um",
+								"updated": "20221118100705"
+							},
+							"Children": [
+								{
+									"ID": "20221117175325-r22krz0",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "MS4=",
+										"Num": 1
+									},
+									"Properties": {
+										"id": "20221117175325-r22krz0"
+									},
+									"Children": [
+										{
+											"ID": "20221117175325-tfcbxua",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221117175325-tfcbxua",
+												"updated": "20221117175339"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Template Controller：负责从内部模板中为machine的预定义角色（缺省是master, worker）生成MachineConfigs。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20221117175340-y4k7nfa",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "Mi4=",
+										"Num": 2
+									},
+									"Properties": {
+										"id": "20221117175340-y4k7nfa"
+									},
+									"Children": [
+										{
+											"ID": "20221117175340-xp4a5px",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221117175340-xp4a5px",
+												"updated": "20221117193110"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Render Controller：负责发现MachineConfigPool的MachineConfigs，并生成静态MachineConfig定义文件（例如rendered-master-XXXX和rendered-worker-XXXX）。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20221117175347-9gw4od5",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "My4=",
+										"Num": 3
+									},
+									"Properties": {
+										"id": "20221117175347-9gw4od5"
+									},
+									"Children": [
+										{
+											"ID": "20221117175347-w79wh29",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221117175347-w79wh29",
+												"updated": "20221117175355"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Update Controller：负责与每台machine上运行的MCD程协调，将machine升级到MachineConfig定义的"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20221117175357-9tkit9k",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "NC4=",
+										"Num": 4
+									},
+									"Properties": {
+										"id": "20221117175357-9tkit9k",
+										"updated": "20221118100705"
+									},
+									"Children": [
+										{
+											"ID": "20221117175357-g93y81t",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20221117175357-g93y81t",
+												"updated": "20221118100705"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "KubeletConfigController ：负责将获得的KubeletConfig CRD配置对象实施到节点的kubelet运行环境中。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221117195830-hue3xql",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221117195830-hue3xql"
+					},
+					"Children": [
+						{
+							"ID": "20221117195830-kl0cvlm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221117195830-kl0cvlm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "MCD（MachineConfigDaemon）：负责在升级过程中对Machine实施新的MachineConfig。它在openshift-machine-config-operator项目中MCD是以DaemonSet运行在集群中的所有节点上。另外MCD还负责通过OSTree对RHCOS进行滚动升级。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117195836-mxchgi3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221117195836-mxchgi3",
+				"updated": "20221117195857"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.MachineConfigPool"
+				}
+			]
+		},
+		{
+			"ID": "20221118104119-4slt52h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221118104119-4slt52h",
+				"updated": "20221118104145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在OpenShift 4中，Node和MachineConfig是多对多关系，即一个Node可以使用多个MachineConfig，同时一个MachineConfig可以属于多个Node。一个Node使用哪个MachineConfig配置是MachineConfigPool决定的，即"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "MachineConfigPool将MachineConfig和Node关联起来"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221118104220-pvpzub9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221118104220-pvpzub9",
+				"updated": "20221118104222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221118104222-6efywdq.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221118104119-afoe4rx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221118104119-afoe4rx",
+				"updated": "20221118104744"
+			},
+			"Children": [
+				{
+					"ID": "20221118104706-6tkd5a8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221118104706-6tkd5a8",
+						"updated": "20221118104744"
+					},
+					"Children": [
+						{
+							"ID": "20221118104706-sza2zqe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221118104706-sza2zqe",
+								"updated": "20221118104719"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看machineconfig"
+								}
+							]
+						},
+						{
+							"ID": "20221118104720-pmpsc0o",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221118104720-pmpsc0o",
+								"updated": "20221118104744"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc get machineconfig\nNAME                                                        GENERATEDBYCONTROLLER                      IGNITIONVERSION   AGE\n00-master                                                   99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n00-worker                                                   99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n01-master-container-runtime                                 99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n01-master-kubelet                                           99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n01-worker-container-runtime                                 99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n01-worker-kubelet                                           99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n99-master-58a1f119-d339-4e40-b218-ca459783104e-registries   99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n99-master-ssh                                                                                          3.1.0             3d21h\n99-worker-d20cffe7-8ad8-42fe-9a9d-9dc35f256f45-registries   99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n99-worker-ssh                                                                                          3.1.0             3d21h\nrendered-master-68ea973a611b4e8a11a6492328c661bd            99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\nrendered-worker-a733a9c295cb7b15cf7af2e7251e9a3f            99eb744f5094224edb60d88ca85d607ab151ebdf   3.1.0             3d21h\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117195857-43o2co9",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117195857-43o2co9",
+				"updated": "20221118104846"
+			},
+			"Children": [
+				{
+					"ID": "20221118104819-p4akhbc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221118104819-p4akhbc",
+						"updated": "20221118104846"
+					},
+					"Children": [
+						{
+							"ID": "20221118104819-ksigk2v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221118104819-ksigk2v",
+								"updated": "20221118104824"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看node"
+								}
+							]
+						},
+						{
+							"ID": "20221118104832-4x74i89",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221118104832-4x74i89",
+								"updated": "20221118104846"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc get node\nNAME                                              STATUS   ROLES    AGE     VERSION\nip-10-0-139-50.ap-southeast-1.compute.internal    Ready    master   3d21h   v1.19.0+d59ce34\nip-10-0-155-228.ap-southeast-1.compute.internal   Ready    worker   3d21h   v1.19.0+d59ce34\nip-10-0-172-203.ap-southeast-1.compute.internal   Ready    master   3d21h   v1.19.0+d59ce34\nip-10-0-190-239.ap-southeast-1.compute.internal   Ready    worker   3d21h   v1.19.0+d59ce34\nip-10-0-205-123.ap-southeast-1.compute.internal   Ready    master   3d21h   v1.19.0+d59ce34\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117195813-a1wxxrs",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117195813-a1wxxrs",
+				"updated": "20221118104921"
+			},
+			"Children": [
+				{
+					"ID": "20221118104902-mcy4l80",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221118104902-mcy4l80",
+						"updated": "20221118104921"
+					},
+					"Children": [
+						{
+							"ID": "20221118104902-5sam9fj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221118104902-5sam9fj",
+								"updated": "20221118104912"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看machineconfigpool"
+								}
+							]
+						},
+						{
+							"ID": "20221118104918-gsbkae0",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221118104918-gsbkae0",
+								"updated": "20221118104921"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ oc get machineconfigpool\nNAME     CONFIG                                              UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE\nmaster   rendered-master-68ea973a611b4e8a11a6492328c661bd   True      False      False      3              3                   3                     0                      3d21h\nworker   rendered-worker-a733a9c295cb7b15cf7af2e7251e9a3f   True      False      False      2              2                   2                     0                      3d21h\n$ oc describe MachineConfigPool worker\n...\nSpec:\n  Configuration:\n    Name:  rendered-worker-a733a9c295cb7b15cf7af2e7251e9a3f\n    Source:\n      API Version:  machineconfiguration.openshift.io/v1\n      Kind:         MachineConfig\n      Name:         00-worker\n      API Version:  machineconfiguration.openshift.io/v1\n      Kind:         MachineConfig\n      Name:         01-worker-container-runtime\n      API Version:  machineconfiguration.openshift.io/v1\n      Kind:         MachineConfig\n      Name:         01-worker-kubelet\n      API Version:  machineconfiguration.openshift.io/v1\n      Kind:         MachineConfig\n      Name:         99-worker-d20cffe7-8ad8-42fe-9a9d-9dc35f256f45-registries\n      API Version:  machineconfiguration.openshift.io/v1\n      Kind:         MachineConfig\n      Name:         99-worker-ssh\n  Machine Config Selector:\n    Match Labels:\n      machineconfiguration.openshift.io/role:  worker\n  Node Selector:\n    Match Labels:\n      node-role.kubernetes.io/worker:\n...\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221117192517-4ba2ivq",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221117192517-4ba2ivq",
+				"updated": "20221118105054"
+			},
+			"Children": [
+				{
+					"ID": "20221118105023-mvc621r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221118105023-mvc621r",
+						"updated": "20221118105054"
+					},
+					"Children": [
+						{
+							"ID": "20221118105023-ju88qgs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221118105023-ju88qgs",
+								"updated": "20221118105025"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于名为worker的MachineConfigPool，查看被RenderController加工后所包含到的相关配置文件"
+								}
+							]
+						},
+						{
+							"ID": "20221118105034-1w8ccmq",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221118105034-1w8ccmq",
+								"updated": "20221118105054"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ RENDERED_WORKER_MACHINE_CONFIG=$(oc get machineconfigpool worker --template={{.spec.configuration.name}})\n$ oc describe machineconfigs ${RENDERED_WORKER_MACHINE_CONFIG} | grep Path:\n        Path:        /etc/pki/ca-trust/source/anchors/openshift-config-user-ca-bundle.crt\n        Path:        /etc/tmpfiles.d/cleanup-cni.conf\n        Path:        /etc/kubernetes/static-pod-resources/configmaps/cloud-config/ca-bundle.pem\n        Path:        /etc/containers/storage.conf\n        Path:        /etc/NetworkManager/dispatcher.d/90-long-hostname\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221118105138-a8i9vha",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221118105138-a8i9vha",
+				"updated": "20221118105237"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.使用示例--通过mc修改worker节点CRI-O使用的registries.conf配置"
+				}
+			]
+		},
+		{
+			"ID": "20221118105156-bawm6ja",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221118105156-bawm6ja",
+				"updated": "20221118105156"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				}
+			]
+		},
+		{
+			"ID": "20221118105422-eqk45qq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221118105422-eqk45qq",
+				"updated": "20221118105422"
+			}
+		}
+	]
+}

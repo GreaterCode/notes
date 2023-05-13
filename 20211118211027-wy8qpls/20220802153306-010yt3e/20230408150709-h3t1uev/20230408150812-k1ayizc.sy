@@ -1,0 +1,1394 @@
+{
+	"ID": "20230408150812-k1ayizc",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230408150812-k1ayizc",
+		"title": "device-plugins",
+		"updated": "20230409085527"
+	},
+	"Children": [
+		{
+			"ID": "20230408150812-r8dz3kn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230408150812-r8dz3kn",
+				"updated": "20230408150915"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. device-plugins是什么"
+				}
+			]
+		},
+		{
+			"ID": "20230408150856-0konlut",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408150856-0konlut",
+				"updated": "20230408150909"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从kubernetes1.8版本开始，提供了设备插件框架，设备厂商无需修改kubernetes核心代码就可以将自己生产的设备的资源(kubernetes可管理的资源包括CPU、内存和存储资源)可以让kubelet使用(这一点与操作系统一样，所有设备厂商自己实现驱动)。设备厂商可以自己人工或者以DaemonSet方式部署，而不是定制kubernetes代码。目标设备包括GPU、高性能NIC(网络接口卡)、FPGA、InfiniBand以及其他类似的需要厂商指定初始化和安装的计算资源。"
+				}
+			]
+		},
+		{
+			"ID": "20230408153300-nyelkjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408153300-nyelkjd",
+				"updated": "20230408153301"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230408153301-mr3mk63.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230408150909-oomqvu1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230408150909-oomqvu1",
+				"updated": "20230408150921"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. device-plugins工作机制"
+				}
+			]
+		},
+		{
+			"ID": "20230408151302-oljphhb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408151302-oljphhb",
+				"updated": "20230408151304"
+			}
+		},
+		{
+			"ID": "20230408151349-t755th2",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230408151349-t755th2",
+				"updated": "20230408151453"
+			},
+			"Children": [
+				{
+					"ID": "20230408151412-y0ba5si",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230408151412-y0ba5si"
+					},
+					"Children": [
+						{
+							"ID": "20230408151412-sn2hpdc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408151412-sn2hpdc",
+								"updated": "20230408151417"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "厂商自行实现一个管理设备资源的程序，部署到相应的节点上，我们称之为插件；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230408151417-4ptt3b5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230408151417-4ptt3b5"
+					},
+					"Children": [
+						{
+							"ID": "20230408151417-axddy94",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408151417-axddy94",
+								"updated": "20230408151427"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "插件需要向kubelet注册，注册内容要包含自己的endpoint(endpoint就是一个用于通信的地址)以及一些其他信息(后面会说明)；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230408151428-uiqfws5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230408151428-uiqfws5"
+					},
+					"Children": [
+						{
+							"ID": "20230408151428-k4cv339",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408151428-k4cv339",
+								"updated": "20230408151440"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubelet连接插件的endpoint，就此kubelet和插件就建立了联系；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230408151441-bqkb185",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230408151441-bqkb185",
+						"updated": "20230408151453"
+					},
+					"Children": [
+						{
+							"ID": "20230408151441-mu4n8mi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408151441-mu4n8mi",
+								"updated": "20230408151453"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubelet监听/var/lib/kubelet/device-plugins/kubelet.sock(unix sockets)这个地址，插件监听的也是类似的地址，只是地址变成了/var/lib/kubelet/device-plugins/gpu.sock"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230408151451-hz0qvd3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408151451-hz0qvd3",
+				"updated": "20230408151543"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上是插件如何让kubernetes发现自己，接下来就是插件和kubelet之间的通信接口了，kubelet与插件采用grpc通信，通信接口定义在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubernetes/pkg/kubelet/apis/deviceplugin/v1beta1/api.proto"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中。文件中定义了两个用于通信的接口："
+				}
+			]
+		},
+		{
+			"ID": "20230408151557-h0fbkdy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408151557-h0fbkdy",
+				"updated": "20230408151600"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "service Registration {\n    rpc Register(RegisterRequest) returns (Empty) {}\n}\nservice DevicePlugin {\n    rpc GetDevicePluginOptions(Empty) returns (DevicePluginOptions) {}\n    rpc ListAndWatch(Empty) returns (stream ListAndWatchResponse) {}\n    rpc Allocate(AllocateRequest) returns (AllocateResponse) {}\n    rpc PreStartContainer(PreStartContainerRequest) returns (PreStartContainerResponse) {}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230408151459-zfheudn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408151459-zfheudn",
+				"updated": "20230408151711"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第一个接口用于插件向kubelet注册，kubelet是服务端，插件是客户端；第二个接口是kubelet向插件索要支持，kubelet是客户端，插件是服务端，"
+				}
+			]
+		},
+		{
+			"ID": "20230408151707-f327mlp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408151707-f327mlp",
+				"updated": "20230408151747"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nmessage RegisterRequest {\n    string version = 1;                 // 版本信息\n    string endpoint = 2;                // 插件的endpoint\n    string resource_name = 3;           // 资源名称\n    DevicePluginOptions options = 4;    // 插件选项\n}\n// 那插件选项参数\nmessage DevicePluginOptions {\n    bool pre_start_required = 1;        // 启动容器前是否调用DevicePlugin.PreStartContainer()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230408152534-huisb01",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408152534-huisb01",
+				"updated": "20230408152600"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "version、endpoint、resource_name都比较好理解，pre_start_required 其实就是启动容器前先通知插件做一下准备，一种扩展机制"
+				}
+			]
+		},
+		{
+			"ID": "20230408152637-rssye8k",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230408152637-rssye8k",
+				"updated": "20230408152656"
+			},
+			"Children": [
+				{
+					"ID": "20230408152656-3gziot9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230408152656-3gziot9"
+					},
+					"Children": [
+						{
+							"ID": "20230408152656-2z50i53",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408152656-2z50i53"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rpc GetDevicePluginOptions(Empty) returns (DevicePluginOptions) {}，这个和注册提供的信息是一样的，只是变成了kubelet可以再获取；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230408152637-0tt9ai6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230408152637-0tt9ai6",
+				"updated": "20230408152729"
+			},
+			"Children": [
+				{
+					"ID": "20230408152657-a8cpw1j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230408152657-a8cpw1j",
+						"updated": "20230408152729"
+					},
+					"Children": [
+						{
+							"ID": "20230408152657-1396law",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408152657-1396law",
+								"updated": "20230408152729"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rpc PreStartContainer(PreStartContainerRequest) returns (PreStartContainerResponse) {}，这个就是kubelet启动容器前调用的，其中PreStartContainerRequest，PreStartContainerResponse定义如下："
+								}
+							]
+						},
+						{
+							"ID": "20230408152720-84i2vmf",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230408152720-84i2vmf",
+								"updated": "20230408152725"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "message PreStartContainerRequest {\n    repeated string devicesIDs = 1;\t// 需要使用设备的所有ID，数组形式\n}\nmessage PreStartContainerResponse {\t// 什么也没有\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230408152812-gcqr5r1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230408152812-gcqr5r1",
+				"updated": "20230408152807"
+			},
+			"Children": [
+				{
+					"ID": "20230408152815-iz0ebme",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230408152815-iz0ebme",
+						"updated": "20230408152807"
+					},
+					"Children": [
+						{
+							"ID": "20230408152815-nets3fc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408152815-nets3fc",
+								"updated": "20230408152857"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rpc ListAndWatch(Empty) returns (stream ListAndWatchResponse) {}，kubelet监听设备变化，一旦有设备更新，插件就会通知kubelet，注意此处返回是stream类型。我们再来看看插件返回的结果"
+								}
+							]
+						},
+						{
+							"ID": "20230408152832-jxr52wr",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230408152832-jxr52wr",
+								"updated": "20230408152852"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "\nmessage ListAndWatchResponse {\n    repeated Device devices = 1;    //设备数组\n}\nmessage Device {\n    string ID = 1;                  // 设备唯一ID\n    string health = 2;              // 设备健康情况，就是是好的还是坏的\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230408152915-vfg36xe",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230408152915-vfg36xe",
+				"updated": "20230408153034"
+			},
+			"Children": [
+				{
+					"ID": "20230408152917-cwcd8wv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230408152917-cwcd8wv",
+						"updated": "20230408153034"
+					},
+					"Children": [
+						{
+							"ID": "20230408152917-rof0dgo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230408152917-rof0dgo"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "rpc Allocate(AllocateRequest) returns (AllocateResponse) {}，这个就是kubelet向插件申请资源的接口了，申请资源需要提供如下信息:"
+								}
+							]
+						},
+						{
+							"ID": "20230408152934-d1o90af",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230408152934-d1o90af",
+								"updated": "20230408153034"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "message AllocateRequest {\n    repeated ContainerAllocateRequest container_requests = 1;\n}\nmessage ContainerAllocateRequest {\n    repeated string devicesIDs = 1;\t// 设备ID数组\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230408153027-iyo84do",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408153027-iyo84do",
+				"updated": "20230408153032"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面的类型可以看出申请资源接口可以同时为多个容器申请资源，AllocateRequest .container_requests代表的是多个容器对于资源的需求，ContainerAllocateRequest.devicesIDs是一个容器对于资源的需求"
+				}
+			]
+		},
+		{
+			"ID": "20230408153113-6v0pv5y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408153113-6v0pv5y",
+				"updated": "20230408153120"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nmessage AllocateResponse {\n    repeated ContainerAllocateResponse container_responses = 1;\n}\nmessage ContainerAllocateResponse {\n    map\u003cstring, string\u003e envs = 1;        // 环境变量，需要为容器添加这些环境变量\n    repeated Mount mounts = 2;           // 挂载信息\n    repeated DeviceSpec devices = 3;     // 设备信息\n    map\u003cstring, string\u003e annotations = 4; // 需要加入到容器的annotations字段\n}\nmessage Mount {\n    string container_path = 1;           // 设备在容器中的路径\n    string host_path = 2;                // 设备在宿主机上的路径\n    bool read_only = 3;                  // 是否只读\n}\nmessage DeviceSpec {\n    string container_path = 1;           // 设备在容器中的路径\n    string host_path = 2;                // 设备在宿主机上的路径\n    string permissions = 3;              // 访问设备需要的权限\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230408153153-q72vnxv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408153153-q72vnxv",
+				"updated": "20230408153155"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "和AllocateRequest一样，返回的申请结果也是多容器的。综合以上信息，我们要把图调整一下："
+				}
+			]
+		},
+		{
+			"ID": "20230408153338-pb0fw9x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230408153338-pb0fw9x",
+				"updated": "20230408153406"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. kubelet管理插件"
+				}
+			]
+		},
+		{
+			"ID": "20230408153513-pjvgdeh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230408153513-pjvgdeh",
+				"updated": "20230408153527"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 kubelet对设备管理器的定义"
+				}
+			]
+		},
+		{
+			"ID": "20230408160105-6pgmjzf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408160105-6pgmjzf",
+				"updated": "20230408160235"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Manager是个interface类型，定义路径：pkg\\kubelet\\cm\\devicemanager\\types.go"
+				}
+			]
+		},
+		{
+			"ID": "20230408153527-3n8jf65",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408153527-3n8jf65",
+				"updated": "20230408155956"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 管理器管理节点上所有的设备\ntype Manager interface {\n\t// Start 启动启动设备插件注册服务。.\n\tStart(activePods ActivePodsFunc, sourcesReady config.SourcesReady) error\n\n\t// Allocate configures and assigns devices to a container in a pod. From\n\t// the requested device resources, Allocate will communicate with the\n\t// owning device plugin to allow setup procedures to take place, and for\n\t// the device plugin to provide runtime settings to use the device\n\t// (environment variables, mount points and device files).\n \t// 设备插件将会使用设备（环境变量、挂载点和设备文件）去提供运行时配置\n\tAllocate(pod *v1.Pod, container *v1.Container) error\n\n\t// UpdatePluginResources根据基于已分配给pod的device，更新节点资源。节点对象提供给设备管理器更新节点容量以反映当前可用的设备。\n\tUpdatePluginResources(node *schedulerframework.NodeInfo, attrs *lifecycle.PodAdmitAttributes) error\n\n\t// Stop停止 manager.\n\tStop() error\n\n\t// GetDeviceRunContainerOptions 检查传入的 \u003cpod、容器\u003e，我们是否有缓存的容器设备，对于找到的缓存容器设备，会返回其 DeviceRunContainerOptions\n\t// 。如果未找到缓存状态，则返回空结构。\n\tGetDeviceRunContainerOptions(pod *v1.Pod, container *v1.Container) (*DeviceRunContainerOptions, error)\n\n\t// GetCapacity返回可用设备插件资源容量、资源可分配量以及先前在节点上注册的非活动设备插件资源。\n\tGetCapacity() (v1.ResourceList, v1.ResourceList, []string)\n\tGetWatcherHandler() cache.PluginHandler\n\n   \t// GetDevices返回分配给pod和容器的设备信息\n\tGetDevices(podUID, containerName string) ResourceDeviceInstances\n\n\t// GetAllocatableDevices返回有关manager已知的所有设备的信息\n\tGetAllocatableDevices() ResourceDeviceInstances\n\n\t// ShouldResetExtendedResourceCapacity 返回是否应重置扩展资源，取决于checkpoint 的可用性. 缺少检查点文件强烈表示节点已重新创建\n\tShouldResetExtendedResourceCapacity() bool\n\n\t// TopologyManager HintProvider 提供程序指示设备管理器实现拓扑管理器接口并被查询以使拓扑感知资源对齐\n\tGetTopologyHints(pod *v1.Pod, container *v1.Container) map[string][]topologymanager.TopologyHint\n\n\t// TopologyManager HintProvider 提供程序指示设备管理器实现拓扑管理器接口，并被查询以使每个 Pod 的拓扑感知资源对齐\n\tGetPodTopologyHints(pod *v1.Pod) map[string][]topologymanager.TopologyHint\n\n\t// UpdateAllocatedDevices“更新分配的设备”会释放绑定到已终止容器的所有设备\n\tUpdateAllocatedDevices()\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230408160238-0lzxpmm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408160238-0lzxpmm",
+				"updated": "20230408160251"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体实现：pkg\\kubelet\\cm\\devicemanager\\manager.go"
+				}
+			]
+		},
+		{
+			"ID": "20230408160250-f57ngof",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230408160250-f57ngof",
+				"updated": "20230409082320"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 结构体定义\ntype ManagerImpl struct {\n\tcheckpointdir string\n\n\tendpoints map[string]endpointInfo // Key is ResourceName\n\tmutex     sync.Mutex\n\n\tserver plugin.Server\n\n\t// activePods is a method for listing active pods on the node\n\t// so the amount of pluginResources requested by existing pods\n\t// could be counted when updating allocated devices\n\tactivePods ActivePodsFunc\n\n\t// sourcesReady provides the readiness of kubelet configuration sources such as apiserver update readiness.\n\t// We use it to determine when we can purge inactive pods from checkpointed state.\n\tsourcesReady config.SourcesReady\n\n\t// allDevices holds all the devices currently registered to the device manager\n\tallDevices ResourceDeviceInstances\n\n\t// healthyDevices contains all of the registered healthy resourceNames and their exported device IDs.\n\thealthyDevices map[string]sets.String\n\n\t// unhealthyDevices contains all of the unhealthy devices and their exported device IDs.\n\tunhealthyDevices map[string]sets.String\n\n\t// allocatedDevices contains allocated deviceIds, keyed by resourceName.\n\tallocatedDevices map[string]sets.String\n\n\t// podDevices contains pod to allocated device mapping.\n\tpodDevices        *podDevices\n\tcheckpointManager checkpointmanager.CheckpointManager\n\n\t// List of NUMA Nodes available on the underlying machine\n\tnumaNodes []int\n\n\t// Store of Topology Affinties that the Device Manager can query.\n\ttopologyAffinityStore topologymanager.Store\n\n\t// devicesToReuse contains devices that can be reused as they have been allocated to\n\t// init containers.\n\tdevicesToReuse PodReusableDevices\n\n\t// pendingAdmissionPod contain the pod during the admission phase\n\tpendingAdmissionPod *v1.Pod\n}\n\n\n// NewManagerImpl创建manager\nfunc NewManagerImpl(topology []cadvisorapi.Node, topologyAffinityStore topologymanager.Store) (*ManagerImpl, error) {\n\tsocketPath := pluginapi.KubeletSocket\n\tif runtime.GOOS == \"windows\" {\n\t\tsocketPath = os.Getenv(\"SYSTEMDRIVE\") + pluginapi.KubeletSocketWindows\n\t}\n\treturn newManagerImpl(socketPath, topology, topologyAffinityStore)\n}\n\nfunc newManagerImpl(socketPath string, topology []cadvisorapi.Node, topologyAffinityStore topologymanager.Store) (*ManagerImpl, error) {\n\tklog.V(2).InfoS(\"Creating Device Plugin manager\", \"path\", socketPath)\n\n\tvar numaNodes []int\n\t// numa node相关\n\tfor _, node := range topology {\n\t\tnumaNodes = append(numaNodes, node.Id)\n\t}\n\n\tmanager := \u0026ManagerImpl{\n\t\tendpoints: make(map[string]endpointInfo),\n\n\t\tallDevices:            NewResourceDeviceInstances(),\n\t\thealthyDevices:        make(map[string]sets.String),\n\t\tunhealthyDevices:      make(map[string]sets.String),\n\t\tallocatedDevices:      make(map[string]sets.String),\n\t\tpodDevices:            newPodDevices(),\n\t\tnumaNodes:             numaNodes,\n\t\ttopologyAffinityStore: topologyAffinityStore,\n\t\tdevicesToReuse:        make(PodReusableDevices),\n\t}\n。。。。。\n}\n//以下代码来自kubernetes/pkg/kubelet/apis/deviceplugin/v1beta1/constants.go\nconst (\n    Healthy = \"Healthy\"\n    Unhealthy = \"Unhealthy\"\n    Version = \"v1beta1\"\n    DevicePluginPath = \"/var/lib/kubelet/device-plugins/\"\n    KubeletSocket = DevicePluginPath + \"kubelet.sock\"\n    KubeletPreStartContainerRPCTimeoutInSecs = 30\n)\n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230408160947-fslwabe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230408160947-fslwabe",
+				"updated": "20230409082428"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在实例化ManagerImpl传递socket路径参数，socket路径已经通过常数方式定义。下面就是分析当插件注册后Manager是如何处理的，只要找到ManagerImpl的Register函数就可以了。因为在启动grpc服务的时候将ManagerImpl注册为插件注册服务的处理器，那么ManagerImpl就必须要有相应的注册函数。下面是相应的代码："
+				}
+			]
+		},
+		{
+			"ID": "20230409082457-p4klqzj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409082457-p4klqzj",
+				"updated": "20230409082834"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//kubernetes/pkg/kubelet/cm/devicemanager/manager.go\nfunc (m *ManagerImpl) Register(ctx context.Context, r *pluginapi.RegisterRequest) (*pluginapi.Empty, error) {\n    metrics.DevicePluginRegistrationCount.WithLabelValues(r.ResourceName).Inc()\n    // 检测插件是否是兼容的版本，此处就用到了api.proto中定义的注册信息中的版本\n    // 从代码中可以看出，kubelet是可以兼容多个版本的，当前只兼容一个版本\n    // var SupportedVersions = [...]string{\"v1beta1\"}，这段代码定义在\n    // kubernetes/pkg/kubelet/apis/deviceplugin/v1beta1/constants.go文件中\n    var versionCompatible bool\n    for _, v := range pluginapi.SupportedVersions {\n        if r.Version == v {\n            versionCompatible = true\n            break\n        }\n    }\n    // 如果版本不兼容报错，因为插件和kubelet是两个独立的工程，版本校验非常重要\n    if !versionCompatible {\n        errorString := fmt.Sprintf(errUnsupportedVersion, r.Version, pluginapi.SupportedVersions)\n        return \u0026pluginapi.Empty{}, fmt.Errorf(errorString)\n    }\n    // 校验资源名称的合法性，其实这里就是判断资源名称的合法性(Is Extend ResourceName)，\n    // kubernetes为资源定义了格式，vendor/device，比如nvidia.com/gpu\n    // kubernetes的native资源格式kubernetes.io/name此处资源名称不能以kubernetes.io/开头\n    // 同时也不能以requests.开头，因为这是kubernetes默认的资源请求前缀\n    if !v1helper.IsExtendedResourceName(v1.ResourceName(r.ResourceName)) {\n        errorString := fmt.Sprintf(errInvalidResourceName, r.ResourceName)\n        return \u0026pluginapi.Empty{}, fmt.Errorf(errorString)\n    }\n    // 开启协程添加插件，需要创建与插件的连接，一个协程内\n    // 形成rpc的调用者被调用的环形操作，容易形成死锁\n    go m.addEndpoint(r)\n    return \u0026pluginapi.Empty{}, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409082813-vh4gfvs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409082813-vh4gfvs",
+				"updated": "20230409082813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ManagerImpl通过注册信息添加endpoint，一个endpoint就代表一个插件，下面是添加插件的代码："
+				}
+			]
+		},
+		{
+			"ID": "20230409082813-hx83i92",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409082813-hx83i92",
+				"updated": "20230409083229"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "R28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// kubernetes/pkg/kubelet/cm/devicemanager/manager.go\nfunc (m *ManagerImpl) addEndpoint(r *pluginapi.RegisterRequest) {\n    // 申请内存用于存储已经存在的设备\n    existingDevs := make(map[string]pluginapi.Device)\n    m.mutex.Lock()\n    // 看看插件是不是已经注册过了，判断方法就是资源名称(唯一)\n    old, ok := m.endpoints[r.ResourceName]\n    if ok \u0026\u0026 old != nil {\n        // 如果是已经注册过的插件，获取插件所有的设备，并且标记为不健康状态\n        evices := make(map[string]pluginapi.Device)\n        for _, device := range old.getDevices() {\n            device.Health = pluginapi.Unhealthy\n            devices[device.ID] = device\n        }\n        // 这些已经注册过的插件的设备存储在临时变量中，作为已经存在的设备\n        existingDevs = devices\n    }\n    m.mutex.Unlock()\n    // 在ManagerImpl中用endpointImpl表一个插件，要为新注册的插件创建一个\n    // 新的endpointImpl对象,创建endpointImpl用到了已经存在的设备\n    socketPath := filepath.Join(m.socketdir, r.Endpoint)\n    e, err := newEndpointImpl(socketPath, r.ResourceName, existingDevs, m.callback)\n    if err != nil {\n        return\n    }\n    m.mutex.Lock()\n    // 存储插件的选项，前面在proto中有说明选项有什么意义\n    if r.Options != nil {\n        m.pluginOpts[r.ResourceName] = r.Options\n    }\n    // 这段代码肯定有一些人懵逼，前面不是已经赋值给old了么，现在有获取一次并且判断\n    // 和old是否相同，这个重点在于这个函数锁的位置，上面代码创建endpointImpl的时候\n    // 已经解锁了，再加锁存在一种可能就是插件又注册了一次，并且被其他协程处理完了\n    // 为了安全起见，多一次判断是非常必要的。如果别的协程处理完了，此处就要停止\n    // 已经创建的endpointImpl。\n    ext := m.endpoints[r.ResourceName]\n    if ext != old {\n        m.mutex.Unlock()\n        e.stop()\n        return\n    }\n    // 添加到endpointImpl的map中，基本算是注册。\n    m.endpoints[r.ResourceName] = e\n    m.mutex.Unlock()\n    // 如果同名的插件存在，那么就把老的插件停止掉\n    if old != nil {\n        old.stop()\n    }\n    // 开启协程运行endpointImpl，可以看出来ManagerImpl为每个插件都开一个协程与之交互\n    go func() {\n        e.run()  // 这个函数一直运行直到没法从插件获取设备状态或者被停止\n        e.stop() // 退出后就停止的endpointImpl\n        m.mutex.Lock()\n        // 这里要判断一次endpointImpl是不是自己创建的，如果是就把插件资源标记为不健康\n        // 如果不是说明在别的协程中已经把这个插件处理过了，为什么这么做，还是锁定问题\n        if old, ok := m.endpoints[r.ResourceName]; ok \u0026\u0026 old == e {\n            m.markResourceUnhealthy(r.ResourceName)\n        }\n        m.mutex.Unlock()\n    }()\n}\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409082812-o2vexs1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230409082812-o2vexs1",
+				"updated": "20230409083252"
+			},
+			"Children": [
+				{
+					"ID": "20230409083252-u03cpsy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230409083252-u03cpsy"
+					},
+					"Children": [
+						{
+							"ID": "20230409083252-qn3rti8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409083252-qn3rti8",
+								"updated": "20230409083254"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ManagerImpl有两个map，endpoints和pluginOpts，他们的key都是资源名称，也就是插件注册时提供的RegisterRequest.resource_name，定义在api.proto中，你会发现proto定义的名称在经过编译输出的go代码却变成了RegisterRequest.ResourceName，这是因为go语言的大小写约束，同时go可以在定义类型的时候指定序列化和反序列化变量的名称，这一点注意一下，否则就对应不上了；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230409083254-7e0vqu2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230409083254-7e0vqu2"
+					},
+					"Children": [
+						{
+							"ID": "20230409083254-t9lrcye",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409083254-t9lrcye",
+								"updated": "20230409083258"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "endpoints的value类型是endpoint，用于存储插件在ManagerImpl的实例对象的，也就是说一个插件在ManagerImpl里面对应一个endpoint对象，其中endpoint是interface类型，endpointImpl是endpoint的实现类，所有对于插件的操作都是通过endpointImpl实现的，可以断定接DevicePlugin的客户端放在了endpointImpl里面；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230409083258-19ih68p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230409083258-19ih68p"
+					},
+					"Children": [
+						{
+							"ID": "20230409083258-2p1ungn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409083258-2p1ungn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "pluginOpts里面记录了哪些插件支持“选项”特性；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230409083439-uiq8xsw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409083439-uiq8xsw",
+				"updated": "20230409083502"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// kubernetes/pkg/apis/core/types.go，\n\ntype ResourceName string\ntype Quantity struct { // kubernetes/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go\n    i int64Amount\n    d infDecAmount\n    s string\n    Format\n}\ntype ResourceList map[ResourceName]resource.Quantity\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409083527-bahcx7t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409083527-bahcx7t",
+				"updated": "20230409084344"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "containerManagerImpl是通过devicemanager.ManagerImpl实现设备插件资源管理的。而ContainerManager是Kubelet这个类的成员变量，Kubelet利用ContainerManager获取插件资源，然后再将资源汇报给apiserver。"
+				}
+			]
+		},
+		{
+			"ID": "20230409084300-5hydvgo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409084300-5hydvgo",
+				"updated": "20230409084413"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//代码源自kubernetes/pkg/kubelet/kubelet_node_status.go\nfunc (kl *Kubelet) defaultNodeStatusFuncs() []func(*v1.Node) error {\n    ......\n    // 函数返回一个函数数组，每个函数用于设置一种节点状态\n    var setters []func(n *v1.Node) error\n    setters = append(setters,\n    ......\n    // 这里可以看到插件资源容量作为节点MachineInfo的一部分\n    nodestatus.MachineInfo(string(kl.nodeName), kl.maxPods, kl.podsPerCore,\n                           kl.GetCachedMachineInfo, kl.containerManager.GetCapacity,\n                           kl.containerManager.GetDevicePluginResourceCapacity, \n                           kl.containerManager.GetNodeAllocatableReservation, kl.recordEvent),\n                           ......)\n    ......\n}\n// 那就有必要看看MachineInfo里面是怎么使用插件资源的？\n// 代码源于kubernetes/pkg/kubelet/nodestatus/setters.go\nfunc MachineInfo(nodeName string, maxPods int, podsPerCore int, \n                 machineInfoFunc func() (*cadvisorapiv1.MachineInfo, error), \n                 capacityFunc func() v1.ResourceList, \n                 devicePluginResourceCapacityFunc func() (v1.ResourceList, v1.ResourceList, []string), \n                 nodeAllocatableReservationFunc func() v1.ResourceList, Kubelet.containerManager.GetNodeAllocatableReservation\n                 recordEventFunc func(eventType, event, message string), ) Setter {\n    // 从函数名来看就是用来获取机器信息的，这个函数返回一个匿名函数设置节点信息\n    // 这个函数传入了好多获取各种分类信息的函数，此函数算是统一完成节点信息的地方\n    return func(node *v1.Node) error {\n        // 申请内存用于设置节点状态中的资源容量列表\n        if node.Status.Capacity == nil {\n            node.Status.Capacity = v1.ResourceList{}\n        }\n        var devicePluginAllocatable v1.ResourceList\n        var devicePluginCapacity v1.ResourceList\n        var removedDevicePlugins []string\n \n        // 不是我们关心的重点，不做过多注释\n        info, err := machineInfoFunc()\n        if err != nil {\n            node.Status.Capacity[v1.ResourceCPU] = *resource.NewMilliQuantity(0, resource.DecimalSI)\n            node.Status.Capacity[v1.ResourceMemory] = resource.MustParse(\"0Gi\")\n            node.Status.Capacity[v1.ResourcePods] = *resource.NewQuantity(int64(maxPods), resource.DecimalSI)\n        } else {\n            ......\n            // 调用了我们上面提到的ContainerManager.GetDevicePluginResourceCapacity()\n            devicePluginCapacity, devicePluginAllocatable, removedDevicePlugins =    devicePluginResourceCapacityFunc()\n            // 算是把所有插件的资源列表拷贝了一遍吧\n            if devicePluginCapacity != nil {\n                for k, v := range devicePluginCapacity {\n                    node.Status.Capacity[k] = v\n                }\n            }\n            // 把已经删除的设备也记录在资源容量列表中，只是资源量为0，此处的目的暂不知\n            for _, removedResource := range removedDevicePlugins {\n                node.Status.Capacity[v1.ResourceName(removedResource)] = *resource.NewQuantity(int64(0), resource.DecimalSI)\n            }\n        }\n        ......\n        // 拷贝可分配设备资源列表\n        if devicePluginAllocatable != nil {\n            for k, v := range devicePluginAllocatable {\n                node.Status.Allocatable[k] = v\n            }\n        }\n        ......\n        return nil\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409084822-dnq8vjh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409084822-dnq8vjh",
+				"updated": "20230409084825"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结："
+				}
+			]
+		},
+		{
+			"ID": "20230409084300-dg2p3gx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230409084300-dg2p3gx",
+				"updated": "20230409084811"
+			},
+			"Children": [
+				{
+					"ID": "20230409084543-tzmc4rl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230409084543-tzmc4rl"
+					},
+					"Children": [
+						{
+							"ID": "20230409084543-msw3mbn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409084543-msw3mbn",
+								"updated": "20230409084559"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Node.Status.Capacity和Node.Status.Allocatable记录了节点全部资源，包括可用于分配的资源，其中Node是类型，定义在kubernetes/staging/src/k8s.io/api/core/v1/types.go中，Status、Capacity、Allocatable是成员变量名称，这样描述利于读者理解；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230409084559-i9znga2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230409084559-i9znga2"
+					},
+					"Children": [
+						{
+							"ID": "20230409084559-71lycij",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409084559-71lycij"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubelet.ContainerManager.DeviceManager是用于获取所有插件化资源信息的3个类型，其中ContainerManager和DeviceManager是interface，他们的实现分别为containerManagerImpl和deviceManagerImpl，注意ContainerManager的实现会根据操作系统的类型有不同的实现；\n"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230409084603-x37th1a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230409084603-x37th1a"
+					},
+					"Children": [
+						{
+							"ID": "20230409084603-sarjgd5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409084603-sarjgd5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "资源列定义为type ResourceList map[ResourceName]resource.Quantity，就是一个资源名称和资源量组合的map，所以必须要求所有插件资源名称要唯一，这也是为什么nvidia定义的gpu资源是nvidia.com/gpu，cpu资源是kubernetes.io/cpu，kubernetes.io/前缀是内部预定义的资源，不可以使用\n"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230409084606-knlaq07",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230409084606-knlaq07",
+						"updated": "20230409084811"
+					},
+					"Children": [
+						{
+							"ID": "20230409084606-9w6yxgr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409084606-9w6yxgr",
+								"updated": "20230409084811"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "从官方介绍插件式设备的文档来看，没有看到关于调度相关的内容，只有介绍怎么将设备加入到系统中。资源是名字唯一的，如果不修改核心代码就可以用的话，新扩展进来的资源scheduler只能通过名字匹配的方式找到拥有该资源的节点，比如通过yaml文件中spec.containers[i].resources.limits.nvidia.com/gpu:2；\n"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "image.png"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image-20230409084811-zjrnd2p.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230409084847-bv9zwu7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409084847-bv9zwu7",
+				"updated": "20230409084850"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注：T为类型，M为成员，+为基类"
+				}
+			]
+		},
+		{
+			"ID": "20230409084849-264p49b",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230409084849-264p49b",
+				"updated": "20230409084922"
+			},
+			"Children": [
+				{
+					"ID": "20230409084922-3yn8jba",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230409084922-3yn8jba"
+					},
+					"Children": [
+						{
+							"ID": "20230409084922-x8iiyul",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230409084922-x8iiyul"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Scheduler是如何使用这些资源的？"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230409084849-fi7t2tt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409084849-fi7t2tt",
+				"updated": "20230409084934"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源于kubernetes/pkg/scheduler/cache/node_info.go\ntype Resource struct {\n    MilliCPU         int64                     // CPU，单位为1/百万\n    Memory           int64                     // 内存，单位为字节\n    EphemeralStorage int64                     // 存储，单位为字节\n    AllowedPodNumber int                       // 允许的pod数量\n    ScalarResources  map[v1.ResourceName]int64 // 扩展资源，这个和ResourceList没差\n}\n \n// 通过ResourceList构造Resource 对象\nfunc NewResource(rl v1.ResourceList) *Resource {\n    r := \u0026Resource{} // 创建资源对象\n    r.Add(rl)        // 添加资源\n    return r         // 返回资源对象\n}\n// 向Resource 对象添加资源\nfunc (r *Resource) Add(rl v1.ResourceList) {\n    if r == nil {\n    return\n    }\n    // 遍历所有资源\n    for rName, rQuant := range rl {\n        switch rName {\n            case v1.ResourceCPU:                // 累加CPU资源\n                r.MilliCPU += rQuant.MilliValue()\n            case v1.ResourceMemory:             // 累加内存资源\n                r.Memory += rQuant.Value()\n            case v1.ResourcePods:               // 累加pod数量\n                r.AllowedPodNumber += int(rQuant.Value())\n            case v1.ResourceEphemeralStorage:   //累加存储资源\n                r.EphemeralStorage += rQuant.Value()\n            default:                            // 其他的全部归属为扩展资源\n                if v1helper.IsScalarResourceName(rName) {\n                r.AddScalar(rName, rQuant.Value())\n                }\n            }\n    }\n}\n// 添加扩展资源\nfunc (r *Resource) AddScalar(name v1.ResourceName, quantity int64) {\n    r.SetScalar(name, r.ScalarResources[name]+quantity)\n}\n// 设置扩展资源\nfunc (r *Resource) SetScalar(name v1.ResourceName, quantity int64) {\n    // 扩展资源如果没有初始化就新建map\n    if r.ScalarResources == nil {\n        r.ScalarResources = map[v1.ResourceName]int64{}\n    }\n    r.ScalarResources[name] = quantity\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409083528-qfnr3aw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409083528-qfnr3aw",
+				"updated": "20230409083839"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// kubernetes/pkg/kubelet/cm/devicemanager/manager.go\n\nfunc (m *ManagerImpl) GetCapacity() (v1.ResourceList, v1.ResourceList, []string) {\n    needsUpdateCheckpoint := false\n    // 临时变量，用于存储资源总容量，可分配资源量和已经删除的资源名称\n    var capacity = v1.ResourceList{}\n    var allocatable = v1.ResourceList{}\n    deletedResources := sets.NewString()\n    m.mutex.Lock()\n    // 遍历健康的设备，ManagerImpl用healthyDevices成员变量存储着全部的健康设备\n    // ManagerImpl.healthyDevices是一个map，key是资源名称，value是设备设备名称集合\n    // ManagerImpl.healthyDevices按照资源名称分类，每个分类下面是所有的设备名称\n    for resourceName, devices := range m.healthyDevices {\n        e, ok := m.endpoints[resourceName]\n        // 插件不存在或者插件长时间过期？\n        if (ok \u0026\u0026 e.stopGracePeriodExpired()) || !ok {\n            delete(m.endpoints, resourceName) \t\t// 删除插件\n            delete(m.healthyDevices, resourceName)\t// 删除这个资源名称的健康设备\n            deletedResources.Insert(resourceName)\t// 记录所有已删除的资源名称\n            needsUpdateCheckpoint = true\n        } else {\n            // 把健康的设备添加到总资源容量和可分配资源容量两个列表中\n            // 前面没有深究资源容量定义，看看这里采用了固定的单位\n            // DecimalSI是10进制，精度为一百万(M)，这个和CPU资源定义是一样的\n            // 设备数*1000000就是节点上改资源名称的资源量\n            capacity[v1.ResourceName(resourceName)] = *resource.NewQuantity(int64(devices.Len()), resource.DecimalSI)\n            allocatable[v1.ResourceName(resourceName)] = *resource.NewQuantity(int64(devices.Len()), resource.DecimalSI)\n        }\n    }\n    // 遍历不健康的设备\n    for resourceName, devices := range m.unhealthyDevices {\n        e, ok := m.endpoints[resourceName]\n        // 此处的处理方式和处理健康设备方式一样，不赘述\n        if (ok \u0026\u0026 e.stopGracePeriodExpired()) || !ok {\n            delete(m.endpoints, resourceName)\n            delete(m.unhealthyDevices, resourceName)\n            deletedResources.Insert(resourceName)\n            needsUpdateCheckpoint = true\n        } else {\n            // 获取健康的资源数，因为上面先统计的是健康设备\n            capacityCount := capacity[v1.ResourceName(resourceName)]\n            // 计算不健康的资源数\n            unhealthyCount := *resource.NewQuantity(int64(devices.Len()), resource.DecimalSI)\n            // 该资源总量是健康+不讲康的总和\n            capacityCount.Add(unhealthyCount)\n            // 更新资源总容量\n            capacity[v1.ResourceName(resourceName)] = capacityCount\n        }\n    }\n    m.mutex.Unlock()\n    if needsUpdateCheckpoint {\n        m.writeCheckpoint()\n    }\n    // 这里可以到该函数返回的是扩展资源总量、可分配资源总量以及删除的资源\n    return capacity, allocatable, deletedResources.UnsortedList()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409083528-gtffywk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409083528-gtffywk",
+				"updated": "20230409084151"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ManagerImpl.GetCapacity()调用者，ContainerManager有一个接口函数定义为："
+				}
+			]
+		},
+		{
+			"ID": "20230409083950-03sqck4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409083950-03sqck4",
+				"updated": "20230409084124"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// kubernetes/pkg/kubelet/cm/container_manager.go\ntype ContainerManager interface {\n    ......\n    // 看看这个函数的返回值和ManagerImpl.GetCapacity()一样\n    // 而且函数名称更加直观了，就是获取设备插件的资源容量\n    GetDevicePluginResourceCapacity() (v1.ResourceList, v1.ResourceList, []string)\n    ......\n}\n// ContainerManager是interface类型，具体实现在别的文件，本文引用linux系统的实现\n// 代码源自kubernetes/pkg/kubelet/cm/container_manager_linux.go\nfunc (cm *containerManagerImpl) GetDevicePluginResourceCapacity() (v1.ResourceList,    v1.ResourceList, []string) {\n    return cm.deviceManager.GetCapacity()\n}\n// containerManagerImpl是通过deviceManager成员变量返回的，该变量是在下面代码初始化的\nfunc NewContainerManager(mountUtil mount.Interface, cadvisorInterface cadvisor.Interface, nodeConfig NodeConfig, failSwapOn bool, devicePluginEnabled bool, recorder record.EventRecorder) (ContainerManager, error) {\n    ......\n    if devicePluginEnabled {\n        // 就是这里，我们前面分析的ManagerImpl在这里被构造\n        cm.deviceManager, err = devicemanager.NewManagerImpl()\n    } else {\n        // 从1.10开始默认设备插件是使能的，所以这里我们就不关注了\n        cm.deviceManager, err = devicemanager.NewManagerStub()\n    }\n    ......\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409085224-tvgzraw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409085224-tvgzraw",
+				"updated": "20230409085224"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面的代码可以看出，Scheduler对于资源重新进行了定义，这个很正常，两个不同的模块(Scheduler和Kubelet)对于同一个事物的看的角度不同，定义自然不同。对于Scheduler来说主要调度的就是CPU、内存这些资源，专门定义一个变量存储，这样访问效率要比每次都用名字从map中获取高很多，当然也有历史实现的原因。"
+				}
+			]
+		},
+		{
+			"ID": "20230409085224-fuyy0wp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409085224-fuyy0wp",
+				"updated": "20230409085230"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "知道Scheduler如何定义资源后，我们就要看Scheduler在调度的时候怎么使用这些资源。如下代码所示："
+				}
+			]
+		},
+		{
+			"ID": "20230409085236-3a5s54o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230409085236-3a5s54o",
+				"updated": "20230409085239"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 代码源自kubernetes/pkg/scheduler/algorithms/predicates/predicates.go\nvar (\n    predicatesOrdering = []string{CheckNodeConditionPred, CheckNodeUnschedulablePred,\n        GeneralPred, HostNamePred, PodFitsHostPortsPred,\n        MatchNodeSelectorPred, PodFitsResourcesPred, NoDiskConflictPred,\n        PodToleratesNodeTaintsPred, PodToleratesNodeNoExecuteTaintsPred, CheckNodeLabelPresencePred,\n        CheckServiceAffinityPred, MaxEBSVolumeCountPred, MaxGCEPDVolumeCountPred,\n        MaxAzureDiskVolumeCountPred, CheckVolumeBindingPred, NoVolumeZoneConflictPred,\n        CheckNodeMemoryPressurePred, CheckNodePIDPressurePred, CheckNodeDiskPressurePred, MatchInterPodAffinityPred}\n)\n//上面的全局变量定义了predicates的顺序，我们只关注GeneralPred，其他的这里不说明\nfunc GeneralPredicates(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {\n    var predicateFails []algorithm.PredicateFailureReason\n    fit, reasons, err := noncriticalPredicates(pod, meta, nodeInfo) // 下面有说明\n    ......\n}\nfunc noncriticalPredicates(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {\n    var predicateFails []algorithm.PredicateFailureReason\n    fit, reasons, err := PodFitsResources(pod, meta, nodeInfo) // 下面有说明\n    ......\n}\n// 上面的代码就是为了展示调用顺序，下面的才是主要内容，这个函数用于判断\n// 节点资源是否匹配，从这点可以看出调用这个函数肯定是用一个pod对于资源的请求\n// 来遍历所有的节点\nfunc PodFitsResources(pod *v1.Pod, meta algorithm.PredicateMetadata, nodeInfo *schedulercache.NodeInfo) (bool, []algorithm.PredicateFailureReason, error) {\n    // 节点不存在返回错误\n    node := nodeInfo.Node() \n    if node == nil {\n        return false, nil, fmt.Errorf(\"node not found\")\n    }\n    // 节点允许的Pod数量是否超过上限\n    var predicateFails []algorithm.PredicateFailureReason\n    allowedPodNumber := nodeInfo.AllowedPodNumber()\n    if len(nodeInfo.Pods())+1 \u003e allowedPodNumber {\n        predicateFails = append(predicateFails, NewInsufficientResourceError(v1.ResourcePods, 1, int64(len(nodeInfo.Pods())), int64(allowedPodNumber)))\n    }\n \n    // 此处不是讨论重点，不做过多介绍，就是获取Pod的资源请求\n    ignoredExtendedResources := sets.NewString()\n    var podRequest *schedulercache.Resource\n    if predicateMeta, ok := meta.(*predicateMetadata); ok {\n        podRequest = predicateMeta.podRequest\n        if predicateMeta.ignoredExtendedResources != nil {\n            ignoredExtendedResources = predicateMeta.ignoredExtendedResources\n        }\n    } else {\n        podRequest = GetResourceRequest(pod)\n    }\n \n    // 如果pod没有任何资源请求，那就直接返回，这里的资源请求就是我们在yaml里写的\n    if podRequest.MilliCPU == 0 \u0026\u0026 podRequest.Memory == 0 \u0026\u0026 \n       podRequest.EphemeralStorage == 0 \u0026\u0026  len(podRequest.ScalarResources) == 0 {\n        return len(predicateFails) == 0, predicateFails, nil\n    }\n    // 看到没有，这里就在用我们全文都在提到的资源，主要判断的就是可用于分配的资源\n    allocatable := nodeInfo.AllocatableResource()\n    // 是否有足够的CPU资源？\n    if allocatable.MilliCPU \u003c podRequest.MilliCPU+nodeInfo.RequestedResource().MilliCPU {\n        predicateFails = append(predicateFails, NewInsufficientResourceError(v1.ResourceCPU, podRequest.MilliCPU, nodeInfo.RequestedResource().MilliCPU, allocatable.MilliCPU))\n    }\n    // 是否有足够的内存资源？\n    if allocatable.Memory \u003c podRequest.Memory+nodeInfo.RequestedResource().Memory {\n        predicateFails = append(predicateFails, NewInsufficientResourceError(v1.ResourceMemory, podRequest.Memory, nodeInfo.RequestedResource().Memory, allocatable.Memory))\n    }\n    // 是否有足够的存储资源\n    if allocatable.EphemeralStorage \u003c podRequest.EphemeralStorage+nodeInfo.RequestedResource().EphemeralStorage {\n        predicateFails = append(predicateFails, NewInsufficientResourceError(v1.ResourceEphemeralStorage, podRequest.EphemeralStorage, nodeInfo.RequestedResource().EphemeralStorage, allocatable.EphemeralStorage))\n    }\n    // 对于扩展资源的判断就在这里了，遍历pod所有扩展资源的需求\n    for rName, rQuant := range podRequest.ScalarResources {\n        // 判断资源名称是否合法，这个在前面提到过了\n        if v1helper.IsExtendedResourceName(rName) {\n            if ignoredExtendedResources.Has(string(rName)) {\n                continue\n            }\n        }\n        // 如果可用的扩展资源不足(包括不存在)则失败，就这么简单应该符合大部分读者的预期\n        if allocatable.ScalarResources[rName] \u003c rQuant+nodeInfo.RequestedResource().ScalarResources[rName] {\n            predicateFails = append(predicateFails, NewInsufficientResourceError(rName, podRequest.ScalarResources[rName], nodeInfo.RequestedResource().ScalarResources[rName], allocatable.ScalarResources[rName]))\n        }\n    }\n    return len(predicateFails) == 0, predicateFails, nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230409085219-2f8kzdt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230409085219-2f8kzdt",
+				"updated": "20230409085527"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上是Scheduler调度的第一阶段predicate，满足条件的Node还会进入第二阶段priorities，第一阶段主要用于过滤，第二阶段主要用于计算最优。我没有在第二阶段找到关于扩展资源相关的代码，所以我猜测Scheduler在调度扩展资源的时候不会计算扩展设备的负载率，这一点在有些场合可能不符合预期，开发人员你可以自行设计更优的调度策略。\n"
+				}
+			]
+		}
+	]
+}

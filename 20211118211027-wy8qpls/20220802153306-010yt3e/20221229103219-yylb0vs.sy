@@ -1,0 +1,818 @@
+{
+	"ID": "20221229103219-yylb0vs",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221229103219-yylb0vs",
+		"title": "使用 kubebuilder 开发k8s CRD（三） ",
+		"updated": "20221229103934"
+	},
+	"Children": [
+		{
+			"ID": "20221229103219-jy2m0zx",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221229103219-jy2m0zx"
+			}
+		},
+		{
+			"ID": "20221229103219-gryjpc8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221229103219-gryjpc8",
+				"updated": "20221229103826"
+			},
+			"Children": [
+				{
+					"ID": "20221229103219-6xdhyh8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221229103219-6xdhyh8",
+						"updated": "20221229103826"
+					},
+					"Children": [
+						{
+							"ID": "20221229103219-he5hkp5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221229103219-he5hkp5",
+								"updated": "20221229103826"
+							}
+						}
+					]
+				},
+				{
+					"ID": "20221229103219-syfy94w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221229103219-syfy94w"
+					},
+					"Children": [
+						{
+							"ID": "20221229103219-c0odehm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221229103219-c0odehm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1）如果不存在即创建一个nginx Deployment"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221229103219-adzbzqn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221229103219-adzbzqn"
+					},
+					"Children": [
+						{
+							"ID": "20221229103219-wahu1qy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221229103219-wahu1qy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2022-12-29 10:32:19"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-g1kmvcy",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221229103219-g1kmvcy"
+			}
+		},
+		{
+			"ID": "20221229103219-51zxnhu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103219-51zxnhu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、demo业务场景："
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-xnbivqj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-xnbivqj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）如果不存在即创建一个nginx Deployment"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-rrlboss",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-rrlboss"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）确保deploy的大小和CR文件制定的大小一致"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-r9j5448",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-r9j5448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3）更新nginx CR的状态（同步名字相同的PODS状态）"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-tb75jap",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103219-tb75jap",
+				"updated": "20221229103219"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、核心改造文件："
+				}
+			]
+		},
+		{
+			"ID": "20221229103919-ltjrru1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103919-ltjrru1",
+				"updated": "20221229103920"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "helloworld_controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103927-tyscozo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103927-tyscozo",
+				"updated": "20221229103927"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "helloworld_types.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103934-3g89ck6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103934-3g89ck6",
+				"updated": "20221229103934"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "main.go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-kczyr9z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103219-kczyr9z"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "三、demo开发"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-0bbpikh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-0bbpikh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mkdir -p \u0026lt;span\u0026gt;helloworld\u0026lt;/span\u0026gt;-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-966y3r0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-966y3r0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cd mysql-writer-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-o7kg2du",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-o7kg2du"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "go mod init \u0026lt;span\u0026gt;helloworld\u0026lt;/span\u0026gt;-operator"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-i5mw523",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-i5mw523"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubebuilder init ``--domain \u0026lt;a href=\u0026quot;http://helloworld.k8s.test.com/\u0026quot; class=\u0026quot;external-link\u0026quot; rel=\u0026quot;nofollow\u0026quot;\u0026gt;helloworld.k8s.test.com\u0026lt;/a\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-dr68dye",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-dr68dye"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubebuilder create api \\"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--group demo \\"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--version v1 \\"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--kind \u0026lt;span\u0026gt;HelloWorld\u0026lt;/span\u0026gt; \\"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--resource\u0026lt;span\u0026gt; \u0026lt;/span\u0026gt;``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\\"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--controller\u0026lt;span\u0026gt; \u0026lt;/span\u0026gt;``true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\\"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--namespaced\u0026lt;span\u0026gt; \u0026lt;/span\u0026gt;``true"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-t9rswpx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-t9rswpx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl apply -f xxx.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-3tfxgzb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-3tfxgzb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1.6575210690768352e+09    INFO    helloworld    recondile被调用default-helloworld-sample\u0026lt;br/\u0026gt;1.6575210690768735e+09    INFO    helloworld    不存在deploy，新建deploy\u0026lt;br/\u0026gt;1.657521069103676e+09    INFO    helloworld    不存在deploy，新建deploy成功\u0026lt;br/\u0026gt;1.6575210691037335e+09    INFO    helloworld    recondile被调用default-helloworld-sample\u0026lt;br/\u0026gt;1.6575210692068894e+09    INFO    helloworld    更新状态多helloword的子status\u0026lt;br/\u0026gt;1.6575210692359655e+09    INFO    helloworld    recondile被调用default-helloworld-sample\u0026lt;br/\u0026gt;1.6575210693664753e+09    INFO    helloworld    recondile被调用default-helloworld-sample\u0026lt;br/\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-b74qzwc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-b74qzwc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get deploy"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-9ou41i4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-9ou41i4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get pod "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "|"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " grep hello"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-qty9692",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-qty9692"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span class=\u0026quot;confluence-embedded-file-wrapper confluence-embedded-manual-size\u0026quot;\u0026gt;\u0026lt;img class=\u0026quot;confluence-embedded-image\u0026quot; height=\u0026quot;250\u0026quot; src=\u0026quot;https://wiki.cestc.cn/download/attachments/174924525/image2022-7-11_14-33-42.png?version=1\u0026amp;modificationDate=1657521221000\u0026amp;api=v2\u0026quot; data-image-src=\u0026quot;/download/attachments/174924525/image2022-7-11_14-33-42.png?version=1\u0026amp;modificationDate=1657521221000\u0026amp;api=v2\u0026quot; data-unresolved-comment-count=\u0026quot;0\u0026quot; data-linked-resource-id=\u0026quot;174925011\u0026quot; data-linked-resource-version=\u0026quot;1\u0026quot; data-linked-resource-type=\u0026quot;attachment\u0026quot; data-linked-resource-default-alias=\u0026quot;image2022-7-11_14-33-42.png\u0026quot; data-base-url=\u0026quot;https://wiki.cestc.cn\u0026quot; data-linked-resource-content-type=\u0026quot;image/png\u0026quot; data-linked-resource-container-id=\u0026quot;174924525\u0026quot; data-linked-resource-container-version=\u0026quot;9\u0026quot;/\u0026gt;\u0026lt;/span\u0026gt;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-3s0br22",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-3s0br22"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 samples]# kubectl get deploy\nNAME                     READY   UP-TO-DATE   AVAILABLE   AGE\nhelloworld-sample        2/2     2            2           76s\nmyngx                    3/3     3            3           47d\nnfs-client-provisioner   1/1     1            1           278d\n[root@k18-5 samples]# kubectl get pod | grep hello\nhelloworld-sample-74c68ffcc9-lcl8r        1/1     Running   0          109s\nhelloworld-sample-74c68ffcc9-mfl4m        1/1     Running   0          109s\n[root@k18-5 samples]#"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-fnvmv97",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-fnvmv97"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "删除pod"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-qn35i1t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-qn35i1t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 samples]# kubectl delete pod helloworld-sample-74c68ffcc9-lcl8r\npod \"helloworld-sample-74c68ffcc9-lcl8r\" deleted"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-3tbvlop",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-3tbvlop"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "operator日志："
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-17tczqp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-17tczqp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.6575220892826998e+09    INFO    helloworld    recondile被调用default-helloworld-sample\n1.6575220892828262e+09    INFO    helloworld    更新状态多helloword的子status\n1.6575220893335514e+09    INFO    helloworld    recondile被调用default-helloworld-sample\n1.6575221072621467e+09    INFO    helloworld    recondile被调用default-helloworld-sample\n1.6575221072623422e+09    INFO    helloworld    更新状态多helloword的子status\n1.6575221072779803e+09    INFO    helloworld    recondile被调用default-helloworld-sample"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-7acsvxs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-7acsvxs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于deploy 协调 重新创建了个pod 保持 pod数量维持 为 2"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-2xi0z5e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-2xi0z5e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 samples]# kubectl get pod -owide | grep hello\nhelloworld-sample-74c68ffcc9-hdkv6        1/1     Running   0          29s    10.10.0.232   node   \u003cnone\u003e           \u003cnone\u003e\nhelloworld-sample-74c68ffcc9-mfl4m        1/1     Running   0          17m    10.10.0.231   node   \u003cnone\u003e           \u003cnone\u003e"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-5ho6bl8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-5ho6bl8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编辑deployment"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-r9qj50m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221229103219-r9qj50m"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl edit deployment helloworld-sample -o yaml[root@k18-5 samples]# kubectl get deployment \nNAME                     READY   UP-TO-DATE   AVAILABLE   AGE\nhelloworld-sample        1/1     1            1           8d\nmyngx                    3/3     3            3           55d\nnfs-client-provisioner   1/1     1            1           286d\n[root@k18-5 samples]# kubectl get pod\nNAME                                      READY   STATUS    RESTARTS   AGE\nhelloworld-sample-74c68ffcc9-whtwn        1/1     Running   7          7d22h\nmyngx-7dddfc79cd-f7mpx                    1/1     Running   22         55d\nmyngx-7dddfc79cd-mfxjr                    3/3     Running   16         5d2h\nmyngx-7dddfc79cd-qb4h7                    1/1     Running   22         55d\nnfs-client-provisioner-5cf6b5978f-7wphg   1/1     Running   33         286d\n[root@k18-5 samples]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-jk2f7yu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-jk2f7yu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "k8s 服务器"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-v29ob8n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-v29ob8n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "go install "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://github.com/go-delve/delve/cmd/dlv@latest",
+					"TextMarkTextContent": "github.com/go-delve/delve/cmd/dlv@latest"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-wd8l713",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-wd8l713"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "go env"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-m5u7e15",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-m5u7e15"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "GOPATH=\"/root/go\""
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-mk5xant",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-mk5xant"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "cd /root/go/bin"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-aedfizg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-aedfizg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 bin]# ll\ntotal 36776\n-rwxr-xr-x 1 root root 20966753 Jul  6 14:50 controller-gen\n-rwxr-xr-x 1 root root 16687632 Jul 11 19:01 dlv"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-2sh0i6w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-2sh0i6w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只需要在服务器中的项目文件夹根目录下使用第一条命令就可以了"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-wq30mu8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-wq30mu8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dlv debug --headless --listen=:2345 --api-version=2 --accept-multiclient"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-pg752xd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-pg752xd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 helloworld-operator]# dlv debug --headless --listen=:2345 --api-version=2 --accept-multiclient"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-9k5oem8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-9k5oem8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "API server listening at: [::]:2345\n2022-07-11T19:14:56+08:00 warning layer=rpc Listening for remote connections (connections are not authenticated nor encrypted)\n1.657538098262135e+09    INFO    controller-runtime.metrics    Metrics server is starting to listen    {\"addr\": \":8080\"}\n1.6575380982623708e+09    INFO    setup    starting manager\n1.6575380982630217e+09    INFO    Starting server    {\"path\": \"/metrics\", \"kind\": \"metrics\", \"addr\": \"[::]:8080\"}\n1.657538098263098e+09    INFO    Starting server    {\"kind\": \"health probe\", \"addr\": \"[::]:8081\"}\n1.6575380982640932e+09    INFO    controller.helloworld    Starting EventSource    {\"reconciler group\": \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://demo.helloworld.k8s.test.com/",
+					"TextMarkTextContent": "demo.helloworld.k8s.test.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", \"reconciler kind\": \"HelloWorld\", \"source\": \"kind source: *v1.HelloWorld\"}\n1.657538098264126e+09    INFO    controller.helloworld    Starting EventSource    {\"reconciler group\": \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://demo.helloworld.k8s.test.com/",
+					"TextMarkTextContent": "demo.helloworld.k8s.test.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", \"reconciler kind\": \"HelloWorld\", \"source\": \"kind source: *v1.Deployment\"}\n1.6575380982641332e+09    INFO    controller.helloworld    Starting Controller    {\"reconciler group\": \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://demo.helloworld.k8s.test.com/",
+					"TextMarkTextContent": "demo.helloworld.k8s.test.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", \"reconciler kind\": \"HelloWorld\"}\n1.6575380983647897e+09    INFO    controller.helloworld    Starting workers    {\"reconciler group\": \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://demo.helloworld.k8s.test.com/",
+					"TextMarkTextContent": "demo.helloworld.k8s.test.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", \"reconciler kind\": \"HelloWorld\", \"worker count\": 1}"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-apa1foa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-apa1foa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "golang 创建go remote ,host 设置远程k8s 环境，端口与dlv设置暴露出的端口一致。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103219-w74c7u3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103219-w74c7u3"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-11_19-23-22-20221229103219-w9xiv4l.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		}
+	]
+}

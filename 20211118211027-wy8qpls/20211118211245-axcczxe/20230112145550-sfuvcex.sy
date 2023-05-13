@@ -1,0 +1,750 @@
+{
+	"ID": "20230112145550-sfuvcex",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230112145550-sfuvcex",
+		"title": "Go语言make和new关键字的区别及实现原理",
+		"updated": "20230112151054"
+	},
+	"Children": [
+		{
+			"ID": "20230112145550-gie1loc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-gie1loc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Go语言中 new 和 make 是两个内置函数，主要用来创建并分配类型的内存。在我们定义变量的时候，可能会觉得有点迷惑，不知道应该使用哪个函数来声明变量，其实他们的规则很简单，new 只分配内存，而 make 只能用于 slice、map 和 channel 的初始化，下面我们就来具体介绍一下。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-hmp33i1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230112145550-hmp33i1",
+				"updated": "20230112145705"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. new"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-wwmjq3r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-wwmjq3r",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Go语言中，new 函数描述如下："
+				}
+			]
+		},
+		{
+			"ID": "20230112145856-38zsrtm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112145856-38zsrtm",
+				"updated": "20230112145900"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// The new built-in function allocates memory. The first argument is a type,\n// not a value, and the value returned is a pointer to a newly\n// allocated zero value of that type.\nfunc new(Type) *Type\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145855-i7joh21",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145855-i7joh21",
+				"updated": "20230112145855"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面的代码可以看出，new 函数只接受一个参数，这个参数是一个类型，并且返回一个指向该类型内存地址的指针。同时 new 函数会把分配的内存置为零，也就是类型的零值。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-843jvs7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-843jvs7",
+				"updated": "20230112145915"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "【示例】"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "使用 new 函数为变量分配内存空间。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145921-qk53s6f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112145921-qk53s6f",
+				"updated": "20230112145924"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "var sum *int\nsum = new(int) //分配空间\n*sum = 98\nfmt.Println(*sum)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-ft1dbr1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-ft1dbr1",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当然，new 函数不仅仅能够为系统默认的数据类型，分配空间，自定义类型也可以使用 new 函数来分配空间，如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20230112145943-xqd22jm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112145943-xqd22jm",
+				"updated": "20230112145945"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type Student struct {\n   name string\n   age int\n}\nvar s *Student\ns = new(Student) //分配空间\ns.name =\"dequan\"\nfmt.Println(s)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-7kfeckc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-7kfeckc",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里如果我们不使用 new 函数为自定义类型分配空间（将第 7 行注释），就会报错："
+				}
+			]
+		},
+		{
+			"ID": "20230112150005-p07vpnf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112150005-p07vpnf",
+				"updated": "20230112150032"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "panic: runtime error: invalid memory address or nil pointer dereference\n\n[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x80bd277]\n\ngoroutine 1 [running]:\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-damezbp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-damezbp",
+				"updated": "20230112150045"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "new 函数，它返回的永远是类型的指针，指针指向分配类型的内存地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-5vmoyp4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230112145550-5vmoyp4",
+				"updated": "20230112150050"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.make"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-388rxix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-388rxix"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "make 也是用于内存分配的，但是和 new 不同，它只用于 chan、map 以及 slice 的内存创建，而且它返回的类型就是这三个类型本身，而不是他们的指针类型，因为这三种类型就是引用类型，所以就没有必要返回他们的指针了。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-0vft18h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-0vft18h",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Go语言中，make 函数的描述如下："
+				}
+			]
+		},
+		{
+			"ID": "20230112150128-oxcfvf7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112150128-oxcfvf7",
+				"updated": "20230112150139"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// The make built-in function allocates and initializes an object of type\n// slice, map, or chan (only). Like new, the first argument is a type, not a\n// value. Unlike new, make's return type is the same as the type of its\n// argument, not a pointer to it. The specification of the result depends on\n// the type:\n// Slice: The size specifies the length. The capacity of the slice is\n// equal to its length. A second integer argument may be provided to\n// specify a different capacity; it must be no smaller than the\n// length, so make([]int, 0, 10) allocates a slice of length 0 and\n// capacity 10.\n// Map: An empty map is allocated with enough space to hold the\n// specified number of elements. The size may be omitted, in which case\n// a small starting size is allocated.\n// Channel: The channel's buffer is initialized with the specified\n// buffer capacity. If zero, or the size is omitted, the channel is\n// unbuffered.\nfunc make(t Type, size ...IntegerTyp\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-sskv7o9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-sskv7o9",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过上面的代码可以看出 make 函数的 t 参数必须是 chan（通道）、map（字典）、slice（切片）中的一个，并且返回值也是类型本身。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-03llr95",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-03llr95",
+				"updated": "20230112150226"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "color: var(--b3-font-color7);"
+					},
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意：make 函数只用于 map，slice 和 channel，并且不返回指针。如果想要获得一个显式的指针，可以使用 new 函数进行分配，或者显式地使用一个变量的地址。"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"color: var(--b3-font-color7);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-gmj8wbx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230112145550-gmj8wbx",
+				"updated": "20230112150302"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. Go语言中的 new 和 make 主要区别如下："
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-dfbyfdk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230112145550-dfbyfdk",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"ID": "20230112145550-opebw2l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230112145550-opebw2l"
+					},
+					"Children": [
+						{
+							"ID": "20230112145550-fbg452x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230112145550-fbg452x"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "make 只能用来分配及初始化类型为 slice、map、chan 的数据。new 可以分配任意类型的数据；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230112145550-u79bsqa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230112145550-u79bsqa"
+					},
+					"Children": [
+						{
+							"ID": "20230112145550-aim0yco",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230112145550-aim0yco"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "new 分配返回的是指针，即类型 *Type。make 返回引用，即 Type；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230112145550-zuzwvmi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230112145550-zuzwvmi",
+						"updated": "20230112145550"
+					},
+					"Children": [
+						{
+							"ID": "20230112145550-fw3mpwx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230112145550-fw3mpwx",
+								"updated": "20230112145550"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "new 分配的空间被清零。make 分配空间后，会进行初始化；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-5dmogo0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230112145550-5dmogo0",
+				"updated": "20230112150306"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.实现原理"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-7x10s4n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-7x10s4n",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来我们将分别介绍一下 make 和 new 在初始化不同"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://c.biancheng.net/data_structure/",
+					"TextMarkTextContent": "数据结构"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "时的具体过程，我们会从编译期间和运行时两个不同的阶段理解这两个关键字的原理。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-2pejylh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230112145550-2pejylh",
+				"updated": "20230112150757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 make"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-yvwb71q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-yvwb71q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们已经了解了 make 在创建 slice、map 和 channel 的具体过程，所以在这里我们也只是会简单提及 make 相关的数据结构初始化原理。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-i6q92jv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-i6q92jv"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/4-1ZZ31I35HJ-20230112145550-vsveumh.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-4fwsk9v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-4fwsk9v",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在编译期的类型检查阶段，Go语言其实就将代表 make 关键字的 OMAKE 节点根据参数类型的不同转换成了 OMAKESLICE、OMAKEMAP 和 OMAKECHAN 三种不同类型的节点，这些节点最终也会调用不同的运行时函数来初始化数据结构。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-d4plymb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230112145550-d4plymb",
+				"updated": "20230112150806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 new"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-wakzx1c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-wakzx1c",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内置函数 new 会在编译期的 SSA 代码生成阶段经过 callnew 函数的处理，如果请求创建的类型大小是 0，那么就会返回一个表示空指针的 zerobase 变量，在遇到其他情况时会将关键字转换成 newobject："
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-1zbdchy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112145550-1zbdchy",
+				"updated": "20230112150925"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func callnew(t *types.Type) *Node {\n    if t.NotInHeap() {\n        yyerror(\"%v is go:notinheap; heap allocation disallowed\", t)\n    }\n    dowidth(t)\n    if t.Size() == 0 {\n        z := newname(Runtimepkg.Lookup(\"zerobase\"))\n        z.SetClass(PEXTERN)\n        z.Type = t\n        return typecheck(nod(OADDR, z, nil), ctxExpr)\n    }\n    fn := syslook(\"newobject\")\n    fn = substArgTypes(fn, t)\n    v := mkcall1(fn, types.NewPtr(t), nil, typename(t))\n    v.SetNonNil(true)\n    return v\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112151001-du62lhg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112151001-du62lhg",
+				"updated": "20230112151003"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要提到的是，哪怕当前变量是使用 var 进行初始化，在这一阶段也可能会被转换成 newobject 的函数调用并在堆上申请内存："
+				}
+			]
+		},
+		{
+			"ID": "20230112151003-ttywljm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112151003-ttywljm",
+				"updated": "20230112151014"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func walkstmt(n *Node) *Node {\n    switch n.Op {\n    case ODCL:\n        v := n.Left\n        if v.Class() == PAUTOHEAP {\n            if prealloc[v] == nil {\n                prealloc[v] = callnew(v.Type)\n            }\n            nn := nod(OAS, v.Name.Param.Heapaddr, prealloc[v])\n            nn.SetColas(true)\n            nn = typecheck(nn, ctxStmt)\n            return walkstmt(nn)\n        }\n    case ONEW:\n        if n.Esc == EscNone {\n            r := temp(n.Type.Elem())\n            r = nod(OAS, r, nil)\n            r = typecheck(r, ctxStmt)\n            init.Append(r)\n            r = nod(OADDR, r.Left, nil)\n            r = typecheck(r, ctxExpr)\n            n = r\n        } else {\n            n = callnew(n.Type.Elem())\n        }\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-thnrcd6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-thnrcd6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当然这也不是绝对的，如果当前声明的变量或者参数不需要在当前作用域外生存，那么其实就不会被初始化在堆上，而是会初始化在当前函数的栈中并随着函数调用的结束而被销毁。"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-jgja2wi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-jgja2wi",
+				"updated": "20230112145550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "newobject 函数的工作就是获取传入类型的大小并调用 mallocgc 在堆上申请一片大小合适的内存空间并返回指向这片内存空间的指针："
+				}
+			]
+		},
+		{
+			"ID": "20230112151020-nef32v3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230112151020-nef32v3",
+				"updated": "20230112151029"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func newobject(typ *_type) unsafe.Pointer {\n\n    return mallocgc(typ.size, typ, true)\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-9ejx71o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230112145550-9ejx71o",
+				"updated": "20230112151054"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 总结"
+				}
+			]
+		},
+		{
+			"ID": "20230112145550-ynha3mh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230112145550-ynha3mh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后，简单总结一下Go语言中 make 和 new 关键字的实现原理，make 关键字的主要作用是创建 slice、map 和 Channel 等内置的数据结构，而 new 的主要作用是为类型申请一片内存空间，并返回指向这片内存的指针。"
+				}
+			]
+		}
+	]
+}

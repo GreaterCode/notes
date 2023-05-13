@@ -1,0 +1,623 @@
+{
+	"ID": "20230308170233-68gh0hu",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230308170233-68gh0hu",
+		"title": "02.kube-ipam和calico配置使用说明",
+		"updated": "20230308233336"
+	},
+	"Children": [
+		{
+			"ID": "20230308170233-0b7mt22",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308170233-0b7mt22",
+				"updated": "20230308170347"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 安装和配置calico cni"
+				}
+			]
+		},
+		{
+			"ID": "20230308170347-zqd6ywv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308170347-zqd6ywv",
+				"updated": "20230308170401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 启动和配置目录"
+				}
+			]
+		},
+		{
+			"ID": "20230308170402-ym7mrz1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308170402-ym7mrz1",
+				"updated": "20230308170501"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubelet配置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "network-plugin"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cni-conf-dir"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " and "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cni-bin-dir"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "三个参数："
+				}
+			]
+		},
+		{
+			"ID": "20230308170430-kzo1evn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308170430-kzo1evn",
+				"updated": "20230308170442"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cat /etc/systemd/system/kubelet.service \n...\nExecStart=/usr/local/bin/kubelet \\\n...\n  --network-plugin=cni \\\n  --cni-conf-dir=/etc/cni/net.d \\\n  --cni-bin-dir=/opt/cni/bin/ \\\n...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308170436-rb97riq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308170436-rb97riq",
+				"updated": "20230308170530"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 安装ipam"
+				}
+			]
+		},
+		{
+			"ID": "20230308170554-08xpjkh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308170554-08xpjkh",
+				"updated": "20230308170630"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 二进制下载和编译参考：  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/docs/download.md",
+					"TextMarkTextContent": "download"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " or "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/docs/docs/build.md",
+					"TextMarkTextContent": "compile"
+				}
+			]
+		},
+		{
+			"ID": "20230308170539-724jp0f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308170539-724jp0f",
+				"updated": "20230308170552"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# wget https://github.com/cloudnativer/kube-ipam/releases/download/v0.2.0/kube-ipam-v0.2.0-x86.tgz\n# tar -zxvf kube-ipam-v0.2.0-x86.tgz\n# mv kube-ipam-v0.2.0-x86/kube-ipam /opt/cni/bin/kube-ipam\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308170634-ies9w2y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308170634-ies9w2y",
+				"updated": "20230308170645"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3 安装calico-cni"
+				}
+			]
+		},
+		{
+			"ID": "20230308173640-fk5ss6j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308173640-fk5ss6j",
+				"updated": "20230308173802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico配置示例："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cloudnativer/kube-ipam/blob/main/yaml/calico.yaml",
+					"TextMarkTextContent": "calico.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20230308173640-tpji1ka",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308173640-tpji1ka",
+				"updated": "20230308173642"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "...\n\n                \"kubeConfig\": \"/etc/kubernetes/ssl/kube.kubeconfig\",\n                \"etcdConfig\": {\n                        \"etcdURL\": \"https://192.168.1.50:2379,https://192.168.1.58:2379,https://192.168.1.63:2379\",\n                        \"etcdCertFile\": \"/etc/kubernetes/ssl/kubernetes.pem\",\n                        \"etcdKeyFile\": \"/etc/kubernetes/ssl/kubernetes-key.pem\",\n                        \"etcdTrustedCAFileFile\": \"/etc/kubernetes/ssl/k8s-root-ca.pem\"\n                },\n                \"subnet\": \"10.244.0.0/16\",\n                \"fixedStart\": \"10.244.0.10\",\n                \"fixedEnd\": \"10.244.0.255\",\n                \"rangeStart\": \"10.244.1.0\",\n                \"rangeEnd\": \"10.244.255.254\",\n...\n\n            - name: CALICO_IPV4POOL_CIDR\n              value: \"10.244.0.0/16\"\n\n...\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308173821-1rm20qz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308173821-1rm20qz",
+				"updated": "20230308173843"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装calico-cni"
+				}
+			]
+		},
+		{
+			"ID": "20230308173850-2rqopnm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308173850-2rqopnm",
+				"updated": "20230308173851"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl apply -f yaml/calico.yaml\n  ...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308173836-aks97hi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308173836-aks97hi",
+				"updated": "20230308174315"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看calico状态"
+				}
+			]
+		},
+		{
+			"ID": "20230308174315-rg9eh0t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174315-rg9eh0t",
+				"updated": "20230308174327"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# \n# kubectl get pod -o wide -n kube-system | grep calico \nNAME                                 READY   STATUS       RESTARTS   AGE    IP             NODE\ncalico-kube-controllers-6457d89859   1/1     Running      0          155m   10.244.4.136    192.168.56.83\ncalico-node-pfjdc                    1/1     Running      0          17h    192.168.56.82   192.168.56.82\ncalico-node-t8nrb                    1/1     Running      0          17h    192.168.56.83   192.168.56.83\ncalico-node-tf69d                    1/1     Running      0          17h    192.168.56.81   192.168.56.81\n#\n# calicoctl node status\nCalico process is running.\n\nIPv4 BGP status\n+---------------+-------------------+-------+----------+-------------+\n| PEER ADDRESS  |     PEER TYPE     | STATE |  SINCE   |    INFO     |\n+---------------+-------------------+-------+----------+-------------+\n| 192.168.56.81 | node-to-node mesh | up    | 06:24:41 | Established |\n| 192.168.56.82 | node-to-node mesh | up    | 06:25:09 | Established |\n| 192.168.56.83 | node-to-node mesh | up    | 06:25:09 | Established |\n+---------------+-------------------+-------+----------+-------------+\n\nIPv6 BGP status\nNo IPv6 peers found.\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174346-z2yyamn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308174346-z2yyamn",
+				"updated": "20230308174417"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.4 配置/etc/cni/net.d"
+				}
+			]
+		},
+		{
+			"ID": "20230308174427-3xd0yad",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308174427-3xd0yad",
+				"updated": "20230308174431"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/cni/net.d/10-calico.conflist"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "配置"
+				}
+			]
+		},
+		{
+			"ID": "20230308174431-13gjcsw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174431-13gjcsw",
+				"updated": "20230308174450"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# cat /etc/cni/net.d/10-calico.conflist \n{\n  \"name\": \"k8s-pod-network\",\n  \"cniVersion\": \"0.3.1\",\n  \"plugins\": [\n    {\n      \"type\": \"calico\",\n      \"log_level\": \"info\",\n      \"log_file_path\": \"/var/log/calico/cni/cni.log\",\n      \"datastore_type\": \"kubernetes\",\n      \"nodename\": \"192.168.56.82\",\n      \"mtu\": 0,\n      \"ipam\": {\n                \"name\": \"kube-subnet\",\n                \"type\": \"kube-ipam\",\n                \"kubeConfig\": \"/etc/kubernetes/ssl/kube.kubeconfig\",\n                \"etcdConfig\": {\n                        \"etcdURL\": \"https://192.168.1.50:2379,https://192.168.1.58:2379,https://192.168.1.63:2379\",\n                        \"etcdCertFile\": \"/etc/kubernetes/ssl/kubernetes.pem\",\n                        \"etcdKeyFile\": \"/etc/kubernetes/ssl/kubernetes-key.pem\",\n                        \"etcdTrustedCAFileFile\": \"/etc/kubernetes/ssl/k8s-root-ca.pem\"\n                },\n                \"subnet\": \"10.244.0.0/16\",\n                \"fixedStart\": \"10.244.0.10\",\n                \"fixedEnd\": \"10.244.0.255\",\n                \"rangeStart\": \"10.244.1.0\",\n                \"rangeEnd\": \"10.244.255.254\",\n                \"gateway\": \"10.244.0.1\",\n                \"routes\": [{\n                        \"dst\": \"0.0.0.0/0\"\n                }],\n                \"resolvConf\": \"/etc/resolv.conf\"\n      },\n      \"policy\": {\n          \"type\": \"k8s\"\n      },\n      \"kubernetes\": {\n          \"kubeconfig\": \"/etc/cni/net.d/calico-kubeconfig\"\n      }\n    },\n    {\n      \"type\": \"portmap\",\n      \"snat\": true,\n      \"capabilities\": {\"portMappings\": true}\n    },\n    {\n      \"type\": \"bandwidth\",\n      \"capabilities\": {\"bandwidth\": true}\n    }\n  ]\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174509-iom7h3n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230308174509-iom7h3n",
+				"updated": "20230308174526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 创建固定IP和随机IP pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308174529-vg3vf2o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308174529-vg3vf2o",
+				"updated": "20230308174537"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 创建固定IPpod"
+				}
+			]
+		},
+		{
+			"ID": "20230308174543-tweeydt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174543-tweeydt",
+				"updated": "20230308174552"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# cat fixed-ip-test.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  labels:\n    app: fixed-ip-test\n  name: fixed-ip-test\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: fixed-ip-test\n  strategy: {}\n  template:\n    metadata:\n      labels:\n        app: fixed-ip-test\n      annotations:\n        kube-ipam.ip: \"10.244.0.216\"\n        kube-ipam.netmask: \"255.255.0.0\"\n        kube-ipam.gateway: \"10.244.0.1\"\n    spec:\n      containers:\n      - image: nginx:latest\n        imagePullPolicy: IfNotPresent \n        name: nginx\n        resources: {}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174603-gnhicjs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174603-gnhicjs",
+				"updated": "20230308174607"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#kubectl apply -f fixed-ip-test.yaml\n deployment.apps/fixed-ip-test configured\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174609-agtp9cj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308174609-agtp9cj",
+				"updated": "20230308174637"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2  创建随机IP pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308174637-ez74366",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174637-ez74366",
+				"updated": "20230308174640"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# random-ip-test.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  labels:\n    app: random-ip-test\n  name: random-ip-test\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: random-ip-test\n  strategy: {}\n  template:\n    metadata:\n      labels:\n        app: random-ip-test\n    spec:\n      containers:\n      - image: nginx:latest\n        imagePullPolicy: IfNotPresent \n        name: nginx\n        resources: {}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174624-8umsh5k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174624-8umsh5k",
+				"updated": "20230308174648"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n#kubectl apply -f random-ip-test.yaml\n deployment.apps/random-ip-test configured\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174714-oirgfaq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230308174714-oirgfaq",
+				"updated": "20230308174736"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 验证固定IP pod"
+				}
+			]
+		},
+		{
+			"ID": "20230308174739-rk7xc47",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174739-rk7xc47",
+				"updated": "20230308174747"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#\n# kubectl get pod -o wide \nNAME                             READY   STATUS    RESTARTS   AGE    IP             NODE  \nrandom-ip-test-59df9c4fdd-hnfxm  1/1     Running   0          128m   10.244.5.23   192.168.56.82\nrandom-ip-test-7b75cbc65-ld9kb   1/1     Running   0          130m   10.244.5.24   192.168.56.83\nfixed-ip-test-88554b798-xcfpb    1/1     Running   0          131m   10.244.0.216  192.168.56.81\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230308174748-no1tgnb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230308174748-no1tgnb",
+				"updated": "20230308174818"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "删除随机IP pod，进行重新调度，IP未变化"
+				}
+			]
+		},
+		{
+			"ID": "20230308174819-ds0boaw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230308174819-ds0boaw",
+				"updated": "20230308174831"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " kubectl delete pod fixed-ip-test-88554b798-xcfpb \n#\n# kubectl get pod -o wide              \nNAME                             READY   STATUS    RESTARTS   AGE    IP             NODE\nrandom-ip-test-59df9c4fdd-hnfxm  1/1     Running   0          128m   10.244.5.23   192.168.56.82\nrandom-ip-test-7b75cbc65-ld9kb   1/1     Running   0          130m   10.244.5.24   192.168.56.83\nfixed-ip-test-88554b798-8ukle    1/1     Running   0          1m     10.244.0.216  192.168.56.82\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

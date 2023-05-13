@@ -1,0 +1,344 @@
+{
+	"ID": "20230104152348-08cyq5x",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230104152348-08cyq5x",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230104152500-q725u25\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230104152627-u6f85rd\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230104152500-c4qwf7p\u0026quot;,\u0026quot;focusStart\u0026quot;:39,\u0026quot;focusEnd\u0026quot;:39}",
+		"title": "multipath安装与使用",
+		"updated": "20230104152653"
+	},
+	"Children": [
+		{
+			"ID": "20230104152500-q725u25",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230104152500-q725u25",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-c4qwf7p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152500-c4qwf7p",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "yum install device-mapper-multipath\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-aa2erq1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230104152500-aa2erq1",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置开机启动"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-8t98gdu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152500-8t98gdu",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl enable multipathd.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-9zdlk1b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230104152500-9zdlk1b",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "添加配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-5vu0mif",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230104152500-5vu0mif",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要multipath正常工作只需要如下配置即可，如果想要了解详细的配置，请参考"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html-single/DM_Multipath/",
+					"TextMarkTextContent": "Multipath"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-hs8fyiy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152500-hs8fyiy",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# vi /etc/multipath.conf\nblacklist {\n    devnode \"^sda\"\n}\ndefaults {\n    user_friendly_names yes\n    path_grouping_policy multibus\n    failback immediate\n    no_path_retry fail\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-barvvmo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230104152500-barvvmo",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "启动服务"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-deh3vs9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152500-deh3vs9",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl start multipathd.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-7yryfiy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230104152500-7yryfiy",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看服务"
+				}
+			]
+		},
+		{
+			"ID": "20230104152500-2uvmwa4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152500-2uvmwa4",
+				"updated": "20230104152500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# multipath -ll\nmpatha (360000000000000000e00000000010001) dm-2 IET     ,VIRTUAL-DISK\nsize=30G features='0' hwhandler='0' wp=rw\n`-+- policy='service-time 0' prio=1 status=active\n  |- 3:0:0:1 sdd 8:48 active ready running\n  `- 4:0:0:1 sde 8:64 active ready running\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230104152521-aevoyqe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230104152521-aevoyqe",
+				"updated": "20230104152522"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "lsblk"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令就可以看到多路径磁盘"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mpatha"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "了："
+				}
+			]
+		},
+		{
+			"ID": "20230104152537-mnjz6s6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152537-mnjz6s6",
+				"updated": "20230104152541"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# lsblk\nNAME            MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT\nsda               8:0    0   20G  0 disk\n├─sda1            8:1    0  500M  0 part  /boot\n└─sda2            8:2    0 19.5G  0 part\n  ├─centos-root 253:0    0 17.5G  0 lvm   /\n  └─centos-swap 253:1    0    2G  0 lvm   [SWAP]\nsdb               8:16   0   30G  0 disk\nsdc               8:32   0   30G  0 disk\nsdd               8:48   0   30G  0 disk\n└─mpatha        253:2    0   30G  0 mpath\nsde               8:64   0   30G  0 disk\n└─mpatha        253:2    0   30G  0 mpath\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230104152620-10o2ub6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230104152620-10o2ub6",
+				"updated": "20230104152627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基本操作"
+				}
+			]
+		},
+		{
+			"ID": "20230104152627-u6f85rd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230104152627-u6f85rd",
+				"updated": "20230104152653"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# multipath -F #删除现有路径 \n# multipath -v2 #格式化路径 \n# multipath -ll #查看多路径\n\n如果配置正确的话就会在/dev/mapper/目录下多出mpathbp1等之类的设备，用fdisk -l命令可以看到多路径软件创建的磁盘，\n如：/dev/mapper/mpathbp1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

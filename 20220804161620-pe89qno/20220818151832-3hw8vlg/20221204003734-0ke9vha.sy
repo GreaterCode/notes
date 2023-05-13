@@ -1,0 +1,47 @@
+{
+	"ID": "20221204003734-0ke9vha",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221204003734-0ke9vha",
+		"title": "k8s 二进制文件升级脚本",
+		"updated": "20221204003807"
+	},
+	"Children": [
+		{
+			"ID": "20221204003734-rvqipb5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221204003734-rvqipb5",
+				"updated": "20221204003757"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nset -ex\n \nlist=$(kubectl get node -o wide|grep -v NAME|awk '{print $6}')\nfor cid in $list; do\n    arch=$(sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"arch\")\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /usr/bin/runc /usr/bin/runc.ori\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /usr/bin/containerd /usr/bin/containerd.ori\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /usr/bin/containerd-shim /usr/bin/containerd-shim.ori\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /usr/bin/containerd-shim-runc-v1 /usr/bin/containerd-shim-runc-v1.ori\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /usr/bin/containerd-shim-runc-v2 /usr/bin/containerd-shim-runc-v2.ori\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /usr/bin/kubelet /usr/bin/kubelet.ori\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"mv /etc/containerd/config.toml /etc/containerd/config.toml.ori\"\n    if [ \"${arch}\" == \"aarch64\" ];then\n        sshpass -p 123456 scp aarch64/runc root@$cid:/usr/bin\n        sshpass -p 123456 scp aarch64/containerd root@$cid:/usr/bin\n        sshpass -p 123456 scp aarch64/containerd-shim root@$cid:/usr/bin\n        sshpass -p 123456 scp aarch64/containerd-shim-runc-v1 root@$cid:/usr/bin\n        sshpass -p 123456 scp aarch64/containerd-shim-runc-v2 root@$cid:/usr/bin\n        sshpass -p 123456 scp aarch64/kubelet root@$cid:/usr/bin\n        sshpass -p 123456 scp config.toml root@$cid:/etc/containerd\n    fi\n \n    if [ \"${arch}\" == \"x86_64\" ];then\n        sshpass -p 123456 scp x86_64/runc root@$cid:/usr/bin\n        sshpass -p 123456 scp x86_64/containerd root@$cid:/usr/bin\n        sshpass -p 123456 scp x86_64/containerd-shim root@$cid:/usr/bin\n        sshpass -p 123456 scp x86_64/containerd-shim-runc-v1 root@$cid:/usr/bin\n        sshpass -p 123456 scp x86_64/containerd-shim-runc-v2 root@$cid:/usr/bin\n        sshpass -p 123456 scp x86_64/kubelet root@$cid:/usr/bin\n        sshpass -p 123456 scp config.toml root@$cid:/etc/containerd\n    fi\n   \n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"systemctl restart containerd\"\n    sshpass -p 123456 ssh -o StrictHostKeyChecking=no root@$cid \"systemctl restart kubelet\"\n     \ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221204003749-hf2ru6v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221204003749-hf2ru6v",
+				"updated": "20221204003749"
+			}
+		}
+	]
+}

@@ -1,0 +1,1603 @@
+{
+	"ID": "20230331111355-2nzpsxp",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230331111355-2nzpsxp",
+		"title": "k8s API限流 ",
+		"updated": "20230403180050"
+	},
+	"Children": [
+		{
+			"ID": "20230331111355-0h1uzq6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230331111355-0h1uzq6",
+				"updated": "20230331112014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 背景"
+				}
+			]
+		},
+		{
+			"ID": "20230331112019-72xp9x5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230331112019-72xp9x5",
+				"updated": "20230331112019"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了防止突发流量影响apiserver可用性，k8s支持多种限流配置，包括："
+				}
+			]
+		},
+		{
+			"ID": "20230331112019-6ang2g3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230331112019-6ang2g3",
+				"updated": "20230331112019"
+			},
+			"Children": [
+				{
+					"ID": "20230331112019-67jq8uv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112019-67jq8uv"
+					},
+					"Children": [
+						{
+							"ID": "20230331112019-yhmteag",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112019-yhmteag"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "MaxInFlightLimit，server级别整体限流"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230331112019-inglvg0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112019-inglvg0"
+					},
+					"Children": [
+						{
+							"ID": "20230331112019-giarqoi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112019-giarqoi"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Client限流"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230331112019-rff1vph",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112019-rff1vph"
+					},
+					"Children": [
+						{
+							"ID": "20230331112019-r0t6bs4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112019-r0t6bs4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "EventRateLimit, 限制event"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230331112019-wik8bz6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112019-wik8bz6"
+					},
+					"Children": [
+						{
+							"ID": "20230331112019-rnsfmcu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112019-rnsfmcu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "APF，更细力度的限制配置"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230331112042-iumpscy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230331112042-iumpscy",
+				"updated": "20230331112048"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 MaxInFlightLimit限流"
+				}
+			]
+		},
+		{
+			"ID": "20230331112122-ucisgsc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230331112122-ucisgsc",
+				"updated": "20230331112122"
+			},
+			"Children": [
+				{
+					"ID": "20230331112122-oyootot",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112122-oyootot"
+					},
+					"Children": [
+						{
+							"ID": "20230331112122-w43ezs5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112122-w43ezs5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "apiserver默认可设置最大并发量（集群级别，区分只读与修改操作）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230331112122-bumea1v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112122-bumea1v"
+					},
+					"Children": [
+						{
+							"ID": "20230331112122-nwd5kdy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112122-nwd5kdy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过参数--max-requests-inflight代表只读请求"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230331112122-q400yi6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112122-q400yi6"
+					},
+					"Children": [
+						{
+							"ID": "20230331112122-afbkyez",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112122-afbkyez"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "--max-mutating-requests-inflight代表修改请求"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230331112122-bxjynoo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112122-bxjynoo"
+					},
+					"Children": [
+						{
+							"ID": "20230331112122-8z3yi4n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112122-8z3yi4n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "可以简单实现限流。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230331112207-d21vqxh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230331112207-d21vqxh",
+				"updated": "20230331112528"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1.1 源码解读"
+				}
+			]
+		},
+		{
+			"ID": "20230331112537-p23pdiw",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230331112537-p23pdiw",
+				"updated": "20230403161646"
+			},
+			"Children": [
+				{
+					"ID": "20230331112537-2vgnvkw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230331112537-2vgnvkw",
+						"updated": "20230403161646"
+					},
+					"Children": [
+						{
+							"ID": "20230331112537-9ak1mv7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230331112537-9ak1mv7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "入口 GenericAPIServer.New中的添加hook"
+								}
+							]
+						},
+						{
+							"ID": "20230331112537-dw1b8t9",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230331112537-dw1b8t9",
+								"updated": "20230403161646"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": " \t// FlowControl为nil ，代表未启用 APF，API 服务器中的整体并发量将受到 kube-apiserver 的参数 --max-requests-inflight 和 --max-mutating-requests-inflight 的限制。\n\tif c.FlowControl != nil {\n\t\tconst priorityAndFairnessFilterHookName = \"priority-and-fairness-filter\"\n\t\tif !s.isPostStartHookRegistered(priorityAndFairnessFilterHookName) {\n\t\t\terr := s.AddPostStartHook(priorityAndFairnessFilterHookName, func(context PostStartHookContext) error {\n\t\t\t\tgenericfilters.StartPriorityAndFairnessWatermarkMaintenance(context.StopCh)\n\t\t\t\treturn nil\n\t\t\t})\n\t\t\tif err != nil {\n\t\t\t\treturn nil, err\n\t\t\t}\n\t\t}\n\t} else {\n\t\tconst maxInFlightFilterHookName = \"max-in-flight-filter\"\n\t\tif !s.isPostStartHookRegistered(maxInFlightFilterHookName) {\n\t\t\terr := s.AddPostStartHook(maxInFlightFilterHookName, func(context PostStartHookContext) error {\n\t\t\t\tgenericfilters.StartMaxInFlightWatermarkMaintenance(context.StopCh)\n\t\t\t\treturn nil\n\t\t\t})\n\t\t\tif err != nil {\n\t\t\t\treturn nil, err\n\t\t\t}\n\t\t}\n\t}\n\n\n// StartMaxInFlightWatermarkMaintenance starts the goroutines to observe and maintain watermarks for max-in-flight\n// requests.\nfunc StartMaxInFlightWatermarkMaintenance(stopCh \u003c-chan struct{}) {\n\tstartWatermarkMaintenance(watermark, stopCh)\n}\n\n\n// startWatermarkMaintenance starts the goroutines to observe and maintain the specified watermark.\nfunc startWatermarkMaintenance(watermark *requestWatermark, stopCh \u003c-chan struct{}) {\n\t// 定期更新inflight使用指标\n\tgo wait.Until(func() {\n\t\twatermark.lock.Lock()\n\t\treadOnlyWatermark := watermark.readOnlyWatermark\n\t\tmutatingWatermark := watermark.mutatingWatermark\n\t\twatermark.readOnlyWatermark = 0\n\t\twatermark.mutatingWatermark = 0\n\t\twatermark.lock.Unlock()\n\n\t\tmetrics.UpdateInflightRequestMetrics(watermark.phase, readOnlyWatermark, mutatingWatermark)\n\t}, inflightUsageMetricUpdatePeriod, stopCh)\n  // 定期观察watermarks。这样做是为了确保他们不会落后太多。当他们\n  //落后太多时，在响应接收到的下一个请求时会有很长的延迟，而观察者\n  //会赶上来。\n   go wait.Until(func() {\n      watermark.readOnlyObserver.Add(0)\n      watermark.mutatingObserver.Add(0)\n  }, observationMaintenancePeriod, stopCh)\n}\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403161658-84gmmfc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403161658-84gmmfc",
+				"updated": "20230403161709"
+			},
+			"Children": [
+				{
+					"ID": "20230403161709-mnlhr6z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403161709-mnlhr6z"
+					},
+					"Children": [
+						{
+							"ID": "20230403161709-3gb63l4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403161709-3gb63l4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "WithMaxInFlightLimit代表限流处理函数"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403161659-pmpug5b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403161659-pmpug5b",
+				"updated": "20230403162147"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调用入口:  staging\\src\\k8s.io\\apiserver\\pkg\\server\\config.go"
+				}
+			]
+		},
+		{
+			"ID": "20230403161722-x9x22fk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403161722-x9x22fk",
+				"updated": "20230403161753"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "DefaultBuildHandlerChain中，判断FlowControl为nil就开启WithMaxInFlightLimit，"
+				}
+			]
+		},
+		{
+			"ID": "20230403161756-8zh78gz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403161756-8zh78gz",
+				"updated": "20230403171541"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "if c.FlowControl != nil {\n        requestWorkEstimator := flowcontrolrequest.NewWorkEstimator(c.StorageObjectCountTracker.Get)\n        handler = filterlatency.TrackCompleted(handler)\n        handler = genericfilters.WithPriorityAndFairness(handler, c.LongRunningFunc, c.FlowControl, requestWorkEstimator)\n        handler = filterlatency.TrackStarted(handler, \"priorityandfairness\")\n    } else {\n        handler = genericfilters.WithMaxInFlightLimit(handler, c.MaxRequestsInFlight, c.MaxMutatingRequestsInFlight, c.LongRunningFunc)\n    }\n\n\n\nfunc WithMaxInFlightLimit(\n\thandler http.Handler,\n\tnonMutatingLimit int,\n\tmutatingLimit int,\n\tlongRunningRequestCheck apirequest.LongRunningRequestCheck,\n) http.Handler {\n\t// 如果limit num为0就不开启限流了\n\tif nonMutatingLimit == 0 \u0026\u0026 mutatingLimit == 0 {\n\t\treturn handler\n\t}\n\tvar nonMutatingChan chan bool\n\tvar mutatingChan chan bool\n\t// 构造限流的chan，类型为长度=limit的 bool chan\n\tif nonMutatingLimit != 0 {\n\t\tnonMutatingChan = make(chan bool, nonMutatingLimit)\n\t\tklog.V(2).InfoS(\"Initialized nonMutatingChan\", \"len\", nonMutatingLimit)\n\t} else {\n\t\tklog.V(2).InfoS(\"Running with nil nonMutatingChan\")\n\t}\n\tif mutatingLimit != 0 {\n\t\tmutatingChan = make(chan bool, mutatingLimit)\n\t\tklog.V(2).InfoS(\"Initialized mutatingChan\", \"len\", mutatingLimit)\n\t} else {\n\t\tklog.V(2).InfoS(\"Running with nil mutatingChan\")\n\t}\n\tinitMaxInFlight(nonMutatingLimit, mutatingLimit)\n\t// 发起请求\n\treturn http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n\t\tctx := r.Context()\n\t\trequestInfo, ok := apirequest.RequestInfoFrom(ctx)\n\t\tif !ok {\n\t\t\thandleError(w, r, fmt.Errorf(\"no RequestInfo found in context, handler chain must be wrong\"))\n\t\t\treturn\n\t\t}\n\n\t\t// 检查是否是长时间运行的请求\n\t\tif longRunningRequestCheck != nil \u0026\u0026 longRunningRequestCheck(r, requestInfo) {\n\t\t\thandler.ServeHTTP(w, r)\n\t\t\treturn\n\t\t}\n\n\t 。。。。。。。。\n}\n\n\n\n// LongRunningRequestCheck is a predicate which is true for long-running http requests.\ntype LongRunningRequestCheck func(r *http.Request, requestInfo *RequestInfo) bool\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403161744-74bpmp6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403161744-74bpmp6",
+				"updated": "20230403172145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用BasicLongRunningRequestCheck检查是否是watch或者pprof debug等长时间运行的请求，因为这些请求不受限制，位置"
+				}
+			]
+		},
+		{
+			"ID": "20230403171547-0kyehhu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403171547-0kyehhu",
+				"updated": "20230403171549"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func BasicLongRunningRequestCheck(longRunningVerbs, longRunningSubresources sets.String) apirequest.LongRunningRequestCheck {\n\treturn func(r *http.Request, requestInfo *apirequest.RequestInfo) bool {\n\t\tif longRunningVerbs.Has(requestInfo.Verb) {\n\t\t\treturn true\n\t\t}\n\t\tif requestInfo.IsResourceRequest \u0026\u0026 longRunningSubresources.Has(requestInfo.Subresource) {\n\t\t\treturn true\n\t\t}\n\t\tif !requestInfo.IsResourceRequest \u0026\u0026 strings.HasPrefix(requestInfo.Path, \"/debug/pprof/\") {\n\t\t\treturn true\n\t\t}\n\t\treturn false\n\t}\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403172351-uog67xj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403172351-uog67xj",
+				"updated": "20230403172352"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查是只读操作还是修改操作，决定使用哪个chan限制"
+				}
+			]
+		},
+		{
+			"ID": "20230403172323-k0z6h3s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403172323-k0z6h3s",
+				"updated": "20230403172323"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\t\tvar c chan bool\n\t\tisMutatingRequest := !nonMutatingRequestVerbs.Has(requestInfo.Verb)\n\t\tif isMutatingRequest {\n\t\t\tc = mutatingChan\n\t\t} else {\n\t\t\tc = nonMutatingChan\n\t\t}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403172402-jrwk5cg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403172402-jrwk5cg",
+				"updated": "20230403172501"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果队列未满，有空位置，则更新排队数字"
+				}
+			]
+		},
+		{
+			"ID": "20230403172541-ijlv9pr",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403172541-ijlv9pr",
+				"updated": "20230403172541"
+			},
+			"Children": [
+				{
+					"ID": "20230403172541-fpo1oka",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403172541-fpo1oka"
+					},
+					"Children": [
+						{
+							"ID": "20230403172541-3thhy3b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403172541-3thhy3b"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用select 向c中写入true，如果能写入到说明队列未满"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230403172541-7rg0d8u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403172541-7rg0d8u"
+					},
+					"Children": [
+						{
+							"ID": "20230403172541-jlhox71",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403172541-jlhox71"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "记录下对应的指标"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403172438-bjwrawm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403172438-bjwrawm",
+				"updated": "20230403173030"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\t\tselect {\n\t\t\tcase c \u003c- true:\n\t\t\t\t// We note the concurrency level both while the\n\t\t\t\t// request is being served and after it is done being\n\t\t\t\t// served, because both states contribute to the\n\t\t\t\t// sampled stats on concurrency.\n\t\t\t\tif isMutatingRequest {\n\t\t\t\t\twatermark.recordMutating(len(c))\n\t\t\t\t} else {\n\t\t\t\t\twatermark.recordReadOnly(len(c))\n\t\t\t\t}\n\t\t\t\t// default代表队列已满\n\t\t\t\tdefer func() {\n\t\t\t\t\t\u003c-c\n\t\t\t\t\tif isMutatingRequest {\n\t\t\t\t\t\twatermark.recordMutating(len(c))\n\t\t\t\t\t} else {\n\t\t\t\t\t\twatermark.recordReadOnly(len(c))\n\t\t\t\t\t}\n\t\t\t\t}()\n\t\t\t\thandler.ServeHTTP(w, r)\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403172952-67yqnrc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403172952-67yqnrc",
+				"updated": "20230403173059"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "但是如果请求的group中含有 system:masters，则放行, 因为apiserver认为这个组是很重要的请求，不能被限流. "
+				}
+			]
+		},
+		{
+			"ID": "20230403173059-qrw6jfj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403173059-qrw6jfj",
+				"updated": "20230403173529"
+			},
+			"Children": [
+				{
+					"ID": "20230403173059-xoyamfy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403173059-xoyamfy",
+						"updated": "20230403173529"
+					},
+					"Children": [
+						{
+							"ID": "20230403173059-8td5lfr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403173059-8td5lfr",
+								"updated": "20230403173529"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "group=system:masters 对应的clusterRole 为cluster-admin, 队列已满，如果请求的group中没有 system:masters，则返回http 429错误,并且丢弃请求"
+								}
+							]
+						},
+						{
+							"ID": "20230403173107-i83lkly",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403173107-i83lkly",
+								"updated": "20230403173107"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403172953-68w3h9k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403172953-68w3h9k",
+				"updated": "20230403173550"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\t\t\t\t// at this point we're about to return a 429, BUT not all actors should be rate limited.  A system:master is so powerful\n\t\t\t\t// that they should always get an answer.  It's a super-admin or a loopback connection.\n\t\t\t\tif currUser, ok := apirequest.UserFrom(ctx); ok {\n\t\t\t\t\tfor _, group := range currUser.GetGroups() {\n\t\t\t\t\t\tif group == user.SystemPrivilegedGroup {\n\t\t\t\t\t\t\thandler.ServeHTTP(w, r)\n\t\t\t\t\t\t\treturn\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403173604-10xcqhf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403173604-10xcqhf",
+				"updated": "20230403173610"
+			},
+			"Children": [
+				{
+					"ID": "20230403173604-ii41d0z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403173604-ii41d0z",
+						"updated": "20230403173610"
+					},
+					"Children": [
+						{
+							"ID": "20230403173604-kh2tq9u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403173604-kh2tq9u",
+								"updated": "20230403173610"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "http 429 代表当前有太多请求了，请重试，并设置 response 的header Retry-After =1"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403173151-uxam2mu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230403173151-uxam2mu",
+				"updated": "20230403173553"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// We need to split this data between buckets used for throttling.\n\t\t\t\tmetrics.RecordDroppedRequest(r, requestInfo, metrics.APIServerComponent, isMutatingRequest)\n\t\t\t\tmetrics.RecordRequestTermination(r, requestInfo, metrics.APIServerComponent, http.StatusTooManyRequests)\n\t\t\t\ttooManyRequests(r, w)\n\nfunc tooManyRequests(req *http.Request, w http.ResponseWriter) {\n\t// Return a 429 status indicating \"Too Many Requests\"\n\tw.Header().Set(\"Retry-After\", retryAfter)\n\thttp.Error(w, \"Too many requests, please try again later.\", http.StatusTooManyRequests)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230403173919-3ywswdc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230403173919-3ywswdc",
+				"updated": "20230403173944"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 Client限流"
+				}
+			]
+		},
+		{
+			"ID": "20230403173915-owc88q7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403173915-owc88q7",
+				"updated": "20230403173948"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "client-go默认的qps为5，但是只支持客户端限流，只能由各个发起端限制"
+				}
+			]
+		},
+		{
+			"ID": "20230403173915-jbkasl5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403173915-jbkasl5",
+				"updated": "20230403173915"
+			},
+			"Children": [
+				{
+					"ID": "20230403173915-vku8mhf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403173915-vku8mhf"
+					},
+					"Children": [
+						{
+							"ID": "20230403173915-c8xx9wa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403173915-c8xx9wa"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "集群管理员无法控制用户行为。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174216-fs2iptc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230403174216-fs2iptc",
+				"updated": "20230403174311"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3 EventRateLimit"
+				}
+			]
+		},
+		{
+			"ID": "20230403174311-s0w25ko",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403174311-s0w25ko",
+				"updated": "20230403174337"
+			},
+			"Children": [
+				{
+					"ID": "20230403174337-xia8i7p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174337-xia8i7p"
+					},
+					"Children": [
+						{
+							"ID": "20230403174337-oyd9kxt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174337-oyd9kxt",
+								"updated": "20230403174342"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "EventRateLimit在1.13之后支持，只限制event请求"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230403174342-axrxzvu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174342-axrxzvu"
+					},
+					"Children": [
+						{
+							"ID": "20230403174342-wspbtj1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174342-wspbtj1",
+								"updated": "20230403174345"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "集成在apiserver内部webhoook中"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230403174345-ntdqib4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174345-ntdqib4"
+					},
+					"Children": [
+						{
+							"ID": "20230403174345-04zidhx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174345-04zidhx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "可配置某个用户、namespace、server等event操作限制，通过webhook形式实现。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174311-fwah2t4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403174311-fwah2t4",
+				"updated": "20230403175449"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "集群管理员可以通过以下方式指定事件速率限制："
+				}
+			]
+		},
+		{
+			"ID": "20230403175455-o1pjdx8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403175455-o1pjdx8",
+				"updated": "20230403175953"
+			},
+			"Children": [
+				{
+					"ID": "20230403175455-kvweyak",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403175455-kvweyak"
+					},
+					"Children": [
+						{
+							"ID": "20230403175455-cbeedpd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403175455-cbeedpd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "EventRateLimit"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 准入控制器；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230403175455-jgf7ecc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403175455-jgf7ecc",
+						"updated": "20230403175953"
+					},
+					"Children": [
+						{
+							"ID": "20230403175455-ae4y9uk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403175455-ae4y9uk"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在通过 API 服务器的命令行标志 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--admission-control-config-file"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 设置的文件中， 引用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "EventRateLimit"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 配置文件："
+								}
+							]
+						},
+						{
+							"ID": "20230403175503-s4yo3o3",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230403175503-s4yo3o3",
+								"updated": "20230403175618"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "apiVersion: apiserver.config.k8s.io/v1\nkind: AdmissionConfiguration\nplugins:\n  - name: EventRateLimit\n    path: eventconfig.yaml\n...\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20230403175953-p20eupf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403175953-p20eupf",
+								"updated": "20230403175953"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "可以在配置中指定的限制有四种类型："
+								}
+							]
+						},
+						{
+							"ID": "20230403175953-0aexnu1",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230403175953-0aexnu1",
+								"updated": "20230403175953"
+							},
+							"Children": [
+								{
+									"ID": "20230403175953-zydp6dy",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230403175953-zydp6dy"
+									},
+									"Children": [
+										{
+											"ID": "20230403175953-g6qqleo",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230403175953-g6qqleo"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "Server"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "：API 服务器收到的所有（创建或修改）Event 请求共享一个桶。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230403175953-qkm580i",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230403175953-qkm580i"
+									},
+									"Children": [
+										{
+											"ID": "20230403175953-8r1x872",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230403175953-8r1x872"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "Namespace"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "：每个名字空间都对应一个专用的桶。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230403175953-d84bd4k",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230403175953-d84bd4k"
+									},
+									"Children": [
+										{
+											"ID": "20230403175953-3kg5ss3",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230403175953-3kg5ss3"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "User"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "：为每个用户分配一个桶。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230403175953-atim5hf",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230403175953-atim5hf"
+									},
+									"Children": [
+										{
+											"ID": "20230403175953-vyqq22v",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230403175953-vyqq22v"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "SourceAndObject"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "：根据事件的来源和涉及对象的各种组合分配桶。"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230403175928-rcnis4a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403175928-rcnis4a",
+								"updated": "20230403175939"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "eventconfig.yaml"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 示例"
+								}
+							]
+						},
+						{
+							"ID": "20230403175450-pwd6hfw",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230403175450-pwd6hfw",
+								"updated": "20230403175627"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "apiVersion: eventratelimit.admission.k8s.io/v1alpha1\nkind: Configuration\nlimits:\n  - type: Namespace\n    qps: 50\n    burst: 100\n    cacheSize: 2000\n  - type: User\n    qps: 10\n    burst: 50\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174406-7i2zv3a",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230403174406-7i2zv3a",
+				"updated": "20230403174406"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230403174406-gz939bf",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230403174406-gz939bf"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "原理"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174406-xk7pf18",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403174406-xk7pf18",
+				"updated": "20230403174406"
+			},
+			"Children": [
+				{
+					"ID": "20230403174406-tlkpl4r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174406-tlkpl4r"
+					},
+					"Children": [
+						{
+							"ID": "20230403174406-el75ey2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174406-el75ey2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "具体原理可以参考提案，每个eventratelimit 配置使用一个单独的令牌桶限速器"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230403174406-una2vfv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174406-una2vfv"
+					},
+					"Children": [
+						{
+							"ID": "20230403174406-qk8ud85",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174406-qk8ud85"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每次event操作，遍历每个匹配的限速器检查是否能获取令牌，如果可以允许请求，否则返回429。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174406-7kszhr7",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230403174406-7kszhr7",
+				"updated": "20230403174406"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230403174406-8hvs8om",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230403174406-8hvs8om"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "优点"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174406-7be852l",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403174406-7be852l",
+				"updated": "20230403174406"
+			},
+			"Children": [
+				{
+					"ID": "20230403174406-j0zxhyi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174406-j0zxhyi"
+					},
+					"Children": [
+						{
+							"ID": "20230403174406-9o4yra8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174406-9o4yra8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "实现简单，允许一定量的并发"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230403174406-nvm8ugf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174406-nvm8ugf",
+						"updated": "20230403174406"
+					},
+					"Children": [
+						{
+							"ID": "20230403174406-gk8z9sm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174406-gk8z9sm",
+								"updated": "20230403174406"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "可支持server/namespace/user等级别的限流"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174656-ti38ufl",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230403174656-ti38ufl",
+				"updated": "20230403174701"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230403174656-psyspul",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230403174656-psyspul",
+						"updated": "20230403174701"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "缺点"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174706-32q0cpg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403174706-32q0cpg",
+				"updated": "20230403174714"
+			},
+			"Children": [
+				{
+					"ID": "20230403174714-zr4sv7d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174714-zr4sv7d"
+					},
+					"Children": [
+						{
+							"ID": "20230403174714-x1j4f3d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174714-x1j4f3d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "仅支持event，通过webhook实现只能拦截修改类请求"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403174708-g434pjf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230403174708-g434pjf",
+				"updated": "20230403174717"
+			},
+			"Children": [
+				{
+					"ID": "20230403174717-t94ww12",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230403174717-t94ww12"
+					},
+					"Children": [
+						{
+							"ID": "20230403174717-9oubxg8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230403174717-9oubxg8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "所有namespace的限流相同，没有优先级"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230403180050-ji2wb5s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403180050-ji2wb5s",
+				"updated": "20230403180050"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考文档：https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/admission-controllers/#eventratelimit"
+				}
+			]
+		},
+		{
+			"ID": "20230403180047-vz8ve4g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230403180047-vz8ve4g",
+				"updated": "20230403180047"
+			}
+		}
+	]
+}

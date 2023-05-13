@@ -1,0 +1,474 @@
+{
+	"ID": "20221020104634-n9rdefr",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221020104634-n9rdefr",
+		"title": "技术预演",
+		"updated": "20221020105222"
+	},
+	"Children": [
+		{
+			"ID": "20221020104650-aygpkrw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221020104650-aygpkrw",
+				"updated": "20221020104706"
+			}
+		},
+		{
+			"ID": "20221020104658-fkaq3vh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221020104658-fkaq3vh",
+				"updated": "20221020105136"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. quotacheck保持配额准确"
+				}
+			]
+		},
+		{
+			"ID": "20221020105136-ctilfyr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020105136-ctilfyr",
+				"updated": "20221020105141"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t参考链接：https://www.sysctl.me/2017/12/30/Linux/storage/LocalStorage/"
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-o8pesg7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-o8pesg7",
+				"updated": "20221020104658"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t当文件系统无法完全卸载（例如，由于系统崩溃），则需要运行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。但是，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "即使系统没有崩溃，也可以定期运行。定期运行的安全方法"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "包括："
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-we3tqw2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221020104658-we3tqw2",
+				"updated": "20221020105153"
+			},
+			"Children": [
+				{
+					"ID": "20221020105153-hjgxhn4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221020105153-hjgxhn4"
+					},
+					"Children": [
+						{
+							"ID": "20221020105153-76wbc8p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221020105153-76wbc8p"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确保在下次重新启动时运行quotacheck"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-jsn1qp7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-jsn1qp7",
+				"updated": "20221020104658"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t以root用户身份，将一个shell脚本放到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/cron.daily/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "或"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/cron.weekly/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "目录中 - 或者使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "crontab -e"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "包含该"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "touch /forcequotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "命令的命令来安排一个shell脚本。这将"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "forcequotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "在根目录中创建一个空文件，系统启动脚本将在启动时查找该文件。如果找到，则运行init脚本"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。之后，init脚本删除"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/forcequotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "文件; 因此，调度此文件定期创建，以"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cron"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "确保"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "在下次重新启动时运行。"
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-nsgnq45",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-nsgnq45",
+				"updated": "20221020104658"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tRefer to "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "man cron"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " for more information about configuring "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cron"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "."
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-uw4w3ux",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221020104658-uw4w3ux",
+				"updated": "20221020105157"
+			},
+			"Children": [
+				{
+					"ID": "20221020105157-90yxsqt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221020105157-90yxsqt"
+					},
+					"Children": [
+						{
+							"ID": "20221020105157-96zkxv2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221020105157-96zkxv2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在单用户模式下运行quotacheck"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-58jcv4o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-58jcv4o",
+				"updated": "20221020104658"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t另一种安全运行的方法"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "是将系统引导到单用户模式，以防止配额文件中数据损坏的可能性并运行以下命令："
+				}
+			]
+		},
+		{
+			"ID": "20221020105004-exmc5tm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221020105004-exmc5tm",
+				"updated": "20221020105029"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "＃ quotaoff -vug /file_system\n＃ quotacheck -vug /file_system\n＃ quotaon -vug /file_system\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-prx1vpv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221020104658-prx1vpv",
+				"updated": "20221020105214"
+			},
+			"Children": [
+				{
+					"ID": "20221020105214-7dcfk7h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221020105214-7dcfk7h"
+					},
+					"Children": [
+						{
+							"ID": "20221020105214-927s6k9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221020105214-927s6k9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在正在运行的系统上运行quotacheck"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-nl5rrec",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-nl5rrec",
+				"updated": "20221020105222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t如果有必要，可以"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "在没有用户登录的时间在机器上运行，因此在被检查的文件系统上没有打开的文件。运行命令; 如果无法将给定的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "file_system"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "重新挂载为只读，则此命令将失败。请注意，在检查之后，文件系统将被重新读写。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck -vug*file_system*``quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "**"
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-lnn5af0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-lnn5af0",
+				"updated": "20221020104658"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "警告"
+				}
+			]
+		},
+		{
+			"ID": "20221020105108-d7neir3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020105108-d7neir3",
+				"updated": "20221020105109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quotacheck"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "由于配额文件损坏的可能性，建议不要使用挂载的读写方式 运行实时文件系统"
+				}
+			]
+		},
+		{
+			"ID": "20221020104658-dk7wix8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020104658-dk7wix8",
+				"updated": "20221020105112"
+			}
+		},
+		{
+			"ID": "20221020105052-dfhayp8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221020105052-dfhayp8",
+				"updated": "20221020105052"
+			}
+		}
+	]
+}

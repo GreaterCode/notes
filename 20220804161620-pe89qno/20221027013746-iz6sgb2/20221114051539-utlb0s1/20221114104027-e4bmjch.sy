@@ -1,0 +1,2643 @@
+{
+	"ID": "20221114104027-e4bmjch",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221114104027-e4bmjch",
+		"title": "OpenShift 4 概念 - OpenShift是如何通过ImageStream访问Image的_dawnsky.liu的博客-CSDN博客",
+		"updated": "20221114154611"
+	},
+	"Children": [
+		{
+			"ID": "20221114104027-dh2b8vl",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221114104027-dh2b8vl"
+			}
+		},
+		{
+			"ID": "20221114104027-kfvxp8w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221114104027-kfvxp8w"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-4nbekk2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114104027-4nbekk2"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-2sj3fnb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-2sj3fnb"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/weixin_43902588/article/details/105464619",
+									"TextMarkTextContent": "https://blog.csdn.net/weixin_43902588/article/details/105464619"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-newg58x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114104027-newg58x"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-vuzwsyl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-vuzwsyl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "文章目录ImageStream基本概念Internal Image 和 External ImageInternal Image 和 Internal Image RegistryExternal Image确定ImageStream指向的目标和方式指向External Image通过pullthrough指向External Image每次通过External Image的URL地址获取镜像In..."
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-5uw6wkp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221114104027-5uw6wkp"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-qsrqovc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-qsrqovc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2022-11-14 10:40:27"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-rch24r0",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221114104027-rch24r0"
+			}
+		},
+		{
+			"ID": "20221114104027-qk97fe8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-qk97fe8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/weixin_43902588/article/details/105060359",
+					"TextMarkTextContent": "OpenShift 4.x HOL教程汇总"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》\n 说明：本文已经在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=OpenShift\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "OpenShift"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 4.6环境中验证"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-1l61cf8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221114104027-1l61cf8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "文章目录"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-3airu41",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-3airu41"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ImageStream基本概念"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-qmr37tv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-qmr37tv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器镜像存储在镜像注册表中（如Docker Hub、Quay.io），我们可以从那里手动pull出来单独运行，也可以在Kubernetes集群中运行。Kubernetes没有内置的镜像注册表，然而这在企业环境中又是通常是需要的。Red Hat OpenShift 提供了一个开箱即用的集成注册表来填补这一空白，并引入了一个名为ImageStream的新的Kubernetes对象资源，以“Kubernetes-native方式”管理镜像。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-zkblnej",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-zkblnej"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ImageStream 是为了支持不同用途而设计的。但在一开始，某些内容可能会让人感到困惑。技术上来说，ImageStream只是一个包含其它实际镜像元数据的Kubernetes对象资源，它可以指向OpenShift管理内部的镜像（是在OpenShift集群内部Registry中的镜像），ImageStream还可以指向外部Registry中的镜像。对于镜像，ImageStream是一个额外的抽象层，它提供了一些额外的功能（例如轮询更新、缓存）。由于 ImageStream 可以有两种不同的行为方式，如果我们区分它们是指向内部镜像还是指向外部镜像，就更容易理解它们。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-0usk0c9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-0usk0c9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OpenShift在生成ImageStream的时候，过程大致如下："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-1zipbi0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-1zipbi0"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-9rfr516",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-9rfr516"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-dsvkncn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-dsvkncn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OpenShift将提供的Image访问地址当做ImageStreamTag，并通过访问地址获得Image其它元数据，其中包括ImageStreamImage信息。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-8filofx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-8filofx"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-40612jf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-40612jf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OpenShift将ImageStreamTag和ImageStreamStream作为重要元数据保存在这个Image对应的ImageStream。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-uuynsfj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-uuynsfj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OpenShift应用在使用ImageStream的时候，缺省过程大致如下："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-cs6sytz",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-cs6sytz"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-h91frje",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-h91frje"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-feazvt8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-feazvt8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OpenShift根据应用提供的ImageStreamTag在ImageStream中找到对应的ImageStreamImage"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-e3qrwrb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-e3qrwrb"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-ih40no5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-ih40no5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OpenShift然后使用ImageStreamImage从远程Registry上pull image，这样就可以使用该Image了"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-9yqaf99",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-9yqaf99"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上是缺省生成ImageStream和通过ImageStream使用Image的过程。除此以外可以定制ImageStream的配置，可以实现以下定制过程："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-9ecy2r9",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-9ecy2r9"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-x2qe1wr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-x2qe1wr"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-7zl0g6t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-7zl0g6t"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OpenShift每次使用的Image的时候不使用本地ImageStream中的ImageStreamImage，而是每次都用ImageStreamTag从外部获取一次ImageStreamImage，然后再根据获取到的ImageStreamImage来pull image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-30bvgdg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-30bvgdg"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-8kenbfu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-8kenbfu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OpenShift在使用ImageStreamImage获取image的时候，缺省每次都从外部pull image，但也可以选择使用已经pull到本地的Image。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-10lousl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-10lousl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Internal Image 和 External Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-ltwxcj1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-ltwxcj1",
+				"updated": "20221114104027"
+			}
+		},
+		{
+			"ID": "20221114104027-s1smad6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-s1smad6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先，下面是关于存储在Internal Registry中的Image的一些注意事项：\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/2020041210221115-20221114104027-ht8kejf.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-jp6lwqj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-jp6lwqj",
+				"updated": "20221114104836"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-ksc4vxv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-ksc4vxv",
+						"updated": "20221114104836"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-cyqja8s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-cyqja8s",
+								"updated": "20221114104836"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于OpenShift内部Registry上的Image，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "ImageStream和内部Registry是紧密耦合的"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。例如，is-project命名空间中名为myimage-internal的ImageStream会被映射到image-registry.openshift-image-registry.svc:5000/is-project/myimage-internal。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-e00oenv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-e00oenv",
+						"updated": "20221114104819"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-8ee9v5u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-8ee9v5u",
+								"updated": "20221114104819"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果我们运行一个新的Build，其中output指定的是ImageStream类型，那么镜像将被存储在OpenShift内部注册表中。如果Build的output指定的是DockerImage类型，那么OpenShift会使用push操作将Image推送到标准的Docker Registry，缺省是DockerHub）。另外同理适用于指定Builder Image的来源。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-sthzfvx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-sthzfvx"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-tmj5pv7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-tmj5pv7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果我们使用Push方法手动向Internal Image Registry推送一个Image，OpenShift会自动创建一个匹配的ImageStream并指向这个Internal Image Registry中的Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-1w2d15x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-1w2d15x"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-wed1hd7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-wed1hd7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果我们删除了ImageStream，在OpenShift内部的Registry中保存的Image存储也会被删除。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-q0fqmq9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114104027-q0fqmq9"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-oqbmgmb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-oqbmgmb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为了保持OpenShift内部Registry的使用空间，你需要定期"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://docs.openshift.com/container-platform/4.6/applications/pruning-objects.html#pruning-images_pruning-objects",
+									"TextMarkTextContent": "Prune Images"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。在这个过程中，那些在Build或Deployment中被使用到的内部Image会自动保留。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-j1uiu16",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-j1uiu16"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "External Image 和 External Registry"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-yjacj2k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-yjacj2k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在OpenShift之外的External Registry保存了外部Image。ImageStream和External Registry、以及其上的外部Image的关系如下：\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20200412105401244-20221114104027-f3lnsxi.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-bisc3n2",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-bisc3n2",
+				"updated": "20221114105228"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-hc8wzac",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-hc8wzac",
+						"updated": "20221114105205"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-7o8rzp2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-7o8rzp2",
+								"updated": "20221114105205"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "我们可以用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "oc import-image 或 oc tag"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 命令创建一个指向外部 Image 的 ImageStream，或者直接用 yaml 创建一个 ImageStream。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-ibmhvmz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-ibmhvmz"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-ekc758h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-ekc758h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一个ImageStream中的标签可以指向来自完全不同的Registry和Repository的Image。通过这种有效的方法可以将相关的外部Image关联起来，而Image可存储在不同的Registry存储库中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-wb7t5r8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-wb7t5r8"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-ocf15uv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-ocf15uv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "作为一个抽象层，ImageStream隐藏了Image的实际来源。当构建和部署引用一个ImageStream时，我们可以通过修改ImageStream中的URL来改变正在使用的Image，而不是逐一编辑OpenShift的每个构建和部署。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-ecbzr2y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-ecbzr2y"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-gzl2vd2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-gzl2vd2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当创建或更新Image时，ImageStream 通过其唯一的 sha256 ID（而非Tag）来引用Image 。这使得当外部Registry变化标签的时候，其使用的Image可保持稳定性。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-5tscroc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114104027-5tscroc"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-xlp05u7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-xlp05u7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ImageStream 可以定期（15 分钟）监控外部标记是否发生变化（通过–scheduled=true）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-lxcygex",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221114104027-lxcygex",
+						"updated": "20221114105108"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-y43v6tv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-y43v6tv",
+								"updated": "20221114105108"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "我们可以在"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "内部Registry中缓存外部Image（通过–reference-policy=local）"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，并且不受外部Registry可用性的影响。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-iby0p0e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20221114104027-iby0p0e",
+						"updated": "20221114105228"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-e91snas",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-e91snas",
+								"updated": "20221114105228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "无论是内部还是外部Image，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "在ImageStream更新时会自动触发相关的BuildConfigs和DeploymentConfigs"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-mjytw7j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-mjytw7j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "确定ImageStream指向的目标和方式"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-ac2bl2f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-ac2bl2f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以把OpenShift的ImageStream看成是一个指向Image的指针（当然还有一些其它元数据），ImageStream指向的Image目标可以是多种不同类型的目标，它们包括："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-2pz1gok",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-2pz1gok"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-bp33b47",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-bp33b47"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-rci1u0o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-rci1u0o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "指向一个external image"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-xjjaty2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-xjjaty2"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-mnh4var",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-mnh4var"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过pullthrough 指向一个被缓存的external image"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-0lpwmq9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-0lpwmq9"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-itkh6jc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-itkh6jc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "总是使用一个external image的URL"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-8uogxta",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-8uogxta"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-9b1xfxl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-9b1xfxl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "指向一个internal image"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-isdzj0i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114104027-isdzj0i"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-es5t50c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-es5t50c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "指向另一个ImageStream"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-0gbyjfq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-0gbyjfq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "指向External Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-5i363ya",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-5i363ya"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以用以下“oc import-image”命令或“oc tag”命令创建一个存放在is-project下的ImageStream，并让它指向外部Image，这个外部Image就是docker.io/balazsszeti/hello:sleeper。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-l8tag5g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-l8tag5g",
+				"updated": "20221114105945"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project is-project\n$ oc import-image is-project/myimage-ref-source:mytag --from=\"docker.io/balazsszeti/hello:sleeper\" --confirm\n$ oc tag docker.io/balazsszeti/hello:sleeper is-project/myimage-ref-source:mytag\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-a4ht1ql",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-a4ht1ql"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后我们可以查看这个ImageStream和ImageStreamTag的详细信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-e213twa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-e213twa"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc get is myimage-ref-source -oyaml\napiVersion: image.openshift.io/v1\nkind: ImageStream\nmetadata:\n  annotations:\n    openshift.io/image.dockerRepositoryCheck: \"2020-04-12T08:18:25Z\"\n  creationTimestamp: \"2020-04-12T08:18:25Z\"\n  generation: 1\n  name: myimage-ref-source\n  namespace: is-project\n  resourceVersion: \"2844402\"\n  selfLink: /apis/image.openshift.io/v1/namespaces/is-project/imagestreams/myimage-ref-source\n  uid: 2e541461-7c96-11ea-8ba8-0a580a81000f\nspec:\n  lookupPolicy:\n    local: false\n  tags:\n  - from:\n      kind: DockerImage\n      name: docker.io/balazsszeti/hello:sleeper\n    importPolicy: { }\n    name: mytag\n    referencePolicy:\n      type: Source\nstatus:\n  dockerImageRepository: image-registry.openshift-image-registry.svc:5000/is-project/myimage-ref-source\n  publicDockerImageRepository: default-route-openshift-image-registry.apps.cluster-beijing-78c7.beijing-78c7.example.opentlc.com/is-project/myimage-ref-source\n  tags:\n  - items:\n    - created: \"2020-04-12T08:18:25Z\"\n      dockerImageReference: docker.io/balazsszeti/hello@sha256:42957024b43e121a210a1b3a8a44f497233a2385f7ef48227a6866afdb9b8e1b\n      generation: 1\n      image: sha256:42957024b43e121a210a1b3a8a44f497233a2385f7ef48227a6866afdb9b8e1b\n    tag: mytag\n \n$ oc get istag\nNAME                       IMAGE REF                                                                                             UPDATED\nmyimage-ref-source:mytag   docker.io/balazsszeti/hello@sha256:42957024b43e121a210a1b3a8a44f497233a2385f7ef48227a6866afdb9b8e1b   10 minutes ago\n1234567891011121314151617181920212223242526272829303132333435363738\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-5n49clb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-5n49clb"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-4dgzszl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-4dgzszl"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-tlmfynd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-tlmfynd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "名为mytag的ImageSteamTag指向的是DockerImage类型的External Image，外部镜像URL（名称+Tag）是docker.io/balazsszeti/hello:sleeper。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-jzocbzl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-jzocbzl"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-4wyonrj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-4wyonrj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "这个ImageSteam的mytag实际指向的外部Image是由dockerImageReference所指的sha256 ID，即下面的字符串。在生成ImageStreamTag的时候，OpenShift是使用了docker.io/balazsszeti/hello:sleeper获得的该Image的sha256 ID。这样当在build或deployment命令中引用ImageStreamTag来创建Pod的时候，实际上使用的是用sha256 ID代表的Image。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-nzps7c1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-nzps7c1",
+				"updated": "20221114154551"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " docker.io/balazsszeti/hello@sha256:42957024b43e121a210a1b3a8a44f497233a2385f7ef48227a6866afdb9b8e1b\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-w9f3don",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-w9f3don",
+				"updated": "20221114152744"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-o4cijni",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-o4cijni"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-8dd9l8u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-8dd9l8u"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每次通过ImageSteamTag使用Image的时候使用的是source类型的referencePolicy，即直接从source访问Image。因此如果当时网络不通，则无法访问该Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-yzp2n2r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-yzp2n2r"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-00dvufy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-00dvufy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当生成ImageSteamTag指向sha256 ID后，修改升级外部镜像的tag就不再影响ImageSteamTag了，也就是说即便把外部镜像从“docker.io/balazsszeti/hello:sleeper”改为“docker.io/balazsszeti/hello:sleeper-v1”，只要sha256 ID没有变化，OpenShift的ImageSteamTag就可以继续使用该外部镜像。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-g2uvcns",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114104027-g2uvcns"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-jqqoswb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-jqqoswb"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当外部镜像发生变化后需要自动更新ImageSteamTag对应的sha256 ID，那么可以使用oc tag或oc import-image命令的“–scheduled=true”参数，它会在YAML中设置“importPolicy: {scheduled: true}”。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-wbxsfr2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221114104027-wbxsfr2",
+						"updated": "20221114152744"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-2vlghrc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-2vlghrc",
+								"updated": "20221114152744"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ImageStream是OpenShift扩展的对象，因此OpenShift的Build、DeploymentConfig等对象可以直接使用它。如果需要"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "在Kubernetes的RC、Pod等对象"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "使用ImageStream"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，可执行以下的命令启动ImageStream的本地名称查询功能。该命令将"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "把ImageStream的Imagestream. spec.lookupPolicy.local设为true"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-hrv5dqa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-hrv5dqa",
+				"updated": "20221114154555"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc set image-lookup IMAGESTREAM\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-mk1s0v1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-mk1s0v1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下是一个例子：如果为名为hello的ImageStream启用了“本地名称”查询功能，那么在pod或其他资源中使用“–image=hello”就可以访问到ImageSteamTag指向的Image，而不是来自上游Image Registry。如果没有启动本地名称查询功能，那么使用“–image=hello”访问Image的时候会出问题，例如下面的“ErrImagePull”错误。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-hdfvdok",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-hdfvdok",
+				"updated": "20221114154602"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc import-image is-project/hello:latest --from=\"openshift/hello-openshift:latest\" --confirm\n$ oc run hello --image=hello\n$ oc get pod -w\nNAME    READY   STATUS              RESTARTS   AGE\nhello   0/1     ContainerCreating   0          5s\nhello   0/1     ErrImagePull        0          10s\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-7jkegxp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-7jkegxp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面在使用了“set image-lookup”后就可通过“–image=hello”使用该镜像了。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-lx9kuo5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-lx9kuo5",
+				"updated": "20221114154611"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc delete pod hello\n$ oc set image-lookup hello \n$ oc run hello --image=hello\n$ oc get pod -w\nNAME    READY   STATUS              RESTARTS   AGE\nhello   0/1     ContainerCreating   0          4s\nhello   1/1     Running             0          7s\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-u1i6zwh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-u1i6zwh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过pullthrough指向External Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-zl9tzsj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-zl9tzsj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了让ImageStream使用pullthrough特性，我们可以在“oc import-image”或“oc tag”命令中设置“–reference-policy=local”参数。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-yoi2k4e",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-yoi2k4e",
+				"updated": "20221114152804"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc import-image is-project/myimage-ref-local:mytag --from=\"docker.io/balazsszeti/hello:sleeper\" --confirm --reference-policy=local\n$ oc tag docker.io/balazsszeti/hello:sleeper is-project/myimage-ref-local:mytag --reference-policy=local\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-6l9ebc6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-6l9ebc6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "“–reference-policy=local”参数会将ImageStream的referencePolicy.local设置成true。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-cm7aqg1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-cm7aqg1",
+				"updated": "20221114152822"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "。。。\n  referencePolicy:\n    type: Local\n。。。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-hytk1am",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-hytk1am"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当“–reference-policy=local”的时候，StreamImage使用的是pullthrough方式指向External Image，那么："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-36bcxo0",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-36bcxo0",
+				"updated": "20221114154334"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-9kip7zn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-9kip7zn",
+						"updated": "20221114154334"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-l9amocx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-l9amocx",
+								"updated": "20221114154334"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "根据Image生成Pod的时候会使用Internal Registry上的已经被pulled through的Image"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。例如："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-48vkm9d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-48vkm9d"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "image-registry.openshift-image-registry.svc:5000/is-project/myimage-ref-local@sha256:42957024b43e121a210a1b3a8a44f497233a2385f7ef48227a6866afdb9b8e1b\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-wjv5j2y",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-wjv5j2y"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-2nge529",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-2nge529"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-ablgkaj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-ablgkaj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当Image第一次被使用的时后，它会先从External Registry被获取到然后缓存到Internal Registry缓存中。所以在第一次使用Image的时后还不会脱机工作，但一旦缓存后，就再也不需要联系外部注册表了。即使将映像从外部注册表中删除，它也会保留在Internal Registry缓存中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-gze2x9a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-gze2x9a"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-72y4d96",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-72y4d96"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "和“指向External Image”一样，当External Image的Tag变化后，并且如果sha256 ID还有效，那么不会影响继续使用ImageStreamTag访问镜像，而且Internal Registry的Image缓存也不会更新。当使用手动更新或使用“–scheduled=true”定时更新，更新后的External Image会更新至内部缓存的Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-q13prq8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-q13prq8"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-b5re5a6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-b5re5a6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于Pod是采用Internal Registry sha256 ID获取被缓存的Image，因此如果缓存Image没有被清除，那么Pod就可以被rollback。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-nft0cnn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-nft0cnn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每次通过External Image的URL地址获取镜像"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-vu0b7vb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-vu0b7vb",
+				"updated": "20221114153757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过使用oc tag命令的–reference=true参数可创建一个ImageStream。在通过它运行Pod的时候，OpenShift不会直接使用ImageStreamTag的sha256 ID来找到对应的Image，而是每次都是通过指定的External Image名称和对应的Tag去找那个对应特定的Image。下面我们对比使用–reference=true参数和–reference=false（缺省情况）的区别。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-dcvgyc1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-dcvgyc1"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-m571lax",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-m571lax"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-qmpuwxe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-qmpuwxe"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先使用–reference=true参数创建一个ImageStream，然后查看是否有ImageStreamTag对象。可以看到当使用–reference=true参数的时候，OpenShift并不会记录Image的sha256 ID信息（不过OpenShift实际是通过sha256 ID识别被使用的Image）。此时OpenShift每次都要通过解析External Image的URL地址（即docker.io/openshift/hello-openshift:latest）解析实际使用的Image（其实最终还要解析到Image的sha256 ID，只不过不在OpenShift的ImageStreamTag中记录该sha256 ID信息了）。因此这种情况是每次访问Image都做一次外部镜像地址的全解析。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-c739a4j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-c739a4j",
+				"updated": "20221114153024"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc tag docker.io/openshift/hello-openshift:latest is-project/hello-1:latest --reference=true\n$ oc get istag hello-1:latest\nError from server (NotFound): imagestreamtags.image.openshift.io \"hello-1:latest\" not found\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-ihpqbx4",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-ihpqbx4"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-4zgp3xu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-4zgp3xu"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-sncbbch",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-sncbbch"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先使用–reference=false参数创建一个ImageStream，然后查看是否有ImageStreamTag对象。可以看到当使用–reference=false参数的时候，OpenShift会为之创建与ImageStream对应的ImageStreamTag。OpenShift以后实际上是通过ImageStreamTag中记录的sha256 ID定位该Image的，因此从External Image的URL地址解析到Image的sha256 ID过程OpenShift只做一次。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-q4rqshj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-q4rqshj",
+				"updated": "20221114153019"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc tag docker.io/openshift/hello-openshift:latest is-project/hello-2:latest --reference=false\n$ oc get istag hello-2:latest\nNAME             IMAGE REF                                                                                                     UPDATED\nhello-2:latest   docker.io/openshift/hello-openshift@sha256:aaea76ff622d2f8bcb32e538e7b3cd0ef6d291953f3e7c9f556c1ba5baf47e2e   5 seconds ago\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-txyx12q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-txyx12q",
+				"updated": "20221114153934"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "当我们使用–reference=true的ImageStream的时候，具有以下特性："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-1954ljq",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-1954ljq",
+				"updated": "20221114153940"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-cooa8c1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-cooa8c1",
+						"updated": "20221114153940"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-ct6gu4y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-ct6gu4y",
+								"updated": "20221114153940"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "在这种情况下由于ImageStream没有记录ImageSteamTag的sha256 ID信息，因此每次都要使用以下External Image的URL找到该Image"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-d4cjnhy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-d4cjnhy",
+				"updated": "20221114153013"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker.io/openshift/hello-openshift:latest\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-usd03fb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-usd03fb",
+				"updated": "20221114154008"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-xlwpdyl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-xlwpdyl",
+						"updated": "20221114154008"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-1im9qk6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-1im9qk6",
+								"updated": "20221114154008"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "在这种情况下即便使用了–reference-policy=local选项，也无法使用缓存，因此不能离线运行。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-6oaomie",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-6oaomie"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-m6vn9wt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-m6vn9wt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于每次OpenShift都通过External Image的URL找到所用Tag对应的Image来运行Pod，因此当External Image的Tag升级后，OpenShift可以立即感知出来这种变化，并用新的Tag对应的Image生成Pod。在–reference=false的时候，应配合Pod的“imagePullPolicy: Always”参数一起使用，以让Pod每次都pull到最新的Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-vvl9tis",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-vvl9tis"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-5qidgim",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-5qidgim"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在这种情况时，Pod直接使用的是External Image URL获取的Image，而不是用ImageStream配置中的Internal Registry URL（即image-registry.openshift-image-registry.svc:5000/is-project/myimage-reference:mytag）获取Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-9xsjzu7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221114104027-9xsjzu7"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-vk6mswd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-vk6mswd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于Pod是直接通过External Image的URL获得Image，例如docker.io/openshift/hello-openshift:latest，因此即便rollback，Pod获取到的Image可能会没有变化，因此rollback就不会奏效。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-g8ehbcd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-g8ehbcd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用Internal Image"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-maqenpo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-maqenpo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过OpenShift的build生成的Image会推送到 Internal Registry上，OpenShift同时会为其生成ImageStream。"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-vhiyexw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-vhiyexw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-app php~https://github.com/liuxiaoyu-git/php-helloworld\n \n$ oc get istag php-helloworld:latest\nNAME                    IMAGE REFERENCE                                                                                                                                      UPDATED\nphp-helloworld:latest   image-registry.openshift-image-registry.svc:5000/is-project/php-helloworld@sha256:759da8784d4c130ff6784fa375141fa65b949ac12eae4f98d537241cb49d6060   3 minutes ago\n12345\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-q94279a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114104027-q94279a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用这种方式的ImageStream有以下特性："
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-uaj5ivu",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-uaj5ivu"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-e0bwytf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-e0bwytf"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-np3bykp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-np3bykp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同使用pullthrough方式相同，Pod使用的是Internal Registry和sha256 ID的组合方式访问到Image。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-rk8a9o9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221114104027-rk8a9o9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "image-registry.openshift-image-registry.svc:5000/is-project/php-helloworld@sha256:759da8784d4c130ff6784fa375141fa65b949ac12eae4f98d537241cb49d6060\n1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-oz6uwxt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-oz6uwxt"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-ilzkxtd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-ilzkxtd"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-o21iumv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-o21iumv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于Image就在OpenShift的internal registry中，因此可以离线访问到。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-7dx451x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-7dx451x"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-mspjib8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-mspjib8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当通过build过程更新了Image的Tag后，Pod会使用更新后的Image。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-erfpy6x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-erfpy6x"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-3erzkza",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-3erzkza"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "其它特性和上面介绍的pullthrough的情况相同。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-q33lvge",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221114104027-q33lvge"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20221114104027-tor32vx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221114104027-tor32vx"
+			},
+			"Children": [
+				{
+					"ID": "20221114104027-qm9zgef",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221114104027-qm9zgef"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-be7en5h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-be7en5h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "本文内容主要源自https://itnext.io/variations-on-imagestreams-in-openshift-4-f8ee5e8be633一文。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-mpml0pz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221114104027-mpml0pz"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-t9vhbsr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-t9vhbsr"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://docs.openshift.com/container-platform/4.6/builds/managing-build-output.html",
+									"TextMarkTextContent": "Managing build output"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-m88xyfr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221114104027-m88xyfr"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-kfragmk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-kfragmk"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://cloudowski.com/articles/why-managing-container-images-on-openshift-is-better-than-on-kubernetes/",
+									"TextMarkTextContent": "Why managing container images on OpenShift is better than on Kubernetes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221114104027-tjko80d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221114104027-tjko80d"
+					},
+					"Children": [
+						{
+							"ID": "20221114104027-p9bh8b9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221114104027-p9bh8b9"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://www.openshift.com/blog/image-streams-faq",
+									"TextMarkTextContent": "How to Simplify Container Image Management in Kubernetes with OpenShift Image Streams"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221114153334-6q979yf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221114153334-6q979yf",
+				"updated": "20221114153334"
+			}
+		}
+	]
+}

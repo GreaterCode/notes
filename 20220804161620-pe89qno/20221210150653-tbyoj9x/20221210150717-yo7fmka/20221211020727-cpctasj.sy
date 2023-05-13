@@ -1,0 +1,2246 @@
+{
+	"ID": "20221211020727-cpctasj",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221211020727-cpctasj",
+		"title": "玩转K8S的LoadBalancer",
+		"updated": "20221211020727"
+	},
+	"Children": [
+		{
+			"ID": "20221211020727-i7urhnx",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221211020727-i7urhnx",
+				"updated": "20221211020727"
+			}
+		},
+		{
+			"ID": "20221211020727-snxegb4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-snxegb4",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-wz1p8lh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-wz1p8lh",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-hjzj194",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-hjzj194",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://zhuanlan.zhihu.com/p/266422557",
+									"TextMarkTextContent": "https://zhuanlan.zhihu.com/p/266422557 - 知乎专栏"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-bjbbh0q",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221211020727-bjbbh0q",
+				"updated": "20221211020727"
+			}
+		},
+		{
+			"ID": "20221211020727-o4zs0ft",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020727-o4zs0ft",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 背景"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-40rr0je",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-40rr0je",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在k8s中创建service时，需要指定"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "type"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "类型，可以分别指定"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ClustrerIP,NodePort,LoadBalancer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "三种，其中前面两种无论在内网还是公网环境下使用都很常见，只有"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "LoadBalancer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "大部分情况下只适用于支持外部负载均衡器的云提供商（AWS,阿里云,华为云等）使用。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-2ofgwvs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-2ofgwvs",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果想要在内网环境中，使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "type=LoadBalancer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "就需要部署另外的插件，下面主要介绍一下MetalLB组件。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-7b9lqak",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020727-7b9lqak",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. MetalLB介绍"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-dkkrku2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-dkkrku2",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB部署在k8s中，为k8s集群提供了网络负载均衡器， 它主要提供两个功能：地址分配和外部通知。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-85s78lf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-85s78lf",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 地址分配"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-lqinjhn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-lqinjhn",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在公有云环境下，当购买或指定一个负载均衡器时，云平台将为用户分配一个IP地址，通过这个IP地址就能实现LoadBalancer，而在私有云集群中，MetalLB将负责IP地址的分配。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-v4jkzma",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-v4jkzma",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB无法凭空创建IP地址，因此需要在配置过程中为MetalLB指定一个IP地址池，当服务创建或者删除时，MetalLB负责从IP地址池中分配或者销毁服务对应的IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-f46695v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-f46695v",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 外部通知"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-n0jza62",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-n0jza62",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一旦MetalLB为服务分配了外部IP地址，它就需要使群集之外的网络意识到该IP在群集中“存在”。MetalLB使用标准路由协议来实现此目的：ARP，NDP或BGP。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-vx4i3mx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-vx4i3mx",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 二层模式(ARP/NDP)"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-5a6ddp2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-5a6ddp2",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在二层模式下，一个节点承担向本地网络发布服务的责任。从网络的角度看，这台机器看起来好像已经为其网络接口分配了多个IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-mlsmrdw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-mlsmrdw",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二层模式的主要优点是它的通用性,可以在任何以太网网络上运行，不需要特殊的硬件（路由器等）。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-8ctuqxt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-8ctuqxt",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3.1 负载均衡"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-t2thmcj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-t2thmcj",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在二层模式下，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "服务IP的所有流量都流向一个节"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "点。从那里， kube-proxy将流量传播到所有服务的Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-olczbci",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-olczbci",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从这个意义上讲，二层没有实现负载平衡器。相反，它实现了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "故障转移机制"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，以便当当前的领导节点由于某种原因发生故障时，另一个节点可以接管。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-t44xe14",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-t44xe14",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果领导节点由于某种原因失败，则故障转移是自动的，此时新节点将接管发生故障的节点的IP地址所有权。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-27kai4c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-27kai4c",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3.2 局限性"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-rks6c55",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-rks6c55",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-7ahhtvm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-7ahhtvm",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-ogdo1vp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-ogdo1vp",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "单节点瓶颈"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-683uxs2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-683uxs2",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "单个领导者当选节点接收服务IP的所有流量。这意味着服务的入口带宽被限制为单个节点的带宽。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-eb8rx8h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-eb8rx8h",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在当前的实现中，节点之间的故障转移取决于客户端的合作。当发生故障转移时，MetalLB发送大量免费的二层数据包，以通知客户端与服务IP关联的MAC地址已更改。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-cigd457",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-cigd457",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-7nbe5wa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-7nbe5wa",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-s1yy67h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-s1yy67h",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "故障转移速度慢"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-liqibuh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-liqibuh",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所有主要版本的现代操作系统（Windows，Mac，Linux）都能正确处理“免费”数据包，并迅速更新其邻居缓存。在这种情况下，故障转移将在几秒钟内发生。但是，某些系统要么根本不执行免费处理，要么存在错误的实现，从而延迟了缓存的更新。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-8eau5og",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-8eau5og",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 BGP模型"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-llwkynt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-llwkynt",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在BGP模式下，群集中的每个节点都与网络路由器建立BGP对等会话，并使用该对等会话来通告外部群集服务的IP。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-voa1ew0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-voa1ew0",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果路由器配置为支持多路径，则可以实现真正的负载平衡，MetalLB发布的路由彼此等效，除了它们的下一跳。这意味着路由器将一起使用所有下一跳，并在它们之间进行负载平衡。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-5jxmdn8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-5jxmdn8",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "数据包到达节点后，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-proxy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "负责流量路由的最后一跳，以将数据包到达服务中的一个特定容器。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-7bjid0h",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020727-7bjid0h",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020727-qc1h718",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020727-qc1h718",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "由于硬件环境的约束，作者没有在BGP模式下进行试验，因此，有关BGP模型更详细的介绍，请参见"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "a",
+							"TextMarkAHref": "https://link.zhihu.com/?target=https%3A//metallb.universe.tf/concepts/bgp/",
+							"TextMarkTextContent": "MetalLB官方文档"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-s2dp9hy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020727-s2dp9hy",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 部署MetalLB"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-chbxumn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-chbxumn",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 部署"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-nwize1i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-nwize1i",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml\nkubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml\n# On first install only\nkubectl create secret generic -n metallb-system memberlist --from-literal=secretkey=\"$(openssl rand -base64 128)\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-yx46xdt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-yx46xdt",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注：有些网络环境不好朋友，不能下载yaml文档，本文也附上yaml文件对应的内容"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " - namespace.yaml"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-rdgoa4k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-rdgoa4k",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Namespace\nmetadata:\n  name: metallb-system\n  labels:\n    app: metallb\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-wxpqs3w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-wxpqs3w",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-3v4uasy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-3v4uasy",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-hgh2v8p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-hgh2v8p",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "metallb.yaml"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-gulwk2j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-gulwk2j",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@t34 metallb]# cat metallb.yaml \napiVersion: policy/v1beta1\nkind: PodSecurityPolicy\nmetadata:\n  labels:\n    app: metallb\n  name: controller\n  namespace: metallb-system\nspec:\n  allowPrivilegeEscalation: false\n  allowedCapabilities: []\n  allowedHostPaths: []\n  defaultAddCapabilities: []\n  defaultAllowPrivilegeEscalation: false\n  fsGroup:\n    ranges:\n    - max: 65535\n      min: 1\n    rule: MustRunAs\n  hostIPC: false\n  hostNetwork: false\n  hostPID: false\n  privileged: false\n  readOnlyRootFilesystem: true\n  requiredDropCapabilities:\n  - ALL\n  runAsUser:\n    ranges:\n    - max: 65535\n      min: 1\n    rule: MustRunAs\n  seLinux:\n    rule: RunAsAny\n  supplementalGroups:\n    ranges:\n    - max: 65535\n      min: 1\n    rule: MustRunAs\n  volumes:\n  - configMap\n  - secret\n  - emptyDir\n---\napiVersion: policy/v1beta1\nkind: PodSecurityPolicy\nmetadata:\n  labels:\n    app: metallb\n  name: speaker\n  namespace: metallb-system\nspec:\n  allowPrivilegeEscalation: false\n  allowedCapabilities:\n  - NET_ADMIN\n  - NET_RAW\n  - SYS_ADMIN\n  allowedHostPaths: []\n  defaultAddCapabilities: []\n  defaultAllowPrivilegeEscalation: false\n  fsGroup:\n    rule: RunAsAny\n  hostIPC: false\n  hostNetwork: true\n  hostPID: false\n  hostPorts:\n  - max: 7472\n    min: 7472\n  privileged: true\n  readOnlyRootFilesystem: true\n  requiredDropCapabilities:\n  - ALL\n  runAsUser:\n    rule: RunAsAny\n  seLinux:\n    rule: RunAsAny\n  supplementalGroups:\n    rule: RunAsAny\n  volumes:\n  - configMap\n  - secret\n  - emptyDir\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  labels:\n    app: metallb\n  name: controller\n  namespace: metallb-system\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  labels:\n    app: metallb\n  name: speaker\n  namespace: metallb-system\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRole\nmetadata:\n  labels:\n    app: metallb\n  name: metallb-system:controller\nrules:\n- apiGroups:\n  - ''\n  resources:\n  - services\n  verbs:\n  - get\n  - list\n  - watch\n  - update\n- apiGroups:\n  - ''\n  resources:\n  - services/status\n  verbs:\n  - update\n- apiGroups:\n  - ''\n  resources:\n  - events\n  verbs:\n  - create\n  - patch\n- apiGroups:\n  - policy\n  resourceNames:\n  - controller\n  resources:\n  - podsecuritypolicies\n  verbs:\n  - use\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRole\nmetadata:\n  labels:\n    app: metallb\n  name: metallb-system:speaker\nrules:\n- apiGroups:\n  - ''\n  resources:\n  - services\n  - endpoints\n  - nodes\n  verbs:\n  - get\n  - list\n  - watch\n- apiGroups:\n  - ''\n  resources:\n  - events\n  verbs:\n  - create\n  - patch\n- apiGroups:\n  - policy\n  resourceNames:\n  - speaker\n  resources:\n  - podsecuritypolicies\n  verbs:\n  - use\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: Role\nmetadata:\n  labels:\n    app: metallb\n  name: config-watcher\n  namespace: metallb-system\nrules:\n- apiGroups:\n  - ''\n  resources:\n  - configmaps\n  verbs:\n  - get\n  - list\n  - watch\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: Role\nmetadata:\n  labels:\n    app: metallb\n  name: pod-lister\n  namespace: metallb-system\nrules:\n- apiGroups:\n  - ''\n  resources:\n  - pods\n  verbs:\n  - list\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRoleBinding\nmetadata:\n  labels:\n    app: metallb\n  name: metallb-system:controller\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: metallb-system:controller\nsubjects:\n- kind: ServiceAccount\n  name: controller\n  namespace: metallb-system\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: ClusterRoleBinding\nmetadata:\n  labels:\n    app: metallb\n  name: metallb-system:speaker\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: ClusterRole\n  name: metallb-system:speaker\nsubjects:\n- kind: ServiceAccount\n  name: speaker\n  namespace: metallb-system\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  labels:\n    app: metallb\n  name: config-watcher\n  namespace: metallb-system\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: Role\n  name: config-watcher\nsubjects:\n- kind: ServiceAccount\n  name: controller\n- kind: ServiceAccount\n  name: speaker\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  labels:\n    app: metallb\n  name: pod-lister\n  namespace: metallb-system\nroleRef:\n  apiGroup: rbac.authorization.k8s.io\n  kind: Role\n  name: pod-lister\nsubjects:\n- kind: ServiceAccount\n  name: speaker\n---\napiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  labels:\n    app: metallb\n    component: speaker\n  name: speaker\n  namespace: metallb-system\nspec:\n  selector:\n    matchLabels:\n      app: metallb\n      component: speaker\n  template:\n    metadata:\n      annotations:\n        prometheus.io/port: '7472'\n        prometheus.io/scrape: 'true'\n      labels:\n        app: metallb\n        component: speaker\n    spec:\n      containers:\n      - args:\n        - --port=7472\n        - --config=config\n        env:\n        - name: METALLB_NODE_NAME\n          valueFrom:\n            fieldRef:\n              fieldPath: spec.nodeName\n        - name: METALLB_HOST\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n    # 部署过程中有得节点7946端口被占用，导致节点上的pod运行失败，把METALLB_ML_BIND_ADDR注释掉之后，就能运行成功\n      #  - name: METALLB_ML_BIND_ADDR \n      #    valueFrom:\n      #      fieldRef:\n      #        fieldPath: status.podIP\n        - name: METALLB_ML_LABELS\n          value: \"app=metallb,component=speaker\"\n        - name: METALLB_ML_NAMESPACE\n          valueFrom:\n            fieldRef:\n              fieldPath: metadata.namespace\n        - name: METALLB_ML_SECRET_KEY\n          valueFrom:\n            secretKeyRef:\n              name: memberlist\n              key: secretkey\n        image: metallb/speaker:v0.9.3\n        imagePullPolicy: IfNotPresent \n        name: speaker\n        ports:\n        - containerPort: 7472\n          name: monitoring\n        resources:\n          limits:\n            cpu: 100m\n            memory: 100Mi\n        securityContext:\n          allowPrivilegeEscalation: false\n          capabilities:\n            add:\n            - NET_ADMIN\n            - NET_RAW\n            - SYS_ADMIN\n            drop:\n            - ALL\n          readOnlyRootFilesystem: true\n      hostNetwork: true\n      nodeSelector:\n        beta.kubernetes.io/os: linux\n      serviceAccountName: speaker\n      terminationGracePeriodSeconds: 2\n      tolerations:\n      - effect: NoSchedule\n        key: node-role.kubernetes.io/master\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  labels:\n    app: metallb\n    component: controller\n  name: controller\n  namespace: metallb-system\nspec:\n  revisionHistoryLimit: 3\n  selector:\n    matchLabels:\n      app: metallb\n      component: controller\n  template:\n    metadata:\n      annotations:\n        prometheus.io/port: '7472'\n        prometheus.io/scrape: 'true'\n      labels:\n        app: metallb\n        component: controller\n    spec:\n      containers:\n      - args:\n        - --port=7472\n        - --config=config\n        image: metallb/controller:v0.9.3\n        imagePullPolicy: IfNotPresent \n        name: controller\n        ports:\n        - containerPort: 7472\n          name: monitoring\n        resources:\n          limits:\n            cpu: 100m\n            memory: 100Mi\n        securityContext:\n          allowPrivilegeEscalation: false\n          capabilities:\n            drop:\n            - all\n          readOnlyRootFilesystem: true\n      nodeSelector:\n        beta.kubernetes.io/os: linux\n      securityContext:\n        runAsNonRoot: true\n        runAsUser: 65534\n      serviceAccountName: controller\n      terminationGracePeriodSeconds: 0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-l41rolg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-l41rolg",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-m5q07l2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-m5q07l2",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-r7datld",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-r7datld",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "config.yaml"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-167a2ls",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-167a2ls",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@t34 metallb]# cat config.yaml \napiVersion: v1\nkind: ConfigMap\nmetadata:\n  namespace: metallb-system\n  name: config\ndata:\n  config: |\n    address-pools:\n    - name: my-ip-space\n      protocol: layer2\n      addresses:\n      - 192.168.5.5-192.168.5.9\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-ti50gge",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-ti50gge",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "192.168.5.5-192.168.5.9"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "是为MetalLB指定的IP资源池。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-8mqv1k9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-8mqv1k9",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 查看"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-qy5jyhb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-qy5jyhb",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@t34 metallb]# kubectl get pod -n metallb-system\nNAME                          READY   STATUS    RESTARTS   AGE\ncontroller-59bf6b989f-82l4s   1/1     Running   0          34m\nspeaker-7x75j                 1/1     Running   0          2d22h\nspeaker-kbk5c                 1/1     Running   0          2d22h\nspeaker-lb8x7                 1/1     Running   0          2d22h\nspeaker-mblbt                 1/1     Running   0          2d22h\nspeaker-qnpsh                 1/1     Running   0          2d22h\n[root@t34 metallb]# kubectl get cm -n metallb-system\nNAME     DATA   AGE\nconfig   1      3d\n[root@t34 metallb]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-ou3am6u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020727-ou3am6u",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 测试"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-tf3wa1g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-tf3wa1g",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 指定service的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "type=LoadBalancer"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-x4oyv2d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-x4oyv2d",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@t34 metallb]# kubectl get svc |grep -i loadbalancer\nNAME                                            TYPE           CLUSTER-IP      EXTERNAL-IP                                            PORT(S)                             AGE\nmyapp-svc                                       LoadBalancer   10.43.245.81    192.168.5.9                                            80:31714/TCP                        6d1h\nwebapp-svc                                      LoadBalancer   10.43.161.22    192.168.5.5                                            8000:32034/TCP                      28d\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-hw16qe4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-hw16qe4",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "EXTERNAL-IP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "为MetalLB分配的IP地址"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-lovrp8h",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-lovrp8h",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 不同的方式访问服务"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-fvpkvhg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-fvpkvhg",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以服务myapp-svc为例"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-foedfkd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-foedfkd",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cluserIP\n[root@t32 python-client]# curl 10.43.245.81\nHello MyApp | Version: v2 | \u003ca href=\"hostname.html\"\u003ePod Name\u003c/a\u003e\n# NodePort\n[root@t32 python-client]# curl 192.168.4.32:31714\nHello MyApp | Version: v2 | \u003ca href=\"hostname.html\"\u003ePod Name\u003c/a\u003e\n# LoadBalancer\n[root@t32 python-client]# curl 192.168.5.9\nHello MyApp | Version: v2 | \u003ca href=\"hostname.html\"\u003ePod Name\u003c/a\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-6k7hxhi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-6k7hxhi",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 验证MetalLB单节点的\"负载均衡\""
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-zgjv6x8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-zgjv6x8",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3.1 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "service.spec.externalTrafficPolicy"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-62odnws",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-62odnws",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "表示此服务是否希望将外部流量路由到节点本地或集群范围的端点。 有两个可用选项：Cluster（默认）和 Local。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-meh4yoc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-meh4yoc",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-ozmexgv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-ozmexgv",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-ocz57tf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-ocz57tf",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Cluster"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-p47uaoe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-p47uaoe",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用Cluster流量策略，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-proxy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "在收到流量的节点上进行负载平衡，并将流量分配到服务中的所有Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-l7zgcs7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-l7zgcs7",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此策略导致服务中所有Pod之间的流量均匀分布。但是，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-proxy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "在进行负载平衡时，它将掩盖连接的源IP地址"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-y15b07x",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-y15b07x",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-6bcil7o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-6bcil7o",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-lsqqgiw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-lsqqgiw",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Local"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-5qpm4rm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-5qpm4rm",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用Local流量策略，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-proxy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "在收到流量的节点上，仅将流量发送到同一节点上的服务的pod 。节点之间没有“水平”流量。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-crn5ffs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-crn5ffs",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-proxy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "不需要在群集节点之间发送流量，因此您的Pod可以看到传入连接的真实源IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-1c7fnpt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-1c7fnpt",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该策略的缺点是传入流量仅流向服务中的某些Pod。当前不在领导者节点上的Pod不会接收任何流量，它们只是作为副本存在，以防需要进行故障转移。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-d4hln32",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-d4hln32",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3.2 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "service.spec.externalTrafficPolicy=Cluster"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-rjpw52p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-rjpw52p",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "运行脚本"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-caw2k89",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-caw2k89",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for i in {1..10}; do curl 192.168.5.9; done\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-9vlrff4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-9vlrff4",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-04fe4b58e02b13c11ab963f00354fb90_b-20221211020727-1vp2ejp.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-y1a15un",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-y1a15un",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "service对应的4个pod,流量均匀地被分配到pod上。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-2kuk094",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-2kuk094",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3.3 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "service.spec.externalTrafficPolicy=Local"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-ic0so8m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-ic0so8m",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "service对应的4个pod,分别运行在节点t90和t91上。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-i4s655f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-i4s655f",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在节点t32上运行脚本，发现出现timeout,因为t32为非领导者，不会接受任何流量"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-zxtu90h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-zxtu90h",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在客户端上运行，MetalLB会将流量转发到t90(此时，t90为MetalLB选出的领导者)上。具体结果如下:"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-aerq9az",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-aerq9az",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-jfqjmjx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-jfqjmjx",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-kz3ymkz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-kz3ymkz",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "流量查看"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-09wu6gi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-09wu6gi",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-82e92589f139a555a3148071a687b852_b-20221211020727-d2o7m5q.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-kwfpr50",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-kwfpr50",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-5bnit6g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-5bnit6g",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-pbswsha",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-pbswsha",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "pod日志"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-48qkii6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-48qkii6",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-d739e70e53e98bdb50987be6e9b85101_b-20221211020727-abu3yfr.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-dqp2ctb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-dqp2ctb",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-abf4f3184b629ff8745c10bc64552152_b-20221211020727-l3co158.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-l3v4p3m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-l3v4p3m",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3.4 删除t90节点上的pod,并将t90设置为不可调度"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-x2r1r4n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-x2r1r4n",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@t32 python-client]# kubectl cordon t90\nnode/t90 cordoned\n[root@t32 python-client]# kubectl  delete pod myapp-deploy-v2-7fbfdfbb7b-lsdg6\npod \"myapp-deploy-v2-7fbfdfbb7b-lsdg6\" deleted\n[root@t32 python-client]# kubectl  delete pod myapp-deploy-v3-6c67c5b878-89tq8\npod \"myapp-deploy-v3-6c67c5b878-89tq8\" deleted\n[root@t32 python-client]# kubectl  get pod -o wide -l app=myapp\nNAME                               READY   STATUS    RESTARTS   AGE    IP            NODE   NOMINATED NODE   READINESS GATES\nmyapp-deploy-v2-7fbfdfbb7b-qpkwd   1/1     Running   0          6d1h   10.42.15.25   t91    \u003cnone\u003e           \u003cnone\u003e\nmyapp-deploy-v2-7fbfdfbb7b-x9jzp   1/1     Running   0          57s    10.42.1.90    t32    \u003cnone\u003e           \u003cnone\u003e\nmyapp-deploy-v3-6c67c5b878-hjwg4   1/1     Running   0          34s    10.42.1.91    t32    \u003cnone\u003e           \u003cnone\u003e\nmyapp-deploy-v3-6c67c5b878-m9mzm   1/1     Running   0          6d1h   10.42.15.26   t91    \u003cnone\u003e           \u003cnone\u003e\n[root@t32 python-client]# kubectl uncordon t90\nnode/t90 uncordoned\n[root@t32 python-client]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-ecxawx9",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020727-ecxawx9",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020727-ez2l553",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020727-ez2l553",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "btw: kubectl cordon/uncordon 的确非常好用，之前一直用taint打污点的方式"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-bmk49v3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-bmk49v3",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看结果，发现MetalLB选择的领导者为t32，并将全部的流量全部流向了t32上面的pod(这个层面上，t32上面的pod实现了负载均衡)。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-9er5c36",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-9er5c36",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-8f031e02cbb498ca98d211afc01554f1_b-20221211020727-igwrdyx.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-zmv4cgn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-zmv4cgn",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-d3c5c41fec56ac986e884ee03af7b657_b-20221211020727-l71tw3i.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-me7bppb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020727-me7bppb",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 其他特性"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-36mhagv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-36mhagv",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.1 请求特定的资源池"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-12r5dei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-12r5dei",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要请求来自特定池的分配，请将"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metallb.universe.tf/address-pool"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "注释添加 到service中，并将地址池的名称作为annotations值."
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-fgbeqoo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-fgbeqoo",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: Service\nmetadata:\n  name: nginx\n  annotations:\n    metallb.universe.tf/address-pool: production-public-ips\nspec:\n  ports:\n  - port: 80\n    targetPort: 80\n  selector:\n    app: nginx\n  type: LoadBalancer\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-why1qfd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020727-why1qfd",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.2 共享IP"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-itymro4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-itymro4",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果service需要占用的MetalLB中IP地址池的资源比较多，可以设置将多个服务共享同一个IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-ewylgim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-ewylgim",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认情况下，服务不共享IP地址。如果需要将服务并置在单个IP上，则可以通过将"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metallb.universe.tf/allow-shared-ip"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "注释添加到service来启用选择性IP共享。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-vonwy9m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-vonwy9m",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注释的值是“共享密钥”。服务可以在以下情况下共享IP地址："
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-lpz0s6m",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-lpz0s6m",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-ufqfy41",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-ufqfy41",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-e98r2ah",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-e98r2ah",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "都有相同的共享密钥。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020727-v7ti0q3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-v7ti0q3",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-gf9t0nn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-gf9t0nn",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "要求使用不同的端口（例如，一个使用tcp / 80，另一个使用tcp / 443）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020727-ktb1px8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-ktb1px8",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-u587s08",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-u587s08",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "都使用Cluster外部流量策略，或者都指向 完全相同的Pod集（即Pod选择器相同）。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-44ntihy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020727-44ntihy",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@t32 python-client]# kubectl  get svc myapp-svc -o yaml\napiVersion: v1\nkind: Service\nmetadata:\n  annotations:\n    ...\n    metallb.universe.tf/allow-shared-ip: 192.168.5.9\n  name: myapp-svc\n  namespace: default\nspec:\n  clusterIP: 10.43.245.81\n  externalTrafficPolicy: Cluster\n  ports:\n  - nodePort: 31714\n    port: 80\n    protocol: TCP\n    targetPort: 80\n  selector:\n    app: myapp\n  sessionAffinity: None\n  type: LoadBalancer\n[root@t32 python-client]# kubectl  get svc webapp-svc-2  -o yaml\napiVersion: v1\nkind: Service\nmetadata:\n    annotations\n      metallb.universe.tf/allow-shared-ip: 192.168.5.9\n  name: webapp-svc-2\n  namespace: default\nspec:\n  clusterIP: 10.43.161.182\n  externalTrafficPolicy: Cluster\n  ports:\n  - nodePort: 32698\n    port: 8080\n    protocol: TCP\n    targetPort: 8080\n  selector:\n    app-pod: webapp-pod-2\n  sessionAffinity: None\n  type: LoadBalancer\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-oqmp4be",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-oqmp4be",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metadata.annotations.metallb.universe.tf/allow-shared-ip"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "均为192.168.5.9,"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "spec.externalTrafficPolicy"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "为"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Cluster"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，同时，myapp-svc使用80端口，webapp-svc-2使用8080端口"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-vf08pak",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020727-vf08pak",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"ID": "20221211020727-pa2j914",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020727-pa2j914",
+						"updated": "20221211020727"
+					},
+					"Children": [
+						{
+							"ID": "20221211020727-3hpib9o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020727-3hpib9o",
+								"updated": "20221211020727"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "结果查看"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-ormtywf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-ormtywf",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-be414f31e1345eb37e13aa8a39ad6910_b-20221211020727-l6wym7k.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-izyqnzg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020727-izyqnzg",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 结语"
+				}
+			]
+		},
+		{
+			"ID": "20221211020727-b7exfmw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020727-b7exfmw",
+				"updated": "20221211020727"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "K8S生态很庞大，需要学习的东西很多！！！"
+				}
+			]
+		}
+	]
+}

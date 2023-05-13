@@ -1,0 +1,1036 @@
+{
+	"ID": "20230303112109-j7wcgoi",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230303112109-j7wcgoi",
+		"title": "Watchtower—自动更新docker镜像与容器",
+		"updated": "20230317135128"
+	},
+	"Children": [
+		{
+			"ID": "20230303112109-t2rkoc9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303112109-t2rkoc9",
+				"updated": "20230303112206"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 简述"
+				}
+			]
+		},
+		{
+			"ID": "20230303112206-eawcrd2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112206-eawcrd2",
+				"updated": "20230303112221"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Watchtower"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 是一个可以实现自动化更新 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 基础镜像与容器的实用工具。它监视正在运行的容器以及相关的镜像，当检测到 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "reg­istry"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中的镜像与本地的镜像有差异时，它会拉取最新镜像并使用最初部署时相同的参数重新启动相应的容器，"
+				}
+			]
+		},
+		{
+			"ID": "20230303112222-nyybtfi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303112222-nyybtfi",
+				"updated": "20230303112234"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 启动"
+				}
+			]
+		},
+		{
+			"ID": "20230303112234-gzwsgf4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112234-gzwsgf4",
+				"updated": "20230303112238"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Watch­tower"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 本身被打包为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 镜像，因此可以像运行任何其他容器一样运行它："
+				}
+			]
+		},
+		{
+			"ID": "20230303112248-qlqai8n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303112248-qlqai8n",
+				"updated": "20230303112252"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run -d \\\n    --name watchtower \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303112255-1vq78qv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112255-1vq78qv",
+				"updated": "20230303112255"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后所有容器都会自动更新，也包括 Watch­tower 本身。"
+				}
+			]
+		},
+		{
+			"ID": "20230303112255-p4n3lwe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112255-p4n3lwe",
+				"updated": "20230303112407"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "选项参数："
+				}
+			]
+		},
+		{
+			"ID": "20230303112312-ujrzsce",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303112312-ujrzsce",
+				"updated": "20230303112331"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ docker run --rm containrrr/watchtower -h\n\nWatchtower automatically updates running Docker containers whenever a new image is released.\nMore information available at https://github.com/containrrr/watchtower/.\n\nUsage:\n  watchtower [flags]\n\nFlags:\n  -a, --api-version string                          api version to use by docker client (default \"1.24\")\n  -c, --cleanup                                     remove previously used images after updating\n  -d, --debug                                       enable debug mode with verbose logging\n      --enable-lifecycle-hooks                      Enable the execution of commands triggered by pre- and post-update lifecycle hooks\n  -h, --help                                        help for watchtower\n  -H, --host string                                 daemon socket to connect to (default \"unix:///var/run/docker.sock\")\n  -S, --include-stopped                             Will also include created and exited containers\n  -i, --interval int                                poll interval (in seconds) (default 300)\n  -e, --label-enable                                watch containers where the com.centurylinklabs.watchtower.enable label is true\n  -m, --monitor-only                                Will only monitor for new images, not update the containers\n      --no-pull                                     do not pull any new images\n      --no-restart                                  do not restart any containers\n      --notification-email-delay int                Delay before sending notifications, expressed in seconds\n      --notification-email-from string              Address to send notification emails from\n      --notification-email-server string            SMTP server to send notification emails through\n      --notification-email-server-password string   SMTP server password for sending notifications\n      --notification-email-server-port int          SMTP server port to send notification emails through (default 25)\n      --notification-email-server-tls-skip-verify\n                                                    Controls whether watchtower verifies the SMTP server's certificate chain and host name.\n                                                    Should only be used for testing.\n\n      --notification-email-server-user string       SMTP server user for sending notifications\n      --notification-email-subjecttag string        Subject prefix tag for notifications via mail\n      --notification-email-to string                Address to send notification emails to\n      --notification-gotify-token string            The Gotify Application required to query the Gotify API\n      --notification-gotify-url string              The Gotify URL to send notifications to\n      --notification-msteams-data                   The MSTeams notifier will try to extract log entry fields as MSTeams message facts\n      --notification-msteams-hook string            The MSTeams WebHook URL to send notifications to\n      --notification-slack-channel string           A string which overrides the webhook's default channel. Example: #my-custom-channel\n      --notification-slack-hook-url string          The Slack Hook URL to send notifications to\n      --notification-slack-icon-emoji string        An emoji code string to use in place of the default icon\n      --notification-slack-icon-url string          An icon image URL string to use in place of the default icon\n      --notification-slack-identifier string        A string which will be used to identify the messages coming from this watchtower instance (default \"watchtower\")\n  -n, --notifications strings                        notification types to send (valid: email, slack, msteams, gotify)\n      --notifications-level string                  The log level used for sending notifications. Possible values: panic, fatal, error, warn, info or debug (default \"info\")\n      --remove-volumes                              remove attached volumes before updating\n      --revive-stopped                              Will also start stopped containers that were updated, if include-stopped is active\n  -R, --run-once                                    Run once now and exit\n  -s, --schedule string                             the cron expression which defines when to update\n  -t, --stop-timeout duration                       timeout before a container is forcefully stopped (default 10s)\n  -v, --tlsverify                                   use TLS and verify the remote\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303112330-uz0hisf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303112330-uz0hisf",
+				"updated": "20230303112423"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 使用示例"
+				}
+			]
+		},
+		{
+			"ID": "20230303112429-6efmqk0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230303112429-6efmqk0",
+				"updated": "20230303112451"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 自动清除旧镜像"
+				}
+			]
+		},
+		{
+			"ID": "20230303112520-2mpvexb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112520-2mpvexb",
+				"updated": "20230303112524"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官方给出的默认启动命令在长期使用后会堆积非常多的标签为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "none"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的旧镜像，如果放任不管会占用大量的磁盘空间。要避免这种情况可以加入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--cleanup"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 选项，这样每次更新都会把旧的镜像清理掉。"
+				}
+			]
+		},
+		{
+			"ID": "20230303112452-p1iay1u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303112452-p1iay1u",
+				"updated": "20230303112535"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303112420-lljjpy4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230303112420-lljjpy4",
+				"updated": "20230303112549"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 选择性自动更新"
+				}
+			]
+		},
+		{
+			"ID": "20230303112553-7kjgjyh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112553-7kjgjyh",
+				"updated": "20230303112738"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "某些容器可能需要稳定的运行，经常更新或重启可能会造成一些问题，可以使用一些选项参数来选择与控制容器的更新。"
+				}
+			]
+		},
+		{
+			"ID": "20230303112646-e0ksdl1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230303112646-e0ksdl1",
+				"updated": "20230303112848"
+			},
+			"Children": [
+				{
+					"ID": "20230303112657-p4l86fu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230303112657-p4l86fu",
+						"updated": "20230303112848"
+					},
+					"Children": [
+						{
+							"ID": "20230303112657-wocxgki",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303112657-wocxgki",
+								"updated": "20230303112704"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "容器更新列表"
+								}
+							]
+						},
+						{
+							"ID": "20230303112705-rr0sx4n",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230303112705-rr0sx4n",
+								"updated": "20230303112848"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# 只更新 nginx、redis 这两个容器，可以把容器名称追加到启动命令的最后面\ndocker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c \\\n    nginx redis\n\n\n# 建立一个更新列表文件, 通过变量的方式去调用这个列表：\n$ cat ~/.watchtower.list\naria2-pro\nunlockmusic\nmtg\n\n$docker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c \\\n    $(cat ~/.watchtower.list)\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230303112903-mrgw5mf",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230303112903-mrgw5mf",
+				"updated": "20230303112906"
+			},
+			"Children": [
+				{
+					"ID": "20230303112906-i0npzr0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230303112906-i0npzr0",
+						"updated": "20230303112906"
+					},
+					"Children": [
+						{
+							"ID": "20230303112911-o35hvpi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230303112911-o35hvpi"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设置单个容器自动更新特征"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230303112927-nm9u72p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303112927-nm9u72p",
+				"updated": "20230303112928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "给容器添加 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "com.centurylinklabs.watchtower.enable"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 这个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "LA­BEL"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 并设置它的值为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "false"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，或者在启动命令中加入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--label com.centurylinklabs.watchtower.enable=false"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 参数可以排除相应的容器。"
+				}
+			]
+		},
+		{
+			"ID": "20230303113024-pbjsen6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303113024-pbjsen6",
+				"updated": "20230303113216"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# openwrt-mini 镜像的容器启动命令，Watch­tower 将永远忽略它的更新，即使它包含在自动更新列表中\ndocker run -d \\\n    --name openwrt-mini \\\n    --restart always \\\n    --network openwrt \\\n    --privileged \\\n    --label com.centurylinklabs.watchtower.enable=false \\\n    p3terx/openwrt-mini \\\n    /sbin/init\n\n#当容器启动命令中加入 --label com.centurylinklabs.watchtower.enable=true 参数，\n#并且给 Watch­tower 加上 --label-enable 选项时，Watch­tower 将只更新这些包含此参数的容器\ndocker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c \\\n    --label-enable\n\n# 或者 --label-enable 可以简写为 -e：\ndocker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -ce\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303113314-tghuogc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113314-tghuogc",
+				"updated": "20230303113329"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "com.centurylinklabs.watchtower.enable=false"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 参数后容器将永远被 Watch­tower 忽略，包括后面将要提到的手动更新方式，所以一般"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "不推荐这样做"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，除非你愿意手动重建的原生方式更新"
+				}
+			]
+		},
+		{
+			"ID": "20230303114311-esnsef2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230303114311-esnsef2",
+				"updated": "20230303114321"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 仅监控更新情况，不更新"
+				}
+			]
+		},
+		{
+			"ID": "20230303114328-2qx76m0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303114328-2qx76m0",
+				"updated": "20230303114329"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--monitor-only"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 将仅监控新镜像并发送通知，不会更新容器。"
+				}
+			]
+		},
+		{
+			"ID": "20230303113330-58zaraf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303113330-58zaraf",
+				"updated": "20230303113356"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 设置自动更新检查频率"
+				}
+			]
+		},
+		{
+			"ID": "20230303113356-dfv9h76",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113356-dfv9h76",
+				"updated": "20230303113417"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认情况下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Watch­tower"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 每 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 分钟会轮询一次，可以使用："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--interval"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-i"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " - 设置更新检测时间间隔，单位为秒。比如每隔 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 个小时检查一次更新："
+				}
+			]
+		},
+		{
+			"ID": "20230303113419-neqriac",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303113419-neqriac",
+				"updated": "20230303113428"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c \\\n    --interval 3600\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303113440-h9jpz13",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113440-h9jpz13",
+				"updated": "20230303113458"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--schedule"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-s"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " - 设置定时检测更新时间。格式为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "6"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Cron"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 表达式，而非传统的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "5"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段，即第一位是秒。比如每天凌晨 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 点检查一次更新："
+				}
+			]
+		},
+		{
+			"ID": "20230303113506-7btqxgw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303113506-7btqxgw",
+				"updated": "20230303113508"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run -d \\\n    --name watchtower \\\n    --restart unless-stopped \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c \\\n    --schedule \"0 0 2 * * *\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303113516-dppy1wu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303113516-dppy1wu",
+				"updated": "20230303113524"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 手动更新"
+				}
+			]
+		},
+		{
+			"ID": "20230303113616-ln2kc3x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113616-ln2kc3x",
+				"updated": "20230303113629"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "加上 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--run-once"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 这个专用的选项，运行一次退出并删掉容器，来实现手动更新容器。这对于偶尔更新一次那些不在自动更新列表中的容器非常有用。"
+				}
+			]
+		},
+		{
+			"ID": "20230303113640-wl4n1s7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303113640-wl4n1s7",
+				"updated": "20230303113643"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run --rm \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -c \\\n    --run-once \\\n    aria2-pro\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303113644-7lowyi0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113644-7lowyi0",
+				"updated": "20230303113651"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--run-once"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 可以简写为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-R"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				}
+			]
+		},
+		{
+			"ID": "20230303113652-8kcczet",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303113652-8kcczet",
+				"updated": "20230303113659"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run --rm \\\n    -v /var/run/docker.sock:/var/run/docker.sock \\\n    containrrr/watchtower -cR \\\n    aria2-pro\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303113715-e85tqei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113715-e85tqei",
+				"updated": "20230303113722"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				}
+			]
+		},
+		{
+			"ID": "20230303113724-4pyo4th",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113724-4pyo4th",
+				"updated": "20230303113733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当这个容器设置过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "com.centurylinklabs.watchtower.enable=false"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 参数时不会更新。"
+				}
+			]
+		},
+		{
+			"ID": "20230303113838-7zb8gui",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303113838-7zb8gui",
+				"updated": "20230303113849"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 发送提示"
+				}
+			]
+		},
+		{
+			"ID": "20230303113901-32wzzk8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303113901-32wzzk8",
+				"updated": "20230303113913"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以通过电子邮件、Slack 、MSTeams 以及 Gotify 发送通知"
+				}
+			]
+		},
+		{
+			"ID": "20230303113849-bqnahs1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303113849-bqnahs1",
+				"updated": "20230303113900"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run -d \\\n  --name watchtower \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -e WATCHTOWER_NOTIFICATIONS=email \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_FROM=fromaddress@gmail.com \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_TO=toaddress@gmail.com \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.gmail.com \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587 \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=fromaddress@gmail.com \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=app_password \\\n  -e WATCHTOWER_NOTIFICATION_EMAIL_DELAY=2 \\\n  containrrr/watchtower\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303114059-2jghwks",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230303114059-2jghwks",
+				"updated": "20230303114129"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. watchtower获取私有镜像服务的认证方式"
+				}
+			]
+		},
+		{
+			"ID": "20230303114130-4lk9l8v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230303114130-4lk9l8v",
+				"updated": "20230303114141"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "docker run -d --name watchtower --restart always -v /root/.docker/config.json:/config.json -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower -c\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230303114153-pvcw50y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303114153-pvcw50y",
+				"updated": "20230303114154"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "/root/.docker/config.json文件，在docker登录阿里云的私有镜像服务后会自动生成，生成的位置应该是在登录后的根目录"
+				}
+			]
+		},
+		{
+			"ID": "20230303114154-93nutyz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230303114154-93nutyz",
+				"updated": "20230303114154"
+			}
+		}
+	]
+}

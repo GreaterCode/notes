@@ -1,0 +1,39 @@
+{
+	"ID": "20230220165957-x77xa8j",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230220165957-x77xa8j",
+		"title": "gopsutil",
+		"updated": "20230221102405"
+	},
+	"Children": [
+		{
+			"ID": "20230220165957-2t0jpej",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230220165957-2t0jpej",
+				"updated": "20230221102356"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/**\n@author:admin\n@date:2023/2/20\n@note\n*/\n\npackage main\n\nimport (\n\t\"fmt\"\n\t\"github.com/shirou/gopsutil/cpu\"\n\t\"github.com/shirou/gopsutil/disk\"\n\t\"github.com/shirou/gopsutil/host\"\n\t\"github.com/shirou/gopsutil/load\"\n\t\"github.com/shirou/gopsutil/mem\"\n\t\"github.com/shirou/gopsutil/net\"\n\t\"time\"\n)\n\nfunc main()  {\n\tGetCpuInfo()\n\tfmt.Println()\n\tGetCpuLoad()\n\tfmt.Println()\n\tGetMemInfo()\n\tfmt.Println()\n\tGetHostInfo()\n\tfmt.Println()\n\tGetDiskInfo()\n\tfmt.Println()\n\tGetNetInfo()\n\t//GetLocalIP()\n\t//GetOutbonudIP()\n\n}\n\n//func GetOutbonudIP() string {\n//\tconn, err := net.Dial(\"udp\", \"8.8.8.8:80\")\n//\tif err != nil {\n//\t\tlog.Fatal(err)\n//\t}\n//\tdefer conn.Close()\n//\n//\tlocalAddr := conn.LocalAddr().(*net.UDPAddr)\n//\tfmt.Printf(\"IP address: %v\", localAddr.String())\n//\treturn localAddr.IP.String()\n//}\n//\n//func GetLocalIP()(ip string, err error){\n//\taddrs, err := net.InterfaceAddrs()\n//\tif err != nil {\n//\t\treturn \"\", nil\n//\t}\n//\tfor _, addr := range addrs {\n//\t\tipaddr, ok := addr.(*net.IPNet)\n//\t\tif !ok {\n//\t\t\tcontinue\n//\t\t}\n//\t\tif ipaddr.IP.IsLoopback() {\n//\t\t\tcontinue\n//\t\t}\n//\n//\t\tif !ipaddr.IP.IsMulticast() {\n//\t\t\tcontinue\n//\t\t}\n//\t\tfmt.Printf(\"IP address:%v\\n\",ipaddr.IP.String())\n//\t\treturn ipaddr.IP.String(), nil\n//\t}\n//\treturn \"\", nil\n//}\n\nfunc GetNetInfo() {\n\tinfo, _ :=  net.IOCounters(true)\n\tfor index, v := range info {\n\t\tfmt.Printf(\"%v:%v sending:%v received:%v\\n\", index, v, v.BytesSent, v.BytesRecv)\n\t}\n}\n\nfunc GetDiskInfo() {\n\tparts, err := disk.Partitions(true)\n\tif err != nil {\n\t\tfmt.Printf(\"get partitions failed, error: %v\\n\", err)\n\t\treturn\n\t}\n\n\tfor _, part := range parts {\n\t\tfmt.Printf(\"part: %v\\n\",part.String())\n\t\tdiskInfo, _ := disk.Usage(part.Mountpoint)\n\t\tfmt.Printf(\"disk info:used:%v, free:%v\\n\", diskInfo.UsedPercent, diskInfo.Free)\n\t}\n\n\tioStat, err := disk.IOCounters()\n\tfor s, stat := range ioStat {\n\t\tfmt.Printf(\"%v:%v\\n\", s, stat)\n\t}\n}\n\nfunc GetHostInfo() {\n\thInfo, _ := host.Info()\n\tfmt.Printf(\"host info: %v, uptime: %v, boottime: %v\\n\", hInfo, hInfo.Uptime, hInfo.BootTime)\n}\n\nfunc GetMemInfo() {\n\tmemInfo, _ := mem.VirtualMemory()\n\tfmt.Printf(\"mem info: %v\\n\", memInfo)\n}\n\nfunc GetCpuLoad() {\n\tinfo, _ := load.Avg()\n\tfmt.Printf(\"%v\\n\",info)\n}\n\nfunc GetCpuInfo() {\n\tcpuInfo, err := cpu.Info()\n\tif err != nil {\n\t\tfmt.Printf(\"get cpu info failed, error: %v\\n\", err)\n\t}\n\n\tfor _, stat := range cpuInfo {\n\t\tfmt.Printf(\"ci:%v\\n\", stat)\n\t}\n\n\tpercent,_ := cpu.Percent(time.Second, false)\n\tfmt.Printf(\"cpu percentage:%v\\n\", percent)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,94 @@
+{
+	"ID": "20230217151429-ih7qo5q",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230217151429-ih7qo5q",
+		"title": "select实现优先级",
+		"updated": "20230217151632"
+	},
+	"Children": [
+		{
+			"ID": "20230217151429-g29ptex",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217151429-g29ptex",
+				"updated": "20230217151530"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例："
+				}
+			]
+		},
+		{
+			"ID": "20230217151531-yjp04x5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230217151531-yjp04x5",
+				"updated": "20230217151543"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/**\n@author:admin\n@date:2023/2/17\n@note\n*/\n\npackage main\n\nimport (\n\t\"fmt\"\n\t\"time\"\n)\n\nfunc worker(ch1, ch2 chan string, stopCh chan struct{}){\n\n\tfor {\n\t\tselect {\n\t\tcase \u003c- stopCh:\n\t\t\treturn\n\t\tcase test1 := \u003c- ch1:\n\t\t\tfmt.Println(test1)\n\t\tcase test2 := \u003c- ch2:\n\t\t\ttime.Sleep(time.Second * 2)\n\t\tpriority:\n\t\t\tselect {\n\t\t\tcase test1 := \u003c-ch1:\n\t\t\t\tfmt.Println(test1)\n\t\t\tdefault:\n\t\t\t\tbreak priority\n\t\t\t}\n\t\t\tfmt.Println(test2)\n\t\t}\n\t}\n}\n\nfunc main() {\n\tvar ch1 = make(chan string)\n\tvar ch2 = make(chan string)\n\tstopchan := make(chan struct{})\n\tgo worker(ch1, ch2, stopchan )\n\tch2 \u003c- \"ch2\"\n\ttime.Sleep(time.Second * 1)\n\tch1 \u003c- \"ch1\"\n\n\ttime.Sleep(time.Second * 5)\n\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230217151606-1asi3jo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230217151606-1asi3jo",
+				"updated": "20230217151614"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "实际应用场景："
+				}
+			]
+		},
+		{
+			"ID": "20230217151614-gytq3ig",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230217151614-gytq3ig",
+				"updated": "20230217151632"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// kubernetes/pkg/controller/nodelifecycle/scheduler/taint_manager.go \nfunc (tc *NoExecuteTaintManager) worker(worker int, done func(), stopCh \u003c-chan struct{}) {\n\tdefer done()\n\n\t// 当处理具体事件的时候，我们会希望 Node 的更新操作优先于 Pod 的更新\n\t// 因为 NodeUpdates 与 NoExecuteTaintManager无关应该尽快处理\n\t// -- 我们不希望用户(或系统)等到PodUpdate队列被耗尽后，才开始从受污染的Node中清除pod。\n\tfor {\n\t\tselect {\n\t\tcase \u003c-stopCh:\n\t\t\treturn\n\t\tcase nodeUpdate := \u003c-tc.nodeUpdateChannels[worker]:\n\t\t\ttc.handleNodeUpdate(nodeUpdate)\n\t\t\ttc.nodeUpdateQueue.Done(nodeUpdate)\n\t\tcase podUpdate := \u003c-tc.podUpdateChannels[worker]:\n\t\t\t// 如果我们发现了一个 Pod 需要更新，我么你需要先清空 Node 队列.\n\t\tpriority:\n\t\t\tfor {\n\t\t\t\tselect {\n\t\t\t\tcase nodeUpdate := \u003c-tc.nodeUpdateChannels[worker]:\n\t\t\t\t\ttc.handleNodeUpdate(nodeUpdate)\n\t\t\t\t\ttc.nodeUpdateQueue.Done(nodeUpdate)\n\t\t\t\tdefault:\n\t\t\t\t\tbreak priority\n\t\t\t\t}\n\t\t\t}\n\t\t\t// 在 Node 队列清空后我们再处理 podUpdate.\n\t\t\ttc.handlePodUpdate(podUpdate)\n\t\t\ttc.podUpdateQueue.Done(podUpdate)\n\t\t}\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

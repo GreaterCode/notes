@@ -1,0 +1,2860 @@
+{
+	"ID": "20220923103742-3fxdhv7",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220923103742-3fxdhv7",
+		"title": "Openshift 4.4 静态 IP 离线安装系列（一）：准备离线资源",
+		"updated": "20220923103742"
+	},
+	"Children": [
+		{
+			"ID": "20220923103742-mjm8urj",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220923103742-mjm8urj"
+			}
+		},
+		{
+			"ID": "20220923103742-fg23f36",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220923103742-fg23f36"
+			},
+			"Children": [
+				{
+					"ID": "20220923103742-gistml8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-gistml8"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-uykg90l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-uykg90l"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA%3D%3D\u0026chksm=fbee4793cc99ce8540c7ac93ea6e0bb044cd1e5b6ef296ce258c3eae8162b475627c95f9bc4e\u0026idx=1\u0026mid=2247485278\u0026scene=21\u0026sn=291fb14b318775b63620f5a0342ffcf0#wechat_redirect",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA%3D%3D\u0026amp;chksm=fbee4793cc99ce8540c7ac93ea6e0bb044cd1e5b6ef296ce258c3eae8162b475627c95f9bc4e\u0026amp;idx=1\u0026amp;mid=2247485278\u0026amp;scene=21\u0026amp;sn=291fb14b318775b63620f5a0342ffcf0#wechat_redirect - 微信公众平台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-u0qhl2p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-u0qhl2p"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-ommzk03",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-ommzk03"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OCP 的安装真是个浩大的工程，心理素质不过关的同学切勿随意模仿。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-7uajgq3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-7uajgq3"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-jg68zrv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-jg68zrv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2022-09-23 10:37:42"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-b8jevs0",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20220923103742-b8jevs0"
+			}
+		},
+		{
+			"ID": "20220923103742-z5gsh1o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-z5gsh1o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本系列文章描述了离线环境下以 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "UPI"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " (User Provisioned Infrastructure) 模式安装 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Openshift Container Platform"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " (OCP) 4.4.5 的步骤，我的环境是 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "VMware ESXI"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 虚拟化，也适用于其他方式提供的虚拟机或物理主机。离线资源包括安装镜像、所有样例 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Image Stream"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "OperatorHub"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中的所有 RedHat Operators。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-x8x4wcm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-x8x4wcm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本系列采用静态 IP 的方式安装 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "OCP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 集群，如果你可以随意分配网络，建议采用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "DHCP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的方式。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-7z4tytn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220923103742-7z4tytn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 离线环境"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-bushqen",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-bushqen"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "单独准备一台节点用来执行安装任务和离线资源准备，这台节点最好具备"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "魔法上网"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的能力，以便可以同时访问内外网。我们称这台节点为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "基础节点"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-lynncnf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-lynncnf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要部署一个私有镜像仓库，以供 OCP 安装和运行时使用， "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "要求支持 version 2 schema 2 (manifest list)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，我这里选择的是 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Harbor 2.0"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-brwq2kz",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20220923103742-brwq2kz"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20220923103742-fceeioe",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20220923103742-fceeioe"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "很多人误以为必须联系 Red Hat 销售，签单之后才能使用 OCP4，其实不然，注册一个开发者账号 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "sup",
+							"TextMarkTextContent": "[1]"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 后就可以获得 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "quay.io"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 和 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "registry.redhat.io"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 的拉取密钥了。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-yhs4ynh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220923103742-yhs4ynh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 准备离线安装介质"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-16w0389",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220923103742-16w0389"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取版本信息"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-sen7u57",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-sen7u57"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目前最新的 OCP 版本是 4.4.5，可以从这里下载客户端："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-qpfmghz",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220923103742-qpfmghz"
+			},
+			"Children": [
+				{
+					"ID": "20220923103742-qa5ey97",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-qa5ey97"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-ejqrhmw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-ejqrhmw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.4/"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "sup",
+									"TextMarkTextContent": "[2]"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-27aqyeh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-27aqyeh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解压出来的二进制文件放到基础节点的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$PATH"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 下，看下版本信息："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-btpvdlz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-btpvdlz"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20220923103742-35319lz"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-mn78vya",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220923103742-mn78vya"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建内部镜像仓库"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-012xbi3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-012xbi3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内部镜像仓库用于存放部署 OCP 集群所需的镜像，仓库本身使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Harbor"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 部署，目前最为流行的私有镜像仓库便是 CNCF 的毕业生之一的 Harbor（中文含义：港口）。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-ak8txow",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-ak8txow"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先修改基础节点的主机名："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-s8d8dvk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-s8d8dvk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ hostnamectl set-hostname bastion.openshift4.example.com\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-e6fzwg8",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20220923103742-e6fzwg8"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20220923103742-zdytbuw",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20220923103742-zdytbuw"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "所有节点主机名都要采用三级域名格式，如 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "master1.aa.bb.com"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-vpmkfkz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-vpmkfkz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Docker 安装步骤就不写了，略过。接着安装 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker-compose"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-d7v8z9k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-d7v8z9k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -L \"https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose\n$ chmod +x /usr/local/bin/docker-compose\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-htu28lf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-htu28lf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下载 Harbor 离线安装包并解压："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-43zk89g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-43zk89g"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ wget https://github.com/goharbor/harbor/releases/download/v2.0.0/harbor-offline-installer-v2.0.0.tgz\n$ tar -xvf harbor-offline-installer-v2.0.0.tgz -C /opt/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-nm50hob",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-nm50hob"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生成自签名证书："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-cs71eui",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-cs71eui"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mkdir /opt/harbor/certs\n$ cd /opt/harbor/certs# 生成私钥\n$ openssl genrsa -out server.key 1024\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-llq299g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-llq299g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据私钥生成证书申请文件 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "csr"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-vu3uy7x",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-vu3uy7x"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ openssl req -new -key server.key -out server.csr\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-3hx7d0q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-3hx7d0q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里根据命令行向导来进行信息输入："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-mgp7v5e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-mgp7v5e"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20220923103742-zvxjazs"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-fwaz0bu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-fwaz0bu"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Common Name 可以输入："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "*.yourdomain.com"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "，这种方式可以生成通配符域名证书。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-dc4arul",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-dc4arul"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用私钥对证书申请进行签名从而生成证书"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-35u91ly",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-35u91ly"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ openssl req -new -key server.key -out server.csr\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-0j0zyf6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-0j0zyf6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样就生成了有效期为 10 年的证书文件，对于自己内网服务使用足够。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-1ztbxf6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-1ztbxf6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "证书搞定了之后，就可以接着配置 Harbor 了。打开 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/harbor/harbor.yml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件，修改 hostname 域名、https 证书等配置信息，具体如下："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-qh6h5ug",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-qh6h5ug"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# Configuration file of Harbor\n# The IP address or hostname to access admin UI and registry service.\n# DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.\nhostname: bastion.openshift4.example.com\n# http related config\nhttp:\n  # port for http, default is 80. If https enabled, this port will redirect to https port\n  port: 8080\n# https related config\nhttps:\n  # https port for harbor, default is 443\n  port: 8443\n  # The path of cert and key files for nginx\n  certificate: /opt/harbor/certs/server.crt\n  private_key: /opt/harbor/certs/server.key\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-khufuou",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20220923103742-khufuou"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20220923103742-fsdgwx7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20220923103742-fsdgwx7"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "我这里把所有需要的基础服务都部署在同一个节点上，后面安装 OCP 时需要用到负载均衡器的 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "443"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 和 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "80"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 端口，所以这里 Harbor 使用了非标准端口。如果你资源充足，可以将 Harbor 部署在不同的节点上。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-b7lq09z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-b7lq09z"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接着执行下面的命令进行安装："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-1tlkjat",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-1tlkjat"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ ./install.sh --with-clair\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-gioxmg1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-gioxmg1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上安装命令同时安装了 Clair 服务，一个用户镜像漏洞静态分析的工具。如果不需要，可以省略该选项。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-hc3gstd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-hc3gstd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装成功后，将自签名的证书复制到默认信任证书路径："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-petq7tn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-petq7tn"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cp /opt/harbor/certs/server.crt /etc/pki/ca-trust/source/anchors/\n$ update-ca-trust extract\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-k14gs4w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-k14gs4w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "或者将其复制到 docker 的信任证书路径："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-k6p98lt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-k6p98lt"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mkdir -p /etc/docker/certs.d/bastion.openshift4.example.com:8443\n$ cp /opt/harbor/certs/server.crt /etc/docker/certs.d/bastion.openshift4.example.com:8443/\n$ systemctl restart docker\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-0yehdks",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-0yehdks"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在可以通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "docker login"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令来测试仓库的连通性，看到如下字样即表示安装成功（也可以通过浏览器访问 Web UI）："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-upztp9k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-upztp9k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "🐳 → docker login bastion.openshift4.example.com:8443\nUsername: admin\nPassword: Harbor12345Login Succeeded\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-ljc7gjw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220923103742-ljc7gjw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下载镜像文件"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-rlc6z6v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-rlc6z6v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "准备拉取镜像权限认证文件。从 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Red Hat OpenShift Cluster Manager"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 站点的 Pull Secret 页面 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "sup",
+					"TextMarkTextContent": "[3]"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 下载 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "registry.redhat.io"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pull secret"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-q1tureb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-q1tureb"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 把下载的 txt 文件转出 json 格式，如果没有 jq 命令，通过 epel 源安装\n$ cat ./pull-secret.txt | jq . \u003e pull-secret.json$ yum install epel-release\n$ yum install jq\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-3nnwz79",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-3nnwz79"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "JSON 内容如下："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-bhcbp8i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-bhcbp8i"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\n  \"auths\": {\n    \"cloud.openshift.com\": {\n      \"auth\": \"b3BlbnNo...\",\n      \"email\": \"you@example.com\"\n    },\n    \"quay.io\": {\n      \"auth\": \"b3BlbnNo...\",\n      \"email\": \"you@example.com\"\n    },\n    \"registry.connect.redhat.com\": {\n      \"auth\": \"NTE3Njg5Nj...\",\n      \"email\": \"you@example.com\"\n    },\n    \"registry.redhat.io\": {\n      \"auth\": \"NTE3Njg5Nj...\",\n      \"email\": \"you@example.com\"\n    }\n  }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-9p6105q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-9p6105q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "把本地仓库的用户密码转换成 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "base64"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 编码："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-zf7rjzs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-zf7rjzs"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ echo -n 'root:password' | base64 -w0 \ncm9vdDpwYXNzd29yZA==\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-korkxee",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-korkxee"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pull-secret.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 里面加一段本地仓库的权限。第一行仓库域名和端口，第二行是上面的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "base64"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，第三行随便填个邮箱："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-s0xs0nq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-s0xs0nq"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  \"auths\": {\n...\n    \"registry.example.com:5000\": {\n      \"auth\": \"cm9vdDpwYXNzd29yZA==\",\n      \"email\": \"you@example.com\"\n   },\n...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-r2s2q5q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-r2s2q5q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置环境变量："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-kx7cdjm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-kx7cdjm"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ export OCP_RELEASE=\"4.4.5-x86_64\"\n$ export LOCAL_REGISTRY='bastion.openshift4.example.com:8443' \n$ export LOCAL_REPOSITORY='ocp4/openshift4'\n$ export PRODUCT_REPO='openshift-release-dev'\n$ export LOCAL_SECRET_JSON='/root/pull-secret.json'\n$ export RELEASE_NAME=\"ocp-release\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-ndp9tdc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220923103742-ndp9tdc"
+			},
+			"Children": [
+				{
+					"ID": "20220923103742-k3e36i4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-k3e36i4"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-81cu1ky",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-81cu1ky"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "OCP_RELEASE"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " : OCP 版本，可以在这个页面 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "sup",
+									"TextMarkTextContent": "[4]"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 查看。如果版本不对，下面执行 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oc adm"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 时会提示 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "image does not exist"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-2byqb3p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-2byqb3p"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-caj784b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-caj784b"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "LOCAL_REGISTRY"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " : 本地仓库的域名和端口。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-162hui9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-162hui9"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-qlqlqty",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-qlqlqty"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "LOCAL_REPOSITORY"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " : 镜像存储库名称，使用 ocp4/openshift4。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-ctz4a18",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-ctz4a18"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-7xxtqo0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-7xxtqo0"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "PRODUCT_REPO"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "RELEASE_NAME"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 都不需要改，这些都是一些版本特征，保持不变即可。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-5xnd34n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-5xnd34n"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-567xx9m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-567xx9m"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "LOCAL_SECRET_JSON"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " : 密钥路径，就是上面 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "pull-secret.json"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的存放路径。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-ine9dgm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-ine9dgm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Harbor 中创建一个项目 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ocp4"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 用来存放同步过来的镜像："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-tkhx745",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-tkhx745"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20220923103742-m4ge43h"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-iigt6u5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-iigt6u5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后一步就是同步镜像，这一步的动作就是把 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quay"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 官方仓库中的镜像，同步到本地仓库，如果失败了可以重新执行命令，整体内容大概 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "5G"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-20airlg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-20airlg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc adm -a ${LOCAL_SECRET_JSON} release mirror \\\n     --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE} \\\n     --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \\\n     --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-i40zq2z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-i40zq2z"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "oc adm release mirror"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令执行完成后会输出下面类似的信息，保存下来，将来会用在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "install-config.yaml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 文件中："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-f5hftsv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-f5hftsv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "imageContentSources:\n- mirrors:\n  - bastion.openshift4.example.com:8443/ocp4/openshift4\n  source: quay.io/openshift-release-dev/ocp-release\n- mirrors:\n  - bastion.openshift4.example.com:8443/ocp4/openshift4\n  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-8g9aoke",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-8g9aoke"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本地镜像仓库缓存好镜像之后，通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "tag/list"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 接口查看所有 tag，如果能列出来一堆就说明是正常的："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-nzqivuf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-nzqivuf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl -s -u admin:Harbor12345 -k https://bastion.openshift4.example.com:8443/v2/ocp4/openshift4/tags/list|jq .{\n  \"name\": \"ocp4/openshift4\",\n  \"tags\": [\n    \"4.4.5-aws-machine-controllers\",\n    \"4.4.5-azure-machine-controllers\",\n    \"4.4.5-baremetal-installer\",\n    \"4.4.5-baremetal-machine-controllers\",\n    \"4.4.5-baremetal-operator\",\n    \"4.4.5-baremetal-runtimecfg\",\n    \"4.4.5-cli\",\n    \"4.4.5-cli-artifacts\",\n    \"4.4.5-cloud-credential-operator\",\n    \"4.4.5-cluster-authentication-operator\",\n    \"4.4.5-cluster-autoscaler\",\n    \"4.4.5-cluster-autoscaler-operator\",\n    \"4.4.5-cluster-bootstrap\",\n    \"4.4.5-cluster-config-operator\",\n    \"4.4.5-cluster-csi-snapshot-controller-operator\",\n    \"4.4.5-cluster-dns-operator\",\n    \"4.4.5-cluster-etcd-operator\",\n    \"4.4.5-cluster-image-registry-operator\",\n    \"4.4.5-cluster-ingress-operator\",\n    \"4.4.5-cluster-kube-apiserver-operator\",\n    \"4.4.5-cluster-kube-controller-manager-operator\",\n    \"4.4.5-cluster-kube-scheduler-operator\",\n    \"4.4.5-cluster-kube-storage-version-migrator-operator\",\n    \"4.4.5-cluster-machine-approver\",\n    \"4.4.5-cluster-monitoring-operator\",\n    \"4.4.5-cluster-network-operator\",\n    \"4.4.5-cluster-node-tuned\",\n    \"4.4.5-cluster-node-tuning-operator\",\n    \"4.4.5-cluster-openshift-apiserver-operator\",\n    \"4.4.5-cluster-openshift-controller-manager-operator\",\n    \"4.4.5-cluster-policy-controller\",\n    \"4.4.5-cluster-samples-operator\",\n    \"4.4.5-cluster-storage-operator\",\n    \"4.4.5-cluster-svcat-apiserver-operator\",\n    \"4.4.5-cluster-svcat-controller-manager-operator\",\n    \"4.4.5-cluster-update-keys\",\n    \"4.4.5-cluster-version-operator\",\n    \"4.4.5-configmap-reloader\",\n    \"4.4.5-console\",\n    \"4.4.5-console-operator\",\n    \"4.4.5-container-networking-plugins\",\n    \"4.4.5-coredns\",\n    \"4.4.5-csi-snapshot-controller\",\n    \"4.4.5-deployer\",\n    \"4.4.5-docker-builder\",\n    \"4.4.5-docker-registry\",\n    \"4.4.5-etcd\",\n    \"4.4.5-gcp-machine-controllers\",\n    \"4.4.5-grafana\",\n    \"4.4.5-haproxy-router\",\n    \"4.4.5-hyperkube\",\n    \"4.4.5-insights-operator\",\n    \"4.4.5-installer\",\n    \"4.4.5-installer-artifacts\",\n    \"4.4.5-ironic\",\n    \"4.4.5-ironic-hardware-inventory-recorder\",\n    \"4.4.5-ironic-inspector\",\n    \"4.4.5-ironic-ipa-downloader\",\n    \"4.4.5-ironic-machine-os-downloader\",\n    \"4.4.5-ironic-static-ip-manager\",\n    \"4.4.5-jenkins\",\n    \"4.4.5-jenkins-agent-maven\",\n    \"4.4.5-jenkins-agent-nodejs\",\n    \"4.4.5-k8s-prometheus-adapter\",\n    \"4.4.5-keepalived-ipfailover\",\n    \"4.4.5-kube-client-agent\",\n    \"4.4.5-kube-etcd-signer-server\",\n    \"4.4.5-kube-proxy\",\n    \"4.4.5-kube-rbac-proxy\",\n    \"4.4.5-kube-state-metrics\",\n    \"4.4.5-kube-storage-version-migrator\",\n    \"4.4.5-kuryr-cni\",\n    \"4.4.5-kuryr-controller\",\n    \"4.4.5-libvirt-machine-controllers\",\n    \"4.4.5-local-storage-static-provisioner\",\n    \"4.4.5-machine-api-operator\",\n    \"4.4.5-machine-config-operator\",\n    \"4.4.5-machine-os-content\",\n    \"4.4.5-mdns-publisher\",\n    \"4.4.5-multus-admission-controller\",\n    \"4.4.5-multus-cni\",\n    \"4.4.5-multus-route-override-cni\",\n    \"4.4.5-multus-whereabouts-ipam-cni\",\n    \"4.4.5-must-gather\",\n    \"4.4.5-oauth-proxy\",\n    \"4.4.5-oauth-server\",\n    \"4.4.5-openshift-apiserver\",\n    \"4.4.5-openshift-controller-manager\",\n    \"4.4.5-openshift-state-metrics\",\n    \"4.4.5-openstack-machine-controllers\",\n    \"4.4.5-operator-lifecycle-manager\",\n    \"4.4.5-operator-marketplace\",\n    \"4.4.5-operator-registry\",\n    \"4.4.5-ovirt-machine-controllers\",\n    \"4.4.5-ovn-kubernetes\",\n    \"4.4.5-pod\",\n    \"4.4.5-prom-label-proxy\",\n    \"4.4.5-prometheus\",\n    \"4.4.5-prometheus-alertmanager\",\n    \"4.4.5-prometheus-config-reloader\",\n    \"4.4.5-prometheus-node-exporter\",\n    \"4.4.5-prometheus-operator\",\n    \"4.4.5-sdn\",\n    \"4.4.5-service-ca-operator\",\n    \"4.4.5-service-catalog\",\n    \"4.4.5-telemeter\",\n    \"4.4.5-tests\",\n    \"4.4.5-thanos\",\n    \"4.4.5-x86_64\"\n  ]\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-og19eni",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-og19eni"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Harbor 中也能看到所有的镜像："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-u7ekwh5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-u7ekwh5"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20220923103742-vvrc7n0"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-fbnpj5k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220923103742-fbnpj5k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提取 openshift-install 命令"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-eknq7jh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-eknq7jh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了保证安装版本一致性，需要从镜像库中提取 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "openshift-install"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 二进制文件，不能直接从 https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.5 下载，不然后面会有 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "sha256"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 匹配不上的问题。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-0j1ly42",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-0j1ly42"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 这一步需要用到上面的 export 变量\n$ oc adm release extract \\\n  -a ${LOCAL_SECRET_JSON} \\\n  --command=openshift-install \\\n  \"${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-gk6bxv0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-gk6bxv0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果提示 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "error: image dose not exist"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，说明拉取的镜像不全，或者版本不对。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-2prbxs5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-2prbxs5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "把文件移动到 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$PATH"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 并确认版本："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-dwc2fo9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-dwc2fo9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ chmod +x openshift-install\n$ mv openshift-install /usr/local/bin/$ openshift-install version\nopenshift-install 4.4.5\nbuilt from commit 15eac3785998a5bc250c9f72101a4a9cb767e494\nrelease image bastion.openshift4.example.com:8443/ocp4/openshift4@sha256:4a461dc23a9d323c8bd7a8631bed078a9e5eec690ce073f78b645c83fb4cdf74\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-fyuh25n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220923103742-fyuh25n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 准备 Image Stream 样例镜像"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-2de8gza",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-2de8gza"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "准备一个镜像列表，然后使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "oc image mirror"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 将镜像同步到私有仓库中："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-tuapopl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-tuapopl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat sample-images.txt | while read line; do\n  target=$(echo $line | sed 's/registry.redhat.io/bastion.openshift4.example.com:8443/')\n  oc image mirror -a ${LOCAL_SECRET_JSON} $line $target\ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-ad4gkg6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-ad4gkg6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果之前装过 OCP 4.4.5，把 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "openshift-cluster-samples-operator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 项目下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cluster-samples-operator"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " Pod 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/opt/openshift"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录同步出来，简单 grep 一下就都有了完整的镜像列表。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-snpnnaz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-snpnnaz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "完整列表参考这里 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "sup",
+					"TextMarkTextContent": "[5]"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-74paqaj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220923103742-74paqaj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 准备 OperatorHub 离线资源"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-u4xp7os",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-u4xp7os"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先在 Harbor 中创建一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "devinfra"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 项目，然后构建 RedHat Operators 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "catalog image"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", 保存为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bastion.openshift4.example.com:8443/devinfra/redhat-operators:v1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-y3jxtta",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-y3jxtta"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc adm catalog build \\\n  -a ${LOCAL_SECRET_JSON} \\\n  --appregistry-endpoint https://quay.io/cnr \\\n  --from=registry.redhat.io/openshift4/ose-operator-registry:v4.4 \\\n  --appregistry-org redhat-operators \\\n  --to=bastion.openshift4.example.com:8443/devinfra/redhat-operators:v1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-tvfx4c1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-tvfx4c1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个 catalog image 相当于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RedHat Operators"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的一个目录，通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "catalog image"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 可以找到  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RedHat Operators"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的所有镜像。而且 catalog image 使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "sha256 digest"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 来引用镜像，能够确保应用有稳定可重复的部署。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-ymbvc9a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-ymbvc9a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后使用 catalog image 同步 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "RedHat Operators"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的所有镜像到私有仓库："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-9ptgikm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-9ptgikm"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc adm catalog mirror \\\n  -a ${LOCAL_SECRET_JSON} \\\n  bastion.openshift4.example.com:8443/devinfra/redhat-operators:v1 \\\n  bastion.openshift4.example.com:8443\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-mi8fl67",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-mi8fl67"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "如果执行过程中遇到 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "project not found"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": " 之类的错误，可根据报错信息到 Harbor 中创建相应的项目，不用中断任务。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-lvfhpkb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-lvfhpkb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个命令结束后会产生 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "redhat-operators-manifests"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 目录，下面有两个文件:"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-48gyh21",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220923103742-48gyh21"
+			},
+			"Children": [
+				{
+					"ID": "20220923103742-owv0hyb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-owv0hyb"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-av16oen",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-av16oen"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "imageContentSourcePolicy.yaml"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " : 定义了一个 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ImageContentSourcePolicy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 对象，该对象可以配置节点将其对官方 Operator manifests 中镜像的引用改为对本地镜像仓库中镜像的引用。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-g5z6evr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-g5z6evr"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-t91154u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-t91154u"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "mapping.txt"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " : 包含了所有的源镜像在本地镜像仓库中的映射位置。"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oc image mirror"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 命令可以引用该文件进一步修改镜像配置。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-xv88qfi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-xv88qfi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然而目前这么做还是有问题 1800674 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "sup",
+					"TextMarkTextContent": "[6]"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " : 同步出来的镜像 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "manifest digest"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 不对，导致后面离线安装 Operator 时会报镜像无法获取的错误。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-tqbxjim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-tqbxjim"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "暂时可以使用上面 bugzilla 链接里给出的临时解决方案，先安装 skopeo："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-pykm3sv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-pykm3sv"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ yum install -y golang gpgme-devel libassuan-devel btrfs-progs-devel device-mapper-devel\n$ git clone https://github.com/containers/skopeo\n$ cd skopeo\n$ make binary-local\n$ mv skopeo /usr/local/bin/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-dq8svlv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-dq8svlv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pull-secret.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 中解码 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "quay.io"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "、"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "registry.redhat.io"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "registry.access.redhat.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的用户名密码，然后通过下面的命令认证："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-579xf6s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-579xf6s"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ skopeo login -u \u003cquay.io_user\u003e -p \u003cquay.io_psw\u003e quay.io\n$ skopeo login -u \u003cregistry.redhat.io_user\u003e -p \u003cregistry.redhat.io_psw\u003e registry.redhat.io\n$ skopeo login -u \u003cregistry.access.redhat.com_user\u003e -p \u003cregistry.access.redhat.com_psw\u003e registry.access.redhat.com\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-4cjx7u8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-4cjx7u8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后同步镜像的 manifest digest："
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-dt9m6aw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220923103742-dt9m6aw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat redhat-operators-manifests/mapping.txt | while read line; do\n  origin=$(echo $line | cut -d= -f1)\n  target=$(echo $line | cut -d= -f2)\n  if [[ \"$origin\" =~ \"sha256\" ]]; then\n    tag=$(echo $origin | cut -d: -f2 | cut -c -8)\n    skopeo copy --all docker://$origin docker://$target:$tag\n  else\n    skopeo copy --all docker://$origin docker://$target\n  fi\ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-wmi4ffk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-wmi4ffk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不得不说，OCP 的安装真是个浩大的工程，这洋洋洒洒的一大篇也只是准备了离线资源，这只是安装的一小步，还有很长的步骤要写，心理素质不过关的同学切勿随意模仿。"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-wzkyx92",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20220923103742-wzkyx92"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 参考资料"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-3720lkp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220923103742-3720lkp"
+			},
+			"Children": [
+				{
+					"ID": "20220923103742-fuv6f1n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-fuv6f1n"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-r0bjumc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-r0bjumc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "离线部署 Openshift Container Platform 4.3 - 1: 准备离线资源"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "sup",
+									"TextMarkTextContent": "[7]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220923103742-bl6nxy3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220923103742-bl6nxy3"
+					},
+					"Children": [
+						{
+							"ID": "20220923103742-vu59g5d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220923103742-vu59g5d"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Chapter 9. Using Operator Lifecycle Manager on restricted networks"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "sup",
+									"TextMarkTextContent": "[8]"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-1jmfjfu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20220923103742-1jmfjfu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "脚注"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-9polafn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-9polafn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[1]开发者账号: https://developers.redhat.com/"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-dppyior",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-dppyior"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[2]https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.4/: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.4/"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-j6pnv6h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-j6pnv6h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[3]Pull Secret 页面: https://cloud.redhat.com/openshift/install/pull-secret"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-7eik4sh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-7eik4sh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[4]这个页面: https://quay.io/repository/openshift-release-dev/ocp-release?tab=tags"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-wkm4q75",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-wkm4q75"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[5]这里: https://gist.github.com/yuanlinios/7eea8207083e649cbe07e108a22df00b"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-7ks3ato",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-7ks3ato"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[6]1800674: https://bugzilla.redhat.com/show_bug.cgi?id=1800674"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-owksegp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-owksegp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[7]离线部署 Openshift Container Platform 4.3 - 1: 准备离线资源: https://notes.yuanlinios.me/2020-03-15/%E7%A6%BB%E7%BA%BF%E9%83%A8%E7%BD%B2-Openshift-Container-Platform-4-3-1-%E5%87%86%E5%A4%87%E7%A6%BB%E7%BA%BF%E8%B5%84%E6%BA%90/"
+				}
+			]
+		},
+		{
+			"ID": "20220923103742-whr6212",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220923103742-whr6212"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[8]Chapter 9. Using Operator Lifecycle Manager on restricted networks: https://access.redhat.com/documentation/en-us/openshift_container_platform/4.4/html/operators/olm-restricted-networks"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,565 @@
+{
+	"ID": "20230414160427-mi0ffr0",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230414160427-mi0ffr0",
+		"title": "kubelet客户端证书轮转失败",
+		"updated": "20230414164734"
+	},
+	"Children": [
+		{
+			"ID": "20230414164524-rwj81yz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230414164524-rwj81yz",
+				"updated": "20230414164527"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 现象："
+				}
+			]
+		},
+		{
+			"ID": "20230414164528-n6obc9c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414164528-n6obc9c",
+				"updated": "20230414164531"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "2月 09 16:41:11 master systemd[1]: kubelet.service: main process exited, code=exited, status=255/n/a\n2月 09 16:41:11 master systemd[1]: Unit kubelet.service entered failed state.\n2月 09 16:41:11 master systemd[1]: kubelet.service failed.\n2月 09 16:41:22 master systemd[1]: kubelet.service holdoff time over, scheduling restart.\n2月 09 16:41:22 master systemd[1]: Stopped kubelet: The Kubernetes Node Agent.\n2月 09 16:41:22 master systemd[1]: Started kubelet: The Kubernetes Node Agent.\n2月 09 16:41:22 master kubelet[74138]: Flag --cgroup-driver has been deprecated, This parameter should be set via the config file specified by the Kubelet's --config flag. See https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ for more information.\n2月 09 16:41:22 master kubelet[74138]: Flag --cgroup-driver has been deprecated, This parameter should be set via the config file specified by the Kubelet's --config flag. See https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ for more information.\n2月 09 16:41:22 master kubelet[74138]: I0209 16:41:22.222741   74138 server.go:410] Version: v1.16.3\n2月 09 16:41:22 master kubelet[74138]: I0209 16:41:22.223911   74138 plugins.go:100] No cloud provider specified.\n2月 09 16:41:22 master kubelet[74138]: I0209 16:41:22.223954   74138 server.go:773] Client rotation is on, will bootstrap in background\n2月 09 16:41:22 master systemd[1]: kubelet.service: main process exited, code=exited, status=255/n/a\n2月 09 16:41:22 master kubelet[74138]: E0209 16:41:22.227202   74138 bootstrap.go:265] part of the existing bootstrap client certificate is expired: 2021-03-18 08:46:29 +0000 UTC\n2月 09 16:41:22 master kubelet[74138]: F0209 16:41:22.227239   74138 server.go:271] failed to run Kubelet: unable to load bootstrap kubeconfig: stat /etc/kubernetes/bootstrap-kubelet.conf: no such file or directory\n2月 09 16:41:22 master systemd[1]: Unit kubelet.service entered failed state.\n2月 09 16:41:22 master systemd[1]: kubelet.service failed.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414164535-ad9jj34",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230414164535-ad9jj34",
+				"updated": "20230414164545"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 原因"
+				}
+			]
+		},
+		{
+			"ID": "20230414164536-s7ezkgp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414164536-s7ezkgp",
+				"updated": "20230414164632"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubelet 的证书到期后进行了证书轮转，证书轮转失败导致此问题"
+				}
+			]
+		},
+		{
+			"ID": "20230414164701-7yejayb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414164701-7yejayb",
+				"updated": "20230414164702"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看 kubelet 的证数，kubelet.conf 是在/var/lib/kubelet/pki 的连接文件，于是我们查看它的证数到期时间"
+				}
+			]
+		},
+		{
+			"ID": "20230414164711-txpxyei",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230414164711-txpxyei",
+				"updated": "20230414164711"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cd /var/lib/kubelet/pki\n[root@master pki]# ls\nkubelet-client-2020-03-18-16-46-37.pem  kubelet-client-2021-01-28-09-11-35.pem  kubelet-client-current.pem  kubelet.key\nkubelet-client-2020-03-18-16-47-03.pem  kubelet-client-2022-02-09-16-22-05.pem  kubelet.crt\n[root@master pki]#  openssl x509 -noout -enddate -in ./kubelet.crt\nnotAfter=Mar 18 07:46:26 2021 GMT"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230414164536-si7kdl9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230414164536-si7kdl9",
+				"updated": "20230414164734"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 解决办法："
+				}
+			]
+		},
+		{
+			"ID": "20230414164417-4uufd4o",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230414164417-4uufd4o",
+				"updated": "20230414164446"
+			},
+			"Children": [
+				{
+					"ID": "20230414164446-wyg6kgq",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230414164446-wyg6kgq",
+						"updated": "20230414164446"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "默认情况下，kubeadm 通过使用"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "/var/lib/kubelet/pki/kubelet-client-current.pem"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "在"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "/etc/kubernetes/kubelet.conf"
+						},
+						{
+							"Type": "NodeText",
+							"Data": ". 如果此轮换过程失败，您可能会"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "x509: certificate has expired or is not yet valid"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 在 kube-apiserver 日志中看到错误。要解决此问题，您必须执行以下步骤："
+						}
+					]
+				},
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				}
+			]
+		},
+		{
+			"ID": "20230414164417-roebxqb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230414164417-roebxqb",
+				"updated": "20230414164417"
+			},
+			"Children": [
+				{
+					"ID": "20230414164417-feqn7oo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230414164417-feqn7oo"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-8vqlz9n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-8vqlz9n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "从故障节点备份"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/kubernetes/kubelet.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和删除"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/var/lib/kubelet/pki/kubelet-client*"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414164417-2ryoblm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230414164417-2ryoblm"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-os8cnmr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-os8cnmr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "从集群中具有"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/kubernetes/pki/ca.key"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "执行 的工作控制平面节点"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubeadm kubeconfig user --org system:nodes --client-name system:node:$NODE \u0026gt; kubelet.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "$NODE"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "必须设置为集群中现有故障节点的名称。手动修改结果"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubelet.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "以调整集群名称和服务器端点，或通过"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubeconfig user --config"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "（它接受"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "InitConfiguration"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）。如果您的集群没有，您必须在外部"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ca.key"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "签署嵌入式证书。"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubelet.conf"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414164417-hjnty1p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230414164417-hjnty1p"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-28fpeb5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-28fpeb5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将此结果复制"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubelet.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/kubernetes/kubelet.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "故障节点上。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414164417-owg114y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230414164417-owg114y"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-axgzgc4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-axgzgc4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重新启动故障节点上的 kubelet ( "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "systemctl restart kubelet"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ") 并等待 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/var/lib/kubelet/pki/kubelet-client-current.pem"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "重新创建。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414164417-8yiakw1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230414164417-8yiakw1"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-mbrxgf2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-mbrxgf2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "手动编辑"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubelet.conf"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "以指向旋转的 kubelet 客户端证书，方法是将 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "client-certificate-data"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "和替换"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "client-key-data"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "为：\nclient-certificate: /var/lib/kubelet/pki/kubelet-client-current.pem\nclient-key: /var/lib/kubelet/pki/kubelet-client-current.pem"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414164417-c967fhm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20230414164417-c967fhm"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-51p45wn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-51p45wn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重启 kubelet。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230414164417-nk4crsj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20230414164417-nk4crsj"
+					},
+					"Children": [
+						{
+							"ID": "20230414164417-0h1pjec",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230414164417-0h1pjec"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确保节点变为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Ready"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230414164426-rcaswn9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230414164426-rcaswn9",
+				"updated": "20230414164426"
+			}
+		}
+	]
+}

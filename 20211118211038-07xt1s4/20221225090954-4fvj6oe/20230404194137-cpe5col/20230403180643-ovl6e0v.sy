@@ -1,0 +1,2937 @@
+{
+	"ID": "20230403180643-ovl6e0v",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230403180643-ovl6e0v",
+		"title": "API 优先级和公平性（APF）",
+		"updated": "20230407101538"
+	},
+	"Children": [
+		{
+			"ID": "20230405234522-z11mi3d",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230405234522-z11mi3d",
+				"updated": "20230405235521"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-aclwjcq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405193557-aclwjcq",
+				"updated": "20230405234814"
+			},
+			"Children": [
+				{
+					"ID": "20230405234814-c27q079",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405234814-c27q079"
+					},
+					"Children": [
+						{
+							"ID": "20230405234814-4trw10f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405234814-4trw10f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "目前apiserver默认的限流方式太过简单"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405234757-6g9ddwx",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405234757-6g9ddwx",
+				"updated": "20230405234824"
+			},
+			"Children": [
+				{
+					"ID": "20230405234824-xmi1uvb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405234824-xmi1uvb"
+					},
+					"Children": [
+						{
+							"ID": "20230405234824-fjlnee2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405234824-fjlnee2",
+								"updated": "20230405234901"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "目前k8s缺少客户端业务请求隔离，一个错误的客户端发送大量请求可能造成其他客户端请求异常，也不支持突发流量。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405234917-a2v6v4l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230405234917-a2v6v4l",
+				"updated": "20230405234926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 开启APF"
+				}
+			]
+		},
+		{
+			"ID": "20230406104211-gwyl20h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104211-gwyl20h",
+				"updated": "20230406104212"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "APF测试"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 开启APF，需要在apiserver配置"
+				}
+			]
+		},
+		{
+			"ID": "20230405193624-sz9qme1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230405193624-sz9qme1",
+				"updated": "20230405193643"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--feature-gates=APIPriorityAndFairness=true --runtime-config=flowcontrol.apiserver.k8s.io/v1alpha1=true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406104239-7uza8aq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104239-7uza8aq",
+				"updated": "20230406104239"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开启后，获取默认的FlowSchemas"
+				}
+			]
+		},
+		{
+			"ID": "20230407101523-oo1p5ko",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230407101523-oo1p5ko",
+				"updated": "20230407101538"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "openshift临时关闭："
+				}
+			]
+		},
+		{
+			"ID": "20230407101527-i2notmu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230407101527-i2notmu",
+				"updated": "20230407101534"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# oc patch kubeapiserver cluster --type=merge -p '{\"spec\":{\"unsupportedConfigOverrides\":{\"apiServerArguments\":{\"feature-gates\":[\"APIPriorityAndFairness=false\"]}}}}'\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-6glnnni",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405193557-6glnnni",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "API 优先级和公平性（APF）是MaxInFlightLimit限流的一种替代方案，设计文档见"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/1040-priority-and-fairness",
+					"TextMarkTextContent": "提案"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-zxljuxx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405193557-zxljuxx",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "API 优先级和公平性（1.15以上，alpha版本）， 以更细粒度（byUser，byNamespace）对请求进行分类和隔离。 支持突发流量，通过使用公平排队技术从队列中分发请求从而避免饥饿。"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-l9udngh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405193557-l9udngh",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "APF限流通过两种资源，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PriorityLevelConfigurations"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "定义隔离类型和可处理的并发预算量，还可以调整排队行为。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "FlowSchemas"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "用于对每个入站请求进行分类，并与一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PriorityLevelConfigurations"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "相匹配。"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-s3trdpb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405193557-s3trdpb",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可对用户或用户组或全局进行某些资源某些请求的限制，如限制default namespace写services put/patch请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-xhu63jw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405193557-xhu63jw",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "优点"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-ksmbsva",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405193557-ksmbsva",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"ID": "20230405193557-fndokca",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405193557-fndokca"
+					},
+					"Children": [
+						{
+							"ID": "20230405193557-rnvwkyu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405193557-rnvwkyu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "考虑情况较全面，支持优先级，白名单等"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230405193557-tnas4db",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405193557-tnas4db"
+					},
+					"Children": [
+						{
+							"ID": "20230405193557-lrao83w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405193557-lrao83w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "可支持server/namespace/user/resource等细粒度级别的限流"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-kycnutw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230405193557-kycnutw",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "缺点"
+				}
+			]
+		},
+		{
+			"ID": "20230405193557-i2hp238",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405193557-i2hp238",
+				"updated": "20230405193557"
+			},
+			"Children": [
+				{
+					"ID": "20230405193557-0ahfue7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405193557-0ahfue7"
+					},
+					"Children": [
+						{
+							"ID": "20230405193557-eskpqwc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405193557-eskpqwc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "配置复杂，不直观，需要对APF原理深入了解"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230405193557-qpfogxb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230405193557-qpfogxb"
+					},
+					"Children": [
+						{
+							"ID": "20230405193557-0ycdfhw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230405193557-0ycdfhw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "功能较新，缺少生产环境验证"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406100227-k5ufmmo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406100227-k5ufmmo",
+				"updated": "20230406100248"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "整体设计："
+				}
+			]
+		},
+		{
+			"ID": "20230406100259-futs790",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230406100259-futs790",
+				"updated": "20230406100259"
+			},
+			"Children": [
+				{
+					"ID": "20230406100259-b02s5ug",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100259-b02s5ug"
+					},
+					"Children": [
+						{
+							"ID": "20230406100259-p1br6ot",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100259-p1br6ot"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "APF 的实现依赖两个非常重要的资源 FlowSchema, PriorityLevelConfiguration"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406100302-oiiokhk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100302-oiiokhk"
+					},
+					"Children": [
+						{
+							"ID": "20230406100313-7rddvl9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100313-7rddvl9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "APF 对请求进行更细粒度的分类，每一个请求分类对应一个 FlowSchema (FS)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406100326-3k77lqz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100326-3k77lqz"
+					},
+					"Children": [
+						{
+							"ID": "20230406100327-f6ux0b4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100327-f6ux0b4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "FS 内的请求又会根据 distinguisher 进一步划分为不同的 Flow"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406100351-a78hd14",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100351-a78hd14"
+					},
+					"Children": [
+						{
+							"ID": "20230406100351-3ff75ic",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100351-3ff75ic"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "FS 会设置一个优先级 (Priority Level, PL)，不同优先级的并发资源是隔离的。所以不同优先级的资源不会相互排挤。特定优先级的请求可以被高优处理。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406100318-oj1cx1u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100318-oj1cx1u"
+					},
+					"Children": [
+						{
+							"ID": "20230406100415-c8kwuqf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100415-c8kwuqf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一个 PL 可以对应多个 FS，PL 中维护了一个 QueueSet，用于缓存不能及时处理的请求，请求不会因为超出 PL 的并发限制而被丢弃。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406100424-1pxuhse",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100424-1pxuhse"
+					},
+					"Children": [
+						{
+							"ID": "20230406100425-t7gmxe4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100425-t7gmxe4"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "FS 中的每个 Flow 通过 shuffle sharding 算法从 QueueSet 选取特定的 queues 缓存请求。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406100432-07dt15g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406100432-07dt15g"
+					},
+					"Children": [
+						{
+							"ID": "20230406100432-zqt55gv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406100432-zqt55gv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每次从 QueueSet 中取请求执行时，会先应用 fair queuing 算法从 QueueSet 中选中一个 queue，然后从这个 queue 中取出 oldest 请求执行。所以即使是同一个 PL 内的请求，也不会出现一个 Flow 内的请求一直占用资源的不公平现象。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406151223-6akjbdi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406151223-6akjbdi",
+				"updated": "20230406151224"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230406151224-vuxg0ef.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406112342-n19p8h4",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230406112342-n19p8h4",
+				"updated": "20230406112359"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230406112357-qypoklk",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406112357-qypoklk",
+						"updated": "20230406112359"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": " "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "strong",
+							"TextMarkTextContent": "注意："
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 属于 “长时间运行” 类型的某些请求（例如远程命令执行或日志拖尾）不受 API 优先级和公平性过滤器的约束。 如果未启用 APF 特性，即便设置 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "--max-requests-inflight"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 标志，该类请求也不受约束。 APF 适用于 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "strong",
+							"TextMarkTextContent": "watch"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 请求。当 APF 被禁用时，"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "strong",
+							"TextMarkTextContent": "watch"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 请求不受 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "--max-requests-inflight"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 限制。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406102247-130ngbp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230406102247-130ngbp",
+				"updated": "20230406102258"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. FlowSchema"
+				}
+			]
+		},
+		{
+			"ID": "20230406102300-dwmhpx5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406102300-dwmhpx5",
+				"updated": "20230406102308"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "对请求进行分类"
+				}
+			]
+		},
+		{
+			"ID": "20230406102318-6ei73ts",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230406102318-6ei73ts",
+				"updated": "20230406102432"
+			},
+			"Children": [
+				{
+					"ID": "20230406102432-vpbk65x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230406102432-vpbk65x"
+					},
+					"Children": [
+						{
+							"ID": "20230406102432-j8ct8nv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406102432-j8ct8nv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "用户可以通过创建 FlowSchema 资源对象自定义分类方式。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406195317-65a2iqu",
+			"Type": "NodeSuperBlock",
+			"Properties": {
+				"id": "20230406195317-65a2iqu",
+				"updated": "20230406102318"
+			},
+			"Children": [
+				{
+					"Type": "NodeSuperBlockOpenMarker"
+				},
+				{
+					"Type": "NodeSuperBlockLayoutMarker",
+					"Data": "col"
+				},
+				{
+					"ID": "20230406151948-h0ouu2y",
+					"Type": "NodeSuperBlock",
+					"Properties": {
+						"id": "20230406151948-h0ouu2y",
+						"updated": "20230406195115"
+					},
+					"Children": [
+						{
+							"Type": "NodeSuperBlockOpenMarker"
+						},
+						{
+							"Type": "NodeSuperBlockLayoutMarker",
+							"Data": "col"
+						},
+						{
+							"ID": "20230406151919-5hqrdim",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230406151919-5hqrdim",
+								"updated": "20230406151932"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "// FlowSchemaSpec describes how the FlowSchema's specification looks like.\ntype FlowSchemaSpec struct {\n  ...\n\tRules []PolicyRulesWithSubjects `json:\"rules,omitempty\" protobuf:\"bytes,4,rep,name=rules\"`\n}\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20230406195113-zq44w4p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406195113-zq44w4p",
+								"updated": "20230406195113"
+							}
+						},
+						{
+							"ID": "20230406195113-r8933rp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406195113-r8933rp",
+								"updated": "20230406195113"
+							}
+						},
+						{
+							"ID": "20230406195114-r25zder",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406195114-r25zder",
+								"updated": "20230406195114"
+							}
+						},
+						{
+							"ID": "20230406195114-nj65ksi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406195114-nj65ksi",
+								"updated": "20230406195114"
+							}
+						},
+						{
+							"Type": "NodeSuperBlockCloseMarker"
+						}
+					]
+				},
+				{
+					"ID": "20230406195342-hb9gyx1",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195342-hb9gyx1",
+						"updated": "20230406195342"
+					}
+				},
+				{
+					"ID": "20230406195342-sab9x5r",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195342-sab9x5r",
+						"updated": "20230406195342"
+					}
+				},
+				{
+					"ID": "20230406195342-j1nom4k",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195342-j1nom4k",
+						"updated": "20230406195342"
+					}
+				},
+				{
+					"ID": "20230406195342-poqur8a",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195342-poqur8a",
+						"updated": "20230406195342"
+					}
+				},
+				{
+					"ID": "20230406195343-vwwplll",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195343-vwwplll",
+						"updated": "20230406195343"
+					}
+				},
+				{
+					"ID": "20230406195343-86rmz9j",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195343-86rmz9j",
+						"updated": "20230406195343"
+					}
+				},
+				{
+					"ID": "20230406195343-w088rde",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195343-w088rde",
+						"updated": "20230406195343"
+					}
+				},
+				{
+					"ID": "20230406195343-3kaeaob",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195343-3kaeaob",
+						"updated": "20230406195343"
+					}
+				},
+				{
+					"ID": "20230406195343-bg4rrvs",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195343-bg4rrvs",
+						"updated": "20230406195343"
+					}
+				},
+				{
+					"ID": "20230406195344-e9t5ee0",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195344-e9t5ee0",
+						"updated": "20230406195344"
+					}
+				},
+				{
+					"ID": "20230406195344-6xdl9j3",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195344-6xdl9j3",
+						"updated": "20230406195344"
+					}
+				},
+				{
+					"ID": "20230406195344-5e1suoy",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195344-5e1suoy",
+						"updated": "20230406195344"
+					}
+				},
+				{
+					"ID": "20230406195344-87rufrj",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195344-87rufrj",
+						"updated": "20230406195344"
+					}
+				},
+				{
+					"ID": "20230406195345-jfidszw",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195345-jfidszw",
+						"updated": "20230406195345"
+					}
+				},
+				{
+					"ID": "20230406195345-2vhw4rp",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406195345-2vhw4rp",
+						"updated": "20230406195345"
+					}
+				},
+				{
+					"ID": "20230406102318-260yix3",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406102318-260yix3",
+						"updated": "20230406102318"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "FS 代表一个请求分类，包含多条匹配规则，如果某个请求能匹配其中任意一条规则就认为这个请求属于这个 FS (只匹配第一个匹配的 FS)。"
+						}
+					]
+				},
+				{
+					"Type": "NodeSuperBlockCloseMarker"
+				}
+			]
+		},
+		{
+			"ID": "20230406195540-4byxq00",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406195540-4byxq00",
+				"updated": "20230406195547"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "请求与 FS 规则匹配：同时满足以下条件，就认为请求与该 FS 规则匹配"
+				}
+			]
+		},
+		{
+			"ID": "20230406102318-ohedey5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230406102318-ohedey5",
+				"updated": "20230406102318"
+			},
+			"Children": [
+				{
+					"ID": "20230406102318-xqva2v0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406102318-xqva2v0"
+					},
+					"Children": [
+						{
+							"ID": "20230406102318-e2cqc8l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406102318-e2cqc8l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "匹配请求主体 subject"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406102318-qqb5g99",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406102318-qqb5g99"
+					},
+					"Children": [
+						{
+							"ID": "20230406102318-hpj86wm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406102318-hpj86wm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对资源的请求，匹配 ResourceRules 中任意一条规则"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406102318-7md44tp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406102318-7md44tp"
+					},
+					"Children": [
+						{
+							"ID": "20230406102318-z0dvqie",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406102318-z0dvqie"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对非资源的请求， 匹配 NonResourceRules 中任意一条规则"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406152030-dpppwse",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406152030-dpppwse",
+				"updated": "20230406152037"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type PolicyRulesWithSubjects struct {\n\tSubjects []Subject\n\tResourceRules []ResourcePolicyRule\n\tNonResourceRules []NonResourcePolicyRule\n}\n\ntype Subject struct {\n\tKind SubjectKind `json:\"kind\" protobuf:\"bytes,1,opt,name=kind\"`\n\tUser *UserSubject `json:\"user,omitempty\" protobuf:\"bytes,2,opt,name=user\"`\n\tGroup *GroupSubject `json:\"group,omitempty\" protobuf:\"bytes,3,opt,name=group\"`\n\tServiceAccount *ServiceAccountSubject `json:\"serviceAccount,omitempty\" protobuf:\"bytes,4,opt,name=serviceAccount\"`\n}\n\ntype ResourcePolicyRule struct {\n\tVerbs []string `json:\"verbs\" protobuf:\"bytes,1,rep,name=verbs\"`\n\tAPIGroups []string `json:\"apiGroups\" protobuf:\"bytes,2,rep,name=apiGroups\"`\n\tResources []string `json:\"resources\" protobuf:\"bytes,3,rep,name=resources\"`\n\tClusterScope bool `json:\"clusterScope,omitempty\" protobuf:\"varint,4,opt,name=clusterScope\"`\n\tNamespaces []string `json:\"namespaces\" protobuf:\"bytes,5,rep,name=namespaces\"`\n}\n\ntype NonResourcePolicyRule struct {\n\tVerbs []string `json:\"verbs\" protobuf:\"bytes,1,rep,name=verbs\"`\n\tNonResourceURLs []string `json:\"nonResourceURLs\" protobuf:\"bytes,6,rep,name=nonResourceURLs\"`\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406102318-i94kkw8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406102318-i94kkw8",
+				"updated": "20230406102436"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 FS，可以根据请求的主体 (User, Group, ServiceAccout)、动作 (Get, List, Create, Delete …)、资源类型 (pod, deployment …)、namespace、url 对请求进行分类。"
+				}
+			]
+		},
+		{
+			"ID": "20230406102436-r7mstzj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230406102436-r7mstzj",
+				"updated": "20230406103741"
+			},
+			"Children": [
+				{
+					"ID": "20230406102438-xhpdm6y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230406102438-xhpdm6y"
+					},
+					"Children": [
+						{
+							"ID": "20230406102438-fch8uu3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406102438-fch8uu3",
+								"updated": "20230406102500"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "FS 内的请求进一步划分 Flow "
+								}
+							]
+						},
+						{
+							"ID": "20230406102511-7j2l7f3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406102511-7j2l7f3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "有两种方式对请求进行 Flow 划分："
+								}
+							]
+						},
+						{
+							"ID": "20230406102511-evyl068",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230406102511-evyl068"
+							},
+							"Children": [
+								{
+									"ID": "20230406102511-cgspb4e",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230406102511-cgspb4e"
+									},
+									"Children": [
+										{
+											"ID": "20230406102511-ha2n7gw",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230406102511-ha2n7gw"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "distinguisher = ByUser, 根据请求的 User 划分不同 Flow；可以让来自不同用户的请求平等使用 PL 内的资源。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230406102511-ldn1dwo",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230406102511-ldn1dwo"
+									},
+									"Children": [
+										{
+											"ID": "20230406102511-bnhunci",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230406102511-bnhunci"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "distinguisher = ByNamespace, 根据请求的 namespace 划分不同的 Flow；可以让来自不同 namespace 的请求平等使用 PL 内的资源。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230406102511-el4o2bj",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230406102511-el4o2bj"
+									},
+									"Children": [
+										{
+											"ID": "20230406102511-bfwt93m",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230406102511-bfwt93m"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "distinguisher = nil，表示不划分"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230406152146-m9j1p8a",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230406152146-m9j1p8a",
+								"updated": "20230406152155"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "type FlowSchemaSpec struct {\n  ...\n\tDistinguisherMethod *FlowDistinguisherMethod `json:\"distinguisherMethod,omitempty\" protobuf:\"bytes,3,opt,name=distinguisherMethod\"`\n  ...\n}\n\ntype FlowDistinguisherMethod struct {\n\tType FlowDistinguisherMethodType `json:\"type\" protobuf:\"bytes,1,opt,name=type\"`\n}\n\ntype FlowDistinguisherMethodType string\nconst (\n\tFlowDistinguisherMethodByUserType FlowDistinguisherMethodType = \"ByUser\"\n\tFlowDistinguisherMethodByNamespaceType FlowDistinguisherMethodType = \"ByNamespace\"\n)\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406103658-jpfny0c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230406103658-jpfny0c",
+						"updated": "20230406103741"
+					},
+					"Children": [
+						{
+							"ID": "20230406103658-ob7yx1s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406103658-ob7yx1s",
+								"updated": "20230406103713"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如何给请求分配优先级"
+								}
+							]
+						},
+						{
+							"ID": "20230406103715-a05wv4w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406103715-a05wv4w",
+								"updated": "20230406103741"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "FS 通过 FlowSchema.Spec.PriorityLevelConfiguration.Name 指定 PL，从属于这个 FS 的所有请求都划分到这个优先级中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406103940-gtfe0g6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406103940-gtfe0g6",
+				"updated": "20230406103943"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 Priority Level"
+				}
+			]
+		},
+		{
+			"ID": "20230406104001-jxgdc5w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104001-jxgdc5w",
+				"updated": "20230406104023"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果 api-sever 启动了 APF，它的总并发数为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--max-requests-inflight"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " --max-mutating-requests-inflight"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 两个配置值之和。这些并发数被分配给各个 PL，分配方式是根据 PriorityLevelConfiguration.Spec.Limited.AssuredConcurrencyShares 的数值按比例分配。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "PL 的 AssuredConcurrencyShare 越大，分配到的并发份额越大 。"
+				}
+			]
+		},
+		{
+			"ID": "20230406104001-legywun",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104001-legywun",
+				"updated": "20230406104001"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每个 PL 都对应维护了一个 QueueSet，其中包含多个 queue ，当 PL 达到并发限制时，收到的请求会被缓存在 QueueSet 中，不会丢弃，除非 queue 也达到了容量限制。"
+				}
+			]
+		},
+		{
+			"ID": "20230406113305-3wz4k7w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406113305-3wz4k7w",
+				"updated": "20230406113306"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当入站请求的数量大于分配的 PriorityLevelConfiguration 中允许的并发级别时， "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "type"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段将确定对额外请求的处理方式。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Reject"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 类型，表示多余的流量将立即被 HTTP 429（请求过多）错误所拒绝。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Queue"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 类型，表示对超过阈值的请求进行排队，将使用阈值分片和公平排队技术来平衡请求流之间的进度。"
+				}
+			]
+		},
+		{
+			"ID": "20230406154321-tkt4sbe",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230406154321-tkt4sbe",
+				"updated": "20230406154338"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230406154329-9j1rayh",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406154329-9j1rayh",
+						"updated": "20230406154338"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "QueueSet 中 queue 数量由PriorityLevelConfiguration.Spec.Limited.LimitResponse.Queuing.Queues 指定；每个 queue 的长度由 PriorityLevelConfiguration.Spec.Limited.LimitResponse.Queuing.QueueLengthLimit 指定。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406112628-4y8x7cn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406112628-4y8x7cn",
+				"updated": "20230406112628"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例如，默认配置包括针对领导者选举请求、内置控制器请求和 Pod 请求都单独设置优先级。 这表示即使异常的 Pod 向 API 服务器发送大量请求，也无法阻止领导者选举或内置控制器的操作执行成功。"
+				}
+			]
+		},
+		{
+			"ID": "20230406112628-7ebvwyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406112628-7ebvwyy",
+				"updated": "20230406112628"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "优先级的并发限制会被定期调整，允许利用率较低的优先级将并发度临时借给利用率很高的优先级。 这些限制基于一个优先级可以借出多少个并发度以及可以借用多少个并发度的额定限制和界限， 所有这些均源自下述配置对象。"
+				}
+			]
+		},
+		{
+			"ID": "20230406112628-q0x7e9x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230406112628-q0x7e9x",
+				"updated": "20230406112628"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "请求占用的席位"
+				}
+			]
+		},
+		{
+			"ID": "20230406104123-queo01h",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230406104123-queo01h",
+				"updated": "20230406114033"
+			},
+			"Children": [
+				{
+					"ID": "20230406111237-p8t9j7x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406111237-p8t9j7x",
+						"updated": "20230406114033"
+					},
+					"Children": [
+						{
+							"ID": "20230406111237-n126y7d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406111237-n126y7d",
+								"updated": "20230406114033"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "6"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "个推荐的 PL"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406104123-h0ec0iq",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230406104123-h0ec0iq",
+				"updated": "20230406113824"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"TableCellContentWidth": 4,
+									"TableCellContentMaxWidth": 17,
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "PL"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"TableCellContentWidth": 9,
+									"TableCellContentMaxWidth": 216,
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "request"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 16,
+							"TableCellContentMaxWidth": 17,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "global-default"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 16,
+							"TableCellContentMaxWidth": 216,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "所有其他的请求"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 17,
+							"TableCellContentMaxWidth": 17,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "leader-election"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 216,
+							"TableCellContentMaxWidth": 216,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优先级用于内置控制器的领导选举的请求 （特别是来自 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-system"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 名字空间中 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "system:kube-controller-manager"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "system:kube-scheduler"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 用户和服务账号，针对 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "endpoints"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "、"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "configmaps"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 或 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "leases"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的请求）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 15,
+							"TableCellContentMaxWidth": 17,
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "node-high"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 36,
+							"TableCellContentMaxWidth": 216,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优先级用于来自节点的健康状态更新。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 8,
+							"TableCellContentMaxWidth": 17,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "system"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 133,
+							"TableCellContentMaxWidth": 216,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优先级用于 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "system:nodes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 组（即 kubelet）的与健康状态更新相关的请求； kubelets 必须能连上 API 服务器，以便工作负载能够调度到其上"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 15,
+							"TableCellContentMaxWidth": 17,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "workload-high"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 32,
+							"TableCellContentMaxWidth": 216,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优先级用于内置控制器的其他请求"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 14,
+							"TableCellContentMaxWidth": 17,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "workload-low"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"TableCellContentWidth": 83,
+							"TableCellContentMaxWidth": 216,
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优先级用于来自所有其他服务帐户的请求，通常包括来自 Pod 中运行的控制器的所有请求。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405193705-12nx9op",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230405193705-12nx9op",
+				"updated": "20230405193718"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl get flowschemas.flowcontrol.apiserver.k8s.io \nNAME                           PRIORITYLEVEL     MATCHINGPRECEDENCE   DISTINGUISHERMETHOD   AGE    MISSINGPL\nsystem-leader-election         leader-election   100                  ByUser                152m   False\nworkload-leader-election       leader-election   200                  ByUser                152m   False\nsystem-nodes                   system            500                  ByUser                152m   False\nkube-controller-manager        workload-high     800                  ByNamespace           152m   False\nkube-scheduler                 workload-high     800                  ByNamespace           152m   False\nkube-system-service-accounts   workload-high     900                  ByNamespace           152m   False\nhealth-for-strangers           exempt            1000                 \u003cnone\u003e                151m   False\nservice-accounts               workload-low      9000                 ByUser                152m   False\nglobal-default                 global-default    9900                 ByUser                152m   False\ncatch-all                      catch-all         10000                ByUser  \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406104459-ggom52w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230406104459-ggom52w",
+				"updated": "20230406114021"
+			},
+			"Children": [
+				{
+					"ID": "20230406111229-s4s57sk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406111229-s4s57sk",
+						"updated": "20230406114021"
+					},
+					"Children": [
+						{
+							"ID": "20230406111229-o98p8v2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406111229-o98p8v2",
+								"updated": "20230406114021"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "两对内建的 PL 和 FS"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "("
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "强制配置"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ")"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406104459-0ehez36",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104459-0ehez36",
+				"updated": "20230406104459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Exempt PL (PriorityLevelConfigurations.Spec.Type = exempt)：这个 PL 内的请求完全不受限制，且被立即执行。"
+				}
+			]
+		},
+		{
+			"ID": "20230406104459-yfnta00",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104459-yfnta00",
+				"updated": "20230406104459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Exempt FS：将来自 system:master group 的所有请求划分到 Exempt PL。用户可以自定义 FS 将一些特殊的请求划分到 Exempt PL 中。"
+				}
+			]
+		},
+		{
+			"ID": "20230406104459-musmc4t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104459-musmc4t",
+				"updated": "20230406104459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "catch-all PL：只有一个并发配额，没有 queue。一般会返回 HTTP 429 错误。"
+				}
+			]
+		},
+		{
+			"ID": "20230406104459-8jiu64j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104459-8jiu64j",
+				"updated": "20230406104459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "catch-all FS：说有未能匹配其他 FS 的请求，最终会被这个 FS 匹配上。保证所有的请求都有一个分类。"
+				}
+			]
+		},
+		{
+			"ID": "20230406104459-4kk1s1f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104459-4kk1s1f",
+				"updated": "20230406104459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于 request 只匹配第一个符合条件的 FS，所以 APF 会对 FS 进行排序，将 Exempt FS 排第一位，catch-all FS 排最后一位。"
+				}
+			]
+		},
+		{
+			"ID": "20230406154423-gmt12ho",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406154423-gmt12ho",
+				"updated": "20230406154438"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// sort into the order to be used for matching\nsort.Sort(fsSeq)\n\n// Supply missing mandatory FlowSchemas, in correct position\nif !haveExemptFS {\n\t// 放在第一位\n\tfsSeq = append(apihelpers.FlowSchemaSequence{fcboot.MandatoryFlowSchemaExempt}, fsSeq...)\n}\nif !haveCatchAllFS {\n\t// 放在最后一位\n\tfsSeq = append(fsSeq, fcboot.MandatoryFlowSchemaCatchAll)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406104457-x3a2lh2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406104457-x3a2lh2",
+				"updated": "20230406111223"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "自定义PL和FS"
+				}
+			]
+		},
+		{
+			"ID": "20230405193723-dw5e9uf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405193723-dw5e9uf",
+				"updated": "20230406111232"
+			},
+			"Children": [
+				{
+					"ID": "20230406111232-ne1dh5r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406111232-ne1dh5r"
+					},
+					"Children": [
+						{
+							"ID": "20230406111232-ijtyerf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406111232-ijtyerf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "FlowShema配置"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405193726-1bicsva",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230405193726-1bicsva",
+				"updated": "20230405193733"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: flowcontrol.apiserver.k8s.io/v1alpha1\nkind: FlowSchema\nmetadata:\n  name: health-for-strangers\nspec:\n  matchingPrecedence: 1000 #匹配优先级，1~1000，越小优先级越高\n  priorityLevelConfiguration: #关联的PriorityLevelConfigurations\n    name: exempt #排除rules，即不限制当前flowshema的rules\n  rules: #请求规则\n  - nonResourceRules: #非资源\n    - nonResourceURLs:\n      - \"/healthz\"\n      - \"/livez\"\n      - \"/readyz\"\n      verbs:\n      - \"*\"\n    subjects: #对应的用户或用户组\n    - kind: Group\n      group:\n        name: system:unauthenticated\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230405193737-0i2hth6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230405193737-0i2hth6",
+				"updated": "20230406111247"
+			},
+			"Children": [
+				{
+					"ID": "20230406111247-cmiypas",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230406111247-cmiypas"
+					},
+					"Children": [
+						{
+							"ID": "20230406111247-uz1gbdx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406111247-uz1gbdx"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "PriorityLevelConfiguration配置"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230405193749-b38s74r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230405193749-b38s74r",
+				"updated": "20230405193755"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: flowcontrol.apiserver.k8s.io/v1alpha1\nkind: PriorityLevelConfiguration\nmetadata:\n  name: leader-election\nspec:\n  limited: #限制策略\n    assuredConcurrencyShares: 10 \n    limitResponse: #如何处理被限制的请求\n      queuing: #类型为Queue时，列队的设置\n        handSize: 4 #队列\n        queueLengthLimit: 50 #队列长度\n        queues: 16 #队列数\n      type: Queue #Queue或者Reject，Reject直接返回429，Queue将请求加入队列\n  type: Limited #类型，Limited或Exempt， Exempt即不限制\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230405193805-udg4k7c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230405193805-udg4k7c",
+				"updated": "20230406114132"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 问题诊断"
+				}
+			]
+		},
+		{
+			"ID": "20230406114201-u9bvffa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406114201-u9bvffa",
+				"updated": "20230406114201"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "启用了 APF 的 API 服务器，它每个 HTTP 响应都有两个额外的 HTTP 头： "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "X-Kubernetes-PF-FlowSchema-UID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "X-Kubernetes-PF-PriorityLevel-UID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "， 注意与请求匹配的 FlowSchema 和已分配的优先级。 如果请求用户没有查看这些对象的权限，则这些 HTTP 头中将不包含 API 对象的名称， 因此在调试时，你可以使用类似如下的命令："
+				}
+			]
+		},
+		{
+			"ID": "20230406114133-n51gq9y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406114133-n51gq9y",
+				"updated": "20230406114142"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get flowschemas -o custom-columns=\"uid:{metadata.uid},name:{metadata.name}\"\nkubectl get prioritylevelconfigurations -o custom-columns=\"uid:{metadata.uid},name:{metadata.name}\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230405210907-b37jrbm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230405210907-b37jrbm",
+				"updated": "20230406150318"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 源码分析"
+				}
+			]
+		},
+		{
+			"ID": "20230406150610-5jedfl1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406150610-5jedfl1",
+				"updated": "20230406150620"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.1 请求流程"
+				}
+			]
+		},
+		{
+			"ID": "20230406150548-b93q7um",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406150548-b93q7um",
+				"updated": "20230406150548"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "API Server 接收到请求后，先按照前面提到的方式，找到与之匹配的 FS，实现分类，并根据 FS 确定请求的所属的Flow 和 PL。"
+				}
+			]
+		},
+		{
+			"ID": "20230406150548-rwbwgmf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406150548-rwbwgmf",
+				"updated": "20230406150548"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "APF 利用 FS 的 name 和请求的 userName 或 namespace 计算一个 hashFlowID 标识 Flow。"
+				}
+			]
+		},
+		{
+			"ID": "20230406154605-l3r2i06",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406154605-l3r2i06",
+				"updated": "20230406154619"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "var hashValue uint64\nif numQueues \u003e 1 {\n  // 1. DistinguisherMethod = ByUser, flowDistinguisher = rd.User.Name\n  // 2. DistinguisherMethod = ByNamespace, flowDistinguisher = rd.RequestInfo.Namespace\n  // 3. DistinguisherMethod = nil, flowDistinguisher = \"\"\n  flowDistinguisher := computeFlowDistinguisher(rd, fs.Spec.DistinguisherMethod)\n  hashValue = hashFlowID(fs.Name, flowDistinguisher)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406150548-payb299",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406150548-payb299",
+				"updated": "20230406150548"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后利用这个 hashFlowID 通过 Shuttle Sharding 算法，从请求所属的 PL 的 QueueSet 中选取指定数目的 queues (PriorityLevelConfiguration.Spec.Limited.LimitResponse.Queuing.HandSize)，然后从这些候选的 queues 中，选择其中 length 最小 queue. 并移出 queue 中超时的请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230406154640-flx0w5w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406154640-flx0w5w",
+				"updated": "20230406154710"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (d *Dealer) Deal(hashValue uint64, pick func(int)) {\n\t// 15 is the largest possible value of handSize\n\tvar remainders [15]int\n\n\tfor i := 0; i \u003c d.handSize; i++ {\n\t\thashValueNext := hashValue / uint64(d.deckSize-i)\n\t\tremainders[i] = int(hashValue - uint64(d.deckSize-i)*hashValueNext)\n\t\thashValue = hashValueNext\n\t}\n\n\t// 防止重复：正反馈机制，大者更大\n\tfor i := 0; i \u003c d.handSize; i++ {\n\t\tcard := remainders[i]\n\t\tfor j := i; j \u003e 0; j-- {\n\t\t\tif card \u003e= remainders[j-1] {\n        // 不会出现 card \u003e deckSize\n        // 因为 hashValue % uint64(d.deckSize-i) \u003c= d.deckSize-i-1，而第 i 个 card 最多自增 i 次\n\t\t\t\tcard++\n\t\t\t}\n\t\t}\n\t\tpick(card)\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406150548-szjmd5s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406150548-szjmd5s",
+				"updated": "20230406150548"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "判断是否入队这个请求：如果队列已满且 PL 中正在执行的请求数达到 PL 的并发限制，就会拒绝这个请求，否则入队这个请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230406150548-mb1gckv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406150548-mb1gckv",
+				"updated": "20230406150548"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此处保证了不同 Flow 的请求不会挤掉其他 Flow 的请求。Flow 是按照用户或 namespace 划分的，它的实际意义就是来自不同用户或 namespace 的请求不会挤掉同优先级的其他用户或 namespace 的请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230406150634-9wsoz57",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406150634-9wsoz57",
+				"updated": "20230406150645"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.2 分发请求"
+				}
+			]
+		},
+		{
+			"ID": "20230406150715-gpz0dh1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406150715-gpz0dh1",
+				"updated": "20230406150715"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了保证同一个 PL 中缓存的不同 Flow 的请求被处理机会平等，每次分发请求时，都会先应用 fair queuing 算法从 PL 的 QueueSet 中选中一个 queue："
+				}
+			]
+		},
+		{
+			"ID": "20230406150645-17wcpf1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406150645-17wcpf1",
+				"updated": "20230406150658"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// selectQueueLocked examines the queues in round robin order and\n// returns the first one of those for which the virtual finish time of\n// the oldest waiting request is minimal.\nfunc (qs *queueSet) selectQueueLocked() *queue {\n   minVirtualFinish := math.Inf(1)\n   var minQueue *queue\n   var minIndex int\n   nq := len(qs.queues)\n   for range qs.queues {\n      qs.robinIndex = (qs.robinIndex + 1) % nq\n      queue := qs.queues[qs.robinIndex]\n      if len(queue.requests) != 0 {\n         currentVirtualFinish := queue.GetVirtualFinish(0, qs.estimatedServiceTime)\n         if currentVirtualFinish \u003c minVirtualFinish {\n            minVirtualFinish = currentVirtualFinish\n            minQueue = queue\n            minIndex = qs.robinIndex\n         }\n      }\n   }\n   // we set the round robin indexing to start at the chose queue\n   // for the next round.  This way the non-selected queues\n   // win in the case that the virtual finish times are the same\n   qs.robinIndex = minIndex\n   return minQueue\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406155159-06cqwbc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406155159-06cqwbc",
+				"updated": "20230406155200"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "fiar queuing 选 queue 的基本思路是："
+				}
+			]
+		},
+		{
+			"ID": "20230406155205-2fsfcfi",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230406155205-2fsfcfi",
+				"updated": "20230406155620"
+			},
+			"Children": [
+				{
+					"ID": "20230406155620-ww96018",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230406155620-ww96018"
+					},
+					"Children": [
+						{
+							"ID": "20230406155620-x4nrnnm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406155620-x4nrnnm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每一个 queue 都维护了一个 virtualStart: oldest 请求的虚拟开始执行时间"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406155205-sccwiar",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406155205-sccwiar",
+				"updated": "20230406155231"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type queue struct {\n\trequests []*request\n  \n\t// 如果队列中没有 request 且没有 request 在执行 (requestsExecuting = 0), virtualStart = queueSet.virtualTime\n\t// 每分发一个 request, virtualStart = virtualStart + queueSet.estimatedServiceTime\n\t// 每执行完一个 request, virtualStart = virtualStart - queueSet.estimatedServiceTime + actualServiceTime，用真实的执行时间，校准 virtualStart\n\t// 计算第 J 个 request 的 virtualFinishTime = virtualStart + (J+1) * serviceTime\n\tvirtualStart float64\n\n\trequestsExecuting int\n\tindex             int\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406155507-dlq7wb7",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230406155507-dlq7wb7",
+				"updated": "20230406155530"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230406155525-rcdpx7c",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406155525-rcdpx7c",
+						"updated": "20230406155525"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "virtualStart 初始化是直接设置为 QueueSet 中维护的 virtualTime。而 QueueSet.virtualTime 是在这个 PL 初始化的时候赋值为 0。此后，如果 QueueSet 中的 queue 如有任何状态变化，都要执行更新，根据自身两次变更历经的 realTime 按比例增加："
+						}
+					]
+				},
+				{
+					"ID": "20230406155525-06duok6",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406155525-06duok6",
+						"updated": "20230406155525"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "func (qs *queueSet) syncTimeLocked() {\nrealNow := qs.clock.Now()\ntimeSinceLast := realNow.Sub(qs.lastRealTime).Seconds()\nqs.lastRealTime = realNow\nqs.virtualTime += timeSinceLast * qs.getVirtualTimeRatioLocked()\n}"
+						}
+					]
+				},
+				{
+					"ID": "20230406155525-654n03v",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406155525-654n03v",
+						"updated": "20230406155525"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "其中，这个比例计算方式为：min(QueueSet 中正字执行的请求数, PL 的并发配额) / QueueSet 中活跃的 queue 数目。"
+						}
+					]
+				},
+				{
+					"ID": "20230406155525-rtstl1k",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406155525-rtstl1k",
+						"updated": "20230406155530"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "virtualTime 实际对应于 bit-by-bit round-robin 算法中的 R(t)，当前时间 round-robin 轮数。具体可以参考文后第4个链接。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406155547-xj5le6l",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230406155547-xj5le6l",
+				"updated": "20230406155552"
+			},
+			"Children": [
+				{
+					"ID": "20230406155552-c2hvmoo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230406155552-c2hvmoo"
+					},
+					"Children": [
+						{
+							"ID": "20230406155552-x0vuqjp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406155552-x0vuqjp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "选 queue 时，会估计每个 queue 中 oldest 请求的虚拟执行完毕时间，选择这个虚拟执行完毕时间最小的 queue"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406155601-mptt01y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406155601-mptt01y",
+				"updated": "20230406155609"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "选中 queue 之后，从 queue 中取出 oldest 请求，设置执行标记。重复执行以上选 queue 给 oldest 请求设置执行标志，直到 PL 所有的 Queue 中都没有缓存的请求或达到 PL 的并发限制。"
+				}
+			]
+		},
+		{
+			"ID": "20230406155639-viud4jg",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230406155639-viud4jg",
+				"updated": "20230406155639"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230406155639-wsflrvt",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230406155639-wsflrvt"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "注：此处是尽可能多的分发 PL 中缓存的请求，有可能当前新加入的请求不会被分发。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406155651-n9leyu6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406155651-n9leyu6",
+				"updated": "20230406155718"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.3 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "请求阻塞监听执行"
+				}
+			]
+		},
+		{
+			"ID": "20230406155723-ujx8gkv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406155723-ujx8gkv",
+				"updated": "20230406155723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "完成以上操作之后，该请求会进入阻塞监听状态，直到被分发。"
+				}
+			]
+		},
+		{
+			"ID": "20230406155820-fcj7jwu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406155820-fcj7jwu",
+				"updated": "20230406155834"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (req *request) wait() (bool, bool) {\n\tqs := req.qs\n\tqs.lock.Lock()\n\tdefer qs.lock.Unlock()\n\n\t...\n\n\t// 里面包含一个条件锁，阻塞，等待唤醒\n\tdecisionAny := req.decision.GetLocked()\n\n\t...\n\n\tdecision, isDecision := decisionAny.(requestDecision)\n\tif !isDecision {\n\t\tpanic(fmt.Sprintf(\"QS(%s): Impossible decision %#+v (of type %T) for request %#+v %#+v\", qs.qCfg.Name, decisionAny, decisionAny, req.descr1, req.descr2))\n\t}\n\n\tswitch decision {\n\tcase decisionReject:\n\t\tklog.V(5).Infof(\"QS(%s): request %#+v %#+v timed out after being enqueued\\n\", qs.qCfg.Name, req.descr1, req.descr2)\n\t\tmetrics.AddReject(qs.qCfg.Name, req.fsName, \"time-out\")\n\t\treturn false, qs.isIdleLocked()\n\tcase decisionCancel:\n\t\t// TODO(aaron-prindle) add metrics for this case\n\t\tklog.V(5).Infof(\"QS(%s): Ejecting request %#+v %#+v from its queue\", qs.qCfg.Name, req.descr1, req.descr2)\n\t\treturn false, qs.isIdleLocked()\n\tcase decisionExecute:\n\t\tklog.V(5).Infof(\"QS(%s): Dispatching request %#+v %#+v from its queue\", qs.qCfg.Name, req.descr1, req.descr2)\n\t\treturn true, false\n\tdefault:\n\t\t// This can not happen, all possible values are handled above\n\t\tpanic(decision)\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406155745-05bij51",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406155745-05bij51",
+				"updated": "20230406155913"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.4 请求执行"
+				}
+			]
+		},
+		{
+			"ID": "20230406155941-yxb8d8e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406155941-yxb8d8e",
+				"updated": "20230406155941"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果这个请求被唤醒，并收到了 decisionExecute 标记，便会开始执行。"
+				}
+			]
+		},
+		{
+			"ID": "20230406155914-d7x3agb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230406155914-d7x3agb",
+				"updated": "20230406155929"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (req *request) Finish(execFn func()) bool {\n\texec, idle := req.wait()\n\tif !exec {\n\t\treturn idle\n\t}\n  // 请求执行\n\texecFn()\n  \n  // 分发请求\n\treturn req.qs.finishRequestAndDispatchAsMuchAsPossible(req)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230406155952-400tzfu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406155952-400tzfu",
+				"updated": "20230406155952"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行完毕后，便会释放一个并发资源，于是会触发新一轮的请求分发。"
+				}
+			]
+		}
+	]
+}

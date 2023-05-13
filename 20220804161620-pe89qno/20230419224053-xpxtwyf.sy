@@ -1,0 +1,2103 @@
+{
+	"ID": "20230419224053-xpxtwyf",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230419224053-xpxtwyf",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230419224053-1epcozz\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230419224053-ufzdsij\u0026quot;,\u0026quot;scrollTop\u0026quot;:1000,\u0026quot;focusId\u0026quot;:\u0026quot;20230419224053-5y43f6f\u0026quot;,\u0026quot;focusStart\u0026quot;:11,\u0026quot;focusEnd\u0026quot;:11}",
+		"title": "[设计]租户DNS服务 ",
+		"updated": "20230419224148"
+	},
+	"Children": [
+		{
+			"ID": "20230419224053-1epcozz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-1epcozz",
+				"updated": "20230419224144"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当前方案分析 – xx114"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-5y43f6f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-5y43f6f",
+				"updated": "20230419224148"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "xx114网络架构图："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-r0ra2tl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-r0ra2tl",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2021-10-25_11-11-2-20230419224053-12hojq0.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-mbi8tyv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-mbi8tyv",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kube-ovn网络DNS流量"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-1eemwry",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-1eemwry",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ECS的/etc/resolv.conf指向classical-cc114服务IP地址（100.64.0.1, 100.64.0.2）此时当ECS请求DNS服务时，报文将通过share-subnet发到vpc-classical的classical-cc114"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-moynk45",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-moynk45",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "classical-cc114运行bind9对于内网域名（zone \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://cecloudcs.com/",
+					"TextMarkTextContent": "cecloudcs.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"）直接forward到 127.0.0.1:5353，本地的5353由socat监听通过multisandbox代理到管理网内的cc114-proxy，该Pod内运行nginx将udp 53端口流量代理到管理网的CC114 Pod运行bind9，最终解析内外网域名"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-guigib3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-guigib3",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于公网域名直接forward到公共的DNS Server（223.5.5.5, 223.6.6.6....）"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-6zx80lw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-6zx80lw",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico网络DNS流量"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-593g0up",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-593g0up",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pod直接访问本节点的NodelocalDNS，NodelocalDNSj将缓存CoreDNS的域名解析，若命中直接返回结果，如果没有命中将DNS请求转发至CoreDNS，CoreDNS将解析k8s service相关域名，对于其他流量将forward至节点/etc/resolv.conf所指向的nameserver，该文件指向的nameserver为CC114节点，"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-j9kb3p1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-j9kb3p1",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时CC114将会对（zone \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://cecloudcs.com/",
+					"TextMarkTextContent": "cecloudcs.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"）进行解析，其他流量forward到公共DNS Server（223.5.5.5, 223.6.6.6....）"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-y2fcjbm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-y2fcjbm",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由上分析可知："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-f3s62gq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-f3s62gq",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当前内网域名（zone \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://cecloudcs.com/",
+					"TextMarkTextContent": "cecloudcs.com"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"）的DNS Record均保存在管理网的CC114节点的bind9内，处于经典VPC的classical-cc114仅起转发作用将流量转发至管理网的CC114节点"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-0wjlqzs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-0wjlqzs",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "存在问题："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-n36rbyl",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230419224053-n36rbyl",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"ID": "20230419224053-po99fkr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230419224053-po99fkr",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-cv0iy3t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-cv0iy3t",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "租户内网域名无法重叠，也不支持租户主动创建域名（当前域名均由OP根据Paas服务名称拼接后向CC114注册）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-l5w829c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230419224053-l5w829c",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-8yha9cy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-8yha9cy",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "内网解析网络路径较长"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-skbxc7c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230419224053-skbxc7c",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-3ka1t6s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-3ka1t6s",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "无公网权威解析功能"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-ve265s9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-ve265s9",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内网域名解析方案"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-7rg142y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-7rg142y",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案1 VPC内起DNS域名解析服务"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-kkh7plh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-kkh7plh",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2021-10-25_11-30-51-20230419224053-7k074gh.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-3q25dj9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-3q25dj9",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "占用VPC内预留Subnet（100.66.2.0/24）的一个固定IP比如100.66.2.114起DNS server，DNS server内直接保存内网DNS recoreds，ECS /etc/resolv.conf直接指向该IP，内网解析直接在VPC内的DNS server终结，其他访问由DNS server向上forward"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-fnufy7q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-fnufy7q",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方案2 OVN DNS服务"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-0tgmfed",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-0tgmfed",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OVN具有DNS解析能力，可提供简单的内网DNS解析服务"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-7p2ztdn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-7p2ztdn",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2021-10-25_11-40-12-20230419224053-9u6orjm.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-y1riihl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-y1riihl",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该方案存在问题："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-apn1qc9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-apn1qc9",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OVN是否能将其解析不了的其他域名转发至上联的其他DNS server进行解析"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-24tbhfs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-24tbhfs",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "公网域名解析方案"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-48w7d59",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-48w7d59",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "扩展classical-cc114功能，使其具有公网权威DNS能力"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-6cxa7lz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-6cxa7lz",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2021-10-25_14-4-30-20230419224053-5ucnn2q.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-a60i4jf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-a60i4jf",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "DNS Server应用选型"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-dyhv6py",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-dyhv6py",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "bind9"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-5x901t8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-5x901t8",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ISC（Internet System Consortium）的Bind一直以来基本上都是DNS的工业标准，Bind应该是目前世界上使用最为广泛的DNS服务器了。Bind起源于1980年的Berkeley大学，Bind的名称也是源自Berkeley Internet Name Domain。不过Bind也是一直漏洞不断，Bind9是ISC开发人员对Bind重写，目前常见的Linux发行版本中，会自带Bind9的安装包。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-qfcub8i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-qfcub8i",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Bind9可以作为权威与递归DNS。主要特性如下："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-qsrgi1f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-qsrgi1f",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "作为权威DNS时："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-ykabe4w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-ykabe4w",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Response Rate Limiting (RRL)：对DNS增强，以减少放大攻击\nDynamically-Loadable Zones (DLZ)：支持从外部数据库获取Zone数据，但不建议使用在高性的权威DNS。\nMinimum Re-load Time：支持配置文件动态加载。\nHSM Support：支持通过原生的 PKCS"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "tag",
+					"TextMarkTextContent": "11接口或OpenSSL PKCS"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​11的接口的HSM（ Hardware Security Modules）。\nDNSSEC with In-line Signing：支持NSEC与NSEC3的安全协议的签名。\nCatalog Zones：支持多Zone的目录管理。\nScalable Master/Slave Hierarchy：支持Master+多Slave组网，Slave从Master同步Zone配置。\n作为递归DNS时："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-jxookxb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-jxookxb",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "NXDOMAIN Redirect：当查询一个不存在域名时，转向一个Web页面，它依赖于DLZ特征。\nFlexible Cache Controls：对于不正确或过期的域名记录，灵活的缓存控制。\nSplit DNS：通过配置不同的View，来保护部分私有信息。\nOptimum Cache Hit Rate：通过 DNS pre-fetch 技术来优化缓存命中率。\nResolver rate-limiting：在受攻击下，对权威DNS查询限速，减轻对路径解析器的DDoS攻击影响。\nDNSSEC Validation：支持对DNSSEC的检验。\nGeoIP：支持基于来源不同的递归DNS的请求给出不同的响应。\nResponse Policy Zone（RPZ）：通过响应策略的Zone来减少对被认为是滥用或非法目的Zone的访问。\n双License：ISC 与Mozilla Public 2.0。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-8k3oj4e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-8k3oj4e",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开发语言：C。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-alros67",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-alros67",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官方网站："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.isc.org/",
+					"TextMarkTextContent": "https://www.isc.org/"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-7ozgdxa",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-7ozgdxa",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CoreDNS"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-4kj77yr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-4kj77yr",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CoreDNS去年8月份发起新的开源项目，目前已纳入开源基金会CNCF（Cloud Native Computing Foundation，云端原生计算基金会），它归属于Linux基金会。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-gbtus36",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-gbtus36",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CoreDNS的前身是SkyDNS，它的主要目的是构建一个快速灵活的DNS服务器，让用户可以通过不同方式访问和使用DNS内的数据。它被设计为Caddy网络服务的一个服务器插件。CoreDNS的每个特性都可以被实现为可插拔的中间件，如，日志、基于文件的DNS以及多种后端技术，进而可以拼接多个插件来创建定制化的管道。CoreDNS已经得到扩展，可以直接被Kubernetes访问服务数据，并以KubeDNS的形式提供给用户使用。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-29b5j41",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-29b5j41",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CoreDNS同样可以权威与递归DNS，目前官方的中间件已有31个："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-z5g2adf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-z5g2adf",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "bind: Serve zone data from a file; both DNSSEC (NSEC only) and DNS are supported (file).\ndnssec: Sign zone data on-the-fly\ncache: Caching\netcd: Use etcd as a backend, i.e., a 101.5% replacement for SkyDNS\nkubernetes: Use k8s (kubernetes) as a backend\nproxy: Serve as a proxy to forward queries to some other (recursive) nameserver\nloadbalance:Load balancing of responses\nrewrite: Rewrite queries (qtype, qclass and qname)\n…\nLicense： Apache-2.0。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-6pn27up",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-6pn27up",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开发语言：GO。"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-pvcyivr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-pvcyivr",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官方网站："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://coredns.io/",
+					"TextMarkTextContent": "https://coredns.io/"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-q5bpufz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230419224053-q5bpufz",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "建议选取Coredns，云原生，Go开发更好维护："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-1u499db",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-1u499db",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Coredns配置文件Corefile示例："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-erlqpuc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-erlqpuc",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": ".:1053{"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-q8m9mva",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-q8m9mva",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "    reload   # 自动检测Corefile变更并加载"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-3q7uuvg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-3q7uuvg",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "    log"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-8zztrjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-8zztrjd",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "    errors"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-u9kuevl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-u9kuevl",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "    # auto plugin可自动加载directory下zone文件"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-8z1d9uz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-8z1d9uz",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "    auto {"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-sb6tfv4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-sb6tfv4",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "        directory /root/dns  # db.xxx文件存放目录"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-uxppsv8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-uxppsv8",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "        reload 30s  # 每30s检测一次"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-5oszcov",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-5oszcov",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "    }"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-zv0nnz1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-zv0nnz1",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "}"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-pl6efbq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-pl6efbq",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "问题探讨："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-i8jlww0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-i8jlww0",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CC114兼容："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-no8ubnp",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230419224053-no8ubnp",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"ID": "20230419224053-yqalmk3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230419224053-yqalmk3",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-vfnqrhc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-vfnqrhc",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "内网DNS直接将 zone \""
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "http://cecloudcs.com/",
+									"TextMarkTextContent": "cecloudcs.com"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\" 域名访问forward到经典网的CC114走原路径；"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-lrvolvd",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-lrvolvd",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-rxda8ac",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-rxda8ac",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-a40opdt",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-a40opdt",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：没有数据迁移问题，"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-0lc4jmk",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-0lc4jmk",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-72psdgs",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-72psdgs",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：zone \""
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "http://cecloudcs.com/",
+													"TextMarkTextContent": "cecloudcs.com"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "\"原解析路径较长"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-jfe89wz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230419224053-jfe89wz",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-gmemds6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-gmemds6",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "内网DNS直接负责 zone \""
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "http://cecloudcs.com/",
+									"TextMarkTextContent": "cecloudcs.com"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\" 的域名访问，即 zone \""
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "http://cecloudcs.com/",
+									"TextMarkTextContent": "cecloudcs.com"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\" 的数据也加载到本地直接解析；"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-1aiv0rq",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-1aiv0rq",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-32riwog",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-32riwog",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-aiyyhtb",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-aiyyhtb",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：解析路径短，统一管理，"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-4durzz7",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-4durzz7",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-jd8l4sl",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-jd8l4sl",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：前向兼容，需将原CC114数据迁移至内网DNS内（包括zone文件数据以及数据库数据），协调其他产品修改将注册至cc114域名同时注册至内网DNS"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-o335omw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-o335omw",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内网DNS实例启动时机："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-oasug3r",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230419224053-oasug3r",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"ID": "20230419224053-5rz4c0y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230419224053-5rz4c0y",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-o6irert",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-o6irert",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建VPC同时创建该VPC下的内网DNS实例，VPC内的Subnet的DNS默认均指向内网DNS"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-y4e8gqr",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-y4e8gqr",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-baw9sj5",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-baw9sj5",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-qt6onhn",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-qt6onhn",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：客户无需反复修改subnet配置来切换dns server；DNS实例管理简单"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-9zja8k5",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-9zja8k5",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-77pcb3t",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-77pcb3t",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：内网DNS实例需占用系统资源"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-yv6u54q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230419224053-yv6u54q",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-wxecqz1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-wxecqz1",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ZONE绑定VPC时创建DNS实例，最后一个ZONE解绑时删除DNS实例"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-u0kjzvf",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-u0kjzvf",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-9g0rkex",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-9g0rkex",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-dxcimpf",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-dxcimpf",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：动态资源管理"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-prszied",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-prszied",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-abfxkgw",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-abfxkgw",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：DNS实例管理相对复杂，客户需反复修改subnet配置来切换dns server"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-zuyb9w3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230419224053-zuyb9w3",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "更新内网DNS实例内db文件方式"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-r83gb3y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230419224053-r83gb3y",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内网域名可能绑定多个VPC，修改record将同时更新多个VPC"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-ufzdsij",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230419224053-ufzdsij",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"ID": "20230419224053-trm9jx0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230419224053-trm9jx0",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-1z4efcm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-1z4efcm",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每修改一个records就重新生成一次db文件发送给所有绑定的VPC内的内网DNS实例"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-4aiv26n",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-4aiv26n",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-1g76dxe",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-1g76dxe",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-uq0zg6i",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-uq0zg6i",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：修改相对实时，对于Coredns每次修改仅需等待auto plugin reload时间"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-wall48j",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-wall48j",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-b232jly",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-b232jly",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：当内网域名绑定多个VPC，又同时添加多个records时，会出现多次db文件的无效刷新"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-wzfpapa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230419224053-wzfpapa",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-zbnf8ca",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-zbnf8ca",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "manger内创建队列，当zone records修改时将zone信息入队，出队时校验入队时间，若未达到超时时间T重新入队，直到超时才处理"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-f20g4lh",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-f20g4lh",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-73si2ln",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-73si2ln",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-6bgyb7e",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-6bgyb7e",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：可减少db文件无效刷新次数"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-7v1jbnf",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-7v1jbnf",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-d0sqgs7",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-d0sqgs7",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：修改最终生效最长可能需等待 T+reload time"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-lvclu43",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230419224053-lvclu43",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-pz8dibe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-pz8dibe",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "添加API，客户修改records时仅在数据库中修改数据，增加配置生效API，客户点击配置后，数据最终下发至实例"
+								}
+							]
+						},
+						{
+							"ID": "20230419224053-j8kz035",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230419224053-j8kz035",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"ID": "20230419224053-riuv92e",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-riuv92e",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-dc3vxnt",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-dc3vxnt",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "优势：无效刷新db文件次数减少至最低"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230419224053-a2jhpa7",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230419224053-a2jhpa7",
+										"updated": "20230419224053"
+									},
+									"Children": [
+										{
+											"ID": "20230419224053-g5g3r1o",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230419224053-g5g3r1o",
+												"updated": "20230419224053"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "劣势：添加api，需指导客户操作"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-3jyrmrd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-3jyrmrd",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需求："
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-92jbfza",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230419224053-92jbfza",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "vpc-server"
+				}
+			]
+		},
+		{
+			"ID": "20230419224053-8177390",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230419224053-8177390",
+				"updated": "20230419224053"
+			},
+			"Children": [
+				{
+					"ID": "20230419224053-s1cgpb0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230419224053-s1cgpb0",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-0nzt6gz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-0nzt6gz",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "DNS服务上线后，需要vpc-server在100.66.2.0/24子网中预留100.66.2.114，100.66.2.115两个IP给内网DNS使用"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-dfp48xw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230419224053-dfp48xw",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-ob9m8ha",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-ob9m8ha",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "vpc-server需在创建VPC的同时创建dns实例"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230419224053-85l73wd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230419224053-85l73wd",
+						"updated": "20230419224053"
+					},
+					"Children": [
+						{
+							"ID": "20230419224053-mk0h7ds",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230419224053-mk0h7ds",
+								"updated": "20230419224053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "subnet的dns地址默认指向内网dns实例，即100.66.2.114，100.66.2.115"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

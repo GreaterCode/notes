@@ -1,0 +1,854 @@
+{
+	"ID": "20230314194130-wnta8fi",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230314194130-wnta8fi",
+		"title": "dynamicClient",
+		"updated": "20230315005553"
+	},
+	"Children": [
+		{
+			"ID": "20230314194130-wbyvhg5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230314194130-wbyvhg5",
+				"updated": "20230314194221"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 前言"
+				}
+			]
+		},
+		{
+			"ID": "20230314194221-ahpwnnh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314194221-ahpwnnh",
+				"updated": "20230314194343"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "clientset客户端在处理deployment、service这些内置资源的时候很方便，每个资源都有其专属方法，配合官方API文档和数据结构定义，开发起来很高效。"
+				}
+			]
+		},
+		{
+			"ID": "20230314194343-jv0f9l8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314194343-jv0f9l8",
+				"updated": "20230314194422"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "但是处理k8s非内置资源时，比如CRD等，就得需要使用dynamic Client了"
+				}
+			]
+		},
+		{
+			"ID": "20230314194422-vohz182",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230314194422-vohz182",
+				"updated": "20230314194501"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 知识储备"
+				}
+			]
+		},
+		{
+			"ID": "20230314194501-qvb8jo4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314194501-qvb8jo4",
+				"updated": "20230314194542"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 了解dynanicClient前，需要知道object.runtime和Unstructured。"
+				}
+			]
+		},
+		{
+			"ID": "20230314194543-lnmu1uq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230314194543-lnmu1uq",
+				"updated": "20230314194546"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 Object.runtime"
+				}
+			]
+		},
+		{
+			"ID": "20230314194643-idyojgt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314194643-idyojgt",
+				"updated": "20230314194811"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在kubernetes中创建的deployment、pod等都是资源对象，对应着具体的数据结构 ，这些数据结构都实现了统一接口，即Object.runtime,源码位置："
+				}
+			]
+		},
+		{
+			"ID": "20230314194811-10htwh6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314194811-10htwh6",
+				"updated": "20230314194828"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "staging/src/k8s.io/apimachinery/pkg/runtime/interfaces.go"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，定义如下："
+				}
+			]
+		},
+		{
+			"ID": "20230314194829-h0kb4la",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230314194829-h0kb4la",
+				"updated": "20230314194837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type Object interface {\n\tGetObjectKind() schema.ObjectKind\n\tDeepCopyObject() Object\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230314194844-tqcyvlq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230314194844-tqcyvlq",
+				"updated": "20230314194911"
+			},
+			"Children": [
+				{
+					"ID": "20230314194911-mdjy3a0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230314194911-mdjy3a0"
+					},
+					"Children": [
+						{
+							"ID": "20230314194911-6mfaekf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230314194911-6mfaekf"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "DeepCopyObject()：将内存中的对象克隆出来一个新对象。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230314194910-gknn3gs",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230314194910-gknn3gs",
+				"updated": "20230314195042"
+			},
+			"Children": [
+				{
+					"ID": "20230314194914-9t5zb7s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230314194914-9t5zb7s",
+						"updated": "20230314195042"
+					},
+					"Children": [
+						{
+							"ID": "20230314194914-udipt8z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230314194914-udipt8z",
+								"updated": "20230314231325"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "GetObjectKind()：在处理Object.runtime类型的变量时，只要调用器GetObjectKind()方法就知道其的具体的资源对象类型，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "资源对象都是Object.runtime的实现。"
+								}
+							]
+						},
+						{
+							"ID": "20230314195042-2elo11a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230314195042-2elo11a",
+								"updated": "20230314195042"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230314231342-m32r6qr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230314231342-m32r6qr",
+				"updated": "20230314231412"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 Unstructured"
+				}
+			]
+		},
+		{
+			"ID": "20230314231453-fpf7oga",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314231453-fpf7oga",
+				"updated": "20230314231801"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在实际环境中，可能会遇到一些无法预知的数据结构，只有在真正运行的时候才知道，此时会采用interface{}进行接收。在k8s中代码也是这样实现的："
+				}
+			]
+		},
+		{
+			"ID": "20230314231820-uw65qu3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314231820-uw65qu3",
+				"updated": "20230314231836"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/unstructured/unstructured.go："
+				}
+			]
+		},
+		{
+			"ID": "20230314231806-9fgyqm0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230314231806-9fgyqm0",
+				"updated": "20230314231814"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type Unstructured struct {\n\t// Object is a JSON compatible map with string, float, int, bool, []interface{}, or\n\t// map[string]interface{}\n\t// children.\n\tObject map[string]interface{}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230314232046-iel0wta",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314232046-iel0wta",
+				"updated": "20230314232143"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Unstructured结合其下面关联的方法，就可以灵活处理非结构化数据"
+				}
+			]
+		},
+		{
+			"ID": "20230314232012-vdkh9ll",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230314232012-vdkh9ll",
+				"updated": "20230314232015"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230314232015-xzp5deo.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230314232251-d2b7etw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230314232251-d2b7etw",
+				"updated": "20230314232300"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Unstructured数据与资源对象转换"
+				}
+			]
+		},
+		{
+			"ID": "20230314232301-66tgy6v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230314232301-66tgy6v",
+				"updated": "20230315000046"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 实例化一个PodList数据结构，用于接收从unstructObj转换后的结果\npodList := \u0026apiv1.PodList{}\n\n// unstructObj\nerr = runtime.DefaultUnstructuredConverter.FromUnstructured(unstructObj.UnstructuredContent(), podList)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315000224-j05pib6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315000224-j05pib6",
+				"updated": "20230315000233"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体转化过程："
+				}
+			]
+		},
+		{
+			"ID": "20230315000233-m4knmao",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315000233-m4knmao",
+				"updated": "20230315000417"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "FromUnstructured将对象从map[string]接口｛｝表示转换为具体类型。如果对象实现了它，则使用encodingjsonUnmarshalr；如果没有实现，则使用反射\nfunc (c *unstructuredConverter) FromUnstructured(u map[string]interface{}, obj interface{}) error {\n\treturn c.FromUnstructuredWithValidation(u, obj, false)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315000531-wgu31vx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315000531-wgu31vx",
+				"updated": "20230315000758"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//FromUnstructuredWIthValidation将对象从map[string]接口｛｝表示转换为具体类型。如果对象实现了它，则使用encodingjsonUnmarshalr；如果没有实现，则使用反射。\n// 它需要一个validationDirective，指示遇到未知字段时的行为。\nfunc (c *unstructuredConverter) FromUnstructuredWithValidation(u map[string]interface{}, obj interface{}, returnUnknownFields bool) error {\n\t// 通过反射知道具体要转化的类型\n\tt := reflect.TypeOf(obj)\n\tvalue := reflect.ValueOf(obj)\n\tif t.Kind() != reflect.Pointer || value.IsNil() {\n\t\treturn fmt.Errorf(\"FromUnstructured requires a non-nil pointer to an object, got %v\", t)\n\t}\n\n\tfromUnstructuredContext := \u0026fromUnstructuredContext{\n\t\treturnUnknownFields: returnUnknownFields,\n\t}\n\t// 这里面是具体设置\n\terr := fromUnstructured(reflect.ValueOf(u), value.Elem(), fromUnstructuredContext)\n\tif c.mismatchDetection {\n\t\tnewObj := reflect.New(t.Elem()).Interface()\n\t\tnewErr := fromUnstructuredViaJSON(u, newObj)\n\t\tif (err != nil) != (newErr != nil) {\n\t\t\tklog.Fatalf(\"FromUnstructured unexpected error for %v: error: %v\", u, err)\n\t\t}\n\t\tif err == nil \u0026\u0026 !c.comparison.DeepEqual(obj, newObj) {\n\t\t\tklog.Fatalf(\"FromUnstructured mismatch\\nobj1: %#v\\nobj2: %#v\", obj, newObj)\n\t\t}\n\t}\n\tif err != nil {\n\t\treturn err\n\t}\n\tif returnUnknownFields \u0026\u0026 len(fromUnstructuredContext.unknownFieldErrors) \u003e 0 {\n\t\tsort.Slice(fromUnstructuredContext.unknownFieldErrors, func(i, j int) bool {\n\t\t\treturn fromUnstructuredContext.unknownFieldErrors[i].Error() \u003c\n\t\t\t\tfromUnstructuredContext.unknownFieldErrors[j].Error()\n\t\t})\n\t\treturn NewStrictDecodingError(fromUnstructuredContext.unknownFieldErrors)\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315000940-m5gb331",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315000940-m5gb331",
+				"updated": "20230315003905"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 具体利用反射实现转化过程\nfunc fromUnstructured(sv, dv reflect.Value, ctx *fromUnstructuredContext) error {\n\tsv = unwrapInterface(sv)\n\tif !sv.IsValid() {\n\t\tdv.Set(reflect.Zero(dv.Type()))\n\t\treturn nil\n\t}\n\tst, dt := sv.Type(), dv.Type()\n\n\tswitch dt.Kind() {\n\tcase reflect.Map, reflect.Slice, reflect.Pointer, reflect.Struct, reflect.Interface:\n\t\t// Those require non-trivial conversion.\n\tdefault:\n\t\t// This should handle all simple types.\n\t\tif st.AssignableTo(dt) {\n\t\t\tdv.Set(sv)\n\t\t\treturn nil\n\t\t}\n\t\t// We cannot simply use \"ConvertibleTo\", as JSON doesn't support conversions\n\t\t// between those four groups: bools, integers, floats and string. We need to\n\t\t// do the same.\n\t\tif st.ConvertibleTo(dt) {\n\t\t\tswitch st.Kind() {\n\t\t\tcase reflect.String:\n\t\t\t\tswitch dt.Kind() {\n\t\t\t\tcase reflect.String:\n\t\t\t\t\tdv.Set(sv.Convert(dt))\n\t\t\t\t\treturn nil\n\t\t\t\t}\n\t\t\tcase reflect.Bool:\n\t\t\t\tswitch dt.Kind() {\n\t\t\t\tcase reflect.Bool:\n\t\t\t\t\tdv.Set(sv.Convert(dt))\n\t\t\t\t\treturn nil\n\t\t\t\t}\n\t\t\tcase reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,\n\t\t\t\treflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:\n\t\t\t\tswitch dt.Kind() {\n\t\t\t\tcase reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,\n\t\t\t\t\treflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:\n\t\t\t\t\tdv.Set(sv.Convert(dt))\n\t\t\t\t\treturn nil\n\t\t\t\tcase reflect.Float32, reflect.Float64:\n\t\t\t\t\tdv.Set(sv.Convert(dt))\n\t\t\t\t\treturn nil\n\t\t\t\t}\n\t\t\tcase reflect.Float32, reflect.Float64:\n\t\t\t\tswitch dt.Kind() {\n\t\t\t\tcase reflect.Float32, reflect.Float64:\n\t\t\t\t\tdv.Set(sv.Convert(dt))\n\t\t\t\t\treturn nil\n\t\t\t\t}\n\t\t\t\tif sv.Float() == math.Trunc(sv.Float()) {\n\t\t\t\t\tdv.Set(sv.Convert(dt))\n\t\t\t\t\treturn nil\n\t\t\t\t}\n\t\t\t}\n\t\t\treturn fmt.Errorf(\"cannot convert %s to %s\", st.String(), dt.String())\n\t\t}\n\t}\n\n\t// Check if the object has a custom JSON marshaller/unmarshaller.\n\tentry := value.TypeReflectEntryOf(dv.Type())\n\tif entry.CanConvertFromUnstructured() {\n\t\treturn entry.FromUnstructured(sv, dv)\n\t}\n\tswitch dt.Kind() {\n\tcase reflect.Map:\n\t\treturn mapFromUnstructured(sv, dv, ctx)\n\tcase reflect.Slice:\n\t\treturn sliceFromUnstructured(sv, dv, ctx)\n\tcase reflect.Pointer:\n\t\treturn pointerFromUnstructured(sv, dv, ctx)\n\tcase reflect.Struct:\n\t\treturn structFromUnstructured(sv, dv, ctx)\n\tcase reflect.Interface:\n\t\treturn interfaceFromUnstructured(sv, dv)\n\tdefault:\n\t\treturn fmt.Errorf(\"unrecognized type: %v\", dt.Kind())\n\t}\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315003857-59d9j2j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315003857-59d9j2j",
+				"updated": "20230315003923"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "        // fromUnstructured只处理原始类型，对于数据结构会调用对应的xxxFromUnstructured方法处理,处理数据结构中每个字段又会调用fromUnstructured进行迭代，例如处理pointerFromUnstructured"
+				}
+			]
+		},
+		{
+			"ID": "20230315002354-o2hq1bt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315002354-o2hq1bt",
+				"updated": "20230315003853"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func pointerFromUnstructured(sv, dv reflect.Value, ctx *fromUnstructuredContext) error {\n\tst, dt := sv.Type(), dv.Type()\n\n\tif st.Kind() == reflect.Pointer \u0026\u0026 sv.IsNil() {\n\t\tdv.Set(reflect.Zero(dt))\n\t\treturn nil\n\t}\n\tdv.Set(reflect.New(dt.Elem()))\n\tswitch st.Kind() {\n\tcase reflect.Pointer, reflect.Interface:\n\t\treturn fromUnstructured(sv.Elem(), dv.Elem(), ctx)\n\tdefault:\n\t\treturn fromUnstructured(sv, dv.Elem(), ctx)\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315004019-91uwp1y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230315004019-91uwp1y",
+				"updated": "20230315004027"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3  dynamicClient"
+				}
+			]
+		},
+		{
+			"ID": "20230315004027-kcrz6t1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315004027-kcrz6t1",
+				"updated": "20230315004532"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "定义："
+				}
+			]
+		},
+		{
+			"ID": "20230315004533-ff9guf2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315004533-ff9guf2",
+				"updated": "20230315004539"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type DynamicClient struct {\n\tclient rest.Interface\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315004644-lr7dnz8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315004644-lr7dnz8",
+				"updated": "20230315004717"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "关联Resource()方法，入参为GVR，返回的是另一个数据结构dynamicResourceClient"
+				}
+			]
+		},
+		{
+			"ID": "20230315004659-62pbh4m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315004659-62pbh4m",
+				"updated": "20230315004702"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *DynamicClient) Resource(resource schema.GroupVersionResource) NamespaceableResourceInterface {\n\treturn \u0026dynamicResourceClient{client: c, resource: resource}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230315004751-rmuwnpx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315004751-rmuwnpx",
+				"updated": "20230315005341"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过上面代码可知，DynamicClient的关键是数据结构dynamicResourceClient及其关联方法，dynamicClient所有和资源相关的操作都是dynamicResourceClient在做，序列化和反序列化都交给"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "unstructured.UnstructuredJSONScheme"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，与kubernetes的交互交给Restclient"
+				}
+			]
+		},
+		{
+			"ID": "20230315004841-x5hs08q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315004841-x5hs08q",
+				"updated": "20230315004842"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230315004842-bfpadpc.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230315004848-14p2e2g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230315004848-14p2e2g",
+				"updated": "20230315005435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 总结"
+				}
+			]
+		},
+		{
+			"ID": "20230315005436-ng40wmb",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230315005436-ng40wmb",
+				"updated": "20230315005440"
+			},
+			"Children": [
+				{
+					"ID": "20230315005440-cyxnp0o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230315005440-cyxnp0o"
+					},
+					"Children": [
+						{
+							"ID": "20230315005440-3jzl6ev",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230315005440-3jzl6ev"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "dynamicClient为各种类型的资源都提供统一的操作API，资源需要包装为Unstructured数据结构"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230315005431-bqnsj30",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230315005431-bqnsj30",
+				"updated": "20230315005454"
+			},
+			"Children": [
+				{
+					"ID": "20230315005454-3efrza4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230315005454-3efrza4"
+					},
+					"Children": [
+						{
+							"ID": "20230315005454-grb0fsi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230315005454-grb0fsi"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "内部使用了Restclient与kubernetes交互；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230315005500-fb4qlgn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230315005500-fb4qlgn",
+				"updated": "20230315005505"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 示例"
+				}
+			]
+		},
+		{
+			"ID": "20230315005535-g4xuc0q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230315005535-g4xuc0q",
+				"updated": "20230315005553"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用dynamicClient实现查询指定namespace下的所有pod；"
+				}
+			]
+		},
+		{
+			"ID": "20230315005506-pc0u6o5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230315005506-pc0u6o5",
+				"updated": "20230315005516"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n \t\"context\"\n\t\"flag\"\n\t\"fmt\"\n \tapiv1 \"k8s.io/api/core/v1\"\n\tmetav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n \t\"k8s.io/apimachinery/pkg/runtime\"\n\t\"k8s.io/apimachinery/pkg/runtime/schema\"\n \t\"k8s.io/client-go/dynamic\"\n  \t\"k8s.io/client-go/tools/clientcmd\"\n\t\"k8s.io/client-go/util/homedir\"\n\t\"log\"\n\t\"path/filepath\"\n )\n\nfunc main() {\n\tvar kubeconfig *string\n\tif home := homedir.HomeDir(); home != \"\" {\n\t\tkubeconfig = flag.String(\"kubeconfig\", filepath.Join(home,\".kube\", \"config_local\"), \"(optional) absolute path to the kubeconfig file\")\n\t} else {\n\t\tkubeconfig = flag.String(\"kubeconfig\",\"\",\"absolute path to the kubeconfig file\")\n\t}\n\tflag.Parse()\n\n\tconfig, err := clientcmd.BuildConfigFromFlags(\"\", *kubeconfig)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\tdynamicClient, err := dynamic.NewForConfig(config)\n\tif err != nil {\n\t\tlog.Fatal(err)\n \t}\n\n\t// dynamicClient的唯一关联方法所需的入参\n\tgvr := schema.GroupVersionResource{Version: \"v1\", Resource: \"pods\"}\n\n\t// 使用dynamicClient的查询列表方法，查询指定namespace下的所有pod，\n\t// 注意此方法返回的数据结构类型是UnstructuredList\n\tunstructObj, err := dynamicClient.Resource(gvr).Namespace(\"kube-system\").List(context.TODO(),metav1.ListOptions{Limit: 100})\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\tpodList := \u0026apiv1.PodList{}\n\terr = runtime.DefaultUnstructuredConverter.FromUnstructured(unstructObj.UnstructuredContent(), podList)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(\"namespace\\t Status\\t\\t name\")\n\tfor _, item := range podList.Items {\n\t\tfmt.Printf(\"%v\\t %v\\t %v\\n\",\n\t\t\titem.Namespace,\n\t\t\titem.Status.Phase,\n\t\t\titem.Name,\n\t\t)\n\t}\n\n\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

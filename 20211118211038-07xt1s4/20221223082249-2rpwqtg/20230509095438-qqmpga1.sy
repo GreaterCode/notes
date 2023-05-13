@@ -1,0 +1,421 @@
+{
+	"ID": "20230509095438-qqmpga1",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230509095438-qqmpga1",
+		"title": "df和du结果不一致（文件删除后资源未被释放）",
+		"updated": "20230509100253"
+	},
+	"Children": [
+		{
+			"ID": "20230509095840-2hmhshz",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230509095840-2hmhshz",
+				"updated": "20230509100136"
+			},
+			"Children": [
+				{
+					"ID": "20230509095840-u1lrc33",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230509095840-u1lrc33",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-ahmdd3a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-ahmdd3a",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过lsof|grep deleted命令获取到已经被删除但是仍然被应用程序占用的文件列表，然后kill掉还在占用所删除文件的进程。需要注意的是：如果有很多进程都在使用所删除文件，那么采用第1种方式kill进程就有点麻烦了，而且风险也比较大。"
+								}
+							]
+						},
+						{
+							"ID": "20230509095840-omhns92",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-omhns92",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "因为kill进程是通过截断proc文件系统中的文件可以强制要求系统回收分配给正在使用的的文件。必须要确定不会对运行中的进程造成影响时才能使用，应用程序对这种方式支持的并不好，当一个正在使用的文件被截断可能会引发不可预知的问题。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-lyd3883",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230509095840-lyd3883",
+						"updated": "20230509095925"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-tc1lfaw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-tc1lfaw",
+								"updated": "20230509095925"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "停掉或重启使用这个所删除文件的应用，让OS自动回收磁盘空间。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-d05mz91",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230509095840-d05mz91",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-ssjqyqv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-ssjqyqv",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "也可以重启操作系统，不过这并不是最好的方法"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-jda0xqx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230509095840-jda0xqx",
+						"updated": "20230509100136"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-m39r8fx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-m39r8fx",
+								"updated": "20230509100136"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "tag",
+									"TextMarkTextContent": "（建议）"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​对待这种进程不停对文件写日志的操作，要释放文件占用的磁盘空间，最好的方法是在线清空这个文件。通过这种方法，磁盘空间不但可以马上释放，也可保障进程继续向文件写入日志。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230509095840-7ssi0mu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230509095840-7ssi0mu",
+				"updated": "20230509095840"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "在线清空文件（比如/home/wangshibo.log）的方式："
+				}
+			]
+		},
+		{
+			"ID": "20230509095840-7uzufpa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230509095840-7uzufpa",
+				"updated": "20230509095840"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "a）# echo \" \" \u003e /home/wangshibo.log\nb）# cat /dev/null \u003e /home/wangshibo.log\nc）# \u003e /home/wangshibo.log\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230509095840-g8wokc3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230509095840-g8wokc3",
+				"updated": "20230509095840"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "还有一种磁盘空间使用问题的现象：明明使用df -h命令查看磁盘空间使用率不算高，还有很多空余空间，但是创建文件或写入数据时一直报错磁盘写满：\" no space left on device\"！"
+				}
+			]
+		},
+		{
+			"ID": "20230509095840-92rbmhq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230509095840-92rbmhq",
+				"updated": "20230509095840"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "一般这种问题都是由于分区目录下deleted删除后的资源空间没有真正释放出来导致的, 具体处理流程如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230509095840-l27sxzy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230509095840-l27sxzy",
+				"updated": "20230509095840"
+			},
+			"Children": [
+				{
+					"ID": "20230509095840-svfld3p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230509095840-svfld3p",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-qip2ykf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-qip2ykf",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "先df -lh查看一下磁盘使用状况, 发现/data分区下的Used已用空间很大, 但是实际查看并没有占用那么大的空间!"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-btdxvh6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230509095840-btdxvh6",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-rbxwhtd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-rbxwhtd",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "找到被删除文件所在的分区, 比如/data分区"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-acldykh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230509095840-acldykh",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-3l2vqhh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-3l2vqhh",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看被删除了的所有文件：lsof -n /data |grep deleted"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-jbg89qc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230509095840-jbg89qc",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-uc97it4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-uc97it4",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "杀死这些文件的delete进程, 释放空间: lsof -n /data |grep deleted|awk '{print $2}'|xargs kill -9"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-v28od74",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230509095840-v28od74",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-pbtca9y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-pbtca9y",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "接着再运行lsof -n /data |grep delete，应该就没有结果了。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230509095840-jg5zqjn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230509095840-jg5zqjn",
+						"updated": "20230509095840"
+					},
+					"Children": [
+						{
+							"ID": "20230509095840-pbpbbbh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230509095840-pbpbbbh",
+								"updated": "20230509095840"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "注意: 刚杀死deleted进程时, df -h查看/data 分区, Used已用空间可能时瞬间显示过大, 但随着deleted进程杀死, 资源逐渐释放, /data分区下的Used已用空间会逐渐变小, Avail可用空间会逐渐变大)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230509100253-sqthouu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230509100253-sqthouu"
+			}
+		}
+	]
+}

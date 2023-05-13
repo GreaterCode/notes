@@ -1,0 +1,1427 @@
+{
+	"ID": "20221127194225-dwn4vwd",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221127194225-dwn4vwd",
+		"title": "3-子网",
+		"updated": "20221127211957"
+	},
+	"Children": [
+		{
+			"ID": "20221127194225-wa4rp9s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127194225-wa4rp9s",
+				"updated": "20221127194354"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网是 Kube-OVN 中的一个核心概念和基本使用单元，Kube-OVN 会以子网来组织 IP 和网络配置，每个 Namespace 可以归属于特定的子网， Namespace 下的 Pod 会自动从所属的子网中获取 IP 并共享子网的网络配置（CIDR，网关类型，访问控制，NAT控制等）。"
+				}
+			]
+		},
+		{
+			"ID": "20221127194405-7kzpvwn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127194405-7kzpvwn",
+				"updated": "20221127194418"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kube-OVN 中子网为一个全局的虚拟网络配置，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "同一个子网的地址可以分布在任意一个节点上"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221127194419-dpd3kps",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127194419-dpd3kps",
+				"updated": "20221127194441"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Properties": {
+						"parent-style": "display: block;"
+					},
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127194441-2mohlxf.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: parent-style=\"display: block;\"}"
+				}
+			]
+		},
+		{
+			"ID": "20221127195235-5jew1qx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127195235-5jew1qx",
+				"updated": "20221127195343"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 默认子网"
+				}
+			]
+		},
+		{
+			"ID": "20221127195343-vcov5hr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127195343-vcov5hr",
+				"updated": "20221127195353"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Overlay 模式下，默认子网使用了分布式网关并对出网流量进行 NAT 转换，其行为和 Flannel 的默认行为基本一致， 用户无需额外的配置即可使用到大部分的网络功能。"
+				}
+			]
+		},
+		{
+			"ID": "20221127195358-wpxv545",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127195358-wpxv545",
+				"updated": "20221127195359"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Underlay 模式下，默认子网使用物理网关作为出网网关，并开启 arping 检查网络连通性。"
+				}
+			]
+		},
+		{
+			"ID": "20221127195405-ltgcy9d",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127195405-ltgcy9d",
+				"updated": "20221127195436"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看默认子网"
+				}
+			]
+		},
+		{
+			"ID": "20221127195442-u8a27xp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127195442-u8a27xp",
+				"updated": "20221127195443"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认子网 spec 中的 default 字段为 true，一个集群下只有一个默认子网，默认名为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn-default"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221127195454-35zz05b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127195454-35zz05b",
+				"updated": "20221127195500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get subnet ovn-default -o yaml\napiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  creationTimestamp: \"2019-08-06T09:33:43Z\"\n  generation: 1\n  name: ovn-default\n  resourceVersion: \"1571334\"\n  selfLink: /apis/kubeovn.io/v1/subnets/ovn-default\n  uid: 7e2451f8-fb44-4f7f-b3e0-cfd27f6fd5d6\nspec:\n  cidrBlock: 10.16.0.0/16\n  default: true\n  excludeIps:\n  - 10.16.0.1\n  gateway: 10.16.0.1\n  gatewayType: distributed\n  natOutgoing: true\n  private: false\n  protocol: IPv4\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127195523-tplfxab",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127195523-tplfxab",
+				"updated": "20221127195532"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Join子网"
+				}
+			]
+		},
+		{
+			"ID": "20221127195532-0pxaiob",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127195532-0pxaiob",
+				"updated": "20221127195556"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kubernetes 的网络规范中，要求 Node 可以和所有的 Pod 直接通信。 为了在 Overlay 网络模式下达到这个目的， Kube-OVN 创建了一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "join"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 子网， 并在每个 Node 节点创建了一块虚拟网卡 ovn0 接入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "join"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 子网，通过该网络完成节点和 Pod 之间的网络互通。"
+				}
+			]
+		},
+		{
+			"ID": "20221127195613-ixpqqoe",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127195613-ixpqqoe",
+				"updated": "20221127195626"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看join子网"
+				}
+			]
+		},
+		{
+			"ID": "20221127195626-njkcpox",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127195626-njkcpox",
+				"updated": "20221127195634"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网默认名为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "join"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 一般无需对该子网 CIDR 外的其他网络配置进行修改"
+				}
+			]
+		},
+		{
+			"ID": "20221127195608-2tyspi7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127195608-2tyspi7",
+				"updated": "20221127195645"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get subnet join -o yaml\napiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  creationTimestamp: \"2019-08-06T09:33:43Z\"\n  generation: 1\n  name: join\n  resourceVersion: \"1571333\"\n  selfLink: /apis/kubeovn.io/v1/subnets/join\n  uid: 9c744810-c678-4d50-8a7d-b8ec12ef91b8\nspec:\n  cidrBlock: 100.64.0.0/16\n  default: false\n  excludeIps:\n  - 100.64.0.1\n  gateway: 100.64.0.1\n  gatewayNode: \"\"\n  gatewayType: \"\"\n  natOutgoing: false\n  private: false\n  protocol: IPv4\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127195655-gauush8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127195655-gauush8",
+				"updated": "20221127195703"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 node 节点查看 ovn0 网卡："
+				}
+			]
+		},
+		{
+			"ID": "20221127195708-rtr6a0o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127195708-rtr6a0o",
+				"updated": "20221127195711"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ifconfig ovn0\novn0: flags=4163\u003cUP,BROADCAST,RUNNING,MULTICAST\u003e  mtu 1420\n        inet 100.64.0.4  netmask 255.255.0.0  broadcast 100.64.255.255\n        inet6 fe80::800:ff:fe40:5  prefixlen 64  scopeid 0x20\u003clink\u003e\n        ether 0a:00:00:40:00:05  txqueuelen 1000  (Ethernet)\n        RX packets 18  bytes 1428 (1.3 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 19  bytes 1810 (1.7 KiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127195718-ou80r7v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127195718-ou80r7v",
+				"updated": "20221127195729"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 创建自定义子网"
+				}
+			]
+		},
+		{
+			"ID": "20221127195730-gh5aqlt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127195730-gh5aqlt",
+				"updated": "20221127195830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建子网"
+				}
+			]
+		},
+		{
+			"ID": "20221127195838-zjc67t2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127195838-zjc67t2",
+				"updated": "20221127195845"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat \u003c\u003cEOF | kubectl create -f -\napiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: subnet1\nspec:\n  protocol: IPv4\n  cidrBlock: 10.66.0.0/16\n  excludeIps:\n  - 10.66.0.1..10.66.0.10\n  - 10.66.0.101..10.66.0.151\n  gateway: 10.66.0.1\n  gatewayType: distributed\n  natOutgoing: true\n  namespaces:\n  - ns1\n  - ns2\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127195916-vrwjura",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127195916-vrwjura",
+				"updated": "20221127195949"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证子网绑定生效"
+				}
+			]
+		},
+		{
+			"ID": "20221127195957-7mo4wkr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127195957-7mo4wkr",
+				"updated": "20221127200000"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl create ns ns1\nnamespace/ns1 created\n\n# kubectl run nginx --image=nginx:alpine -n ns1\ndeployment.apps/nginx created\n\n# kubectl get pod -n ns1 -o wide\nNAME                     READY   STATUS    RESTARTS   AGE   IP           NODE    NOMINATED NODE   READINESS GATES\nnginx-74d5899f46-n8wtg   1/1     Running   0          10s   10.66.0.11   node1   \u003cnone\u003e           \u003cnone\u003e\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127195955-2ec3v42",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127195955-2ec3v42",
+				"updated": "20221127200246"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. Overlay 子网网关配置"
+				}
+			]
+		},
+		{
+			"ID": "20221127200312-ypuufpd",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221127200312-ypuufpd",
+				"updated": "20221127200312"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221127200312-o8eup59",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221127200312-o8eup59"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "该功能只对 Overlay 模式子网生效，Underlay 类型子网访问外部网络需要借助底层物理网关。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127200315-4eq3zj1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127200315-4eq3zj1",
+				"updated": "20221127200436"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Overlay 子网下的 Pod 需要通过网关来访问集群外部网络，Kube-OVN 目前支持两种类型的网关： "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "分布式网关和集中式网关"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，用户可以在子网中对网关的类型进行调整。"
+				}
+			]
+		},
+		{
+			"ID": "20221127200436-v2k1fhb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127200436-v2k1fhb",
+				"updated": "20221127200437"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "两种类型网关均支持 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "natOutgoing"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 设置，用户可以选择 Pod 访问外网时是否需要进行 snat。"
+				}
+			]
+		},
+		{
+			"ID": "20221127200416-vm9it78",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127200416-vm9it78",
+				"updated": "20221127201630"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "分布式网关"
+				}
+			]
+		},
+		{
+			"ID": "20221127201643-9rnyry0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127201643-9rnyry0",
+				"updated": "20221127201704"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网的默认类型网关，每个 node 会作为当前 node 上 pod 访问外部网络的网关。 数据包会通过本机的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn0"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 网卡流入主机网络栈，再根据主机的路由规则进行出网。 当 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "natOutgoing"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 时，Pod 访问外部网络将会使用当前所在宿主机的 IP。"
+				}
+			]
+		},
+		{
+			"ID": "20221127201725-0j9pycd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127201725-0j9pycd",
+				"updated": "20221127201726"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Properties": {
+						"parent-style": "display: block;"
+					},
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127201726-go3abfx.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: parent-style=\"display: block;\"}"
+				}
+			]
+		},
+		{
+			"ID": "20221127201753-4jp37qj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127201753-4jp37qj",
+				"updated": "20221127201804"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网示例，其中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "gatewayType"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "distributed"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "："
+				}
+			]
+		},
+		{
+			"ID": "20221127201753-fyuaawa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127201753-fyuaawa",
+				"updated": "20221127201821"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: distributed\nspec:\n  protocol: IPv4\n  cidrBlock: 10.166.0.0/16\n  default: false\n  excludeIps:\n  - 10.166.0.1\n  gateway: 10.166.0.1\n  gatewayType: distributed\n  natOutgoing: true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127201632-bon8vwa",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127201632-bon8vwa",
+				"style": "text-align: left;",
+				"updated": "20221127201639"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "集中式开关"
+				}
+			]
+		},
+		{
+			"ID": "20221127201938-zl05k04",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127201938-zl05k04",
+				"updated": "20221127201940"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Properties": {
+						"parent-style": "display: block;"
+					},
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127201940-alarij2.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: parent-style=\"display: block;\"}"
+				}
+			]
+		},
+		{
+			"ID": "20221127203038-k4i7oiu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127203038-k4i7oiu",
+				"updated": "20221127203309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网内流量访问外网使用固定的 IP，以便审计和白名单等安全操作，可以在子网中设置网关类型为集中式网关。"
+				}
+			]
+		},
+		{
+			"ID": "20221127203308-01b9csx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127203308-01b9csx",
+				"updated": "20221127203308"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在集中式网关模式下，Pod 访问外网的数据包会首先被路由到特定节点的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn0"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 网卡，再通过主机的路由规则进行出网。 当 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "natOutgoing"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 时，Pod 访问外部网络将会使用特定宿主机的 IP。"
+				}
+			]
+		},
+		{
+			"ID": "20221127203504-omuc7yb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127203504-omuc7yb",
+				"updated": "20221127203504"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网示例，其中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "gatewayType"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "centralized"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "gatewayNode"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 为特定机器在 Kubernetes 中的 NodeName。 其中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "gatewayNode"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段可以为逗号分隔的多台主机。"
+				}
+			]
+		},
+		{
+			"ID": "20221127203536-da8br78",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127203536-da8br78",
+				"updated": "20221127203541"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: centralized\nspec:\n  protocol: IPv4\n  cidrBlock: 10.166.0.0/16\n  default: false\n  excludeIps:\n  - 10.166.0.1\n  gateway: 10.166.0.1\n  gatewayType: centralized\n  gatewayNode: \"node1,node2\"\n  natOutgoing: true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127203927-c9mlnbg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127203927-c9mlnbg",
+				"updated": "20221127204056"
+			},
+			"Children": [
+				{
+					"ID": "20221127203927-yw06fug",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127203927-yw06fug",
+						"updated": "20221127204038"
+					},
+					"Children": [
+						{
+							"ID": "20221127203927-ndu6g3x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127203927-ndu6g3x",
+								"updated": "20221127204038"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "集中式网关通过指定机器的特定网卡进行出网，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "gatewayNode"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 可更改为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "kube-ovn-worker:172.18.0.2, kube-ovn-control-plane:172.18.0.3"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 格式。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127203927-6tkhn7q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127203927-6tkhn7q",
+						"updated": "20221127204056"
+					},
+					"Children": [
+						{
+							"ID": "20221127203927-30gsv5v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127203927-30gsv5v",
+								"updated": "20221127204056"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "集中式网关默认为主备模式，只有主节点进行流量转发， 如果需要切换为 ECMP 模式，请参考"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://kubeovn.github.io/docs/v1.10.x/guide/setup-options/#ecmp",
+									"TextMarkTextContent": "集中式网关 ECMP 开启设置"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127203930-z4h1uvm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127203930-z4h1uvm",
+				"updated": "20221127204613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 子网ACL设置"
+				}
+			]
+		},
+		{
+			"ID": "20221127204937-icywyne",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127204937-icywyne",
+				"updated": "20221127204938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于有细粒度 ACL 控制的场景，Kube-OVN 的 Subnet 提供了 ACL 规则的设置，可以实现网络规则的精细控制。"
+				}
+			]
+		},
+		{
+			"ID": "20221127204646-8t9xkhp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127204646-8t9xkhp",
+				"updated": "20221127204647"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Subnet 中的 ACL 规则和 OVN 的 ACL 规则一致，相关字段内容可以参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://man7.org/linux/man-pages/man5/ovn-nb.5.html#ACL_TABLE",
+					"TextMarkTextContent": "ovn-nb ACL Table"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "， "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "match"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 字段支持的字段可参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://man7.org/linux/man-pages/man5/ovn-sb.5.html#Logical_Flow_TABLE",
+					"TextMarkTextContent": "ovn-sb Logical Flow Table"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221127204705-00yeim3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127204705-00yeim3",
+				"updated": "20221127204712"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "允许 IP 地址为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "10.10.0.2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的 Pod 访问所有地址，但不允许其他地址主动访问自己的 ACL 规则示例如下："
+				}
+			]
+		},
+		{
+			"ID": "20221127204718-80zneai",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127204718-80zneai",
+				"updated": "20221127204725"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: acl\nspec:\n  acls:\n    - action: drop\n      direction: to-lport\n      match: ip4.dst == 10.10.0.2 \u0026\u0026 ip\n      priority: 1002\n    - action: allow-related\n      direction: from-lport\n      match: ip4.src == 10.10.0.2 \u0026\u0026 ip\n      priority: 1002\n  cidrBlock: 10.10.0.0/24\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127204713-bvf5veu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127204713-bvf5veu",
+				"updated": "20221127205023"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 子网隔离设置"
+				}
+			]
+		},
+		{
+			"ID": "20221127205027-xeaxluc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127205027-xeaxluc",
+				"updated": "20221127205028"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "子网 ACL 的功能可以覆盖子网隔离的功能，并有更好的灵活性，我们推荐使用子网 ACL 来做相应的配置。"
+				}
+			]
+		},
+		{
+			"ID": "20221127211425-mbhsdy4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127211425-mbhsdy4",
+				"updated": "20221127211511"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如需对子网间的访问进行控制，可以在子网 CRD 中将 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "private"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 设置为 true，则该子网将和其他子网以及外部网络隔离， 只能进行子网内部的通信。"
+				}
+			]
+		},
+		{
+			"ID": "20221127211518-z888owt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127211518-z888owt",
+				"updated": "20221127211518"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如需开白名单，可以通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "allowSubnets"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 进行设置。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "allowSubnets"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 内的网段和该子网可以双向互访。"
+				}
+			]
+		},
+		{
+			"ID": "20221127211539-x8g19ib",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127211539-x8g19ib",
+				"updated": "20221127211547"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开启访问控制的子网示例"
+				}
+			]
+		},
+		{
+			"ID": "20221127211552-8f8cgrf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127211552-8f8cgrf",
+				"updated": "20221127211605"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: private\nspec:\n  protocol: IPv4\n  default: false\n  namespaces:\n  - ns1\n  - ns2\n  cidrBlock: 10.69.0.0/16\n  private: true\n  allowSubnets:\n  - 10.16.0.0/16\n  - 10.18.0.0/16\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127211559-922cjrk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127211559-922cjrk",
+				"updated": "20221127211708"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. Underlay 相关选项"
+				}
+			]
+		},
+		{
+			"ID": "20221127211718-0bv90cx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127211718-0bv90cx",
+				"updated": "20221127211721"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该部分功能只对 Underlay 类型子网生效"
+				}
+			]
+		},
+		{
+			"ID": "20221127211731-yikuh2o",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127211731-yikuh2o",
+				"updated": "20221127211749"
+			},
+			"Children": [
+				{
+					"ID": "20221127211731-o3nyqnk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127211731-o3nyqnk"
+					},
+					"Children": [
+						{
+							"ID": "20221127211731-i7n26t5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127211731-i7n26t5"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "vlan"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 如果使用 Underlay 网络，该字段用来控制该 Subnet 和哪个 Vlan CR 进行绑定。该选项默认为空字符串，即不使用 Underlay 网络。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127211731-84vst4m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127211731-84vst4m",
+						"updated": "20221127211749"
+					},
+					"Children": [
+						{
+							"ID": "20221127211731-jj3evwx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127211731-jj3evwx",
+								"updated": "20221127211749"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "logicalGateway"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 一些 Underlay 环境为纯二层网络，不存在物理的三层网关。在这种情况下可以借助 OVN 本身的能力设置一个虚拟网关，将 Underlay 和 Overlay 网络打通。默认值为："
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "false"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。 "
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127211908-m29sf5t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127211908-m29sf5t",
+				"updated": "20221127211932"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8. 网关检查设置"
+				}
+			]
+		},
+		{
+			"ID": "20221127211947-q0alkp9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127211947-q0alkp9",
+				"updated": "20221127211948"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认情况下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-ovn-cni"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 在启动 Pod 后会使用 ICMP 或 ARP 协议请求网关并等待返回， 以验证网络工作正常，在部分 Underlay 环境网关无法响应 ARP 请求，或无需网络外部联通的场景 可以关闭网关检查。"
+				}
+			]
+		},
+		{
+			"ID": "20221127211952-7iju1zq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127211952-7iju1zq",
+				"updated": "20221127211957"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: disable-gw-check\nspec:\n  disableGatewayCheck: true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127211951-8kdofx0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127211951-8kdofx0",
+				"updated": "20221127211951"
+			}
+		}
+	]
+}

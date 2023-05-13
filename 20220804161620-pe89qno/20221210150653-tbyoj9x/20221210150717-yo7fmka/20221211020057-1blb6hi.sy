@@ -1,0 +1,2566 @@
+{
+	"ID": "20221211020057-1blb6hi",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221211020057-1blb6hi",
+		"title": "Kubernetes 私有集群负载均衡器终极解决方案 MetalLB - 腾讯云开发者社区-腾讯云",
+		"updated": "20221211020057"
+	},
+	"Children": [
+		{
+			"ID": "20221211020057-typ72o4",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221211020057-typ72o4",
+				"updated": "20221211020057"
+			}
+		},
+		{
+			"ID": "20221211020057-437f845",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020057-437f845",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-h7htryq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-h7htryq",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-jykyman",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-jykyman",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://cloud.tencent.com/developer/article/1631910",
+									"TextMarkTextContent": "https://cloud.tencent.com/developer/article/1631910"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-nwkd5yz",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221211020057-nwkd5yz",
+				"updated": "20221211020057"
+			}
+		},
+		{
+			"ID": "20221211020057-n0vg8lb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-n0vg8lb",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/solution/privatecloud?from=10680",
+					"TextMarkTextContent": "私有云"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "裸金属架构（这是相对云上环境来说，不是说无操作系统）上部署的 Kubernetes 集群，通常是无法使用 LoadBalancer 类型的 Service 的。因为 Kubernetes 本身没有为裸机群集提供网络"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/product/clb?from=10680",
+					"TextMarkTextContent": "负载均衡"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "器的实现。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-0vpz04q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-0vpz04q",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你的 Kubernetes 集群没有在公有云的 IaaS 平台（GCP，AWS，Azure …）上运行，则 LoadBalancers 将在创建时无限期地保持 “挂起” 状态，也就是说只有公有云厂商自家的 Kubernetes 支持 LoadBalancer 。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-fbqajow",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-fbqajow",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了从外部访问裸机 Kubernetes 群集，目前只能使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NodePort"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 或 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Ingress"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的方法进行服务暴露。前者的缺点是每个暴露的服务需要占用所有节点的某个端口，后者的缺点是仅仅能支持 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "HTTP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 协议。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-6ympc8x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-6ympc8x",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "MetalLB"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 是一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/product/clb?from=10680",
+					"TextMarkTextContent": "负载均衡器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，专门解决裸金属 Kubernetes 集群中无法使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "LoadBalancer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 类型服务的痛点。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "MetalLB"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 使用标准化的路由协议，以便裸金属 Kubernetes 集群上的外部服务也尽可能地工作。即 MetalLB 能够帮助你在裸金属 Kubernetes 集群中创建 LoadBalancer 类型的 Kubernetes 服务，该项目发布于 2017 年底，当前处于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Beta"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 阶段。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-gqe9p6z",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020057-gqe9p6z",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020057-bajzhh5",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020057-bajzhh5",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "项目地址：https://github.com/danderson/metallb"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-d6ao87l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-d6ao87l",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB 会在 Kubernetes 内运行，监控服务对象的变化，一旦监测到有新的 LoadBalancer 服务运行，并且没有可申请的负载均衡器之后，就会完成地址分配和外部声明两部分的工作。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-eowho0a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020057-eowho0a",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "地址分配"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-fw5viau",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-fw5viau",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在云环境中，当你请求一个负载均衡器时，云平台会自动分配一个负载均衡器的 IP 地址给你，应用程序通过此 IP 来访问经过负载均衡处理的服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-xooire3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-xooire3",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 MetalLB 时，MetalLB 会自己为用户的 LoadBalancer 类型 Service 分配 IP 地址，当然该 IP 地址不是凭空产生的，需要用户在配置中提供一个 IP 地址池，Metallb 将会在其中选取地址分配给服务。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-d8n8hvs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020057-d8n8hvs",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "外部声明"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-oztrrt2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-oztrrt2",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB 将 IP 分配给某个服务后，它需要对外宣告此 IP 地址，并让外部主机可以路由到此 IP。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-f0i88b8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-f0i88b8",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB 支持两种声明模式：Layer 2（ ARP / NDP ）模式或者 BGP 模式。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-wz44y1g",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221211020057-wz44y1g",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-8smeq1p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221211020057-8smeq1p",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-h39460a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-h39460a",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Layer 2 模式"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-cmrf31r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-cmrf31r",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/4pqr33inrd-20221211020057-m26hyun.jpeg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-1ocmui1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-1ocmui1",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在任何以太网环境均可使用该模式。当在第二层工作时，将有一台机器获得 IP 地址（即服务的所有权）。MetalLB 使用标准的地址发现协议（对于 IPv4 是 ARP，对于 IPv6 是 NDP）宣告 IP 地址，使其在本地网路中可达。从 LAN 的角度来看，仅仅是某台机器多配置了一个 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-cyv87tn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-cyv87tn",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Layer 2 模式下，每个 Service 会有集群中的一个 Node 来负责。服务的入口流量全部经由单个节点，然后该节点的 Kube-Proxy 会把流量再转发给服务的 Pods。也就是说，该模式下 MetalLB 并没有真正提供负载均衡器。尽管如此，MetalLB 提供了故障转移功能，如果持有 IP 的节点出现故障，则默认 10 秒后即发生故障转移，IP 会被分配给其它健康的节点。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-g0xeh84",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-g0xeh84",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Layer 2 模式的优缺点："
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-xvdcgm6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020057-xvdcgm6",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-vk8vy0r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-vk8vy0r",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-0a6e598",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-0a6e598",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Layer 2 模式更为通用，不需要用户有额外的设备；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-ky9flu2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-ky9flu2",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-azre3tb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-azre3tb",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Layer 2 模式下存在单点问题，服务的所有入口流量经由单点，其网络带宽可能成为瓶颈；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-5jj923d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-5jj923d",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-lp4t0sb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-lp4t0sb",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于 Layer 2 模式需要 ARP/NDP 客户端配合，当故障转移发生时，MetalLB 会发送 ARP 包来宣告 MAC 地址和 IP 映射关系的变化，地址分配略为繁琐。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-5tt7c7u",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221211020057-5tt7c7u",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-wvim2xc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221211020057-wvim2xc",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-wyrq40y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-wyrq40y",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "BGP 模式"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-dmlnj61",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-dmlnj61",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当在第三层工作时，集群中所有机器都和你控制的最接近的路由器建立 BGP 会话，此会话让路由器能学习到如何转发针对 K8S 服务 IP 的数据包。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-uennywx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-uennywx",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过使用 BGP，可以实现真正的跨多节点负载均衡（需要路由器支持 multipath），还可以基于 BGP 的策略机制实现细粒度的流量控制。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-r5fxrd6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-r5fxrd6",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体的负载均衡行为和路由器有关，可保证的共同行为是：每个连接（TCP 或 UDP 会话）的数据包总是路由到同一个节点上。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-taetudh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-taetudh",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP 模式的优缺点："
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-pj7wf20",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020057-pj7wf20",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-16cdwep",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-16cdwep",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-t1qakml",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-t1qakml",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "不能优雅处理故障转移，当持有服务的节点宕掉后，所有活动连接的客户端将收到 Connection reset by peer ；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-7uw6ve9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-7uw6ve9",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-2tyvkua",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-2tyvkua",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "BGP 路由器对数据包的源 IP、目的 IP、协议类型进行简单的哈希，并依据哈希值决定发给哪个 K8S 节点。问题是 K8S 节点集是不稳定的，一旦（参与 BGP）的节点宕掉，很大部分的活动连接都会因为 rehash 而坏掉。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-ggmhqn8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-ggmhqn8",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP 模式问题的缓和措施："
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-y6jaqh3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221211020057-y6jaqh3",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-jkh326s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-jkh326s",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-7drdqre",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-7drdqre",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将服务绑定到一部分固定的节点上，降低 rehash 的概率。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-rqdjps7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-rqdjps7",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-9hm7nwl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-9hm7nwl",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在流量低的时段改变服务的部署。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-7b30247",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221211020057-7b30247",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-96kp5c3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-96kp5c3",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "客户端添加透明重试逻辑，当发现连接 TCP 层错误时自动重试。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-4hobfbs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020057-4hobfbs",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "环境要求"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-2yu5bs3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-2yu5bs3",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "根据部署模式不同，MetalLB 可能需要以下环境："
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-xljzvc6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221211020057-xljzvc6",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-f82n3vy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221211020057-f82n3vy",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-5r1yg6j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-5r1yg6j",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一个 Kubernetes 集群，运行 Kubernetes 1.13.0 或更高版本。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-0656lj7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221211020057-0656lj7",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-16yj7k8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-16yj7k8",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubernetes 集群的网络配置可以与 MetalLB 共存。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-dr20vty",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221211020057-dr20vty",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-0pzbqn3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-0pzbqn3",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "有一些提供给 MetalLB 分发的 IPv4 地址。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-b44wgbv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221211020057-b44wgbv",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-h1ui6k2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-h1ui6k2",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据部署模式，可能需要一个或多个 BGP 的路由器 。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-vzd7951",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-vzd7951",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB 目前支持网络插件范围"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-hcwxnm1",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "|",
+				"id": "20221211020057-hcwxnm1",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Calico"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "部分支持（有附加文档）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Flannel"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "支持"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kube-router"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "不支持"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Romana"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "支持（有附加文档）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Weave Net"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "支持"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-vukip3a",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020057-vukip3a",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020057-gir3x2a",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020057-gir3x2a",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "从 Kubernetes 1.9 开始, Kube-Proxy 除了支持默认的 Iptables 模式之外，还支持更高效的 IPVS 模式。\nMetalLB 可以在Kubenetes 1.13 或更高版本的 Kube-Proxy 中使用 IPVS 模式。但是,它尚未明确测试，因此风险自负。具体内容可参考：https://github.com/google/metallb/issues/153"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-bz742ge",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020057-bz742ge",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "安装 MetalLB"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-cgnqsjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-cgnqsjd",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装 MetalLB 一共有两种方法：使用 Kubernetes YAML 文件或使用 Helm 包管理器。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-vuzh8k9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221211020057-vuzh8k9",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 YAML 文件部署"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-w7nqlk5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-w7nqlk5",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 目前 MetalLB 最新版本为 0.8.1\n$ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.y\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-dletive",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-dletive",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署完成后，将在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metallb-system"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命名空间下将 MetalLB 部署到集群。YAML 文件中主要包含以下一些组件："
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-akme11r",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221211020057-akme11r",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-xgv8iii",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221211020057-xgv8iii",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-rhesvku",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-rhesvku",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "metallb-system/controller"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，这是处理 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "IP"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 地址分配的控制器。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-8v9a1z7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221211020057-8v9a1z7",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-q1jbeuu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-q1jbeuu",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "metallb-system/speakerdaemonset"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 这是支持你选择协议以使服务可达的组件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-ji22a82",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221211020057-ji22a82",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-4e81qvz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-4e81qvz",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Controller"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Speaker"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Service Accounts"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，以及组件需要运行的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "RBAC"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 权限。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-buhjb3z",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020057-buhjb3z",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020057-e4mzvj3",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020057-e4mzvj3",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "通过 YAML 安装文件部署并不包含 MetalLB 配置文件，但 MetalLB 的组件仍能启动，但在你定义和部署 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "configmap"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 之前将保持空闲状态 。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-ey0p2n4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221211020057-ey0p2n4",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 Helm 部署"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-bfzh5t0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-bfzh5t0",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ helm install --name metallb stable/metallb\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-1oxy0y7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-1oxy0y7",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你还不知道什么是 Helm，可以先参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==\u0026mid=2247486154\u0026idx=1\u0026sn=becd5dd0fadfe0b6072f5dfdc6fdf786\u0026chksm=eac52be3ddb2a2f555b8b1028db97aa3e92d0a4880b56f361e4b11cd252771147c44c08c8913\u0026token=1182029777\u0026lang=zh_CN\u0026scene=21#wechat_redirect",
+					"TextMarkTextContent": "「Helm 入门指南」"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 一文。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-kxgj4cu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-kxgj4cu",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "MetalLB 安装完成后，我们还需要根据具体的地址和通告方式配置名为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metallb-system/config"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的 ConfigMap。Controller 会读取该 ConfigMap，并重新加载配置。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-z1apajd",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020057-z1apajd",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020057-r007dpi",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020057-r007dpi",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "通过 Helm 安装时，MetalLB 读取的 ConfigMap 名为 metallb-config 。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-akubvs6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020057-akubvs6",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "配置 MetalLB 为二层模式"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-9ptmdcz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-9ptmdcz",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第二层模式是最简单的配置方式：在许多情况下，您不需要任何特定于协议的配置，只需要 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-6cwaehc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-6cwaehc",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第二层模式不要求将 IP 绑定到工作节点的网络接口。它的工作原理是直接响应本地网络上的 ARP 请求，将机器的 MAC 地址提供给客户端。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-e40n9zs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-e40n9zs",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面我们来看一个实际例子，我们将配置一个由 MetalLB 二层模式控制的外部 IP 段为 192.168.1.240 - 192.168.1.250。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-ostvt2s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-ostvt2s",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat MetalLB-Layer2-Config.yaml\n\nkind: ConfigMap\napiVersion: v1\nmetadata:\n  name: config\n  namespace: metallb-system\ndata:\n  config: |\n    address-pools:\n    - name: default\n      protocol: layer2\n      addresses:\n      - 192.168.0.10-192.168.0.100\n\n    注意：这里的 IP 地址范围需要跟集群实际情况相对应。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-h8c71ub",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221211020057-h8c71ub",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221211020057-aj8yqad",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221211020057-aj8yqad",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "注意：这里的 IP 地址范围需要跟集群实际情况相对应。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-1r3fph2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-1r3fph2",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先，我们使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply -f MetalLB-Layer2-Config.yaml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令使配置生效。如果你想看到详细配置更新过程，可以使用以下类似命令查看。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-pyvefhe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-pyvefhe",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl logs -f [metallb-controller-pod]\n或者　\n$ kubectl logs -l component=speaker -n metallb-system\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-vk7gtj7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-vk7gtj7",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来，我们来创建一个服务类型为 LoadBalancer 的 Nginx 服务来验证下。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-5b1mxh1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-5b1mxh1",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat nginx-test.yaml\n\napiVersion: apps/v1beta2\nkind: Deployment\nmetadata:\n  name: nginx\nspec:\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n      - name: nginx\n        image: nginx:1\n        ports:\n        - name: http\n          containerPort: 80\n\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: nginx\nspec:\n  ports:\n  - name: http\n    port: 80\n    protocol: TCP\n    targetPort: 80\n  selector:\n    app: nginx\n  type: LoadBalancer\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-7my1nzt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-7my1nzt",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "服务创建完成，运行 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl apply -f nginx-test.yaml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令后，我们可以看到对应服务信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-naeahmp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-naeahmp",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ kubectl get pods nginx-68995d8957-bczhf -o wide\nNAME                     READY   STATUS    RESTARTS   AGE   IP            NODE     \nnginx-68995d8957-bczhf   2/2     Running   0          19d   10.244.0.78   ubuntu-1\n\n$ kubectl get svc\nNAME    TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)        AGE\nnginx   LoadBalancer   10.97.187.100   192.168.0.10   80:32353/TCP   179m\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-gc64390",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-gc64390",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从输出结果，我们可以看到 LoadBalancer 类型的服务，并且分配的外部 IP 地址是地址池中的第一个 IP "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "192.168.0.10"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-ogl847o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-ogl847o",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后，我们通过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "curl http://192.168.0.10"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 命令来验证下，发现可以正常显示 Nginx 的欢迎信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-tlrenkc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-tlrenkc",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003ctitle\u003eWelcome to nginx!\u003c/title\u003e\n................\n\u003cp\u003e\u003cem\u003eThank you for using nginx.\u003c/em\u003e\u003c/p\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-g2sq1xc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-g2sq1xc",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "至此，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "MetalLB Layer 2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 模式的配置就结束了。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-u7sci9r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221211020057-u7sci9r",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "配置 MetalLB 为 BGP 模式"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-m358nbm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-m358nbm",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于配置为具有一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "BGP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 路由器和一个 IP 地址范围的 BGP 模式，你需要先准备好以下 4 条配置信息："
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-y1ocqib",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221211020057-y1ocqib",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-phvw1gg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221211020057-phvw1gg",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-m6b0rww",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-m6b0rww",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "MetalLB 应连接的路由器 IP 地址。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-duwppql",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221211020057-duwppql",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-7l37ng0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-7l37ng0",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "路由器的 AS 号。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-it37lyu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221211020057-it37lyu",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-cmlg47g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-cmlg47g",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "MetalLB 应该使用的 AS 编号。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-bmpsqrl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221211020057-bmpsqrl",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-7md0ppv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-7md0ppv",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "IP 地址范围，表示为 CIDR 前缀。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-sv8cuhd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-sv8cuhd",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于这种配置方式需要具备 BGP 功能的硬件路由器支持，目前我们环境中不具备此等条件。这里就简单说下 MetalLB 对应的配置方式，具体内容就不展开讲解了。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-8m54p72",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-8m54p72",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于前面已经安装了 MetalLB 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Speaker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，只是使用的是 Layer 2 模式。这里只需要改为 BGP 模式，我们修改 Configmap 中 Config 配置就可以了。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-xku5owe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221211020057-xku5owe",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "amF2YXNjcmlwdA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 假如要为 MetalLB 提供范围 192.168.9.0/24 和 AS 号 65009，并将其连接到 192.168.0.1 的 AS 号为 65000 的路由器。\n$ cat MetalLB-BGP-Config.yaml\n\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  namespace: metallb-system\n  name: config\ndata:\n  config: |\n    peers:\n    - peer-address: 192.168.0.1\n      peer-asn: 65000\n      my-asn: 65009\n    address-pools:\n    - name: default\n      protocol: bgp\n      addresses:\n      #- 192.168.0.10-192.168.0.100\n      - 192.168.9.0/24\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-zqa1d44",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020057-zqa1d44",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-8wsqn48",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221211020057-8wsqn48",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文简单介绍了 MetalLB 的用途以及 MetalLB 的两种部署模式：Layer 2 模式和 BGP 模式。在实际应用中，如果条件满足，推荐使用 BGP 模式。"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-t9e2v0x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221211020057-t9e2v0x",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "参考资料"
+				}
+			]
+		},
+		{
+			"ID": "20221211020057-0ghiayt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221211020057-0ghiayt",
+				"updated": "20221211020057"
+			},
+			"Children": [
+				{
+					"ID": "20221211020057-eaw5zad",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221211020057-eaw5zad",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-52en56y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-52en56y",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "http://www.google.com"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-nqn2j4c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221211020057-nqn2j4c",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-8jukue9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-8jukue9",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://blog.fleeto.us/post/intro-metallb/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-ilgxweq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221211020057-ilgxweq",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-ygy8ata",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-ygy8ata",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://ieevee.com/tech/2019/06/30/metallb.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-bz3hi9s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221211020057-bz3hi9s",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-jtdi3fp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-jtdi3fp",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://blog.csdn.net/kunyus/article/details/88616653"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-cv1z13a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20221211020057-cv1z13a",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-cj2pn51",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-cj2pn51",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://vqiu.cn/metallb-si-you-ji-qun-loadbalancer/amp/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-7rspwl8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20221211020057-7rspwl8",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-j8s94vn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-j8s94vn",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://sre.ink/metallb-kubernetes-loadbalancer-no-ipvs/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-plvanv8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20221211020057-plvanv8",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-g7kgsbs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-g7kgsbs",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://blog.csdn.net/networken/article/details/85928369"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-ss4qfzd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OC4=",
+						"Num": 8
+					},
+					"Properties": {
+						"id": "20221211020057-ss4qfzd",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-ut1fl87",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-ut1fl87",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://blog.gmem.cc/external-lb-for-on-premise-k8s-cluster"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-zi5opp4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "OS4=",
+						"Num": 9
+					},
+					"Properties": {
+						"id": "20221211020057-zi5opp4",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-vyruoyx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-vyruoyx",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://leeif.me/2019/02/k8s-deploy-metallb-LoadBalancer.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221211020057-0nud0pt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MTAu",
+						"Num": 10
+					},
+					"Properties": {
+						"id": "20221211020057-0nud0pt",
+						"updated": "20221211020057"
+					},
+					"Children": [
+						{
+							"ID": "20221211020057-du1kngl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221211020057-du1kngl",
+								"updated": "20221211020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://mshk.top/2019/04/kubernetes-metallb-loadbalancer-nginx-ingress-controller/"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1263 @@
+{
+	"ID": "20230410143511-byenc8f",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230410143511-byenc8f",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230410143511-sy4uqxc\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230410150148-v3ge59i\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230410143511-sy4uqxc\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "tekton构建CICD流水线(一)",
+		"updated": "20230410150544"
+	},
+	"Children": [
+		{
+			"ID": "20230410143511-sy4uqxc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410143511-sy4uqxc",
+				"updated": "20230410143531"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230410143534-lrv6jbu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143534-lrv6jbu",
+				"updated": "20230410143534"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​ Tekton 是用于构建 CI/CD 管道的云原生解决方案。它由提供构建块的 Tekton Pipelines 和支持组件（例如 Tekton CLI 和 Tekton Catalog）组成，它们使 Tekton 成为一个完整的生态系统。Tekton 是Linux Foundation项目CD Foundation的 一部分。"
+				}
+			]
+		},
+		{
+			"ID": "20230410143534-i2j5g5f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143534-i2j5g5f",
+				"updated": "20230410143633"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Tekton 作为 Kubernetes 集群上的扩展安装和运行，并包含一组 Kubernetes 自定义资源，这些资源定义了您可以为管道创建和重用的构建块。安装后，Tekton Pipelines 可以通过 Kubernetes CLI (kubectl) 和 API 调用使用，就像 pod 和其他资源一样。"
+				}
+			]
+		},
+		{
+			"ID": "20230410143633-se5rpl1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410143633-se5rpl1",
+				"updated": "20230410143635"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 安装"
+				}
+			]
+		},
+		{
+			"ID": "20230410143639-camh3y0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143639-camh3y0",
+				"updated": "20230410143641"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kubernetes 集群上安装 Tekton Pipelines Triggers Dashboard Interceptors ： "
+				}
+			]
+		},
+		{
+			"ID": "20230410143651-8wcbwhi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410143651-8wcbwhi",
+				"updated": "20230410143654"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.notags.yaml\nkubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml\nkubectl apply --filename https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml\nkubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410143716-nma12rh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143716-nma12rh",
+				"updated": "20230410143716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们这里的环境是centos7，kernel:Linux 5.10.109-1"
+				}
+			]
+		},
+		{
+			"ID": "20230410143716-bop1s4g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143716-bop1s4g",
+				"updated": "20230410143716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于官方使用的镜像是 gcr 的镜像，所以正常情况下我们是获取不到的 如果你的集群由于某些原因获取不到镜像，可以尝试到DockerHub公共仓库查询相关镜像。"
+				}
+			]
+		},
+		{
+			"ID": "20230410143716-3kwrh21",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143716-3kwrh21",
+				"updated": "20230410143810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的资源清单中默认安装一个名为tekton-pipelinesde 命名空间，所有和tekton相关的资源都会在这个命名空间下，查看当前命名空间中安装的Pod是否正常运行："
+				}
+			]
+		},
+		{
+			"ID": "20230410143811-5wlgtbh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410143811-5wlgtbh",
+				"updated": "20230410143821"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get po \nNAME                                                 READY   STATUS      RESTARTS      AGE\ntekton-dashboard-655cfb9cb7-xv64b                    1/1     Running     0             2d20h\ntekton-pipelines-controller-cc76bb647-5tvlk          1/1     Running     0             2d20h\ntekton-pipelines-webhook-67757b5795-5k5bv            1/1     Running     0             2d20h\ntekton-triggers-controller-56df556c75-5qjnc          1/1     Running     0             2d20h\ntekton-triggers-core-interceptors-6756b486b5-cllrx   1/1     Running     0             2d20h\ntekton-triggers-webhook-dd9595fdb-x2644              1/1     Running     0             2d20h\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410143726-0t3yarl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410143726-0t3yarl",
+				"updated": "20230410143851"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 组件"
+				}
+			]
+		},
+		{
+			"ID": "20230410143854-723m9mt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410143854-723m9mt",
+				"updated": "20230410143855"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230410143855-7la7xmx.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410143916-6bi1j6g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410143916-6bi1j6g",
+				"updated": "20230410144554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1Tekton 由以下组件组成："
+				}
+			]
+		},
+		{
+			"ID": "20230410144323-7jw2b4e",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230410144323-7jw2b4e",
+				"updated": "20230410144434"
+			},
+			"Children": [
+				{
+					"ID": "20230410144324-6d1gbp1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144324-6d1gbp1"
+					},
+					"Children": [
+						{
+							"ID": "20230410144324-om2whfi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144324-om2whfi",
+								"updated": "20230410144327"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/tektoncd/pipeline/blob/main/docs/README.md",
+									"TextMarkTextContent": "Tekton Pipelines"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 是 Tekton 的基础。它定义了一组 Kubernetes"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/",
+									"TextMarkTextContent": "自定义资源"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ，它们充当构建块，您可以从中组装 CI/CD 管道。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410144346-q684z1u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144346-q684z1u"
+					},
+					"Children": [
+						{
+							"ID": "20230410144347-jipurrp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144347-jipurrp"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong a",
+									"TextMarkAHref": "https://github.com/tektoncd/triggers/blob/main/README.md",
+									"TextMarkTextContent": "Tekton Triggers"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "允许您根据事件实例化管道。例如，您可以在每次 PR 与 GitHub 存储库合并时触发管道的实例化和执行。您还可以构建启动特定 Tekton 触发器的用户界面。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410144411-vtcxem2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144411-vtcxem2"
+					},
+					"Children": [
+						{
+							"ID": "20230410144411-q2k8501",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144411-q2k8501",
+								"updated": "20230410144414"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/tektoncd/cli/blob/main/README.md",
+									"TextMarkTextContent": "Tekton CLI"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 提供了一个名为 的命令行界面"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "tkn"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，它建立在 Kubernetes CLI 之上，允许您与 Tekton 进行交互。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410144431-tkxlolx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144431-tkxlolx",
+						"updated": "20230410144434"
+					},
+					"Children": [
+						{
+							"ID": "20230410144431-cd4f9ic",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144431-cd4f9ic",
+								"updated": "20230410144434"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/tektoncd/dashboard/blob/main/docs/README.md",
+									"TextMarkTextContent": "Tekton Dashboard"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 是 Tekton Pipelines 的基于 Web 的图形界面，可显示有关管道执行的信息"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410144330-m2xmx31",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230410144330-m2xmx31",
+				"updated": "20230410144516"
+			},
+			"Children": [
+				{
+					"ID": "20230410144449-xmluqwa",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144449-xmluqwa"
+					},
+					"Children": [
+						{
+							"ID": "20230410144449-jgv14ca",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144449-jgv14ca",
+								"updated": "20230410144455"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/tektoncd/catalog/blob/v1beta1/README.md",
+									"TextMarkTextContent": "Tekton Catalog"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "是一个高质量的、社区贡献的 Tekton 构建块的存储库 -"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Tasks"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "、"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pipelines"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "等 - 可以在您自己的管道中使用"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410144501-454xmtv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144501-454xmtv"
+					},
+					"Children": [
+						{
+							"ID": "20230410144501-7nl0c89",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144501-7nl0c89"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong a",
+									"TextMarkAHref": "https://github.com/tektoncd/hub/blob/main/README.md",
+									"TextMarkTextContent": "Tekton Hub"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "是一个基于 Web 的图形界面，用于访问 Tekton 目录。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230410144513-id9cxh5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230410144513-id9cxh5",
+						"updated": "20230410144516"
+					},
+					"Children": [
+						{
+							"ID": "20230410144513-k8iofck",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230410144513-k8iofck",
+								"updated": "20230410144516"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/tektoncd/operator/blob/main/README.md",
+									"TextMarkTextContent": "Tekton Operator"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "是一种 Kubernetes"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://operatorhub.io/what-is-an-operator",
+									"TextMarkTextContent": " Operator 模式"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ，允许您在 Kubernetes 集群上安装、更新和删除 Tekton 项目"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230410144546-e140tsm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230410144546-e140tsm",
+				"updated": "20230410144611"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 案例"
+				}
+			]
+		},
+		{
+			"ID": "20230410144618-bikdpet",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410144618-bikdpet",
+				"updated": "20230410144623"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 任务流程"
+				}
+			]
+		},
+		{
+			"ID": "20230410144630-bejg2em",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410144630-bejg2em",
+				"updated": "20230410144631"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "git clone --\u003e\u003e make build --\u003e\u003e image build --\u003e\u003e image push registry"
+				}
+			]
+		},
+		{
+			"ID": "20230410144636-vlqdxyt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410144636-vlqdxyt",
+				"updated": "20230410144639"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"fmt\"\n    \"net/http\"\n    \"strings\"\n    \"log\"\n)\n\nfunc sayhelloName(w http.ResponseWriter, r *http.Request) {\n    r.ParseForm()  // 解析参数，默认是不会解析的\n    fmt.Println(r.Form)  // 这些信息是输出到服务器端的打印信息\n    fmt.Println(\"path\", r.URL.Path)\n    fmt.Println(\"scheme\", r.URL.Scheme)\n    fmt.Println(r.Form[\"url_long\"])\n    for k, v := range r.Form {\n        fmt.Println(\"key:\", k)\n        fmt.Println(\"val:\", strings.Join(v, \"\"))\n    }\n    fmt.Fprintf(w, \"Hello World!\") // 这个写入到 w 的是输出到客户端的\n}\n\nfunc main() {\n    http.HandleFunc(\"/\", sayhelloName) // 设置访问的路由\n    err := http.ListenAndServe(\":9090\", nil) // 设置监听的端口\n    if err != nil {\n        log.Fatal(\"ListenAndServe: \", err)\n    }\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410144705-49pre61",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410144705-49pre61",
+				"updated": "20230410144737"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "golang文件"
+				}
+			]
+		},
+		{
+			"ID": "20230410144650-zddx0ro",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410144650-zddx0ro",
+				"updated": "20230410144651"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "FROM  hub.17usoft.com/k8stest/golang:v0.1\nMAINTAINER ycloud\nADD web-service /app/\nWORKDIR /app\nEXPOSE 9090\nCMD [\"./web-service\"]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410144706-f3fepjt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410144706-f3fepjt",
+				"updated": "20230410144715"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dockerfile"
+				}
+			]
+		},
+		{
+			"ID": "20230410144717-7j7ezgs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410144717-7j7ezgs",
+				"updated": "20230410144727"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " 在Dockerfile中基础镜像，可用其他golang镜像替代\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410144724-x7ahmbv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410144724-x7ahmbv",
+				"updated": "20230410144824"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 git clone"
+				}
+			]
+		},
+		{
+			"ID": "20230410144836-2hed2y8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410144836-2hed2y8",
+				"updated": "20230410144837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来我们构建第一个tekton任务tasks，用于从私人代码库中拉去任务。这里需要提示官方提供了一个tekton的资源中心Tekton Hub，上面有各个组织和团队贡献的任务，满足部分需求，可供选择。中间的过程可根据自己的需求来进行调整。当然自己也可根据自己任务的情况，去构建符合自己需求的tasks，并非要用官方提供的。"
+				}
+			]
+		},
+		{
+			"ID": "20230410144853-ly0myv3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410144853-ly0myv3",
+				"updated": "20230410144855"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.8/git-clone.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410144910-fqgpyct",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410144910-fqgpyct",
+				"updated": "20230410144910"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里我们需要创建一个pvc，为git提供存放位置，也可添加一个git认证，不过这里我们忽略，自行查询。"
+				}
+			]
+		},
+		{
+			"ID": "20230410144910-n25tttv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410144910-n25tttv",
+				"updated": "20230410144925"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: my-app\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 500Mi\n  storageClassName: nfs-sc\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410144910-qsirxyk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410144910-qsirxyk",
+				"updated": "20230410144940"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 make build"
+				}
+			]
+		},
+		{
+			"ID": "20230410144947-llnm079",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410144947-llnm079",
+				"updated": "20230410144947"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第二个tekton任务tasks，用于从代码的打包，因为我们这是使用的golang语言的代码，所以我们在这第二个任务选择golang-build"
+				}
+			]
+		},
+		{
+			"ID": "20230410144947-kmc7wz2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410144947-kmc7wz2",
+				"updated": "20230410145005"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/golang-build/0.3/golang-build.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410145011-t48ukm6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410145011-t48ukm6",
+				"updated": "20230410145012"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  params:\n  - name: packages\n    description: \"packages to build (default: ./cmd/...)\"\n    default: \"./cmd/...\"\n  - name: subdirectory\n    description: subdirectory inside the \"source\"\n    default: \"./\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410145026-bk6hm77",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410145026-bk6hm77",
+				"updated": "20230410145028"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们pipeline中使用的subdirectory字段，源文件中没有，所以需要我们手动添加一下。这个子目录的作用是，不想根据项目创建多个pvc，一个pvc通过不同的目录来区分项目，这样很能很快保障我们文件所存在的位置。"
+				}
+			]
+		},
+		{
+			"ID": "20230410145031-qfj1f7w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410145031-qfj1f7w",
+				"updated": "20230410150123"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.4 kaniko"
+				}
+			]
+		},
+		{
+			"ID": "20230410145037-rsvdcv1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410145037-rsvdcv1",
+				"updated": "20230410145037"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kaniko 是 Google 开源的一个工具，旨在帮助开发人员从容器或 Kubernetes 集群内的 Dockerfile 构建容器镜像。我们这里丢弃了以往的docker build。 kaniko可以帮助我们完成镜像的打包和推送工作，也就是流程中的第三和第四部分"
+				}
+			]
+		},
+		{
+			"ID": "20230410150134-vlemf8z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410150134-vlemf8z",
+				"updated": "20230410150138"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/kaniko/0.6/kaniko.yaml\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410150143-zdjx3bv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150143-zdjx3bv",
+				"updated": "20230410150143"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在我们推送镜像的过程中，需要我们对其进行登录认证，为了方便我们后续操作，可以将认证保存在kubernetes的secrets资源对象中。首先确保我们本机可以login到我们的镜像仓库中去，我们这里选择的是harbor私人仓库"
+				}
+			]
+		},
+		{
+			"ID": "20230410150148-v3ge59i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410150148-v3ge59i",
+				"updated": "20230410150159"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# docker login hub.17usoft.com\nAuthenticating with existing credentials...\nWARNING! Your password will be stored unencrypted in /root/.docker/config.json.\nConfigure a credential helper to remove this warning. See\nhttps://docs.docker.com/engine/reference/commandline/login/#credentials-store\n\nLogin Succeeded\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410150204-2b1n5rs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150204-2b1n5rs",
+				"updated": "20230410150204"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "登录成功之后，密钥信息会保存在我们的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "/root/.docker/config.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "文件中，接下来创建secrets对象"
+				}
+			]
+		},
+		{
+			"ID": "20230410150204-jbewi2b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410150204-jbewi2b",
+				"updated": "20230410150218"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl create secret generic dockerconfig \\\n    --from-file=config.json= ~/.docker/config.json \\\n    --type=kubernetes.io/dockerconfigjson\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410150204-y1qiwqg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410150204-y1qiwqg",
+				"updated": "20230410150226"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.5 pipeline"
+				}
+			]
+		},
+		{
+			"ID": "20230410150237-tsmr8nj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150237-tsmr8nj",
+				"updated": "20230410150237"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pipeline可以编排多个task，pipeline的params声明了执行时的入参，spec.tasks定义了需要编排的task，通过runAfter可以定义task执行的顺序。在编排task的时候在spec.tasks.params中可以指定传入task的参数。"
+				}
+			]
+		},
+		{
+			"ID": "20230410150237-o99w9lh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410150237-o99w9lh",
+				"updated": "20230410150255"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: tekton.dev/v1beta1\nkind: Pipeline\nmetadata:\n  name: kaniko-test-pipeline\nspec:\n  params:\n  - name: repo-url\n    type: string\n    description: The git repository URL to clone from.\n  - name: branch-name\n    type: string\n    description: The git branch to clone.\n  - name: image\n    type: string\n    description: To build the image\n  - name: package\n    type: string\n    description: base package to build in\n  - name: subdirectory\n    type: string\n  workspaces:\n  - name: shared-data\n  - name: dockerconfig\n  tasks:\n  - name: fetch-repo\n    taskRef:\n      name: git-clone\n    workspaces:\n    - name: output\n      workspace: shared-data\n    params:\n    - name: url\n      value: $(params.repo-url)\n    - name: revision\n      value: $(params.branch-name)\n    - name: subdirectory\n      value: $(params.subdirectory)\n    - name: deleteExisting\n      value: \"true\"\n  - name: go-build\n    taskRef:\n      name: golang-build\n    runAfter:\n      - fetch-repo\n    workspaces:\n      - name: source\n        workspace: shared-data\n    params:\n      - name: package\n        value: $(params.package)\n      - name: subdirectory\n        value: $(params.subdirectory)\n      - name: packages\n        value: \"./\"\n      - name: flags\n        value: -v -o $(workspaces.source.path)/$(params.subdirectory)\n  - name: kaniko\n    taskRef:\n      name: kaniko\n    runAfter: \n    - go-build\n    workspaces:\n    - name: source\n      workspace: shared-data\n    - name: dockerconfig\n      workspace: dockerconfig\n    params:\n    - name: IMAGE\n      value: $(params.image)\n    - name: DOCKERFILE\n      value: ./$(params.subdirectory)/Dockerfile\n    - name: CONTEXT\n      value: ./test/\n    - name: EXTRA_ARGS\n      value:\n        - --skip-tls-verify\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410150300-28rnx57",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230410150300-28rnx57",
+				"updated": "20230410150317"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.5 pipelinerun"
+				}
+			]
+		},
+		{
+			"ID": "20230410150318-l41e8vl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150318-l41e8vl",
+				"updated": "20230410150323"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Task和Pipeline都是一些模板，真正执行需要PipelineRun。PipelineRun可以给Pipeline传参，并执行Pipeline。repo—url是我们git仓库地址，image是我们所构建的镜像名称"
+				}
+			]
+		},
+		{
+			"ID": "20230410150424-1nkxdc8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410150424-1nkxdc8",
+				"updated": "20230410150440"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: tekton.dev/v1beta1\nkind: PipelineRun\nmetadata:\n  name: kaniko-test-pipeline-run\nspec:\n  pipelineRef:\n    name: kaniko-test-pipeline\n  workspaces:\n  - name: shared-data\n    persistentVolumeClaim:\n      claimName: my-app\n  - name: dockerconfig\n    secret:\n      secretName: dockerconfig\n  params:\n  - name: repo-url\n    value: http://10.177.9.244:31002/root/golang.git\n  - name: branch-name\n    value: master\n  - name: package\n    value: golang\n  - name: image\n    value:  hub.17usoft.com/gstrain/web-service:v0.1\n  - name: subdirectory\n    value: test\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410150329-9l3fon0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150329-9l3fon0",
+				"updated": "20230410150438"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后我们可以通过kubectl应用这些配置。通过tekton dashboard可查看当前任务进程。"
+				}
+			]
+		},
+		{
+			"ID": "20230410150448-wuanbz3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 5,
+			"Properties": {
+				"id": "20230410150448-wuanbz3",
+				"updated": "20230410150448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "让我们用构建好的镜像来运行一个容器来测试它的功能"
+				}
+			]
+		},
+		{
+			"ID": "20230410150454-oboxh5q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230410150454-oboxh5q",
+				"updated": "20230410150515"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# docker run --rm -p 9090:9090 hub.17usoft.com/gstrain/web-service:v0.1\n# curl 10.177.9.244:9090\nHello World!\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230410150514-4ogi4cp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150514-4ogi4cp",
+				"updated": "20230410150514"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个pipeline流程就走通了，后续我们会添加上tekton 触发器，当条件触发自动运行pipeline，来达到自动化的流程。会更加优化pipleine中琐碎参数，不用再去手动传参，自动获取一些参数让我们使用"
+				}
+			]
+		},
+		{
+			"ID": "20230410150537-hmup5tl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150537-hmup5tl",
+				"updated": "20230410150538"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "们还会添加一个新的任务，当我们完成镜像推送后自动修改配置仓库中yaml信息，无需手动修改上传。"
+				}
+			]
+		},
+		{
+			"ID": "20230410150543-6r32w4l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150543-6r32w4l",
+				"updated": "20230410150543"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 引入一个新的工具argocd用作服务的发布，当修改好配置仓库中的yaml是自动触发，来完成我们服务的发布，来达到CI/CD自动化。"
+				}
+			]
+		},
+		{
+			"ID": "20230410150544-rh9l48g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230410150544-rh9l48g",
+				"updated": "20230410150544"
+			}
+		}
+	]
+}

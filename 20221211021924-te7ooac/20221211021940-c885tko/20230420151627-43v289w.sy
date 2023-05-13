@@ -1,0 +1,3378 @@
+{
+	"ID": "20230420151627-43v289w",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230420151627-43v289w",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230420151627-iz6ft1g\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230420153016-ep4nhws\u0026quot;,\u0026quot;scrollTop\u0026quot;:11953,\u0026quot;focusId\u0026quot;:\u0026quot;20230420153016-ep4nhws\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "Kubernetes之controller-runtime事件再处理",
+		"updated": "20230420153016"
+	},
+	"Children": [
+		{
+			"ID": "20230420151627-t45qo8f",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230420151627-t45qo8f",
+				"updated": "20230420151627"
+			}
+		},
+		{
+			"ID": "20230420151627-2pj1bgl",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230420151627-2pj1bgl",
+				"updated": "20230420151627"
+			}
+		},
+		{
+			"ID": "20230420151627-iyd6kd5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-iyd6kd5",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、  前言"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-4h9otd9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-4h9otd9",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes(K8s) 作为一个可移植的、可扩展的开源平台，已经被广泛应用于管理容器化的工作负载和服务。虽然K8s本身提供了丰富的资源类型，但是在使用中，仍然存在扩展资源的需求。 本文将以项目中遇到的一个实际问题作为切入点，详细分析问题原因，同时介绍下使用第三方框架扩展K8s资源时的工作原理。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-ezmin9e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-ezmin9e",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、 背景"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-wkx87wx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-wkx87wx",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在描述具体问题前，先对涉及的K8s概念做一些简单介绍。 "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/4b017dba568f47eb909299e6c5ff5a0etplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230420151627-xk51cst.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图（1） CRD关系图"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-niqjonh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-niqjonh",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "**1）CRD  **\nCRD全称是CustomResourceDefinition，即自定义资源。CRD也是K8s的一种资源，创建一个CRD即在K8s中定义了一种新的资源类型，这个资源类型可以像K8s中的原生资源一样，既可以通过kubectl命令行，也可以通过访问apiserver来进行操作。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-2dph01o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-2dph01o",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2）Resource Event"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n这里的Event是当资源本身发生变化时触发的事件，并不是K8s中的Event资源。 共有四种类型，CreateEvent，UpdateEvent，DeleteEvent，GenericEvent。其中GenericEvent用来处理未知类型的Event，比如非集群内资源事件，一般不会使用。如果控制器\"订阅\"了这个资源，那么资源发生变化时，比如被更新或者被删除时，控制器会获取到这个事件。Event是联系控制器和资源的数据通道。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-r93hvir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-r93hvir",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3）controller-runtime"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " controller-runtime被用来创建K8s资源控制器，如果引入了CRD的话，单纯定义这个资源只能起到存数据的作用，并没有业务处理逻辑。通过controller-runtime可以监听资源的变化，捕获Resource Event，触发相应的处理流程，让这个自定义资源表现出和原生资源相同的行为。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-i9ohv1g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-i9ohv1g",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4）kubebuilder"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " kubebuilder是一个根据模板生成代码的工具，使用kubebuilder可以快速渲染出一个依赖controller-runtime的控制器。在分析controller-runtime之前，需要先用它来生成一个controller。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-5l5pmsw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-5l5pmsw",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了使CRD像原生资源那样工作，需要创建对应的控制器(controller)，这个控制器需要捕获资源发生变化时的事件，完成指定的操作。理解了CRD的使用方法和运行原理，这样遇在到问题时，才能够方便定位和解决。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-esdhjz0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-esdhjz0",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、 问题"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-dffk0zs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-dffk0zs",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在项目中使用controller-runtime监听CRD资源过程中，发现在资源变化触发事件，如果请求事件没有被正确处理而返回错误时，事件会被重复处理，但是每次处理的时间间隔并不规则。表现为日志中显示事件被再处理的间隔时间并不等长，从几秒到十几分钟的分布。精简后的日志显示如下。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-iz6ft1g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-iz6ft1g",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "aW5p"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "controller.go:36] failed at:  2020-06-30 08:14:38.492813441 +0000 UTC m=+0.733523768\ncontroller.go:36] failed at:  2020-06-30 08:14:39.493302606 +0000 UTC m=+1.734012936\ncontroller.go:36] failed at:  2020-06-30 08:14:40.49372105 +0000 UTC m=+2.734431343\ncontroller.go:36] failed at:  2020-06-30 08:14:41.49402338 +0000 UTC m=+3.734733690\ncontroller.go:36] failed at:  2020-06-30 08:14:42.494593356 +0000 UTC m=+4.735303683\ncontroller.go:36] failed at:  2020-06-30 08:14:43.495217453 +0000 UTC m=+5.735927765\ncontroller.go:36] failed at:  2020-06-30 08:14:44.49564783 +0000 UTC m=+6.736358135\ncontroller.go:36] failed at:  2020-06-30 08:14:45.496101659 +0000 UTC m=+7.736811950\ncontroller.go:36] failed at:  2020-06-30 08:14:46.496564312 +0000 UTC m=+8.737274709\ncontroller.go:36] failed at:  2020-06-30 08:14:47.776977606 +0000 UTC m=+10.017687933\ncontroller.go:36] failed at:  2020-06-30 08:14:50.339145951 +0000 UTC m=+12.579856239\ncontroller.go:36] failed at:  2020-06-30 08:14:55.459778396 +0000 UTC m=+17.700488722\ncontroller.go:36] failed at:  2020-06-30 08:15:05.700252055 +0000 UTC m=+27.940962359\ncontroller.go:36] failed at:  2020-06-30 08:15:26.180615289 +0000 UTC m=+48.421325604\ncontroller.go:36] failed at:  2020-06-30 08:16:07.140934099 +0000 UTC m=+89.381644386\ncontroller.go:36] failed at:  2020-06-30 08:17:29.061481373 +0000 UTC m=+171.302191703\ncontroller.go:36] failed at:  2020-06-30 08:20:12.901929639 +0000 UTC m=+335.142639963\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-iodyzg9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-iodyzg9",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "大体观察到，前面日志的时间差值在1s左右，后面的差值变成了5s，10s，20s左右。所以产生了下面的疑问："
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-jnk8f5e",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230420151627-jnk8f5e",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"ID": "20230420151627-8g9ow6y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230420151627-8g9ow6y",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-6fve5qb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-6fve5qb",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "这些事件的处理时间间隔是不是会持续增加？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230420151627-hgvr3ee",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230420151627-hgvr3ee",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-855gu7o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-855gu7o",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果持续增加，最大会有多长？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230420151627-pkhl9vx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230420151627-pkhl9vx",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-1sm5r84",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-1sm5r84",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "这样持续的事件处理会不会影响到controller性能？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230420151627-w7uar51",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230420151627-w7uar51",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-lul08lh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-lul08lh",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当集群中事件数量规模扩大时会不会冲刷掉正常的请求？"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-jxbdmjy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-jxbdmjy",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、 分析"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-8zqd6cz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-8zqd6cz",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了解Event是如何被处理的，将从上到下分析下controller-runtime的启动流程，Reconcile函数在何时被调用、调用出错时如何再处理等步骤。为了聚焦在事件再处理的步骤上，对前面的几个步骤先做下简单的描述。也借此了解下controller-runtime的整体架构。\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/03f9fe1d8a7e4f3db3e4200905edd963tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230420151627-nd3wgac.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 图（2） Kubernetes controller架构图(图片来自网络)\n上面提到的问题在步骤7和步骤8中产生，也是本文分析的重点。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-h3myy9l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-h3myy9l",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在分析controller-runtime之前，需要先使用kubebuilder构建一个简单的controller，因为这不是本文的重点，所以下面略过生成步骤，直接进入到分析步骤。kubebuilder的使用参考链接("
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fbook.kubebuilder.io%2Fquick-start.html",
+					"TextMarkTextContent": "book.kubebuilder.io/quick-start…"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "%25E3%2580%2582 \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://book.kubebuilder.io/quick-start.html",
+					"TextMarkTextContent": "https://book.kubebuilder.io/quick-start.html)%E3%80%82\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "%E3%80%82%22))\n其中reconcile.Reconcile函数被简化为"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-65vo9zs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-65vo9zs",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " func (r *ClusterReconciler) Reconcile(req ctrl.Request) (ctrl.Result，error) {\n     klog.Infof(\"failed at:  %s\"，time.Now())\n     return ctrl.Result{}，errors.New(\"err\")\n }\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-jpc6r56",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-jpc6r56",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "**1）controller-runtime启动  ** *controller-runtime版本: 0.5.5\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/1463be0e1b6e4e9187a90c1404566a8ftplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230420151627-recyc3l.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 图（3） controller-runtime启动\n在controller-runtime中，Event的处理逻辑是Reconciler对象，Reconciler被controller引用，这里的controller便是控制器。在controller之上，还有一个更高层的管理者manager。manager中可以设置多个controller，但是一个controller中只有一个Reconciler。\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.1）生成manager"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-9qctv0b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-9qctv0b",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "import (\n\"sigs.k8s.io/controller-runtime/pkg/manager\"\n)\n    // 生成一个manager，初始化所需的各种配置，实现了Manager接口\n    mgr，err := manager.New(config，manager.Options{Scheme: scheme，MetricsBindAddress: \"0\"})\n...\n    // 这里看似没有涉及到controller，实际上在SetupWithManager中，使用了生成器模式，最终实现了\n   // manager -\u003e controller -\u003e reconciler 的对象层级结构\n   // 主体分为两部分，一是配置manager，二是启动manager\n    if err = (\u0026controllers.Reconciler{\n        Client:        client,\n    }).SetupWithManager(mgr); err != nil {\n        klog.Errorf(\"unable to create cluster controller: %s\"，err)\n        os.Exit(1)\n    }\n  ...\n      // 启动manager，主要是启动manager中注册的controller\n      if err := mgr.Start(stop); err != nil {\n          klog.Errorf(\"unable to run the manager: %s\"，err)\n      }\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-sami2mo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-sami2mo",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.2）配置manager"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n除了manager.New函数外，比较有意思的是SetupWithManager函数"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-6c91gbq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-6c91gbq",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "import (\nctrl \"sigs.k8s.io/controller-runtime\"\n)\nfunc (r *Reconciler) SetupWithManager(mgr ctrl.Manager) error {     return ctrl.NewControllerManagedBy(mgr)。        For(\u0026v1alpha1.Cluster{})。        Complete(r) }\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-0ljf1y2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-0ljf1y2",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "NewControllerManagedBy最终会跳转到builder中，下文中都将以监听v1alpha1.Cluster这个资源为例\npkg/builder/controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-3yqn5p4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-3yqn5p4",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func ControllerManagedBy(m manager.Manager) *Builder {\n    return \u0026Builder{mgr: m}\n}\n\nfunc (blder *Builder) Complete(r reconcile.Reconciler) error {\n    _，err := blder.Build(r)\n    return err\n}\n\n...\n\nfunc (blder *Builder) Build(r reconcile.Reconciler) (controller.Controller，error) {\n    if r == nil {\n        return nil，fmt.Errorf(\"must provide a non-nil Reconciler\")\n    }\n    if blder.mgr == nil {\n        return nil，fmt.Errorf(\"must provide a non-nil Manager\")\n    }\n...\n    // Build主要做了两件事，一是doController，二是doWatch\n   //  doController中新建了一个controller，reconciler作为入参，将controller和\n// reconciler联系起来\n    if err := blder.doController(r); err != nil {\n        return nil，err\n    }\n...\n    // 监听资源，即上文中的v1alpha1.Cluster\n    if err := blder.doWatch(); err != nil {\n        return nil，err\n    }\n\n    // 将controller返回\n    return blder.ctrl，nil\n}\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-1jem1i7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-1jem1i7",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.3）生成controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 看下doController中如何创建的controller\npkg/builder/controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-goth2s9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-goth2s9",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "import (\n\"sigs.k8s.io/controller-runtime/pkg/controller\"\n)\nvar newController = controller.New\n\nfunc (blder *Builder) doController(r reconcile.Reconciler) error {\n...\n    ctrlOptions.Reconciler = r\n    blder.ctrl，err = newController(name，blder.mgr，ctrlOptions)\n    return err\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-rybjyov",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-rybjyov",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "pkg/controller/controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-812gb22",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-812gb22",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func New(name string，mgr manager.Manager，options Options) (Controller，error) {\n...\n    if options.RateLimiter == nil {\n        // 初始化了ratelimiter，核心方法\n        options.RateLimiter = workqueue.DefaultControllerRateLimiter()\n    }\n...\n    c := \u0026controller.Controller{\n        // 将reconciler赋值给Do，在下面的分析中可以看到对controller.Do.Reconile的\n// 调用\n        Do:       options.Reconciler,\n   ...\n       // 赋值了新建queue的方法，带有限速功能\n        MakeQueue: func() workqueue.RateLimitingInterface {\n            return workqueue.NewNamedRateLimitingQueue(options.RateLimiter，name)\n        },\n        MaxConcurrentReconciles: options.MaxConcurrentReconciles,\n        Name:                    name,\n    }\n    // Add方法完成controller和manager关联\n    return c，mgr.Add(c)\n}\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-14qq9l3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-14qq9l3",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以options.RateLimiter为例，一般情况下，刚开始分析时是不会过分注意这些变量赋值的，但并不代表不重要。在后面分析的过程中，如果涉及到具体接口方法调用时，最终的分析还是会回溯到实例对象这里。所以这里提前做了标注。\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.4）启动manager"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n最后看下controller是如何关联到manager的。回溯到上文中的\"manager.New\"函数中，最终创建了一个controllerManager\npkg/manager/internal.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-i3l3efi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-i3l3efi",
+				"updated": "20230420152248"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type controllerManager struct {\n...\n    // 需要选举操作的controller\n    leaderElectionRunnables []Runnable\n// 不需要选举操作的controller，为简单，下文中只涉及不需选举的controller，需要选\n// 举只是增加了步骤，逻辑上没有大的变化\n    nonLeaderElectionRunnables []Runnable\n}\n\nfunc (cm *controllerManager) Add(r Runnable) error {\n...\n    if leRunnable，ok := r.(LeaderElectionRunnable); ok \u0026\u0026 !leRunnable.NeedLeaderElection() {\n        shouldStart = cm.started\n        // 将r也就是上文提到的controller添加到nonLeaderElectionRunnables中，这里\n// 就完成了manager和controller的关联\n        cm.nonLeaderElectionRunnables = append(cm.nonLeaderElectionRunnables，r)\n    } else {\n        shouldStart = cm.startedLeader\n        cm.leaderElectionRunnables = append(cm.leaderElectionRunnables，r)\n    }\n...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-ctey0kw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-ctey0kw",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "到这里完成了manager -\u003e controller -\u003e reconciler的对象关联，下面将看下manager如何启动controller，controller会启动资源的事件处理。回到manager.Start。\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.5）启动controller"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\npkg/manager/internal.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-kpqv3zx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-kpqv3zx",
+				"updated": "20230420152251"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (cm *controllerManager) Start(stop \u003c-chan struct{}) error {\n...\n    go cm.startNonLeaderElectionRunnables()\n...\n}\n\nfunc (cm *controllerManager) startNonLeaderElectionRunnables() {\n    ...\n    for _，c := range cm.nonLeaderElectionRunnables { \n        ctrl := c\n        go func() {\n            // 最终是调用了controller的Start函数\n            if err := ctrl.Start(cm.internalStop); err != nil {\n                cm.errSignal.SignalError(err)\n            }\n        }()\n    }\n...\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-gd4tay2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-gd4tay2",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "controller.Start函数很重要，涉及到了之前提及的队列的初始化和worker的启动。\npkg/internal/controller/controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-9cao6qe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-9cao6qe",
+				"updated": "20230420152253"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *Controller) Start(stop \u003c-chan struct{}) error {\n  ...\n    // 回想之前初始化controller的queue的创建函数，这里会真正实例化这个queue\n    c.Queue = c.MakeQueue()\n...\n    err := func() error {\n     ...\n        // 很重要的一个抖动参数，可以认为是一个冷却时间，目前还没有用到\n        if c.JitterPeriod == 0 {\n            c.JitterPeriod = 1 * time.Second\n        }\n\n        for i := 0; i \u003c c.MaxConcurrentReconciles; i++ {\n            // 到这里便是启动了MaxConcurrentReconciles个worker\n            go wait.Until(c.worker，c.JitterPeriod，stop)\n        }\n...\n    }()\n...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-4mq6vqv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-4mq6vqv",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "controller-runtime整体上可以认为启动结束，收尾函数是wait.Until。这个函数的功能是1） 当接收到stop(channel变量)信号时，函数退出，否则2）运行c.worker函数，如果c.woker退出，间隔JitterPeriod后，再次运行c.worker。这里的JitterPeriod是一个比较重要的参数，它直接影响了问题中提及到的日志刷新频率。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-kx8dw6u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-kx8dw6u",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2）调用Reconcile"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/b71eb28b56434f7daf0445e430d5b831tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230420151627-46fvnjt.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 图（3） 调用Reconcile\n从上文中的c.worker作为切入点，分析worker是如何调用Reconciler，以及返回错误时如何处理的。\npkg/internal/controller/controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-yhgtmz0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-yhgtmz0",
+				"updated": "20230420152255"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *Controller) worker() {\n// 引入一个for循环，当processNextWorkItem返回true时，重复执行，如果返回了\n// false，则退出worker函数。\n    for c.processNextWorkItem() {\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-6stxztd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-6stxztd",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "结合上文中的wait.Until函数，达到了效果1)如果processNextWorkItem返回true时，Until函数暂不生效，逻辑一直在for循环的判断中。2) 如果processNextWorkItem返回false时，跳出了for循环，worker函数也会返回，这时Until函数生效，在JitterPeriod时间间隔后重新调用worker函数，即在1s后重新调度函数。如前文所述，这里会影响日志的刷新频率，前提是processNextWorkItem返回了false。继续看下processNextWorkItem中的逻辑是怎样的。\npkg/internal/controller/controller.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-0p1innb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-0p1innb",
+				"updated": "20230420152257"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *Controller) processNextWorkItem() bool {\n// 从Queue中获取一个item，由NewNamedRateLimitingQueue创建而来，这里可\n//能影响到日志刷新频率，如果Get一直夯住的话，那么对reconcilerHandler的调用会\n//延迟\n    obj，shutdown := c.Queue.Get()\n...\n    return c.reconcileHandler(obj)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-k0hzymv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-k0hzymv",
+				"updated": "20230420152300"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *Controller) reconcileHandler(obj interface{}) bool {\n...\n// 在controller-runtime启动中分析过，c.Do被赋值为reconciler，所以\n// c.Do.Reconcile调用的便是reconciler.Reconcile\n// Reconcile函数是处理Event的核心逻辑，下面的判断分支即是根据Reconcile的返\n// 回是否含有错误进行不同的事件请求重入队\n    if result，err := c.Do.Reconcile(req); err != nil {\n        // 错误不为空，将这个事件请求重新加入到限速队列中，可能会影响到日志刷新的频率\n        c.Queue.AddRateLimited(req)\n...\n        // 在错误不为空的情况下，返回false，会导致间接调用者processNextWorkItem的\n// 返回值为false，再往上追溯，会导致c.worker退出，wait.Until会间隔\n// JitterPeriod(1s)后重新调度，这可以解释日志中的前面的几条日志的间隔为1s，但\n// 是无法解释后面日志的时间间隔的递增\n        return false\n    } else if result.RequeueAfter \u003e 0 {\n...\n        // 错误为空，但是设置了RequeueAfter的话，会将现有的事件请求作为一个新的请\n// 求在RequeueAfter后冲洗加入队列，作为新的请求的意思是清除这个请求已在队\n// 列中保存的其他数据\n        c.Queue.Forget(obj)\n        c.Queue.AddAfter(req，result.RequeueAfter)\n...\n       // 返回值为true，processNextWorkItem的返回一直为true，所以不会触发\n// wait.Until重新调度c.worker，因此如果有日志的话，预测日志的前几条应该不是按\n// 照1s间隔打印的，而是按照其他规则\n        return true\n    } else if result.Requeue {\n        // 在错误为空且RequeueAfter不大于0的情况下，如果设置Requeue为true，那\n// 么仅将请求重新加入限速队列\n        c.Queue.AddRateLimited(req)\n        // 不会触发wait.Until的重新调度，所以日志应该也是规则的\n        return true\n    }\n...\n// 上述判断分支都失败时，即错误为空，result也无其他设置时，认为请求被正确处理，所\n// 以直接在队里中清除该请求后返回，可以继续进行下一个请求的处理\n    c.Queue.Forget(obj)\n...\n    return true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-br8ql8h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-br8ql8h",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "reconcileHandler函数包含了处理事件以及错误处理，reconcile也就是在这个函数中被调用的。根据分析，前几条日志时间间隔1s的原因已经被找到。但是后面时间间隔增加的原因还没有被分析到。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-h0g9jl7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-h0g9jl7",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在reconcileHandler中，出现了c.Queue，对req的Get，AddRateLimited等操作都是作用在这个队列上，所以时间间隔要么出现在请求加入到队列之前，要么出现在加入到队列之后的获取上。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-z0s6m73",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-z0s6m73",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3）事件请求时间间隔"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-nobgfya",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-nobgfya",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "*client-go版本: v0.17.1 "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/3f292320fe614125bdf317febd749878tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230420151627-c2bh24p.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 图（4） 事件请求时间间隔"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-skz1q7f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-skz1q7f",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先看下c.Queue.Get，是否在获取处理对象时有时间设置。队列的设置位于client-go库中。import路径为\"k8s.io/client-go/util/workqueue\"。按照上文提到的，从queue的创建作为入口。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-ztxzkus",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-ztxzkus",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.1）初始化限速队列"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-paa3j2v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-paa3j2v",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "util/workqueue/rate_limiting_queue.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-04yg4vn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-04yg4vn",
+				"updated": "20230420152305"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func NewNamedRateLimitingQueue(rateLimiter RateLimiter，name string) RateLimitingInterface {\n    return \u0026rateLimitingType{\n        // 初始化了一个延迟队列\n        DelayingInterface: NewNamedDelayingQueue(name),\n        // rateLimiter作为入参赋值\n        rateLimiter:       rateLimiter,\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-gla2etk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-gla2etk",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先看下NewNamedDelayingQueue。\nutil/workqueue/delaying_queue.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-afoa465",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-afoa465",
+				"updated": "20230420152304"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func NewNamedDelayingQueue(name string) DelayingInterface {\n    return NewDelayingQueueWithCustomClock(clock.RealClock{}，name)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-2i1rfp7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-2i1rfp7",
+				"updated": "20230420152307"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func NewDelayingQueueWithCustomClock(clock clock.Clock，name string) DelayingInterface {\n    ret := \u0026delayingType{\n        Interface:       NewNamed(name),\n  ...\n    }\n    // 开启了一个goroutine用来处理请求对象的增删改查，核心函数\n    go ret.waitingLoop()\n\n    return ret\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-dvgx706",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-dvgx706",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.2）获取待处理请求事件对象"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\ndelayingType结构体中并没有Get方法，因此q是它的某个属性中含有并做了方法提升，这个属性是Interface，所以查看NewNamed的内容。\nutil/workqueue/queue.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-1jg2dzc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-1jg2dzc",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func NewNamed(name string) *Type {\n    rc := clock.RealClock{}\n    return newQueue(\n        rc,\n        globalMetricsFactory.newQueueMetrics(name，rc),\n        defaultUnfinishedWorkUpdatePeriod,\n    )\n}\n复制代码\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-4iazlse",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-4iazlse",
+				"updated": "20230420152309"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (q *Type) Get() (item interface{}，shutdown bool) {\n   ...\n    item，q.queue = q.queue[0]，q.queue[1:]\n...\n    return item，false\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-0zhgrhv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-0zhgrhv",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以Get方法最终只是从队列中取值，并没有时间间隔的设置。所以时间间隔的设置是在事件请求入队之前，看下c.Queue.AddRateLimited。仍然属于rateLimitingType上的方法。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-5wnbsp5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-5wnbsp5",
+				"updated": "20230420152311"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (q *rateLimitingType) AddRateLimited(item interface{}) {\n// 涉及到DelayingInterfaces属性的AddAfter方法，上文提及过。还涉及到了\n// q.rateLimiter中的When方法，之前有提及过rateLimiter，但是没有分析\n    q.DelayingInterface.AddAfter(item，)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-gylxk4y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-gylxk4y",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.3）请求事件对象再处理"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n先看下AddAfter方法，然后分析下rateLimiter。从这里也可以看得出，引用了rateLimiter，很可能日志间隔事件跟限速器有关。\nutil/workqueue/delaying_queue.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-jl8a44d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-jl8a44d",
+				"updated": "20230420152314"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (q *delayingType) AddAfter(item interface{}，duration time.Duration) {\n   // 从函数名称AddAfter也可以推测，时间间隔会在某个地方被设置\n    if duration \u003c= 0 {\n        q.Add(item)\n        return\n    }\n    select {\n// 将duration时间经过运算后赋值给readyAt，然后发送到waitingForAddCh这\n// channel中，所以这里仍然是进行参数设置，并没有进行真正的时间延迟。但是\n// duration作为时间间隔被进行了传递。 readyAt表明这个对象在now+duration时\n// 间后\"准备好\"被处理。\n    case q.waitingForAddCh \u003c- \u0026waitFor{data: item，readyAt: q.clock.Now().Add(duration)}:\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-8x3pk58",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-8x3pk58",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以数据来到了waitingForAddCh中，看下waitingForAddCh是如何读数据的，上文中提及过一个goroutine，位于NewDelayingQueueWithCustomClock方法中，waitingLoop这个方法中开启了一些后台进程。\nutil/workqueue/delaying_queue.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-0vplkbn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-0vplkbn",
+				"updated": "20230420152318"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (q *delayingType) waitingLoop() {\n  ...\n    // 初始化一个优先队列，根据有限队列的使用方法，可以推测可能跟时间间隔有关。\n    waitingForQueue := \u0026waitForPriorityQueue{}\n    heap.Init(waitingForQueue)\n...\n    // 死循环，表示一直在处理\n    for {\n        // 如果优先队列总存在数据\n        for waitingForQueue.Len() \u003e 0 {\n            // 那么取队列中具有最高优先级的元素\n            entry := waitingForQueue.Peek().(*waitFor)\n            // 如果对象readyAt中的时间尚未到来， 从当前循环中退出，执行for之后的逻辑\n            if entry.readyAt.After(now) {\n                break\n            }\n            // 如果对象中readyAt的时间已经到来，那么将这个对象出队后加入到queue中。\n// 所以这里将优先队列和queue联系起来。还有疑问在于优先队列\n// waitingForQueue中的元素顺序是如何决定的，虽然到这里可以断定元素排序依\n// 据是entry.readyAt。\n            entry = heap.Pop(waitingForQueue).(*waitFor)\n            q.Add(entry.data)\n            delete(waitingEntryByData，entry.data)\n        }\n...\n        select {\n      ...\n        // 上文中waitingForAddCh这个channel在这里被消费\n        case waitEntry := \u003c-q.waitingForAddCh:\n            // 如果对象尚未到被处理时间，就丢到优先队列中\n            if waitEntry.readyAt.After(q.clock.Now()) {\n                insert(waitingForQueue，waitingEntryByData，waitEntry)\n            } else {\n                // 如果对象可以被处理，那么加入到queue中。\n                q.Add(waitEntry.data)\n            }\n....\n        }\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-l2npk4v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-l2npk4v",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "引入了两个队列，一个是queue，一个是waitingForQueue，前者是全局队列，请求对象在整个程序中的处理顺序按照queue的先进先出原则进行处理，后者是优先队列，由于在请求对象入queue之前的预处理，达成的效果是queue中存在的对象必然是到了被处理的时间的，而且处理先后按照duration从小到大排序。最后看下insert函数。\nutil/workqueue/delaying_queue.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-hwev2mp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-hwev2mp",
+				"updated": "20230420152324"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 最小堆排序，保证waitForPriorityQueue堆顶的元素是readyAt时间最小的值\nfunc insert(q *waitForPriorityQueue，knownEntries map[t]*waitFor，entry *waitFor) {\n    existing，exists := knownEntries[entry.data]\n    if exists {\n        if existing.readyAt.After(entry.readyAt) {\n            existing.readyAt = entry.readyAt\n            heap.Fix(q，existing.index)\n        }\n        return\n    heap.Push(q，entry)\n    knownEntries[entry.data] = entry\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-3sd0ltm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-3sd0ltm",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面分析了请求对象的入队顺序以及被Get时的先后顺序，请求对象是依据readyAt中设置的时间先后入队的，所以最后的问题衍变成duration是如何产生的。回溯看一下duration如何产生。duration出现在q.DelayingInterface.AddAfter函数中，duration的值为q.rateLimiter.When 最后看下q.rateLimiter，在初始化controller的时候被赋值到options中。创建函数为workqueue.DefaultControllerRateLimiter。\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.4）限速器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nutil/workqueue/default_rate_limiters.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-jzq20kt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-jzq20kt",
+				"updated": "20230420152326"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2Nzcw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func DefaultControllerRateLimiter() RateLimiter {\n    return NewMaxOfRateLimiter(\n        // 一个是指数限速器\n        NewItemExponentialFailureRateLimiter(5*time.Millisecond，1000*time.Second),\n       // 一个是桶限速器\n        \u0026BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(10)，100)},\n    )\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-wmpi0c9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-wmpi0c9",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "把这两个限速器放在一边，先看下NewMaxOfRateLimiter.When函数。最终落在NewMaxOfRateLimiter.When。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-kap75wb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-kap75wb",
+				"updated": "20230420152328"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (r *MaxOfRateLimiter) When(item interface{}) time.Duration {\n    // 每次调用When时都会初始化一个ret\n    ret := time.Duration(0)\n    // 上面的两个限速器是这里的r.limiters\n    for _，limiter := range r.limiters {\n        // 分被调用限速器\n        curr := limiter.When(item)\n        // 如果当前限速器返回的When值比ret大，则更新到ret中\n        if curr \u003e ret {\n            ret = curr\n        }\n    }\n    return ret\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-7z79amp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-7z79amp",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "实现的效果是每次调用When时，返回所有限速器中When函数的最大值作为duration的延迟值。 其中令牌桶是常见的限流算法之一，目的是保证请求处理速率不超过设置阈值。在BucketRateLimiter中,qps被设置为10，桶大小为100。程序当前只监听了一个资源，每次也只有一个请求入队，每秒平均请求数很小,不会触发限流，即便程序在刚启动时，也不会有100个请求产生引起限流器brust。因此只要考虑NewItemExponentialFailureRateLimiter这个限流器就可以了。\nutil/workqueue/default_rate_limiters.go"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-n7topzq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-n7topzq",
+				"updated": "20230420152330"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func NewItemExponentialFailureRateLimiter(baseDelay time.Duration，maxDelay time.Duration) RateLimiter {\n    // baseDelay为5ms，maxDelay为1000s，即16分40s。\n    return \u0026ItemExponentialFailureRateLimiter{\n        failures:  map[interface{}]int{},\n        baseDelay: baseDelay,\n        maxDelay:  maxDelay,\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-iy7g234",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230420151627-iy7g234",
+				"updated": "20230420152333"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (r *ItemExponentialFailureRateLimiter) When(item interface{}) time.Duration {\n   ...\n// ItemExponentialFailureRateLimiter为全局变量，每次调用when时，都会在\n// failures中记录一下，初始值为0。如果When被调用时，failures中已有这个对象，表\n// 明是因失败重新入对，这个对象的failures值加1，如果下次再失败，继续加1。这个逻\n// 辑保证了每个对象都是可以被追溯的。当处理完成时，会有Forget函数清除掉过期数\n// 据。\n    exp := r.failures[item]\n    r.failures[item] = r.failures[item] + 1\n    // 指数表现在math.Pow函数上，乘法因子一个是5ms，一个是底数为2，指数为failures[item]的幂指数。结果即为When将要返回的duration时间。\n    backoff := float64(r.baseDelay.Nanoseconds()) * math.Pow(2，float64(exp))\n...\n   // 格式转换\n    calculated := time.Duration(backoff)\n    // 如果幂指数运算的结果超过了maxDelay ，那么就只返回maxDelay，即为1000s\n    if calculated \u003e r.maxDelay {\n        return r.maxDelay\n    }\n    return calculated\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-yrn3kzn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-yrn3kzn",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ItemExponentialFailureRateLimiter限流器起到的作用是对每一个请求对象，如果该对象的失败次逐次增加，那么它下一次被处理的时间则呈指数增加。所以日志的刷新间隔会逐渐变长，知道maxDelay。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-rgqwqmv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-rgqwqmv",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "延迟时间表"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-1t1o2ty",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "||",
+				"id": "20230420151627-1t1o2ty",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "乘数1(单位s)"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "乘数2"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "值(单位s)"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.005"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^0"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.005"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^1"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.01"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^2"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.02"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^3"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.04"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^4"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.08"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^5"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.16"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^6"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.32"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^7"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.64"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^8"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.28"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^9"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2.56"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^10"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5.12"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^11"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "10.24"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^12"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "20.48"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^13"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "40.96"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^14"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "81.92"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^15"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "163.84"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^16"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "327.68"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^17"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "655.36"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^18"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1310.72"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-b298r7x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-b298r7x",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "五、 验证"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-jtch0ug",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-jtch0ug",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Reconcile中返回(ctrl.Result{}，errors.New(\"err\"))，"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-dfnlvkh",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "|||",
+				"id": "20230420151627-dfnlvkh",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "乘数1(单位s)"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "乘数2"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "值(单位s)"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "观察数据"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.005"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^0"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.005"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.001"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^1"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.01"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.000"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^2"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.02"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.001"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^3"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.04"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.000"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^4"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.08"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.001"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^5"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.16"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.000"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^6"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.32"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.001"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^7"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "0.64"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.000"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^8"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.28"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "1.280"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^9"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2.56"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2.536"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^10"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5.12"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "5.120"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^11"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "10.24"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "10.241"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^12"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "20.48"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "20.480"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^13"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "40.96"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "40.960"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^14"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "81.92"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "81.921"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2^15"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "163.84"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "163.840"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在第9次入队之前，虽然指数限速器的duration值很小，但是因为Reconcile中err返回了非空值，所以processNextWorkItem退出，wait.Until中的JitterPeriod生效，即1s后才重启c.worker，因此前7次的时间间隔都在1s左右。从第9次开始，虽然c.worker启动了，过了1s时间，但是指数限速器中设置的时间已经大于1s，所以只能等待时间到达才可处理请求。等到第19次入队时，如果限速器不设最大阈值，那么应该等待1310.72s，但是最大值是1000s，所以从19次开始，间隔时间都会是1000s。"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-b4xt88v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-b4xt88v",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "六、 结论"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-vkzids8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-vkzids8",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在可以回答之前提到的疑问，"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-vlgwtvy",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230420151627-vlgwtvy",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"ID": "20230420151627-5qc08te",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230420151627-5qc08te",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-zlub46k",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-zlub46k",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "事件被再处理的时间间隔确实会逐渐增加，并且影响因素主要有两个，一是位于wait.Until中的抖动参数，二是ItemExponentialFailureRateLimiter限流器中的幂指数延迟时间。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230420151627-btphwky",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230420151627-btphwky",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-qyt4m0p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-qyt4m0p",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "有最大值限制，最大的时间间隔是1000s。并且当达到最大时间间隔后，后面会稳定为最大值。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230420151627-yenc8is",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230420151627-yenc8is",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-ovq5e5i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-ovq5e5i",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "controller中使用了令牌桶来限流，最大处理能力是10qps。当请求数量超限时，controller会存在性能问题，请求响应时间会增加。当前能想到的处理方法是更改限速器参数配置或者增加controller中worker的数量 。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230420151627-8x7xbtw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230420151627-8x7xbtw",
+						"updated": "20230420151627"
+					},
+					"Children": [
+						{
+							"ID": "20230420151627-v4i3lzj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230420151627-v4i3lzj",
+								"updated": "20230420151627"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最小堆和优先队列可以保证每个请求按时间上的先后顺序被处理。当请求规模扩大时，理论上只要资源充足，不会出现丢请求的状况。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-xvtm6mz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-xvtm6mz",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上述问题的核心是重试。controller-runtime中主要使用了抖动参数和限流器来处理事件，前者保证了当业务逻辑出错时，controller有足够的冷却时间恢复，后者平衡了事件被再处理的频率和效率。 K8s的设计要求资源被声明后，controller需要负责资源的状态一直保持在期望值，重试是不可避免的，所以一个好的重试机制对于服务性能至关重要。在其他重试场景中，相对于简单的定长间隔重写，引入限流器不失为一个更好的选择。"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-vxp4mi3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230420151627-vxp4mi3",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考链接"
+				}
+			]
+		},
+		{
+			"ID": "20230420151627-enw3jyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420151627-enw3jyy",
+				"updated": "20230420151627"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fbook.kubebuilder.io%2Fquick-start.html",
+					"TextMarkATitle": "https://book.kubebuilder.io/quick-start.html",
+					"TextMarkTextContent": "book.kubebuilder.io/quick-start…"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fbook.kubebuilder.io%2Fcronjob-tutorial%2Fcontroller-overview.html",
+					"TextMarkATitle": "https://book.kubebuilder.io/cronjob-tutorial/controller-overview.html",
+					"TextMarkTextContent": "book.kubebuilder.io/cronjob-tut…"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FToken_bucket",
+					"TextMarkATitle": "https://en.wikipedia.org/wiki/Token_bucket",
+					"TextMarkTextContent": "en.wikipedia.org/wiki/Token_…"
+				}
+			]
+		},
+		{
+			"ID": "20230420153016-ep4nhws",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230420153016-ep4nhws"
+			}
+		}
+	]
+}

@@ -1,0 +1,1756 @@
+{
+	"ID": "20221229103123-847ssvu",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221229103123-847ssvu",
+		"title": "使用 kubebuilder 开发k8s CRD（一）",
+		"updated": "20221230013134"
+	},
+	"Children": [
+		{
+			"ID": "20221229103123-m5vftht",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221229103123-m5vftht",
+				"updated": "20221229103123"
+			}
+		},
+		{
+			"ID": "20221229103123-en449r7",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221229103123-en449r7"
+			}
+		},
+		{
+			"ID": "20221229103123-5jbpwwy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103123-5jbpwwy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、环境准备;"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-t22ixmm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-t22ixmm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1) K8s环境"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-3fn53zy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-3fn53zy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2) 安装软件："
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-j45derm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-j45derm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "gcc: yum -y "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "install"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " gcc"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-qg4uvr5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-qg4uvr5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kustomize: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "https://github.com/kubernetes-sigs/kustomize"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-943futg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-943futg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "go :"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://golang.google.cn/dl/",
+					"TextMarkTextContent": "https://golang.google.cn/dl/"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-nd5tz7p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-nd5tz7p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubebuilder: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "https://github.com/kubernetes-sigs/kubebuilder"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-zyvdh25",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103123-zyvdh25"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 下载gcc"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-68vfjqd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-68vfjqd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "yum -y install gcc automake autoconf libtool make"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-aofley2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-aofley2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "yum install gcc gcc-c++"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-z06eiqg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103123-z06eiqg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 下载 kustomize_v4.0.5_linux_amd64.tar.gz"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-h6co4vr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-h6co4vr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "   mv kustomize /usr/local/bin"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-nak2zox",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-nak2zox"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " kubebuilder_2.3.1_linux_amd64.tar.gz"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-r94z9pw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-r94z9pw"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "mv"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " kubebuilder_2.3.1_linux_amd64 /usr/local/kubebuilder"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-buw145u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-buw145u"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "export"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " PATH"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "="
+				},
+				{
+					"Type": "NodeText",
+					"Data": "$PATH:/usr/local/kubebuilder/bin"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-cqb9ahy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103123-cqb9ahy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 下载go"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-qrgv7ot",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-qrgv7ot"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "tar"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " -C /usr/local -xzf go1.13.14.linux-amd64.tar.gz"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-ggahx32",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-ggahx32"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "export"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " PATH"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "="
+				},
+				{
+					"Type": "NodeText",
+					"Data": "$PATH:/usr/local/go/bine"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-form0my",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-form0my"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "export"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " GO111MODULE"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "="
+				},
+				{
+					"Type": "NodeText",
+					"Data": "on"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-gmulu9w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103123-gmulu9w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、kubebuilder 开发 CRD："
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-9anu9xm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-9anu9xm"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/开发k8s Operator步骤-20221229103123-fymngmt.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-ov9zvia",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-ov9zvia"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1) 创建go项目目录"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-2xwydk5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-2xwydk5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "mkdir  -p  /opt/mydemo"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-13zezsf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-13zezsf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "cd mydemo"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-tvgd3fl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-tvgd3fl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2) mod init"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-6n8vz9v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-6n8vz9v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 mydemo]# go mod init mydemo\ngo: creating new go.mod: module mydemo"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-v8o1b1l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-v8o1b1l"
+			}
+		},
+		{
+			"ID": "20221229103123-3kth8eu",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221229103123-3kth8eu"
+			},
+			"Children": [
+				{
+					"ID": "20221229103123-mnkrw3u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221229103123-mnkrw3u"
+					},
+					"Children": [
+						{
+							"ID": "20221229103123-lm4tpjq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221229103123-lm4tpjq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubebuilder init"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-bjiv654",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-bjiv654"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k18-5 mydemo]# kubebuilder init --domain ips.com.cn"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-jb5thbs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-jb5thbs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "项目从初始化完成："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://wiki.cestc.cn/download/attachments/170537207/mydemo.zip?version=1\u0026modificationDate=1656663013000\u0026api=v2",
+					"TextMarkTextContent": "mydemo.zip"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-3tt3g2s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-3tt3g2s"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4) 创建API"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-sy2jsf4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-sy2jsf4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubebuilder create api --group mygroup --version v1 --kind Mykind"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-8e5u2pk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-8e5u2pk"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-1-40-20221229103123-00lt192.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-wnnzxw5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-wnnzxw5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5) "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "安装CRD"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-erex21a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-erex21a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这步的主要作用是把CRD对象安装到ETCD数据库中，主要原理是根据api/v1/mykind_type.go的MykindSpec数据结构创建base下面的yaml文件，并据此创建CRD。"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-2z5etp4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-2z5etp4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "make install"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-aa7u4fs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-aa7u4fs"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-3-53-20221229103123-ogpvi8z.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-wodwx86",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-wodwx86"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6) make run"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-tgbi5bq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-tgbi5bq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "#optional,适用于集群本地测试运行；如果部署到集群，请跳过！"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-axyjpi0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-axyjpi0"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-17-19-20221229103123-sd2nec8.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-l9829rd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-l9829rd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7) 查看安装的CRD对象:kubectl get crds"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-zw29ouk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-zw29ouk"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-5-19-20221229103123-31tjios.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-vx8p40f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-vx8p40f"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "8) 创建CRD的实例"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-jlwiixt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-jlwiixt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "  kubectl apply -f config/samples/"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-u83xdts",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-u83xdts"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-19-42-20221229103123-ske9lzd.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-z4f9muu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-z4f9muu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9) 查看创建的实例"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-75uy2co",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-75uy2co"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get mykind -A"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-y78w13h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-y78w13h"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-27-58-20221229103123-zrladb4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-fw8arke",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-fw8arke"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl describe mykind"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-y3x9vw5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-y3x9vw5"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_10-29-2-20221229103123-6beyt7g.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-x1nbfyo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-x1nbfyo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10) "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "部署CRD"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-ke7gi6k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103123-ke7gi6k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10.1 修改配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-jtjb5ag",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-jtjb5ag"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于默认生成Dockerfile\u0026yaml存在一些问题，需要针对具体环境做相应修改。\n[root@k8s01 mydemo]# vi Dockerfile"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-gm3qp5a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221229103123-gm3qp5a"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Build the manager binary"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-tskije7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-tskije7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "FROM golang:1.13 as builder"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-0v502in",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-0v502in"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "WORKDIR /workspace\nENV GOPROXY https://goproxy.cn/\nENV GO111MODULE on\n…\n#FROM gcr.io/distroless/static:nonroot\nFROM registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot  #该镜像要提前处理到阿里云私服中\n…"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-tdiu6kc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-tdiu6kc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "[root@k8s01 mydemo]# vi config/default/manager_auth_proxy_patch.yaml\n…\n#image: gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0\nimage: registry.cn-beijing.aliyuncs.com/zoudezh_ns/kube-rbac-proxy:v0.5.0  #该镜像要提前处理到阿里云私服中"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-vz1oj2v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20221229103123-vz1oj2v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10.2 部署"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-8qold85",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-8qold85"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "make docker-build docker-push IMG=registry.cn-beijing.aliyuncs.com/zoudezh_ns/mycontroller:v0.1.0 #提前去阿里云私服创建一个 mycontroller的仓库"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-iljcq7l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-iljcq7l"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_15-26-18-20221229103123-3lwkfiy.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-54f8ohg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-54f8ohg"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_15-27-58-20221229103123-11d2owl.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-ipuxprk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-ipuxprk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "11) 部署crd镜像到k8s环境中"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-8r12bhc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-8r12bhc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "make deploy IMG=registry.cn-beijing.aliyuncs.com/zoudezh_ns/mycontroller:v0.1.0"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-cldron0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-cldron0"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_15-33-13-20221229103123-rz7q2fa.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-cpfpplo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-cpfpplo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "12) 查看deploy"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-nawpoly",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-nawpoly"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get deploy -A"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-u8gzivb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-u8gzivb"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_15-34-9-20221229103123-psmjwjh.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-4ki2lla",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-4ki2lla"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "13) 查看创建的pod"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-pswr8bz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-pswr8bz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get pods -A"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-bi3zi3z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-bi3zi3z"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_15-35-0-20221229103123-e655jrr.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-e5muuio",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-e5muuio"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "14) 查看创建的svc"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-lwif1r1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-lwif1r1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get svc -A"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-8rarjyx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-8rarjyx"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-1_15-36-8-20221229103123-3uivasu.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-qi37fmd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221229103123-qi37fmd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、Trouble Shooting"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-qarwvrb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-qarwvrb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）镜像处理"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-hw27579",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-hw27579"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从远程下载镜像："
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-qbxhvhi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-qbxhvhi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "docker pull robertchengch/kube-rbac-proxy:v0.5.0"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-fmfh2o4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-fmfh2o4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "docker pull katanomi/distroless-static:nonroot"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-le0cpuh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-le0cpuh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "阿里云个人镜像仓库  :zoudzh/#Zoudzh01"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-ccnkt3o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-ccnkt3o"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上传到阿里云私服："
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-12mhnzk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221229103123-12mhnzk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ docker login --username=zoudzh registry.cn-beijing.aliyuncs.com$ docker tag 421f180b71d8 registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot\n$ docker push registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-hc38zll",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-hc38zll"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "$ docker tag 421f180b71d8 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot",
+					"TextMarkTextContent": "registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n$ docker push "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot",
+					"TextMarkTextContent": "registry.cn-beijing.aliyuncs.com/zoudezh_ns/distroless-static:nonroot"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-a878zbg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-a878zbg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\u003cpre\u003e"
+				},
+				{
+					"Type": "NodeBr",
+					"Data": "br"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\u003c/pre\u003e"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-4gslr84",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-4gslr84"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "$ docker tag 7d94526bba66 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://registry.cn-beijing.aliyuncs.com/zoudezh_ns/kube-rbac-proxy:v0.5.0",
+					"TextMarkTextContent": "registry.cn-beijing.aliyuncs.com/zoudezh_ns/kube-rbac-proxy:v0.5.0"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n$ docker push "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://registry.cn-beijing.aliyuncs.com/zoudezh_ns/kube-rbac-proxy:v0.5.0",
+					"TextMarkTextContent": "registry.cn-beijing.aliyuncs.com/zoudezh_ns/kube-rbac-proxy:v0.5.0"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-649iyf8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221229103123-649iyf8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）异常"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-2gavz8y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-2gavz8y"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为kebebuilder使用go1.13版本，所以本地下载替换 1.13版本的go , 使用1.8 报如下错误"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-zmaiqnp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-zmaiqnp"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-6-29_21-37-43-20221229103123-75mzpu9.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-o4w2kdj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-o4w2kdj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\u003cpre class=\"language-\"\u003e"
+				},
+				{
+					"Type": "NodeBr",
+					"Data": "br"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\u003c/pre\u003e"
+				}
+			]
+		},
+		{
+			"ID": "20221229103123-syqzj6g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221229103123-syqzj6g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\u003cpre class=\"language-\"\u003e"
+				},
+				{
+					"Type": "NodeBr",
+					"Data": "br"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\u003c/pre\u003e"
+				}
+			]
+		}
+	]
+}

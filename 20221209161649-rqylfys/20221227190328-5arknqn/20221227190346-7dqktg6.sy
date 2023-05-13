@@ -1,0 +1,247 @@
+{
+	"ID": "20221227190346-7dqktg6",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221227190346-7dqktg6",
+		"title": "磁盘blk_update_request: IO error",
+		"updated": "20221227191929"
+	},
+	"Children": [
+		{
+			"ID": "20221227190346-3bj43bf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221227190346-3bj43bf",
+				"updated": "20221227190402"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 解决blk_update_request: I/O error, dev fd0, sector 0 错误"
+				}
+			]
+		},
+		{
+			"ID": "20221227190412-ys0g5xa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227190412-ys0g5xa",
+				"updated": "20221227190448"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "在开启了软驱驱动控制器的硬件上引导 Linux 时会出现如下提示:\nblk_update_request: I/O error, dev fd0, sector 0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227190544-0zzjaq8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221227190544-0zzjaq8",
+				"updated": "20221227191423"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决办法：关闭软驱"
+				}
+			]
+		},
+		{
+			"ID": "20221227190623-43k3qfk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221227190623-43k3qfk",
+				"updated": "20221227191432"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# lsmod | grep -i floppy\n floppy                 95465  0\n\n# modprobe -r floopy\n或者\n# rmmod floopy\n\n// 文件追加如下内容\n# vi /etc/modprobe.d/my-blacklist.conf\nblacklist floppy\n\n// 重启服务器\n# reboot\n\n// 查看是否正常\n# dmesg -T  \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221227191737-zkslecn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221227191737-zkslecn",
+				"updated": "20221227191742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " I/O error, dev sda, sector 328230608"
+				}
+			]
+		},
+		{
+			"ID": "20221227191124-tmgopgs",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221227191124-tmgopgs",
+				"updated": "20221227191827"
+			},
+			"Children": [
+				{
+					"ID": "20221227191804-hyg79un",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221227191804-hyg79un",
+						"updated": "20221227191827"
+					},
+					"Children": [
+						{
+							"ID": "20221227191804-y8k9lmd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227191804-y8k9lmd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "现象"
+								}
+							]
+						},
+						{
+							"ID": "20221227191807-8nh2yds",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221227191807-8nh2yds",
+								"updated": "20221227191827"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "当dmesg的时候，出现下面的信息说明磁盘有问题\nend_request: I/O error, dev sda, sector 328230608\nBuffer I/O error on device sda, logical block 41028826\nsd 0:0:0:0: SCSI error: return code = 0x08000002\nsda: Current: sense key: Medium Error\n    Add. Sense: Unrecovered read error\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221227191836-5n4r6p3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221227191836-5n4r6p3",
+				"updated": "20221227191929"
+			},
+			"Children": [
+				{
+					"ID": "20221227191837-7eeto03",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221227191837-7eeto03",
+						"updated": "20221227191929"
+					},
+					"Children": [
+						{
+							"ID": "20221227191837-cjmbmzw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221227191837-cjmbmzw",
+								"updated": "20221227191842"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "解决办法"
+								}
+							]
+						},
+						{
+							"ID": "20221227191842-fntkipr",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221227191842-fntkipr",
+								"updated": "20221227191929"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "1. 首先检测下坏掉\n\nbadblocks -s -v -o /root/bb.log /dev/sda　　将结果保存到bb.log\n[root@logging ~]# badblocks -s -v -o /root/badblocks.log /dev/sda\nChecking blocks 0 to 586061784\nChecking for bad blocks (read-only test): done            \nPass completed, 173 bad blocks found.\n \n\nsmartctl -a   /dev/sda3 (快速检测硬盘坏道,看read，write 后面有没有errors)\n\n2. 逻辑坏道修复方法\n\nbadblocks -s -w /dev/sda END START (END代表需要修复的扇区末端，START代表需要修复的扇区起始端)\nfsck -a /dev/sda\n\n修复后再用badblocks -s -v -o /root/bb.log /dev/sda监测看是否还有坏道存在，如果坏道还是存在的话说明坏道属于硬盘坏道。硬盘坏道要用隔离方法，首先记录监测出的硬盘坏道然后分区的时候把硬盘坏道所在的扇区分在一个分区（大小一般大于坏扇区大小），划分出的坏道分区不使用即可达到隔离的目的\n\n3. 磁道坏道和硬盘坏道（准备换硬盘）\n\n0磁道坏道的修复方法是隔离0磁道，使用fdsk划分区的时候从1磁道开始划分区。\n\n如果是硬盘坏道的话，只能隔离不能修复\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

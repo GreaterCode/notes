@@ -1,0 +1,521 @@
+{
+	"ID": "20230203083406-c778lb9",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230203083406-c778lb9",
+		"title": "docker中镜像各ID之间的关系和计算-layerID-diffID-chainID-cacheID的计算",
+		"updated": "20230203084456"
+	},
+	"Children": [
+		{
+			"ID": "20230203083407-u9xqgq3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203083407-u9xqgq3",
+				"updated": "20230203083458"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 拉取镜像"
+				}
+			]
+		},
+		{
+			"ID": "20230203083538-twq7x26",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203083538-twq7x26",
+				"updated": "20230203083539"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先我们先拉取镜像："
+				}
+			]
+		},
+		{
+			"ID": "20230203083504-yebwdsj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203083504-yebwdsj",
+				"updated": "20230203083544"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n# docker pull ubuntu:latest\nUsing default tag: latest\n\nlatest: Pulling from library/ubuntu\n\n345e3491a907: Pull complete\n\n57671312ef6f: Pull complete\n\n5e9250ddb7d0: Pull complete\n\nDigest: sha256:adf73ca014822ad8237623d388cedf4d5346aa72c270c5acc01431cc93e18e2d\n\nStatus: Downloaded newer image for ubuntu:latest\n\ndocker.io/library/ubuntu:latest\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203083518-3vn8cv1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203083518-3vn8cv1",
+				"updated": "20230203083534"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里的345e3491a907，57671312ef6f，5e9250ddb7d0为"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "压缩的layer层的哈希值"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "这些值为layerID，即distribution hashes，他们从远程的repository拉取下来。"
+				}
+			]
+		},
+		{
+			"ID": "20230203083551-vt4v2mw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203083551-vt4v2mw",
+				"updated": "20230203083607"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 查看镜像详细信息"
+				}
+			]
+		},
+		{
+			"ID": "20230203083607-9g5cecc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203083607-9g5cecc",
+				"updated": "20230203083638"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# docker inspect ubuntu:latest\n\n其中有一个rootfs的键值对，如下：\n\n  \"RootFS\": {\n\n            \"Type\": \"layers\",\n\n            \"Layers\": [\"sha256:ccdbb80308cc5ef43b605ac28fac29c6a597f89f5a169bbedbb8dec29c987439\",                \"sha256:63c99163f47292f80f9d24c5b475751dbad6dc795596e935c5c7f1c73dc08107\",                \"sha256:2f140462f3bcf8cf3752461e27dfd4b3531f266fa10cda716166bd3a78a19103\"\n\n            ]\n\n        },\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203083636-73oalg4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203083636-73oalg4",
+				"updated": "20230203083832"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "记住这里的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "rootfs layers的值是diffID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230203083734-o46tw5b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203083734-o46tw5b",
+				"updated": "20230203083844"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong strong",
+					"TextMarkTextContent": "layerID和解压后的diffID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "对应"
+				}
+			]
+		},
+		{
+			"ID": "20230203083909-rldwab9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203083909-rldwab9",
+				"updated": "20230203083909"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那么从远程拉取下来的layerID和解压后的diffID是如何一一对应的呢？"
+				}
+			]
+		},
+		{
+			"ID": "20230203083936-6tz0745",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203083936-6tz0745",
+				"updated": "20230203083955"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ls /var/lib/docker/image/overlay2/distribution/\ndiffid-by-digest  v2metadata-by-diffid\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203083909-v8vhnyl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203083909-v8vhnyl",
+				"updated": "20230203084042"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "color: var(--b3-font-color8);"
+					},
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "​其中diffid-by-digest保存了digest(layerID)-\u0026gt;diffID的映射关系，即distribution hashes和Content hashes的映射关系。也即是正向查询。"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"color: var(--b3-font-color8);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20230203083909-ba5u2vd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203083909-ba5u2vd",
+				"updated": "20230203084034"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "color: var(--b3-font-color8);"
+					},
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "v2metadata-by-diffid保存了diffid -\u0026gt; (digest,repository)的映射关系，这可以方便查找layer的digest及其所属的repository。也即是反向查询，可以从diffID-\u0026gt;layerID（其实就是digest）。"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"color: var(--b3-font-color8);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20230203084050-sel5mg8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203084050-sel5mg8",
+				"updated": "20230203084110"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# cd /var/lib/docker/image/overlay2/distribution/diffid-by-digest/sha256\n\n# cat \u003clayerID\u003e\n\n\u003cdiffID\u003e //得到 相对应的diffID\n\n# cd /var/lib/docker/image/overlay2/distribution/v2metadata-by-diffid/sha256\n\n# cat \u003cdiffID\u003e\n\n[{\"Digest\":\"sha256:345e3491a907bb7c6f1bdddcf4a94284b8b6ddd77eb7d93f09432b17b20f2bbe\",\"SourceRepository\":\"docker.io/library/ubuntu\",\"HMAC\":\"\"}]    // 得到相应的layerID和库相关信息\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203084239-9febmzw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203084239-9febmzw",
+				"updated": "20230203084247"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong strong",
+					"TextMarkTextContent": "从diffID组成chainID："
+				}
+			]
+		},
+		{
+			"ID": "20230203084318-yplz3p6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203084318-yplz3p6",
+				"updated": "20230203084327"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "从diffID组成chainID：\n\nlayer.ChainID只用本地，根据layer.DiffID计算，并用于layerdb的目录名称。\n\nchainID唯一标识了一组（像糖葫芦一样的串的底层）diffID的hash值，包含了这一层和它的父层(底层)，当然这个糖葫芦可以有一颗山楂，也就是chainID(layer0)==diffID(layer0)；对于多颗山楂的糖葫芦，ChainID(layerN) = SHA256hex(ChainID(layerN-1) + \" \" + DiffID(layerN))\n\n#cd /var/lib/docker/image/overlay2/layerdb/sha256\n\n这个sha256目录中保存了所有的chainID，在第二步对镜像的inspect中，\n\n[\"sha256:ccdbb80308cc5ef43b605ac28fac29c6a597f89f5a169bbedbb8dec29c987439\",                \"sha256:63c99163f47292f80f9d24c5b475751dbad6dc795596e935c5c7f1c73dc08107\",                \"sha256:2f140462f3bcf8cf3752461e27dfd4b3531f266fa10cda716166bd3a78a19103\"]\n\n三个diffID，第一个是最底层的ccdbb80308cc5ef43b605ac28fac29c6a597f89f5a169bbedbb8dec29c987439，所以diffID(layer0)==chainID(layer0),\n\n然后这个文件夹中包含了diff、cache-id等，最主要的是\n\nDiff文件保存了这个层的diffID.\n\ncache-id为具体/var/lib/docker/overlay2/\u003ccache-id\u003e存储路径。\n\n另外两个chainID如何计算呢？\n\n除了底层的layer层，还有一些高层的layer，他们的chainID文件夹中包含了parent文件，这个是值为ChainID(layerN-1)，diff文件存储了DiffID(layerN)，而文件夹也就是ChainID(layerN) = SHA256hex(ChainID(layerN-1) + \" \" + DiffID(layerN))\n\n#echo -n \"sha256:ccdbb80308cc5ef43b605ac28fac29c6a597f89f5a169bbedbb8dec29c987439 sha256:63c99163f47292f80f9d24c5b475751dbad6dc795596e935c5c7f1c73dc08107\" | sha256sum | awk '{print $1}'\n\n一定注意要加上 “sha256:”和中间的空格“ ”这两个字符，否则计算就错误了。\n\n得出中间层chainID它也包括自己diff、parent、cache-id等：8d8dceacec7085abcab1f93ac1128765bc6cf0caac334c821e01546bd96eb741\n\n再计算最后的chainID：\n\n#echo -n \"sha256:8d8dceacec7085abcab1f93ac1128765bc6cf0caac334c821e01546bd96eb741 sha256:2f140462f3bcf8cf3752461e27dfd4b3531f266fa10cda716166bd3a78a19103\" | sha256sum | awk '{print $1}'\n\n得出最后的值为：\n\n3dd8c8d4fd5b59d543c8f75a67cdfaab30aef5a6d99aea3fe74d8cc69d4e7bf2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203084343-zw7iev2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203084343-zw7iev2",
+				"updated": "20230203084411"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. chainID-\u003ecacheID"
+				}
+			]
+		},
+		{
+			"ID": "20230203084357-pgddwxr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203084357-pgddwxr",
+				"updated": "20230203084404"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "最后从chainID-\u003ecacheID\n\n通过上一步计算找到当前最顶层的chainID：\n\n/var/lib/docker/image/overlay2/layerdb/sha256/保存了chianID信息，目录名称为chainID\n\n这个目录下的cache-id、diff、parent\n\n通过这个chain生成一个cache-id\n\ndiff保存当前layer的diff ID\n\nparent保存上一层layer的chainID\n\n# cd 3dd8c8d4fd5b59d543c8f75a67cdfaab30aef5a6d99aea3fe74d8cc69d4e7bf2\n\n# cat cache-id\n\nddd5760e7cbfde67e325e77b540dfc13e7dccf1c7d1b156554d0a79378642bd1\n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203084412-boj8xn6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203084412-boj8xn6",
+				"updated": "20230203084425"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong strong",
+					"TextMarkTextContent": "从cache-id得到最终的磁盘文件："
+				}
+			]
+		},
+		{
+			"ID": "20230203084434-q33boeq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230203084434-q33boeq",
+				"updated": "20230203094014"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "从cache-id得到最终的磁盘文件：\n\n在/var/lib/docker/overlay2/\n\n# cd /var/lib/docker/overlamy2/\u003ccache-id\u003e\n\n得到当前的内容\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230203084432-m9frpxr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230203084432-m9frpxr",
+				"updated": "20230203084445"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 总结"
+				}
+			]
+		},
+		{
+			"ID": "20230203084456-2s00qw6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203084456-2s00qw6",
+				"updated": "20230203084456"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Overlay2比overlay更加高效，因为overlay2优化了inode的利用。"
+				}
+			]
+		},
+		{
+			"ID": "20230203084456-9uc01ar",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203084456-9uc01ar",
+				"updated": "20230203084456"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "layerID -\u003e diffID -\u003e chainID -\u003e cacheID"
+				}
+			]
+		},
+		{
+			"ID": "20230203084456-fs15p2y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203084456-fs15p2y",
+				"updated": "20230203084456"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "layerID和diffID的对应关系在diffid-by-digest和v2metadata-by-diffid"
+				}
+			]
+		},
+		{
+			"ID": "20230203084456-ncvrtj9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203084456-ncvrtj9",
+				"updated": "20230203084456"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "chainID主要存在于/var/lib/docker/image/overlay2/layerdb/sha256/\u003cchain-id\u003e，"
+				}
+			]
+		},
+		{
+			"ID": "20230203084456-yx495wl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203084456-yx495wl",
+				"updated": "20230203084456"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "cacheID主要存在于/var/lib/docker/overlay2/\u003ccache-id\u003e\n————————————————\n版权声明：本文为CSDN博主「Penguinbupt」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。\n原文链接：https://blog.csdn.net/u010566813/article/details/117783220"
+				}
+			]
+		},
+		{
+			"ID": "20230203094324-5ijg94h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230203094324-5ijg94h",
+				"updated": "20230203094324"
+			}
+		}
+	]
+}

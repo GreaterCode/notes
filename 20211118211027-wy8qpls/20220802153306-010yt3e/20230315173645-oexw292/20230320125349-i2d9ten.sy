@@ -1,0 +1,711 @@
+{
+	"ID": "20230320125349-i2d9ten",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230320125349-i2d9ten",
+		"title": "dynamic包",
+		"updated": "20230321140622"
+	},
+	"Children": [
+		{
+			"ID": "20230320125349-t4pvu53",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230320125349-t4pvu53",
+				"updated": "20230320125442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 概述"
+				}
+			]
+		},
+		{
+			"ID": "20230320125442-zybgb7d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230320125442-zybgb7d",
+				"updated": "20230320125508"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用于动态生成informer/lister/client等"
+				}
+			]
+		},
+		{
+			"ID": "20230320135245-wumwkbc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230320135245-wumwkbc",
+				"updated": "20230320135250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 类图"
+				}
+			]
+		},
+		{
+			"ID": "20230320135251-2ox5j2f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230320135251-2ox5j2f",
+				"updated": "20230320135251"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230320135251-rtya7zb.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230320130550-ccmw75q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230320130550-ccmw75q",
+				"updated": "20230320140221"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 具体代码解析"
+				}
+			]
+		},
+		{
+			"ID": "20230320140156-0cb4y7l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230320140156-0cb4y7l",
+				"updated": "20230320140200"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 interface.go"
+				}
+			]
+		},
+		{
+			"ID": "20230320135457-fjdsolt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230320135457-fjdsolt",
+				"updated": "20230320135645"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// ResourceInterface的工厂模式，方法Resource可以获取对应gvr的ResourceInterface接口\ntype Interface interface {\n\tResource(resource schema.GroupVersionResource) NamespaceableResourceInterface\n}\n\n// 操作对应obj的接口\ntype ResourceInterface interface {\n\tCreate(ctx context.Context, obj *unstructured.Unstructured, options metav1.CreateOptions, subresources ...string) (*unstructured.Unstructured, error)\n\tUpdate(ctx context.Context, obj *unstructured.Unstructured, options metav1.UpdateOptions, subresources ...string) (*unstructured.Unstructured, error)\n\tUpdateStatus(ctx context.Context, obj *unstructured.Unstructured, options metav1.UpdateOptions) (*unstructured.Unstructured, error)\n\tDelete(ctx context.Context, name string, options metav1.DeleteOptions, subresources ...string) error\n\tDeleteCollection(ctx context.Context, options metav1.DeleteOptions, listOptions metav1.ListOptions) error\n\tGet(ctx context.Context, name string, options metav1.GetOptions, subresources ...string) (*unstructured.Unstructured, error)\n\tList(ctx context.Context, opts metav1.ListOptions) (*unstructured.UnstructuredList, error)\n\tWatch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error)\n\tPatch(ctx context.Context, name string, pt types.PatchType, data []byte, options metav1.PatchOptions, subresources ...string) (*unstructured.Unstructured, error)\n\tApply(ctx context.Context, name string, obj *unstructured.Unstructured, options metav1.ApplyOptions, subresources ...string) (*unstructured.Unstructured, error)\n\tApplyStatus(ctx context.Context, name string, obj *unstructured.Unstructured, options metav1.ApplyOptions) (*unstructured.Unstructured, error)\n}\n\n// 限定了namespace的ResourceInterface\ntype NamespaceableResourceInterface interface {\n\tNamespace(string) ResourceInterface\n\tResourceInterface\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230320140139-8ytzwp9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230320140139-8ytzwp9",
+				"updated": "20230320140207"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 simple.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321084342-22448kb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321084342-22448kb",
+				"updated": "20230321084347"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "相关函数："
+				}
+			]
+		},
+		{
+			"ID": "20230320140231-2hv93jq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230320140231-2hv93jq",
+				"updated": "20230321084539"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n// ConfigFor 返回提供的配置的副本，并设置了适当的动态客户端默认值。\nfunc ConfigFor(inConfig *rest.Config) *rest.Config {\n\tconfig := rest.CopyConfig(inConfig)\n\tconfig.AcceptContentTypes = \"application/json\"\n\tconfig.ContentType = \"application/json\"\n\tconfig.NegotiatedSerializer = basicNegotiatedSerializer{} // this gets used for discovery and error handling types\n\tif config.UserAgent == \"\" {\n\t\tconfig.UserAgent = rest.DefaultKubernetesUserAgent()\n\t}\n\treturn config\n}\n\n// // NewForConfig 创建新的动态客户端或返回错误。\nfunc New(c rest.Interface) *DynamicClient {\n\treturn \u0026DynamicClient{client: c}\n}\n\n//NewForConfigOrDie为给定的配置创建一个新的DynamicClient，如果配置中有错误，就会panic。\nfunc NewForConfigOrDie(c *rest.Config) *DynamicClient {\n\tret, err := NewForConfig(c)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\treturn ret\n}\n\n// NewForConfig创建新的动态客户端或返回错误。\n// NewForConfig相当于NewForConfigAndClient（c，httpClient），其中httpClient是使用rest.HTTPClientFor（c）生成的。\nfunc NewForConfig(inConfig *rest.Config) (*DynamicClient, error) {\n\tconfig := ConfigFor(inConfig)\n\n\thttpClient, err := rest.HTTPClientFor(config)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn NewForConfigAndClient(config, httpClient)\n}\n\n// NewForConfigAndClient为给定的配置和http客户端创建一个新的动态客户\nfunc NewForConfigAndClient(inConfig *rest.Config, h *http.Client) (*DynamicClient, error) {\n\tconfig := ConfigFor(inConfig)\n\t// for serializing the options\n\tconfig.GroupVersion = \u0026schema.GroupVersion{}\n\tconfig.APIPath = \"/if-you-see-this-search-for-the-break\"\n\n\trestClient, err := rest.RESTClientForConfigAndClient(config, h)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn \u0026DynamicClient{client: restClient}, nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321084524-l7ko3ky",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321084524-l7ko3ky",
+				"updated": "20230321094611"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dynamicResourceClient结构体定义及其方法分析："
+				}
+			]
+		},
+		{
+			"ID": "20230321084513-nciy4rh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321084513-nciy4rh",
+				"updated": "20230321085228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// DynamicClient定义，实质上就是rest接口\ntype DynamicClient struct {\n\tclient rest.Interface\n}\n\nvar _ Interface = \u0026DynamicClient{}\n\ntype dynamicResourceClient struct {\n\tclient    *DynamicClient\n\tnamespace string\n\tresource  schema.GroupVersionResource\n}\n\n\nfunc (c *DynamicClient) Resource(resource schema.GroupVersionResource) NamespaceableResourceInterface {\n\treturn \u0026dynamicResourceClient{client: c, resource: resource}\n}\n\n// 实现了NamespaceableResourceInterface接口的Namespace方法\nfunc (c *dynamicResourceClient) Namespace(ns string) ResourceInterface {\n\tret := *c\n\tret.namespace = ns\n\treturn \u0026ret\n}\n\nfunc (c *dynamicResourceClient) Create(ctx context.Context, obj *unstructured.Unstructured, opts metav1.CreateOptions, subresources ...string) (*unstructured.Unstructured, error) {\n\t// 把Unstructured obj（内部其实是map类型）转化为字节数组\n\toutBytes, err := runtime.Encode(unstructured.UnstructuredJSONScheme, obj)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tname := \"\"\n\t// 如果subresources不为空，会校验object的name\n\tif len(subresources) \u003e 0 {\n\t\taccessor, err := meta.Accessor(obj)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tname = accessor.GetName()\n\t\tif len(name) == 0 {\n\t\t\treturn nil, fmt.Errorf(\"name is required\")\n\t\t}\n\t}\n\tif err := validateNamespaceWithOptionalName(c.namespace, name); err != nil {\n\t\treturn nil, err\n\t}\n\t // 如果name不为空，再创建时则使用该name，否则随机生成。\n\t // （这里只是建立了tcp长链接和解码相应，具体的执行逻辑还是在k8s api-server中调用k8s api的etcd相关接口）\n\tresult := c.client.client.\n\t\tPost().\n\t\tAbsPath(append(c.makeURLSegments(name), subresources...)...).\n\t\tSetHeader(\"Content-Type\", runtime.ContentTypeJSON).\n\t\tBody(outBytes).\n\t\tSpecificallyVersionedParams(\u0026opts, dynamicParameterCodec, versionV1).\n\t\tDo(ctx)\n\tif err := result.Error(); err != nil {\n\t\treturn nil, err\n\t}\n\t// 返回原始结果（字节数组数据）\n\tretBytes, err := result.Raw()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t // 使用json编解码器  解码原始数据，得到一个Unstructured类型的数据\n\tuncastObj, err := runtime.Decode(unstructured.UnstructuredJSONScheme, retBytes)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn uncastObj.(*unstructured.Unstructured), nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321084725-whflql7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230321084725-whflql7",
+				"updated": "20230321104219"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 scheme.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321110054-xetcef3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321110054-xetcef3",
+				"updated": "20230321110105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "scheme.go 实现了kubernetes/apimachinery的序列化和编解码"
+				}
+			]
+		},
+		{
+			"ID": "20230321104221-gif5b1p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321104221-gif5b1p",
+				"updated": "20230321104801"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "var watchScheme = runtime.NewScheme(\n\n// 供basicNegotiatedSerializer来获取gvk/类型转化/创建obj\nvar basicScheme = runtime.NewScheme()\n\n// 为上面ResourceClient删除操作的Options创建删除CodecFactory（编解码器工厂），提供Scheme参数\nvar deleteScheme = runtime.NewScheme()\n\n// 为上面ResourceClient各种操作创建参数CodecFactory（编解码器工厂），提供Scheme参数\nvar parameterScheme = runtime.NewScheme()\n\n// 创建删除CodecFactory（编解码器工厂）,编解码DeleteOptions对象\nvar deleteOptionsCodec = serializer.NewCodecFactory(deleteScheme)\n\n// 创建参数CodecFactory（编解码器工厂）,\n// 编解码ListOptions/GetOptions/CreateOptions/UpdateOptions/PatchOptions对象，作为请求参数\nvar dynamicParameterCodec = runtime.NewParameterCodec(parameterScheme)\n\n// 定义gv\nvar versionV1 = schema.GroupVersion{Version: \"v1\"}\n\n// 添加ListOptions/GetOptions/DeleteOptions/CreateOptions/UpdateOptions/PatchOptions，初始化各个schema\nfunc init() {\n\tmetav1.AddToGroupVersion(watchScheme, versionV1)\n\tmetav1.AddToGroupVersion(basicScheme, versionV1)\n\tmetav1.AddToGroupVersion(parameterScheme, versionV1)\n\tmetav1.AddToGroupVersion(deleteScheme, versionV1)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321104716-y6nrdm1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321104716-y6nrdm1",
+				"updated": "20230321104746"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "结构体及其相关方法定义："
+				}
+			]
+		},
+		{
+			"ID": "20230321104747-769kb9z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321104747-769kb9z",
+				"updated": "20230321110030"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 实现了NegotiatedSerializer接口,根据content判断，以何种方式编解码obj\ntype basicNegotiatedSerializer struct{}\n\n// 实现NegotiatedSerializer的SupportedMediaTypes方法,自定义可以处理的MediaType，并定义各种MediaType的Serializer\nfunc (s basicNegotiatedSerializer) SupportedMediaTypes() []runtime.SerializerInfo {\n\treturn []runtime.SerializerInfo{\n\t\t{\n\t\t\tMediaType:        \"application/json\",\n\t\t\tMediaTypeType:    \"application\",\n\t\t\tMediaTypeSubType: \"json\",\n\t\t\tEncodesAsText:    true,\n\t\t\tSerializer:       json.NewSerializer(json.DefaultMetaFactory, unstructuredCreater{basicScheme}, unstructuredTyper{basicScheme}, false),\n\t\t\tPrettySerializer: json.NewSerializer(json.DefaultMetaFactory, unstructuredCreater{basicScheme}, unstructuredTyper{basicScheme}, true),\n\t\t\tStreamSerializer: \u0026runtime.StreamSerializerInfo{\n\t\t\t\tEncodesAsText: true,\n\t\t\t\tSerializer:    json.NewSerializer(json.DefaultMetaFactory, basicScheme, basicScheme, false),\n\t\t\t\tFramer:        json.Framer,\n\t\t\t},\n\t\t},\n\t}\n}\n\n// 实现NegotiatedSerializer的EncoderForVersion方法,获取一个版本化的Encoder（编码为指定版本）\nfunc (s basicNegotiatedSerializer) EncoderForVersion(encoder runtime.Encoder, gv runtime.GroupVersioner) runtime.Encoder {\n\treturn runtime.WithVersionEncoder{\n\t\tVersion:     gv,\n\t\tEncoder:     encoder,\n\t\tObjectTyper: unstructuredTyper{basicScheme},\n\t}\n}\n\n// 实现NegotiatedSerializer的DecoderToVersion方法, 获取原始的decoder\nfunc (s basicNegotiatedSerializer) DecoderToVersion(decoder runtime.Decoder, gv runtime.GroupVersioner) runtime.Decoder {\n\treturn decoder\n}\n// unstructuredCreater 包装了ObjectCreater（用于New一个gvk对应的obj），\n// 如果有err，那么和ObjectCreater的区别是返回了空的obj，而err为空\ntype unstructuredCreater struct {\n\tnested runtime.ObjectCreater\n}\n\n// 实现了ObjectCreater接口的New方法\nfunc (c unstructuredCreater) New(kind schema.GroupVersionKind) (runtime.Object, error) {\n\tout, err := c.nested.New(kind)\n\tif err == nil {\n\t\treturn out, nil\n\t}\n\tout = \u0026unstructured.Unstructured{}\n\tout.GetObjectKind().SetGroupVersionKind(kind)\n\treturn out, nil\n}\n// unstructuredTyper 包装了ObjectTyper（用于获取obj对应的gvk列表），\n// 如果有err，那么和ObjectTyper的区别是会判断是否是Unstructured类型且obj对应的gvk是否为空\n\ntype unstructuredTyper struct {\n\tnested runtime.ObjectTyper\n}\n\n// 实现了ObjectTyper接口的ObjectKinds方法\nfunc (t unstructuredTyper) ObjectKinds(obj runtime.Object) ([]schema.GroupVersionKind, bool, error) {\n\tkinds, unversioned, err := t.nested.ObjectKinds(obj)\n\tif err == nil {\n\t\treturn kinds, unversioned, nil\n\t}\n    // 判断obj是否是Unstructured类型且对应的gvk是否为空\n\tif _, ok := obj.(runtime.Unstructured); ok \u0026\u0026 !obj.GetObjectKind().GroupVersionKind().Empty() {\n\t\treturn []schema.GroupVersionKind{obj.GetObjectKind().GroupVersionKind()}, false, nil\n\t}\n\treturn nil, false, err\n}\n\nfunc (t unstructuredTyper) Recognizes(gvk schema.GroupVersionKind) bool {\n\treturn true\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321104744-godzljq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230321104744-godzljq",
+				"updated": "20230321110257"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4 dynamiclister包"
+				}
+			]
+		},
+		{
+			"ID": "20230321110304-gme9y1t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230321110304-gme9y1t",
+				"updated": "20230321110321"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4.1 interface.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321110337-w5aag8q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321110337-w5aag8q",
+				"updated": "20230321110358"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "interface.go 定义了获取（从indexer（缓存）中get/list）obj的接口"
+				}
+			]
+		},
+		{
+			"ID": "20230321110321-ok4tjc2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321110321-ok4tjc2",
+				"updated": "20230321110623"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Lister 获取资源和获取NamespaceLister。\ntype Lister interface {\n\t// List 列出索引器（缓存）中的所有资源。\n\tList(selector labels.Selector) (ret []*unstructured.Unstructured, err error)\n\t// Get 从索引器（缓存）中检索具有给定名称的资源\n\tGet(name string) (*unstructured.Unstructured, error)\n\t// Namespace 根据指定namespace返回一个对象，该对象可以列出和获取给定命名空间中的资源\n\tNamespace(namespace string) NamespaceLister\n}\n\n// NamespaceLister 获取命名空间下的资源。类似于controller-runtime分析client包的Reader接口\ntype NamespaceLister interface {\n\t// List 列出索引器（缓存）中给定命名空间的所有资源\n\tList(selector labels.Selector) (ret []*unstructured.Unstructured, err error)\n\t// Get 从索引器（缓存）中检索给定命名空间和名称的资源。\n\tGet(name string) (*unstructured.Unstructured, error)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321110644-8da7lqf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230321110644-8da7lqf",
+				"updated": "20230321110656"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4.2 lister.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321111014-vvgaxdx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321111014-vvgaxdx",
+				"updated": "20230321112252"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// dynamicLister 实现了 Lister 接口。\ntype dynamicLister struct {\n\t// 索引器（缓存）\n\tindexer cache.Indexer\n \t// 索引器对应的资源gvr，该索引器只存储该gvr对应的资源\n\tgvr     schema.GroupVersionResource\n}\n\n// New 返回一个新的 Lister.\nfunc New(indexer cache.Indexer, gvr schema.GroupVersionResource) Lister {\n\treturn \u0026dynamicLister{indexer: indexer, gvr: gvr}\n}\n\n// List 列出索引器中的所有资源。\nfunc (l *dynamicLister) List(selector labels.Selector) (ret []*unstructured.Unstructured, err error) {\n  \t// 该方法到对应包在做具体分析，用来获取符合selector对应添加的item\n\terr = cache.ListAll(l.indexer, selector, func(m interface{}) {\n\t\t// 符合添加的item会追加到ret\n\t\tret = append(ret, m.(*unstructured.Unstructured))\n\t})\n\treturn ret, err\n}\n\n// Get 从索引器中检索具有给定名称的资源\nfunc (l *dynamicLister) Get(name string) (*unstructured.Unstructured, error) {\n\n\tobj, exists, err := l.indexer.GetByKey(name)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif !exists {\n\t\treturn nil, errors.NewNotFound(l.gvr.GroupResource(), name)\n\t}\n\treturn obj.(*unstructured.Unstructured), nil\n}\n\n// Namespace 返回一个对象，该对象可以从给定的命名空间中列出和获取资源.\nfunc (l *dynamicLister) Namespace(namespace string) NamespaceLister {\n\treturn \u0026dynamicNamespaceLister{indexer: l.indexer, namespace: namespace, gvr: l.gvr}\n}\n\n// dynamicNamespaceLister 实现了 NamespaceLister 接口。相比dynamicLister多了namespace属性，用来限定namespace\ntype dynamicNamespaceLister struct {\n\tindexer   cache.Indexer\n\tnamespace string\n\tgvr       schema.GroupVersionResource\n}\n\n// List 列出索引器中给定命名空间的所有资源。\nfunc (l *dynamicNamespaceLister) List(selector labels.Selector) (ret []*unstructured.Unstructured, err error) {\n\terr = cache.ListAllByNamespace(l.indexer, l.namespace, selector, func(m interface{}) {\n\t\tret = append(ret, m.(*unstructured.Unstructured))\n\t})\n\treturn ret, err\n}\n\n// Get 从索引器中检索给定命名空间和名称的资源。\nfunc (l *dynamicNamespaceLister) Get(name string) (*unstructured.Unstructured, error) {\n\t  // 注意： 这里可以看到indexer中items的存放,当namespace不为空时，key是${namespace}/${name}\n\tobj, exists, err := l.indexer.GetByKey(l.namespace + \"/\" + name)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif !exists {\n\t\treturn nil, errors.NewNotFound(l.gvr.GroupResource(), name)\n\t}\n\treturn obj.(*unstructured.Unstructured), nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321112044-445dodm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230321112044-445dodm",
+				"updated": "20230321112338"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4.3 shim.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321112426-rgcyqgh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321112426-rgcyqgh",
+				"updated": "20230321113910"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// dynamicListerShim 实现了 cache.GenericLister\n// 包装了Lister接口，只是List把返回slice中Unstructured对象变为object对象\ntype dynamicListerShim struct {\n\tlister Lister\n}\n\n// NewRuntimeObjectShim 为 Lister 返回一个新的shim。\n// 它包装 Lister 以便它实现 cache.GenericLister 接口\n func NewRuntimeObjectShim(lister Lister) cache.GenericLister { return \u0026dynamicListerShim{lister: lister} }\nfunc NewRuntimeObjectShim(lister Lister) cache.GenericLister {\n\treturn \u0026dynamicListerShim{lister: lister}\n}\n\n// List 将返回跨命名空间的所有对象\nfunc (s *dynamicListerShim) List(selector labels.Selector) (ret []runtime.Object, err error) {\n\tobjs, err := s.lister.List(selector)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tret = make([]runtime.Object, len(objs))\n    \t// 返回slice中Unstructured对象变为Object对象\n\tfor index, obj := range objs {\n\t\tret[index] = obj\n\t}\n\treturn ret, err\n}\n\n// Get会假设name=key去尝试检索  \nfunc (s *dynamicListerShim) Get(name string) (runtime.Object, error) {\n\treturn s.lister.Get(name)\n}\n\n// 获取限定命名空间的Lister\nfunc (s *dynamicListerShim) ByNamespace(namespace string) cache.GenericNamespaceLister {\n\treturn \u0026dynamicNamespaceListerShim{\n\t\tnamespaceLister: s.lister.Namespace(namespace),\n\t}\n}\n\n// dynamicNamespaceListerShim 实现了 NamespaceLister 接口。\n// 它包装了 NamespaceLister 以便它实现 cache.GenericNamespaceLister 接口\ntype dynamicNamespaceListerShim struct {\n\tnamespaceLister NamespaceLister\n}\n\n// List 将返回此命名空间中的所有对象\nfunc (ns *dynamicNamespaceListerShim) List(selector labels.Selector) (ret []runtime.Object, err error) {\n\tobjs, err := ns.namespaceLister.List(selector)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tret = make([]runtime.Object, len(objs))\n\tfor index, obj := range objs {\n\t\tret[index] = obj\n\t}\n\treturn ret, err\n}\n\n// Get 将尝试按命名空间和名称检索\nfunc (ns *dynamicNamespaceListerShim) Get(name string) (runtime.Object, error) {\n\treturn ns.namespaceLister.Get(name)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321114108-6cct5ns",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230321114108-6cct5ns",
+				"updated": "20230321114134"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.5 dynamicinformer包"
+				}
+			]
+		},
+		{
+			"ID": "20230321114127-v9vk4h1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230321114127-v9vk4h1",
+				"updated": "20230321114146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.5.1 interface.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321114309-gqdeb9g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321114309-gqdeb9g",
+				"updated": "20230321114317"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接口 定义了获取Informer的方法，等待缓存同步的方法，启动所有informer的方法"
+				}
+			]
+		},
+		{
+			"ID": "20230321114208-65ueoxd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321114208-65ueoxd",
+				"updated": "20230321114335"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Dynamic SharedInformerFactory 为动态客户端提供对共享informer和lister的访问\ntype DynamicSharedInformerFactory interface {\n   \t // 启动所有informer的方法\n\tStart(stopCh \u003c-chan struct{})\n\t// 获取Informer的方法\n\tForResource(gvr schema.GroupVersionResource) informers.GenericInformer\n \t// 等待缓存同步的方法\n\tWaitForCacheSync(stopCh \u003c-chan struct{}) map[schema.GroupVersionResource]bool\n}\n\n// TweakListOptionsFunc 定义了一个辅助函数的签名，想要为 API 提供更多的列表选项\ntype TweakListOptionsFunc func(*metav1.ListOptions)\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321114345-7yfd82e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230321114345-7yfd82e",
+				"updated": "20230321114358"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.5.2 informer.go"
+				}
+			]
+		},
+		{
+			"ID": "20230321134616-xn1r6a4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321134616-xn1r6a4",
+				"updated": "20230321134633"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "公共函数："
+				}
+			]
+		},
+		{
+			"ID": "20230321114551-6skzlvc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321114551-6skzlvc",
+				"updated": "20230321134517"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// NewDynamicSharedInformerFactory 为所有命名空间构造一个 dynamicSharedInformerFactory 的新实例。\nfunc NewDynamicSharedInformerFactory(client dynamic.Interface, defaultResync time.Duration) DynamicSharedInformerFactory {\n\treturn NewFilteredDynamicSharedInformerFactory(client, defaultResync, metav1.NamespaceAll, nil)\n}\n\n// NewFilteredDynamicSharedInformerFactory 构造了一个 dynamicSharedInformerFactory 的新实例。 \n// 通过此工厂获得的lister将受到此处指定的相同过滤器的约束。\nfunc NewFilteredDynamicSharedInformerFactory(client dynamic.Interface, defaultResync time.Duration, namespace string, tweakListOptions TweakListOptionsFunc) DynamicSharedInformerFactory {\n\treturn \u0026dynamicSharedInformerFactory{\n\t\tclient:           client,\n\t\tdefaultResync:    defaultResync,\n\t\tnamespace:        namespace,\n\t\tinformers:        map[schema.GroupVersionResource]informers.GenericInformer{},\n\t\tstartedInformers: make(map[schema.GroupVersionResource]bool),\n\t\ttweakListOptions: tweakListOptions,\n\t}\n}\n\n// NewFilteredDynamicInformer 为动态类型构造一个新的 Informer。\nfunc NewFilteredDynamicInformer(client dynamic.Interface, gvr schema.GroupVersionResource, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions TweakListOptionsFunc) informers.GenericInformer {\n\treturn \u0026dynamicInformer{\n\t\tgvr: gvr,\n\t\tinformer: cache.NewSharedIndexInformer(\n\t\t\t\u0026cache.ListWatch{\n\t\t\t\tListFunc: func(options metav1.ListOptions) (runtime.Object, error) {\n\t\t\t\t\tif tweakListOptions != nil {\n\t\t\t\t\t\ttweakListOptions(\u0026options)\n\t\t\t\t\t}\n\t\t\t\t\treturn client.Resource(gvr).Namespace(namespace).List(context.TODO(), options)\n\t\t\t\t},\n\t\t\t\tWatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {\n\t\t\t\t\tif tweakListOptions != nil {\n\t\t\t\t\t\ttweakListOptions(\u0026options)\n\t\t\t\t\t}\n\t\t\t\t\treturn client.Resource(gvr).Namespace(namespace).Watch(context.TODO(), options)\n\t\t\t\t},\n\t\t\t},\n\t\t\t\u0026unstructured.Unstructured{},\n\t\t\tresyncPeriod,\n\t\t\tindexers,\n\t\t),\n\t}\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321134250-5hkfidh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230321134250-5hkfidh",
+				"updated": "20230321134738"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "结构体定义私有属性和方法："
+				}
+			]
+		},
+		{
+			"ID": "20230321134649-55d8huu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321134649-55d8huu",
+				"updated": "20230321140335"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "type dynamicSharedInformerFactory struct {\n    \t// 构建ListWatch接口使用，为后来构建reflector，执行listWatch监控api resource提供client\n\tclient        dynamic.Interface\n   \t // 同步周期，informer同步deltaFIFO中数据到listener中的chan中\n\tdefaultResync time.Duration\n    \t// 命名空间\n\tnamespace     string\n\n\tlock      sync.Mutex\n\t// 缓存informer到map中\n\tinformers map[schema.GroupVersionResource]informers.GenericInformer\n\t// startInformers 用于跟踪哪些 Informers 已启动。这允许安全地多次调用 Start()。\n\tstartedInformers map[schema.GroupVersionResource]bool\n\ttweakListOptions TweakListOptionsFunc\n}\n\n// 实现DynamicSharedInformerFactory的ForResource方法\nfunc (f *dynamicSharedInformerFactory) ForResource(gvr schema.GroupVersionResource) informers.GenericInformer {\n\tf.lock.Lock()\n\tdefer f.lock.Unlock()\n\n\tkey := gvr\n    \t// 获取缓存map中的informer\n\tinformer, exists := f.informers[key]\n\tif exists {\n\t\treturn informer\n\t}\n   \t // 不存在就创建\n\tinformer = NewFilteredDynamicInformer(f.client, gvr, f.namespace, f.defaultResync, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)\n\tf.informers[key] = informer\n\n\treturn informer\n}\n\n// 实现SharedInformerFactory的Start方法，初始化所有请求的informers.\nfunc (f *dynamicSharedInformerFactory) Start(stopCh \u003c-chan struct{}) {\n\tf.lock.Lock()\n\tdefer f.lock.Unlock()\n\t// 遍历所有informer\n\tfor informerType, informer := range f.informers {\n\t\t// 判断该informer是否已经启动\n\t\tif !f.startedInformers[informerType] {\n\t\t\t // 启动informer\n\t\t\tgo informer.Informer().Run(stopCh)\n            \t\t// 设置对应gvr的informer已经启动\n\t\t\tf.startedInformers[informerType] = true\n\t\t}\n\t}\n}\n\n// 实现SharedInformerFactory的WaitForCacheSync方法，等待所有启动的informer的缓存同步。\n func (f *dynamicSharedInformerFactory) WaitForCacheSync(stopCh \u003c-chan struct{}) map[schema.GroupVersionResource]bool {\n\t // 定义map，用于接收所有已经启动的informer\n\tinformers := func() map[schema.GroupVersionResource]cache.SharedIndexInformer {\n\t\tf.lock.Lock()\n\t\tdefer f.lock.Unlock()\n\t\tinformers := map[schema.GroupVersionResource]cache.SharedIndexInformer{}\n\t\tfor informerType, informer := range f.informers {\n\t\t\tif f.startedInformers[informerType] {\n\t\t\t\tinformers[informerType] = informer.Informer()\n\t\t\t}\n\t\t}\n\t\treturn informers\n\t}()\n\t// 定义map，用于接收所有同步完成的informer\n\tres := map[schema.GroupVersionResource]bool{}\n\t// 遍历已经启动的所有informer\n\tfor informType, informer := range informers {\n \t\t// 执行同步方法\n        \t// (1) 如果informer中controller为空，返回false，\n       \t\t // (2) 如果informer.controller的queue还没有调用过Add/Update/Delete/AddIfNotPresent或者queue的initialPopulationCount != 0 (队列中还有数据)，返回false\n\t\tres[informType] = cache.WaitForCacheSync(stopCh, informer.HasSynced)\n\t}\n\treturn res\n}\n\n// 动态Informer结构体，包装了SharedIndexInformer和gvr\ntype dynamicInformer struct {\n\tinformer cache.SharedIndexInformer\n\tgvr      schema.GroupVersionResource\n}\n\n// 实现GenericInformer的Informer方法\nfunc (d *dynamicInformer) Informer() cache.SharedIndexInformer {\n\treturn d.informer\n}\n\n// 实现GenericInformer的Lister方法，使用dynamicInformer的indexer和gvr构造以Lister\nfunc (d *dynamicInformer) Lister() cache.GenericLister {\n\treturn dynamiclister.NewRuntimeObjectShim(dynamiclister.New(d.informer.GetIndexer(), d.gvr))\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230321134828-4nxj63p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230321134828-4nxj63p",
+				"updated": "20230321140618"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.  client-go dynamic代码示例"
+				}
+			]
+		},
+		{
+			"ID": "20230321140618-tvltzf6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230321140618-tvltzf6",
+				"updated": "20230321140622"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n \t\"context\"\n\t\"flag\"\n\t\"fmt\"\n \tapiv1 \"k8s.io/api/core/v1\"\n\tmetav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n \t\"k8s.io/apimachinery/pkg/runtime\"\n\t\"k8s.io/apimachinery/pkg/runtime/schema\"\n \t\"k8s.io/client-go/dynamic\"\n  \t\"k8s.io/client-go/tools/clientcmd\"\n\t\"k8s.io/client-go/util/homedir\"\n\t\"log\"\n\t\"path/filepath\"\n )\n\nfunc main() {\n\tvar kubeconfig *string\n\tif home := homedir.HomeDir(); home != \"\" {\n\t\tkubeconfig = flag.String(\"kubeconfig\", filepath.Join(home,\".kube\", \"config_local\"), \"(optional) absolute path to the kubeconfig file\")\n\t} else {\n\t\tkubeconfig = flag.String(\"kubeconfig\",\"\",\"absolute path to the kubeconfig file\")\n\t}\n\tflag.Parse()\n\n\tconfig, err := clientcmd.BuildConfigFromFlags(\"\", *kubeconfig)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\tdynamicClient, err := dynamic.NewForConfig(config)\n\tif err != nil {\n\t\tlog.Fatal(err)\n \t}\n\n\t// dynamicClient的唯一关联方法所需的入参\n\tgvr := schema.GroupVersionResource{Version: \"v1\", Resource: \"pods\"}\n\n\t// 使用dynamicClient的查询列表方法，查询指定namespace下的所有pod，\n\t// 注意此方法返回的数据结构类型是UnstructuredList\n\tunstructObj, err := dynamicClient.Resource(gvr).Namespace(\"kube-system\").List(context.TODO(),metav1.ListOptions{Limit: 100})\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\tpodList := \u0026apiv1.PodList{}\n\terr = runtime.DefaultUnstructuredConverter.FromUnstructured(unstructObj.UnstructuredContent(), podList)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(\"namespace\\t Status\\t\\t name\")\n\tfor _, item := range podList.Items {\n\t\tfmt.Printf(\"%v\\t %v\\t %v\\n\",\n\t\t\titem.Namespace,\n\t\t\titem.Status.Phase,\n\t\t\titem.Name,\n\t\t)\n\t}\n\n\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

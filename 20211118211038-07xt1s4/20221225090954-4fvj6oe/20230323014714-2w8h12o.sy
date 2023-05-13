@@ -1,0 +1,1950 @@
+{
+	"ID": "20230323014714-2w8h12o",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230323014714-2w8h12o",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230323014714-yucau5u\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230421154815-no5f00n\u0026quot;,\u0026quot;scrollTop\u0026quot;:6076,\u0026quot;focusId\u0026quot;:\u0026quot;20230421154431-hcb7yon\u0026quot;,\u0026quot;focusStart\u0026quot;:55,\u0026quot;focusEnd\u0026quot;:55}",
+		"title": "15-k8s日常运维-单master ",
+		"updated": "20230421154815"
+	},
+	"Children": [
+		{
+			"ID": "20230323014714-yucau5u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230323014714-yucau5u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改node主机名称"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/016-Kubernetes%E5%AE%B9%E5%99%A8%E5%8C%96/15-k8s%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4-%E5%8D%95master/#node",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-pdlfiww",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-pdlfiww"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果我们想修改node的主机名称的话，我们需要将node进行缩容，在从新加入集群，方可修改node的主机名称"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-wkcutn6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-wkcutn6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如我们将node3 修改为 node-192e168e1e29"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-w3bvpsv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-w3bvpsv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先查看一下这个node节点上的pod信息"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-f4qtc7x",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-f4qtc7x"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get node\nNAME      STATUS   ROLES                  AGE     VERSION\nmaster1   Ready    control-plane,master   19m     v1.20.6\nnode1     Ready    \u003cnone\u003e                 17m     v1.20.6\nnode2     Ready    \u003cnone\u003e                 16m     v1.20.6\nnode3     Ready    \u003cnone\u003e                 3m33s   v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-70f7cts",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-70f7cts"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "标记节点不可调度"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-k9c54gc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-k9c54gc"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl cordon node3\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-1fih9w3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-1fih9w3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "驱逐这个node节点上的pod"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-t1rd8s1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-t1rd8s1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl drain node3 --delete-local-data --force --ignore-daemonsets\nFlag --delete-local-data has been deprecated, This option is deprecated and will be deleted. Use --delete-emptydir-data.\nnode/node2 cordoned\nWARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-xv5cp, kube-system/kube-proxy-b9mt5\nevicting pod kube-system/coredns-7f89b7bc75-4tlt6\nevicting pod default/nginx-deployment-5d47ff8589-fd68t\nevicting pod default/nginx-deployment-5d47ff8589-kkjtv\nevicting pod default/nginx-deployment-5d47ff8589-klqfc\nevicting pod default/nginx-deployment-5d47ff8589-lwmn9\npod/coredns-7f89b7bc75-4tlt6 evicted\npod/nginx-deployment-5d47ff8589-fd68t evicted\npod/nginx-deployment-5d47ff8589-kkjtv evicted\npod/nginx-deployment-5d47ff8589-klqfc evicted\npod/nginx-deployment-5d47ff8589-lwmn9 evicted\nnode/node2 evicted\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-yuot7jp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-yuot7jp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "删除这个node节点"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-8a208wo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-8a208wo"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl delete nodes node3\nnode \"node3\" deleted\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-afu5gd8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-afu5gd8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后在node3这个节点上执行如下命令："
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-pk60avm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-pk60avm"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node3 ~]# kubeadm reset\n[reset] WARNING: Changes made to this host by 'kubeadm init' or 'kubeadm join' will be reverted.\n[reset] Are you sure you want to proceed? [y/N]: y\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-xwxgms2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-xwxgms2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在我们开始修改node3的主机名称为"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-0ryyhfr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-0ryyhfr"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "hostnamectl set-hostname node-192e168e1e29 \u0026\u0026 bash\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-arx7vz4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-arx7vz4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改master节点的/etc/hosts文件解析"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-ld9t51k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-ld9t51k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# cat /etc/hosts\n\n192.168.1.26 master1\n192.168.1.27 node1\n192.168.1.28 node2\n192.168.1.29 node-192e168e1e29\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-oirv1lk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-oirv1lk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装 k8s 集群-添加工作节点"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-igq4p4u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-igq4p4u"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubeadm token create --print-join-command\nkubeadm join 192.168.1.26:6443 --token vrx60x.1sq6s9g752fe1ufr     --discovery-token-ca-cert-hash sha256:9495462d474420d5e4ee3b39bb8a258997f7dfb9d76926baa4aaeaba167b436d \n\n在node2节点执行如上命令\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-fw9le6h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-fw9le6h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "看到下面说明 node-192e168e1e29 节点已经加入到集群了,充当工作节点"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-9wxaotx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-9wxaotx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "This node has joined the cluster:\n* Certificate signing request was sent to apiserver and a response was received.\n* The Kubelet was informed of the new secure connection details.\n\nRun 'kubectl get nodes' on the control-plane to see this node join the cluster.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-u2iatrr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-u2iatrr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 master1上查看集群节点状况："
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-6caqeui",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-6caqeui"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get node\nNAME                STATUS   ROLES                  AGE     VERSION\nmaster1             Ready    control-plane,master   2d19h   v1.20.6\nnode-192e168e1e29   Ready    \u003cnone\u003e                 18s     v1.20.6\nnode1               Ready    \u003cnone\u003e                 2d19h   v1.20.6\nnode2               Ready    \u003cnone\u003e                 4h33m   v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-5cyxyow",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-5cyxyow"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果想恢复的话，按照以上部署恢复即可，即可恢复哦"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-qpkbmua",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230323014714-qpkbmua"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改node角色名称"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/016-Kubernetes%E5%AE%B9%E5%99%A8%E5%8C%96/15-k8s%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4-%E5%8D%95master/#node_1",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-svm7zjo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-svm7zjo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以设置node节点的角色名称为 work"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-eksgbsl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-eksgbsl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get nodes --show-labels\n\n[root@master1 ~]# kubectl label nodes node3 node-role.kubernetes.io/work=\nnode/node3 labeled\n[root@master1 ~]# kubectl get node\nNAME      STATUS   ROLES                  AGE     VERSION\nmaster1   Ready    control-plane,master   2d21h   v1.20.6\nnode1     Ready    \u003cnone\u003e                 2d21h   v1.20.6\nnode2     Ready    \u003cnone\u003e                 6h50m   v1.20.6\nnode3     Ready    node                   133m    v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-7awqrap",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-7awqrap"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当然我们也可以取消角色名称"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-5ghtb5j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-5ghtb5j"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl label nodes node3 node-role.kubernetes.io/work-\nnode/node3 labeled\n[root@master1 ~]# kubectl get node\nNAME      STATUS   ROLES                  AGE     VERSION\nmaster1   Ready    control-plane,master   2d21h   v1.20.6\nnode1     Ready    \u003cnone\u003e                 2d21h   v1.20.6\nnode2     Ready    \u003cnone\u003e                 6h50m   v1.20.6\nnode3     Ready    \u003cnone\u003e                 134m    v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-2z81hrz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230323014714-2z81hrz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "node节点下线维修"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/016-Kubernetes%E5%AE%B9%E5%99%A8%E5%8C%96/15-k8s%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4-%E5%8D%95master/#node_2",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-atmledd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-atmledd"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.csdn.net/tags/MtTaEg2sMjU5OTY0LWJsb2cO0O0O.html",
+					"TextMarkTextContent": "https://www.csdn.net/tags/MtTaEg2sMjU5OTY0LWJsb2cO0O0O.html"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-c0dlaow",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-c0dlaow"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "场景：k8s集群中的node节点在正常的情况下，需要进行停机维修"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-6iv09km",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-6iv09km"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先我们先查看一下当前集群的节点"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-2kt73y1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-2kt73y1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get node\nNAME      STATUS   ROLES                  AGE     VERSION\nmaster1   Ready    control-plane,master   2d19h   v1.20.6\nnode1     Ready    \u003cnone\u003e                 2d19h   v1.20.6\nnode2     Ready    \u003cnone\u003e                 4h36m   v1.20.6\nnode3     Ready    \u003cnone\u003e                 30s     v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-9ugex3c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-9ugex3c"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们来模拟node2节点，需要计划性的下线维修，首先标记节点不可调度"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-piwoi4o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-piwoi4o"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl cordon node2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-lq0522p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-lq0522p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看一个node2节点的状态会变化为 SchedulingDisabled 如下："
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-m4uxlm0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-m4uxlm0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get node\nNAME      STATUS                     ROLES                  AGE     VERSION\nmaster1   Ready                      control-plane,master   2d19h   v1.20.6\nnode1     Ready                      \u003cnone\u003e                 2d19h   v1.20.6\nnode2     Ready,SchedulingDisabled   \u003cnone\u003e                 4h46m   v1.20.6\nnode3     Ready                      \u003cnone\u003e                 9m50s   v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-4xx1pkl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-4xx1pkl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接着我们需要将node2节点上的pod进行驱逐"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-yu0x3ud",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-yu0x3ud"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl drain node2 --delete-local-data --force --ignore-daemonsets\nFlag --delete-local-data has been deprecated, This option is deprecated and will be deleted. Use --delete-emptydir-data.\nnode/node2 cordoned\nWARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-xv5cp, kube-system/kube-proxy-b9mt5\nevicting pod kube-system/coredns-7f89b7bc75-4tlt6\nevicting pod default/nginx-deployment-5d47ff8589-fd68t\nevicting pod default/nginx-deployment-5d47ff8589-kkjtv\nevicting pod default/nginx-deployment-5d47ff8589-klqfc\nevicting pod default/nginx-deployment-5d47ff8589-lwmn9\npod/coredns-7f89b7bc75-4tlt6 evicted\npod/nginx-deployment-5d47ff8589-fd68t evicted\npod/nginx-deployment-5d47ff8589-kkjtv evicted\npod/nginx-deployment-5d47ff8589-klqfc evicted\npod/nginx-deployment-5d47ff8589-lwmn9 evicted\nnode/node2 evicted\n\n参数如下：\n--delete-local-data  删除本地数据，即使emptyDir也将删除；\n--ignore-daemonsets  忽略DeamonSet，否则DeamonSet被删除后，仍会自动重建；\n--force  不加force参数只会删除该node节点上的ReplicationController, ReplicaSet, DaemonSet,StatefulSet or Job，加上后所有pod都将删除；\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-iz79b2f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-iz79b2f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时与默认迁移不同的是，pod会"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "先重建再终止"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，此时的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "服务中断时间=重建时间+服务启动时间+readiness探针检测正常时间"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，必须等到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "1/1 Running"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "服务才会正常。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "因此在单副本时迁移时，服务终端是不可避免的"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 。"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-g3m39bh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-g3m39bh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后我们将服务器进行关机，等待服务器修好以后，再次开机，讲node节点恢复为可以调度的状态"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-i3ajr77",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-i3ajr77"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl uncordon node2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-zf8hzcv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-zf8hzcv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最终的集群状态如下："
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-xb96anj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-xb96anj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get node\nNAME      STATUS   ROLES                  AGE     VERSION\nmaster1   Ready    control-plane,master   2d19h   v1.20.6\nnode1     Ready    \u003cnone\u003e                 2d19h   v1.20.6\nnode2     Ready    \u003cnone\u003e                 4h54m   v1.20.6\nnode3     Ready    \u003cnone\u003e                 18m     v1.20.6\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-lncbznl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230323014714-lncbznl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "node节点故障疏散"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/016-Kubernetes%E5%AE%B9%E5%99%A8%E5%8C%96/15-k8s%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4-%E5%8D%95master/#node_3",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-gze17qg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-gze17qg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "场景：\n一个k8s集群 突然1个node节点 直接停电down机啦 然后这个node系统直接损坏，无法启动系统，\n他上面的node上的pod 这时应该怎么恢复呢  或者调度到其他node上呢"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-jwrt76t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-jwrt76t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们将node3节点进行直接关机，模拟服务器突然down机"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-35s0idb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-35s0idb"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node3 ~]# poweroff\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-89eayom",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-89eayom"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以立马看到node3上的pod网络是不通的"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-34pr00f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-34pr00f"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get pod -o wide|grep node3\nnginx-deployment-5d47ff8589-288mj   1/1     Running   0          8m48s   10.244.135.28    node3   \u003cnone\u003e           \u003cnone\u003e\nnginx-deployment-5d47ff8589-2lnch   1/1     Running   0          8m38s   10.244.135.77    node3   \u003cnone\u003e           \u003cnone\u003e\nnginx-deployment-5d47ff8589-2pjf9   1/1     Running   0          8m22s   10.244.135.156   node3   \u003cnone\u003e           \u003cnone\u003e\n\n[root@master1 ~]# ping -c 4 10.244.135.28\nPING 10.244.135.28 (10.244.135.28) 56(84) bytes of data.\n\n--- 10.244.135.28 ping statistics ---\n4 packets transmitted, 0 received, 100% packet loss, time 2999ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-e2vhwe7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-e2vhwe7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "等待一段时间后，我们可以看到node3节点上pod的状态会变成 Terminating"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-kwdmnc8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-kwdmnc8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get pod -o wide|grep node3|head -3\nnginx-deployment-5d47ff8589-288mj   1/1     Terminating   0          58m     10.244.135.28    node3   \u003cnone\u003e           \u003cnone\u003e\nnginx-deployment-5d47ff8589-2lnch   1/1     Terminating   0          57m     10.244.135.77    node3   \u003cnone\u003e           \u003cnone\u003e\nnginx-deployment-5d47ff8589-2pjf9   1/1     Terminating   0          57m     10.244.135.156   node3   \u003cnone\u003e           \u003cnone\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-z6bfbsk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-z6bfbsk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果此时我们已经确认node3节点已经属于不可恢复的节点"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-xv3ku49",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-xv3ku49"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们开始清理node3节点上异常的pod"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-6tw53km",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-6tw53km"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# cat clean_pod.sh \n#!/bin/bash\n\nnode_list=\"node2\"\n\nfor n in \"${node_list}\"\ndo\n    fail_pod_count=$(kubectl get pod -o wide -ALL |grep \" ${n} \"|grep -v kube-system|wc -l)\n    for m in `seq 1 $fail_pod_count`\n    do \n        fail_pod_name=$(kubectl get pod -o wide -ALL |grep \" ${n} \"|grep -v kube-system|awk 'NR=='$m'{print $2}')\n        fail_pod_namespace=$(kubectl get pod -o wide -ALL |grep \" ${n} \"|grep -v kube-system|awk 'NR=='$m'{print $1}')\n        echo \"kubectl delete pod $fail_pod_name -n $fail_pod_namespace --force --grace-period=0\"\n        sleep 0.5\n    done\ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-qh8023m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-qh8023m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将打印出来的命令进行执行执行即可"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-2m37t9m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-2m37t9m"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get pod -o wide|grep node3\n\n最终清理完毕pod\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-1drtham",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-1drtham"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "删除这个node节点"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-0saldgf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-0saldgf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl delete nodes node3\nnode \"node3\" deleted\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-xhh6jxv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-xhh6jxv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每当删除namespace或pod 等一些Kubernetes资源时，有时资源状态会卡在terminating，很长时间无法删除，甚至有时增加--force flag(强制删除)之后还是无法正常删除。这时就需要edit该资源，将字段finalizers设置为null，之后Kubernetes资源就正常删除了。"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-xsd1xua",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-xsd1xua"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当删除pod时有时会卡住，pod状态变为terminating，无法删除pod"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-077xedv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-077xedv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（1)强制删除"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-cjlf11t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-cjlf11t"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl delete pod xxx -n xxx --force --grace-period=0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-rmfirg3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-rmfirg3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（2)如果强制删除还不行，设置finalizers为空"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-dlvpjvz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-dlvpjvz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（如果一个容器已经在运行，这时需要对一些容器属性进行修改，又不想删除容器，或不方便通过replace的方式进行更新。kubernetes还提供了一种在容器运行时，直接对容器进行修改的方式，就是patch命令。）"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-47l7fn4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-47l7fn4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl patch pod xxx -n xxx -p '{\"metadata\":{\"finalizers\":null}}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-cjworu7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230323014714-cjworu7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "node节点限制pod"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/016-Kubernetes%E5%AE%B9%E5%99%A8%E5%8C%96/15-k8s%E6%97%A5%E5%B8%B8%E8%BF%90%E7%BB%B4-%E5%8D%95master/#nodepod",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-opfvtp4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-opfvtp4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.51cto.com/zhangxueliang/2969910",
+					"TextMarkTextContent": "https://blog.51cto.com/zhangxueliang/2969910"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-h4n4xlm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-h4n4xlm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "k8s 更改pod数量限制（默认每个节点最多110组pod）0/3 nodes are available: 3 Insufficient cpu报错排查"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-62uoy6b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-62uoy6b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们目前有3个node节点，也就是说最多不能创建超过330个pod，现在我们将deployment-nginx的pod扩容到350个 看下效果"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-im6be1v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-im6be1v"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl scale deployment nginx-deployment --replicas 350\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-dlrry1u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-dlrry1u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以看到很多pod的状态为Pending模式，这个就表示每个节点的pod已经有110个啦，不能在继续增加"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-fzhp8it",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-fzhp8it"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get deployment\nNAME               READY     UP-TO-DATE   AVAILABLE   AGE\nnginx-deployment   322/350   350          322         2d18h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-bsnaecs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-bsnaecs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那些没有创建出来的pod 一直处于Pending状态"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-roxtm38",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-roxtm38"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 pod]# kubectl get pod -ALL |grep Pending\ndefault                nginx-deployment-5d47ff8589-2jgmn            0/1     Pending   0          3m1s  \ndefault                nginx-deployment-5d47ff8589-2vctp            0/1     Pending   0          3m2s  \ndefault                nginx-deployment-5d47ff8589-5nqgl            0/1     Pending   0          3m2s \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-duoq8wy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-duoq8wy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以通过修改来配置node的pod限制"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-y9vujo8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-y9vujo8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat \u003e/etc/sysconfig/kubelet\u003c\u003c\\EOF\nKUBELET_EXTRA_ARGS=\"--fail-swap-on=false --max-pods=1000\"\nEOF\n\n[root@node2 ~]# vi /usr/lib/systemd/system/kubelet.service\n[Service]\nEnvironmentFile=-/etc/sysconfig/kubelet\n\nsystemctl daemon-reload\nsystemctl restart kubelet\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-qgvhbsz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-qgvhbsz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以看到那些处于Pending状态的pod会被陆续创建出来"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-gk97gjb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-gk97gjb"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl get deployment\nNAME               READY     UP-TO-DATE   AVAILABLE   AGE\nnginx-deployment   350/350   350          350         2d18h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-y9f7li0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-y9f7li0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果我们想恢复恢复默认pod限制的方法"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-2i9qfgw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-2i9qfgw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat \u003e/etc/sysconfig/kubelet\u003c\u003c\\EOF\nKUBELET_EXTRA_ARGS=\nEOF\nsystemctl daemon-reload\nsystemctl restart kubelet\nsystemctl status kubelet\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-cid90f9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230323014714-cid90f9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后我们不要忘记讲环境进行清理"
+				}
+			]
+		},
+		{
+			"ID": "20230323014714-h1p77i9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230323014714-h1p77i9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@master1 ~]# kubectl delete deployment nginx-deployment\ndeployment.apps \"nginx-deployment\" deleted\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230421154220-5f55va8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230421154220-5f55va8",
+				"updated": "20230421154334"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubeadm添加master"
+				}
+			]
+		},
+		{
+			"ID": "20230421154453-iuarznj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421154453-iuarznj",
+				"updated": "20230421154643"
+			},
+			"Children": [
+				{
+					"ID": "20230421154454-39wtpwu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421154454-39wtpwu",
+						"updated": "20230421154643"
+					},
+					"Children": [
+						{
+							"ID": "20230421154454-12y1fp3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421154454-12y1fp3",
+								"updated": "20230421154643"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获取加入集群的token，一般token存在过期时间为24小时，certificate-key 过期时间是2小时，可生产永不过期的token "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubeadm token create --ttl 0 --print-join-command"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						},
+						{
+							"ID": "20230421154526-8kepp87",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230421154526-8kepp87",
+								"updated": "20230421154538"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ kubeadm token list\nTOKEN                     TTL         EXPIRES                     USAGES                   DESCRIPTION   EXTRA GROUPS\n1ugnpn.7qwbt58paanfov8a   \u003cinvalid\u003e   2019-07-19T11:17:01+08:00   authentication,signing   \u003cnone\u003e        system:bootstrappers:kubeadm:default-node-token\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421154544-sooms6o",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421154544-sooms6o",
+				"updated": "20230421154712"
+			},
+			"Children": [
+				{
+					"ID": "20230421154652-9o7jjoi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421154652-9o7jjoi",
+						"updated": "20230421154712"
+					},
+					"Children": [
+						{
+							"ID": "20230421154652-btffsu2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421154652-btffsu2",
+								"updated": "20230421154658"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "生成worker节点的join命令"
+								}
+							]
+						},
+						{
+							"ID": "20230421154704-vrh2qtl",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230421154704-vrh2qtl",
+								"updated": "20230421154712"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ kubeadm token create --print-join-command\nkubeadm join k8s-master-7-13:8443 --token fw6ywo.1sfp61ddwlg1we27     --discovery-token-ca-cert-hash sha256:52cab6e89be9881e2e423149ecb00e610619ba0fd85f2eccc3137adffa77bb04\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421154544-6yo3911",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421154544-6yo3911",
+				"updated": "20230421154544"
+			},
+			"Children": [
+				{
+					"ID": "20230421154428-noh6wfg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421154428-noh6wfg",
+						"updated": "20230421154428"
+					},
+					"Children": [
+						{
+							"ID": "20230421154428-37vikke",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421154428-37vikke",
+								"updated": "20230421154430"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获取"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "certificate-key"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						},
+						{
+							"ID": "20230421154431-hcb7yon",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230421154431-hcb7yon",
+								"updated": "20230421154443"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "kubeadm init phase upload-certs --upload-certs  --v=999\n[upload-certs] Storing the certificates in Secret \"kubeadm-certs\" in the \"kube-system\" Namespace\n[upload-certs] Using certificate key:\n70f399e275cabef0bb2794ea76303da0220574f59e994e755378a359edb5a233\n \n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421154451-xxuw8t0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230421154451-xxuw8t0",
+				"updated": "20230421154812"
+			},
+			"Children": [
+				{
+					"ID": "20230421154743-xdq78i3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230421154743-xdq78i3",
+						"updated": "20230421154812"
+					},
+					"Children": [
+						{
+							"ID": "20230421154743-gbsteql",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421154743-gbsteql",
+								"updated": "20230421154747"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用生成的worker的join命令, 加上上面生成的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "certificate-key"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​, 拼接起来组成master的join命令.加上"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--control-plane --v=999"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						},
+						{
+							"ID": "20230421154751-ievlaxl",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230421154751-ievlaxl",
+								"updated": "20230421154812"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "kubeadm join k8s-master-7-13:8443 --token fw6ywo.1sfp61ddwlg1we27     --discovery-token-ca-cert-hash sha256:52cab6e89be9881e2e423149ecb00e610619ba0fd85f2eccc3137adffa77bb04 --certificate-key 70f399e275cabef0bb2794ea76303da0220574f59e994e755378a359edb5a233 --control-plane --v=999\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421154810-002e1wr",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230421154810-002e1wr",
+				"updated": "20230421154815"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230421154815-loeqqgd",
+					"Type": "NodeBlockquote",
+					"Properties": {
+						"id": "20230421154815-loeqqgd",
+						"updated": "20230421154815"
+					},
+					"Children": [
+						{
+							"Type": "NodeBlockquoteMarker",
+							"Data": "\u003e"
+						},
+						{
+							"ID": "20230421154815-bjerzo3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230421154815-bjerzo3",
+								"updated": "20230421154815"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "注意: 新加的master节点注意拷贝ControlPlane的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/kubernetes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​目录下的各个证书."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230421154815-no5f00n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230421154815-no5f00n"
+			}
+		}
+	]
+}

@@ -1,0 +1,2703 @@
+{
+	"ID": "20221231111748-3isho77",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221231111748-3isho77",
+		"title": "golang 上下文context用法详解 ",
+		"updated": "20230101154330"
+	},
+	"Children": [
+		{
+			"ID": "20221231111748-znpujsr",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221231111748-znpujsr"
+			}
+		},
+		{
+			"ID": "20221231111748-c2kg0n4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221231111748-c2kg0n4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "背景"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-g5u671x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-g5u671x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在go服务器中，对于每个请求的request都是在单独的goroutine中进行的，处理一个request也可能设计多个goroutine之间的交互， 使用context可以使开发者方便的在这些goroutine里传递request相关的数据、取消goroutine的signal或截止日期。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-nqxqr82",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-nqxqr82"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Context是Golang官方定义的一个package，它定义了Context类型，里面包含了Deadline/Done/Err方法以及绑定到Context上的成员变量值Value，具体定义如下："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-g7kndxn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-g7kndxn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Context结构"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-p2bbqwz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-p2bbqwz"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-a3wamf8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-a3wamf8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// A Context carries a deadline, cancelation signal, and request-scoped values\n// across API boundaries. Its methods are safe for simultaneous use by multiple\n// goroutines.\ntype Context interface {\n    // Done returns a channel that is closed when this Context is canceled\n    // or times out.\n    Done() \u003c-chan struct{}\n\n    // Err indicates why this context was canceled, after the Done channel\n    // is closed.\n    Err() error\n\n    // Deadline returns the time when this Context will be canceled, if any.\n    Deadline() (deadline time.Time, ok bool)\n\n    // Value returns the value associated with key or nil if none.\n    Value(key interface{}) interface{}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-a8gj7eb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-a8gj7eb"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-4lv98cs",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221231111748-4lv98cs"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221231111748-6cd3wru",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221231111748-6cd3wru"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "那么到底什么Context？"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-ie4d38m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-ie4d38m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以字面意思可以理解为上下文，比较熟悉的有进程/线程上线文，关于Golang中的上下文，一句话概括就是：goroutine的相关环境快照，其中包含函数调用以及涉及的相关的变量值。\n通过Context可以区分不同的goroutine请求，因为在Golang Severs中，每个请求都是在单个goroutine中完成的。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-8qxtfzc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-8qxtfzc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注：关于goroutine的理解可以移步"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.zhihu.com/question/20862617",
+					"TextMarkTextContent": "这里"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-1zjfzkj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-1zjfzkj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于在Golang severs中，每个request都是在单个goroutine中完成，并且在单个goroutine（不妨称之为A）中也会有请求其他服务（启动另一个goroutine（称之为B）去完成）的场景，这就会涉及多个Goroutine之间的调用。如果某一时刻请求其他服务被取消或者超时，则作为深陷其中的当前goroutine B需要立即退出，然后系统才可回收B所占用的资源。\n即一个request中通常包含多个goroutine，这些goroutine之间通常会有交互。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-4rkf4l9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-4rkf4l9"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1093617/202101/1093617-20210126142144055-1415887953.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-h5ca7wx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-h5ca7wx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 那么，如何有效管理这些goroutine成为一个问题（主要是退出通知和元数据传递问题），Google的解决方法是Context机制，相互调用的goroutine之间通过传递context变量保持关联，这样在不用暴露各goroutine内部实现细节的前提下，有效地控制各goroutine的运行。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-h13o1ce",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-h13o1ce"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1093617/202101/1093617-20210126142158021-2146921433.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-4vxwuq7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-4vxwuq7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 如此一来，通过传递Context就可以追踪goroutine调用树，并在这些调用树之间传递通知和元数据。\n虽然goroutine之间是平行的，没有继承关系，但是Context设计成是包含父子关系的，这样可以更好的描述goroutine调用之间的树型关系。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-20q5lxv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-20q5lxv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-3htq0kp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-3htq0kp"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Done"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 方法在Context被取消或超时时返回一个close的channel,close的channel可以作为广播通知，告诉给context相关的函数要停止当前工作然后返回。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-l21yhtv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-l21yhtv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当一个父operation启动一个goroutine用于子operation，这些子operation不能够取消父operation。下面描述的WithCancel函数提供一种方式可以取消新创建的Context."
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-l1otbhp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-l1otbhp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Context可以安全的被多个goroutine使用。开发者可以把一个Context传递给任意多个goroutine然后cancel这个context的时候就能够通知到所有的goroutine。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-spq82ev",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-spq82ev"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Err"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "方法返回context为什么被取消。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-a9tibwh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-a9tibwh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Deadline"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "返回context何时会超时。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-f7s3v6s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-f7s3v6s"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Value"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "返回context相关的数据。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-kxs5b2j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-kxs5b2j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BackGround（顶层Context：Background）"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-zpoy035",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-zpoy035"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要创建Context树，首先就是要创建根节点"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-xnw6xjg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-xnw6xjg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// Background returns an empty Context. It is never canceled, has no deadline,\n// and has no values. Background is typically used in main, init, and tests,\n// and as the top-level Context for incoming requests.\nfunc Background() Context\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-jk3q55b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-jk3q55b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BackGound是所有Context的root，不能够被cancel。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-zmqh3iz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-zmqh3iz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该Context通常由接收request的第一个goroutine创建，它不能被取消、没有值、也没有过期时间，常作为处理request的顶层context存在。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-glmysj7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-glmysj7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下层Context：WithCancel/WithDeadline/WithTimeout"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-xtxv000",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-xtxv000"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "了根节点之后，接下来就是创建子孙节点。为了可以很好的控制子孙节点，Context包提供的创建方法均是带有第二返回值（CancelFunc类型），它相当于一个Hook，在子goroutine执行过程中，可以通过触发Hook来达到控制子goroutine的目的（通常是取消，即让其停下来）。再配合Context提供的Done方法，子goroutine可以检查自身是否被父级节点Cancel："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-bt6k1ou",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-bt6k1ou"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "select { \n    case \u003c-ctx.Done(): \n        // do some clean… \n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-y4byfgp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-y4byfgp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注：父节点Context可以主动通过调用cancel方法取消子节点Context，而子节点Context只能被动等待。同时父节点Context自身一旦被取消（如其上级节点Cancel），其下的所有子节点Context均会自动被取消。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-6lvjpt6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-6lvjpt6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有三种创建方法："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-humdi81",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-humdi81"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-4ja52ku",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-4ja52ku"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 带cancel返回值的Context，一旦cancel被调用，即取消该创建的context\nfunc WithCancel(parent Context) (ctx Context, cancel CancelFunc) \n\n// 带有效期cancel返回值的Context，即必须到达指定时间点调用的cancel方法才会被执行\nfunc WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc) \n\n// 带超时时间cancel返回值的Context，类似Deadline，前者是时间点，后者为时间间隔\n// 相当于WithDeadline(parent, time.Now().Add(timeout)).\nfunc WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-6r8dytn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-6r8dytn"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-mutode7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-mutode7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "WithCancel"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-5x89fls",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-5x89fls"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "WithCancel返回一个继承的Context,这个Context在父Context的Done被关闭时关闭自己的Done通道，或者在自己被Cancel的时候关闭自己的Done。\nWithCancel同时还返回一个取消函数cancel，这个cancel用于取消当前的Context。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-tjrn7w9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-tjrn7w9"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-f1pfrnp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-f1pfrnp"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"context\"\n    \"log\"\n    \"os\"\n    \"time\"\n)\n\nvar logg *log.Logger\n\nfunc someHandler() {\n    ctx, cancel := context.WithCancel(context.Background())\n    go doStuff(ctx)\n\n//10秒后取消doStuff\n    time.Sleep(10 * time.Second)\n    cancel()\n\n}\n\n//每1秒work一下，同时会判断ctx是否被取消了，如果是就退出\nfunc doStuff(ctx context.Context) {\n    for {\n        time.Sleep(1 * time.Second)\n        select {\n        case \u003c-ctx.Done():\n            logg.Printf(\"done\")\n            return\n        default:\n            logg.Printf(\"work\")\n        }\n    }\n}\n\nfunc main() {\n    logg = log.New(os.Stdout, \"\", log.Ltime)\n    someHandler()\n    logg.Printf(\"down\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-05i1vgk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-05i1vgk",
+				"updated": "20221231111748"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "返回："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-xl9otoh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-xl9otoh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "E:\\wdy\\goproject\u003ego run context_learn.go\n15:06:44 work\n15:06:45 work\n15:06:46 work\n15:06:47 work\n15:06:48 work\n15:06:49 work\n15:06:50 work\n15:06:51 work\n15:06:52 work\n15:06:53 down\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-1ivi1y4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-1ivi1y4",
+				"updated": "20221231112913"
+			}
+		},
+		{
+			"ID": "20221231111748-eql665c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-eql665c"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"time\"\n)\n\nfunc someHandler() {\n    // 创建继承Background的子节点Context\n    ctx, cancel := context.WithCancel(context.Background())\n    go doSth(ctx)\n\n    //模拟程序运行 - Sleep 5秒\n    time.Sleep(5 * time.Second)\n    cancel()\n}\n\n//每1秒work一下，同时会判断ctx是否被取消，如果是就退出\nfunc doSth(ctx context.Context) {\n    var i = 1\n    for {\n        time.Sleep(1 * time.Second)\n        select {\n        case \u003c-ctx.Done():\n            fmt.Println(\"done\")\n            return\n        default:\n            fmt.Printf(\"work %d seconds: \\n\", i)\n        }\n        i++\n    }\n}\n\nfunc main() {\n    fmt.Println(\"start...\")\n    someHandler()\n    fmt.Println(\"end.\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-0721ovb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-0721ovb"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-1ei84oc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-1ei84oc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "输出结果："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-7lfoedh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-7lfoedh"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1093617/202101/1093617-20210126142456810-1113470217.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-abh9xir",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-abh9xir"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "withDeadline withTimeout"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-6j48cur",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-6j48cur"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "WithTimeout func(parent Context, timeout time.Duration) (Context, CancelFunc)\nWithTimeout returns WithDeadline(parent, time.Now().Add(timeout)).\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-68ofmdd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-68ofmdd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "WithTimeout 等价于 WithDeadline(parent, time.Now().Add(timeout))."
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-x8b92l4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-x8b92l4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对上面的样例代码进行修改"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-4fyo53p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-4fyo53p"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-f02mnlc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-f02mnlc"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func timeoutHandler() {\n    // ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\n    ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(5*time.Second))\n    // go doTimeOutStuff(ctx)\n    go doStuff(ctx)\n\n    time.Sleep(10 * time.Second)\n\n    cancel()\n\n}\n\nfunc main() {\n    logg = log.New(os.Stdout, \"\", log.Ltime)\n    timeoutHandler()\n    logg.Printf(\"end\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-rs2yd2g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-rs2yd2g"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-ox0uqts",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-ox0uqts"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "返回："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-cg1pf74",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-cg1pf74"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-y9kxa0b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-y9kxa0b"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "15:59:22 work\n15:59:24 work\n15:59:25 work\n15:59:26 work\n15:59:27 done\n15:59:31 end\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-kb80174",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-kb80174"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-uftgdw1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-uftgdw1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以看到doStuff在context超时的时候被取消了，ctx.Done()被关闭。\n将context.WithDeadline替换为context.WithTimeout"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-gxfd000",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-gxfd000"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-att21sf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-att21sf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func timeoutHandler() {\n    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\n    // ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(5*time.Second))\n    // go doTimeOutStuff(ctx)\n    go doStuff(ctx)\n\n    time.Sleep(10 * time.Second)\n\n    cancel()\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-6r6k7e5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-6r6k7e5"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-rgqj4ox",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-rgqj4ox"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-z00h5w1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-z00h5w1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "16:02:47 work\n16:02:49 work\n16:02:50 work\n16:02:51 work\n16:02:52 done\n16:02:56 end\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-3uygv45",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-3uygv45"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-7mjo5q6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-7mjo5q6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "doTimeOutStuff替换doStuff"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-ay83kjb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-ay83kjb"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-en88beq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-en88beq"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func doTimeOutStuff(ctx context.Context) {\n    for {\n        time.Sleep(1 * time.Second)\n\n        if deadline, ok := ctx.Deadline(); ok { //设置了deadl\n            logg.Printf(\"deadline set\")\n            if time.Now().After(deadline) {\n                logg.Printf(ctx.Err().Error())\n                return\n            }\n\n        }\n\n        select {\n        case \u003c-ctx.Done():\n            logg.Printf(\"done\")\n            return\n        default:\n            logg.Printf(\"work\")\n        }\n    }\n}\n\nfunc timeoutHandler() {\n    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\n    // ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(5*time.Second))\n    go doTimeOutStuff(ctx)\n    // go doStuff(ctx)\n\n    time.Sleep(10 * time.Second)\n\n    cancel()\n\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-dsx00ky",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-dsx00ky"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-j6cyyog",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-j6cyyog"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-bgrh6ii",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-bgrh6ii"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "16:03:55 deadline set\n16:03:55 work\n16:03:56 deadline set\n16:03:56 work\n16:03:57 deadline set\n16:03:57 work\n16:03:58 deadline set\n16:03:58 work\n16:03:59 deadline set\n16:03:59 context deadline exceeded\n16:04:04 end\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-doyrz4h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-doyrz4h"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-7uysikw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-7uysikw"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "WithTimeout\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-8wmx4q1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-8wmx4q1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-s7ef4v2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-s7ef4v2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"math/rand\"\n    \"time\"\n    \"sync\"\n    \"fmt\"\n    \"context\"\n)\n\nfunc main()  {\n    rand.Seed(time.Now().Unix())\n\n    ctx,_:=context.WithTimeout(context.Background(),time.Second*3)\n\n    var wg sync.WaitGroup\n    wg.Add(1)\n    go GenUsers(ctx,\u0026wg)\n    wg.Wait()\n\n    fmt.Println(\"生成幸运用户成功\")\n}\nfunc GenUsers(ctx context.Context,wg *sync.WaitGroup)  { //生成用户ID\nfmt.Println(\"开始生成幸运用户\")\n   users:=make([]int,0)\n   guser:for{\n        select{\n           case \u003c- ctx.Done(): //代表父context发起 取消操作\n\n             fmt.Println(users)\n               wg.Done()\n             break guser\n             return\n        default:\n            users=append(users,getUserID(1000,100000))\n        }\n   }\n\n}\nfunc getUserID(min int ,max int) int  {\n    return rand.Intn(max-min)+min\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-55g1o9w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-55g1o9w"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-g8njin5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-g8njin5"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "context deadline exceeded"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "就是ctx超时的时候ctx.Err的错误消息。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-5dwk6ba",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-5dwk6ba"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "搜索测试程序"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-gmqxu3v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-gmqxu3v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "完整代码参见官方文档"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.golang.org/context",
+					"TextMarkTextContent": "Go Concurrency Patterns: Context"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，其中关键的地方在于函数httpDo"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-cv4wvf1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-cv4wvf1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-y48epcl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-y48epcl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func httpDo(ctx context.Context, req *http.Request, f func(*http.Response, error) error) error {\n    // Run the HTTP request in a goroutine and pass the response to f.\n    tr := \u0026http.Transport{}\n    client := \u0026http.Client{Transport: tr}\n    c := make(chan error, 1)\n    go func() { c \u003c- f(client.Do(req)) }()\n    select {\n    case \u003c-ctx.Done():\n        tr.CancelRequest(req)\n        \u003c-c // Wait for f to return.\n        return ctx.Err()\n    case err := \u003c-c:\n        return err\n    }\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-1vqpo9c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-1vqpo9c"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-v99axaq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-v99axaq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "httpDo关键的地方在于"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-vsc0le3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-vsc0le3"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-bk81fb8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-bk81fb8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " select {\n    case \u003c-ctx.Done():\n        tr.CancelRequest(req)\n        \u003c-c // Wait for f to return.\n        return ctx.Err()\n    case err := \u003c-c:\n        return err\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-sydf16e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-sydf16e"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-esyo6pp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-esyo6pp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要么ctx被取消，要么request请求出错。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-xcocpqj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-xcocpqj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "httpserver中实现超时"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-oak1sdm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-oak1sdm"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-08ouh23",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-08ouh23"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"net/http\"\n    \"context\"\n    \"time\"\n)\n\nfunc CountData(c chan string) chan string {\n    time.Sleep(time.Second*5)\n    c\u003c- \"统计结果\"\n    return c\n}\n\ntype IndexHandler struct {}\nfunc(this *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)  {\n    if r.URL.Query().Get(\"count\")==\"\"{\n        w.Write([]byte(\"这是首页\"))\n    }else {\n        ctx,cancel:=context.WithTimeout(r.Context(),time.Second*3)\n        defer cancel()\n        c:=make(chan string)\n        go CountData(c)\n        select {\n           case \u003c-ctx.Done():\n               w.Write([]byte(\"超时\"))\n            case ret:=\u003c-c:\n                w.Write([]byte(ret))\n        }\n\n\n    }\n\n\n}\n\nfunc main()  {\n     mux:=http.NewServeMux()\n     mux.Handle(\"/\",new(IndexHandler))\n\n     http.ListenAndServe(\":8082\",mux)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-aow8my1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-aow8my1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-gfhpmif",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-gfhpmif"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "超时场景："
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-u15verk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-u15verk"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-z1ut37p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-z1ut37p"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"context\"\n    \"fmt\"\n    \"time\"\n)\n\nfunc timeoutHandler() {\n    // 创建继承Background的子节点Context\n    ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)\n    go doSth(ctx)\n\n    //模拟程序运行 - Sleep 10秒\n    time.Sleep(10 * time.Second)\n    cancel() // 3秒后将提前取消 doSth goroutine\n}\n\n//每1秒work一下，同时会判断ctx是否被取消，如果是就退出\nfunc doSth(ctx context.Context) {\n    var i = 1\n    for {\n        time.Sleep(1 * time.Second)\n        select {\n        case \u003c-ctx.Done():\n            fmt.Println(\"done\")\n            return\n        default:\n            fmt.Printf(\"work %d seconds: \\n\", i)\n        }\n        i++\n    }\n}\n\nfunc main() {\n    fmt.Println(\"start...\")\n    timeoutHandler()\n    fmt.Println(\"end.\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-0fmfiyu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-0fmfiyu"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-7up8jbs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-7up8jbs"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1093617/202101/1093617-20210126142555081-8256345.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-bwicguz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20221231111748-bwicguz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "WithValue"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-cwqj149",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-cwqj149"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func WithValue(parent Context, key interface{}, val interface{}) Context\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-prmvlv1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-prmvlv1"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-dveye1m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-dveye1m"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// NewContext returns a new Context carrying userIP.\nfunc NewContext(ctx context.Context, userIP net.IP) context.Context {\n    return context.WithValue(ctx, userIPKey, userIP)\n}\n\n// FromContext extracts the user IP address from ctx, if present.\nfunc FromContext(ctx context.Context) (net.IP, bool) {\n    // ctx.Value returns nil if ctx has no value for the key;\n    // the net.IP type assertion returns ok=false for nil.\n    userIP, ok := ctx.Value(userIPKey).(net.IP)\n    return userIP, ok\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-3min98s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-3min98s"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-acguk05",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-acguk05"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前面铺地了这么多。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-q4nh7ot",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-q4nh7ot"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "确实，通过引入Context包，一个request范围内所有goroutine运行时的取消可以得到有效的控制。但是这种解决方式却不够优雅。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-ytz4qml",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-ytz4qml"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一旦代码中某处用到了Context，传递Context变量（通常作为函数的第一个参数）会像病毒一样蔓延在各处调用它的地方。比如在一个request中实现数据库事务或者分布式日志记录，创建的context，会作为参数传递到任何有数据库操作或日志记录需求的函数代码处。即每一个相关函数都必须增加一个context.Context类型的参数，且作为第一个参数，这对无关代码完全是侵入式的。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-n0rsr6l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-n0rsr6l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "更多详细内容可参见：Michal Strba 的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://faiface.github.io/post/context-should-go-away-go2/",
+					"TextMarkTextContent": "context-should-go-away-go2"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "文章"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-tnq68o8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-tnq68o8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Google Group上的讨论可移步"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://groups.google.com/forum/#!searchin/golang-nuts/transaction%7Csort:date/golang-nuts/eEDlXAVW9vU/IChp34xpCQAJ",
+					"TextMarkTextContent": "这里"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-whu5a4d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-whu5a4d"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Context机制最核心的功能是在goroutine之间传递cancel信号，但是它的实现是不完全的。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-c3e9pqd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-c3e9pqd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Cancel可以细分为主动与被动两种，通过传递context参数，让调用goroutine可以主动cancel被调用goroutine。但是如何得知被调用goroutine什么时候执行完毕，这部分Context机制是没有实现的。而现实中的确又有一些这样的场景，比如一个组装数据的goroutine必须等待其他goroutine完成才可开始执行，这是context明显不够用了，必须借助sync.WaitGroup。"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-xui8tba",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-xui8tba"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-eteqt89",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221231111748-eteqt89"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func serve(l net.Listener) error {\n        var wg sync.WaitGroup\n        var conn net.Conn\n        var err error\n        for {\n                conn, err = l.Accept()\n                if err != nil {\n                        break\n                }\n                wg.Add(1)\n                go func(c net.Conn) {\n                        defer wg.Done()\n                        handle(c)\n                }(conn)\n        }\n        wg.Wait()\n        return err\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221231111748-64921tt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221231111748-64921tt"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/copycode-20221231111748-yk3hbcc.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		}
+	]
+}

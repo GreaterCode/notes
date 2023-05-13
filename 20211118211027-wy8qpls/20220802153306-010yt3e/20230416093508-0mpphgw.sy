@@ -1,0 +1,1958 @@
+{
+	"ID": "20230416093508-0mpphgw",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230416093508-0mpphgw",
+		"title": "基于Goland和dlv远程调试Kubernetes组件_golang-dlv组件",
+		"updated": "20230416093748"
+	},
+	"Children": [
+		{
+			"ID": "20230416093508-vz3xonc",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230416093508-vz3xonc",
+				"updated": "20230416093508"
+			}
+		},
+		{
+			"ID": "20230416093508-ix9vvl6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-ix9vvl6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一个正常运行的 Kubernetes 集群包含以下的各种组件。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-xl71ojy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-xl71ojy"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image-20221004225416504"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/2253b6c9f9dcb0796e7a8c2c9a232d78-20230416093508-cy2u216.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-emtp8rx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-emtp8rx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通常开发者日常编码都基于Windows/Mac上的IDE（VsCode/"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=Goland\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "Goland"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "），编码完成后再部署到远端Linux机器运行。因此，我们就需要一种基于IDE和dlv远程调试Kubernetes组件的方式，而"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/go-delve/delve",
+					"TextMarkTextContent": "go-delve"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "正是一个不错的选择。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-cd6hrlx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-cd6hrlx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "delve调试包括附加到进程调试和远程调试。其实附加到本地进程和远程调试原理是一样的，待调试的进程是通过delve启动的，delve会启动进程，并立即附加到进程，开启一个debug session。并且启动一个debug server，暴露某个端口，客户端IDE可以通过该端口连接到debug server进行调试。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-onol1me",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-onol1me"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "设计思路"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/2ddd90cd44ae31b0fc0030f3574d4e1f-20230416093508-ozxomsm.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-tdv8grq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230416093508-tdv8grq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "远程Linux服务器准备工作"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-ml037bg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-ml037bg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Go安装"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-isf17q5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-isf17q5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "wget安装包"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-osso6c5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-osso6c5",
+				"updated": "20230416093748"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ wget https://dl.google.com/go/go1.17.8.linux-amd64.tar.gz\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-t9o6s6u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-t9o6s6u"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解压并配置GOROOT、GOPATH和PATH"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-ca9gpv6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-ca9gpv6",
+				"updated": "20230416093745"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 解压GO安装包\n$ tar -zxvf go1.17.8.linux-amd64.tar.gz -C /usr/local/\n\n# 编辑配置文件  vim ~/.bashrc\n$ export GOROOT=/usr/local/go #GOROOT是系统上安装Go软件包的位置。\n$ export GOPATH=/go #GOPATH是工作目录的位置。这个是自己创建的，想放在哪都行\n$ export PATH=$GOPATH/bin:$GOROOT/bin:$PATH\n$ export GOPROXY=\"https://goproxy.cn,https://mirrors.aliyun.com/goproxy,direct\"\n\n# 更新配置文件\n$ source ~/.bashrc \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-yq7j7wx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-yq7j7wx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-zcl622k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-zcl622k",
+				"updated": "20230416093743"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 有输出表示安装成功\ngo env\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-2488bi6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-2488bi6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "go-delve安装"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-ecpy5e6",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-ecpy5e6"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-p7lgqa8",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-p7lgqa8"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "目前 Go 语言支持 GDB、LLDB 和 Delve 几种调试器。其中 GDB 是最早支持的调试工具，LLDB 是 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "a",
+							"TextMarkAHref": "https://so.csdn.net/so/search?q=macOS\u0026spm=1001.2101.3001.7020",
+							"TextMarkTextContent": "macOS"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 系统推荐的标准调试工具。但是 GDB 和 LLDB 对 Go 语言的专有特性都缺乏很大支持，而只有 Delve 是专门为 Go 语言设计开发的调试工具。而且 Delve 本身也是采用 Go 语言开发，对 Windows 平台也提供了一样的支持。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-k0ojckn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-k0ojckn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下指令适用于 Linux、macOS、Windows 和 FreeBSD。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-nqqrr6i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-nqqrr6i"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方式一： 克隆 git 仓库并构建："
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-o72xb1w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-o72xb1w",
+				"updated": "20230416093740"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ git clone https://github.com/go-delve/delve\n$ cd delve\n$ go install github.com/go-delve/delve/cmd/dlv\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-y06kc9j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-y06kc9j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方式二： 在 Go 版本 1.16 或更高版本上："
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-d8rwz17",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-d8rwz17",
+				"updated": "20230416093737"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# Install the latest release:\n$ go install github.com/go-delve/delve/cmd/dlv@latest\n\n# Install at tree head:\n$ go install github.com/go-delve/delve/cmd/dlv@master\n\n# Install at a specific version or pseudo-version:\n$ go install github.com/go-delve/delve/cmd/dlv@v1.7.3\n$ go install github.com/go-delve/delve/cmd/dlv@v1.7.4-0.20211208103735-2f13672765fe\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-jiw4b4l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-jiw4b4l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有关go-delve版本信息，请参阅https://go.dev/ref/mod#versions。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-6vr88pz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-6vr88pz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-ht41506",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-ht41506",
+				"updated": "20230416093734"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 有输出表示安装成功\ndlv\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-u7ue3h8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-u7ue3h8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes编译打包"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-e7as7j5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-e7as7j5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下载"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-pw8m28w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-pw8m28w",
+				"updated": "20230416093725"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mkdir -p $GOPATH/src/github.com/kubernetes\n$ cd $GOPATH/src/github.com/kubernetes\n$ git clone https://github.com/kubernetes/kubernetes.git\n$ git check v1.18\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-7313v1x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-7313v1x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编译"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-h2vr0h0",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-h2vr0h0"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-jx2gphy",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-jx2gphy"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "-s disable symbol table 禁用"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "a",
+							"TextMarkAHref": "https://so.csdn.net/so/search?q=%E7%AC%A6%E5%8F%B7%E8%A1%A8\u0026spm=1001.2101.3001.7020",
+							"TextMarkTextContent": "符号表"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-qjaiebm",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-qjaiebm"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "-w disable DWARF generation 禁用调试信息；"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-b26r244",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-b26r244"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "更多编译参数帮助信息查看：go tool link"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-481ouo4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-481ouo4",
+				"updated": "20230416093722"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# Kubernetes v1.18在k8s.io/kubernetes/hack/lib/golang.sh中设置了-s -w选项来禁用符号表以及debug信息，因此在编译Kubernetes组件进行远程调试时需要去掉这两个限制，如下：\n-    goldflags=\"${GOLDFLAGS=-s -w} $(kube::version::ldflags)\"\n+    #goldflags=\"${GOLDFLAGS=-s -w} $(kube::version::ldflags)\"\n+    goldflags=\"${GOLDFLAGS:-} $(kube::version::ldflags)\"\n\n# 编译单个组建：\nsudo make WHAT=\"cmd/kube-apiserver\" GOGCFLAGS=\"-N -l\" GOLDFLAGS=\"\"  \n# 编译所有组件：\nsudo make all GOGCFLAGS=\"-N -l\" GOLDFLAGS=\"\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-j4n2j4g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230416093508-j4n2j4g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes static pod组件 调试"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-4t898cv",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-4t898cv"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-1wgr5e2",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-1wgr5e2"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本文以"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kube-apiserver"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "为例，其他"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kube-controller-manager"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "和"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kube-scheduler"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "等以"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "static pod"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "部署的组件，调试方法类似。"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-0m7s6zz",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-0m7s6zz"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "除了“Goland配置”，以下操作都是在远程Linux服务器中进行。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-c5jwnal",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-c5jwnal"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编译kube-apiserver组件"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-mf9khev",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-mf9khev"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-n8qz2ts",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-n8qz2ts"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "重编译的输出，在当前位置的"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "_output/bin/"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "目录下；"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-1du0869",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-1du0869",
+				"updated": "20230416093718"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo make WHAT=\"cmd/kube-apiserver\" GOGCFLAGS=\"-N -l\" GOLDFLAGS=\"\"  \n\n# 执行过程\n[root@gv187 kubernetes]# make WHAT=\"cmd/kube-apiserver\" GOGCFLAGS=\"-N -l\" GOLDFLAGS=\"\"\n+++ [1004 20:26:13] Building go targets for linux/amd64:\n    ./vendor/k8s.io/code-generator/cmd/deepcopy-gen\nwarning: ignoring symlink /go/src/github.com/kubernetes/kubernetes/_output/local/go/src/k8s.io/kubernetes\ngo: warning: \"k8s.io/kubernetes/vendor/github.com/go-bindata/go-bindata/...\" matched no packages\n+++ [1004 20:26:25] Building go targets for linux/amd64:\n    cmd/kube-apiserver\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-vxuhogt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-vxuhogt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查找kube-apiserver配置信息"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-h0ri6pm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-h0ri6pm",
+				"updated": "20230416093716"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@gv187 kubernetes]# ps -ef | grep kube-apiserver\nroot       421 29137  0 20:27 pts/1    00:00:00 grep --color=auto kube-apiserver\nroot     34900 34776  6 9月27 ?       11:00:53 kube-apiserver --advertise-address=10.0.35.187 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/etc/kubernetes/pki/ca.crt --enable-admission-plugins=NodeRestriction --enable-bootstrap-token-auth=true --etcd-cafile=/etc/etcd/pki/ca.pem --etcd-certfile=/etc/etcd/pki/client.pem --etcd-keyfile=/etc/etcd/pki/client-key.pem --etcd-servers=https://10.0.35.187:2379 --insecure-port=0 --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=6443 --service-account-key-file=/etc/kubernetes/pki/sa.pub --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/etc/kubernetes/pki/apiserver.crt --tls-private-key-file=/etc/kubernetes/pki/apiserver.key\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-uuzstu7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-uuzstu7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "组装dlv debug命令"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-149z7g7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-149z7g7",
+				"updated": "20230416093714"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec 编译生成的组件 -- 组件配置参数\n\n# 示例\ndlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /go/src/github.com/kubernetes/kubernetes/_output/local/bin/linux/amd64/kube-apiserver -- --advertise-address=10.0.35.187 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/etc/kubernetes/pki/ca.crt --enable-admission-plugins=NodeRestriction --enable-bootstrap-token-auth=true --etcd-cafile=/etc/etcd/pki/ca.pem --etcd-certfile=/etc/etcd/pki/client.pem --etcd-keyfile=/etc/etcd/pki/client-key.pem --etcd-servers=https://10.0.35.187:2379 --insecure-port=0 --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=6443 --service-account-key-file=/etc/kubernetes/pki/sa.pub --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/etc/kubernetes/pki/apiserver.crt --tls-private-key-file=/etc/kubernetes/pki/apiserver.key\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-issfr4r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-issfr4r"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "停止kube-apiserver的static pod"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-9s7o6qx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-9s7o6qx",
+				"updated": "20230416093712"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mv /etc/kubernetes/manifests/kube-apiserver.yaml /etc/kubernetes/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-6bej6pm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-6bej6pm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只需要把manifest目录下的配置文件移动到别的地方即可，kubelet会直接停止不在manifest目录下的static pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-857uqb8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-857uqb8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ps -ef | grep kube-apiserver"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "验证进程是否存在，如果依然存在，可以通过终止进程方式。"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-5d4f2s0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-5d4f2s0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dlv 启动kube-apiserver"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-7omfdmz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-7omfdmz",
+				"updated": "20230416093710"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "QkFTSA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /go/src/github.com/kubernetes/kubernetes/_output/local/bin/linux/amd64/kube-apiserver -- --advertise-address=10.0.35.187 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/etc/kubernetes/pki/ca.crt --enable-admission-plugins=NodeRestriction --enable-bootstrap-token-auth=true --etcd-cafile=/etc/etcd/pki/ca.pem --etcd-certfile=/etc/etcd/pki/client.pem --etcd-keyfile=/etc/etcd/pki/client-key.pem --etcd-servers=https://10.0.35.187:2379 --insecure-port=0 --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=6443 --service-account-key-file=/etc/kubernetes/pki/sa.pub --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/etc/kubernetes/pki/apiserver.crt --tls-private-key-file=/etc/kubernetes/pki/apiserver.key\n# 提示监听在2345端口\nAPI server listening at: [::]:2345\n2022-10-04T20:34:58+08:00 warning layer=rpc Listening for remote connections (connections are not authenticated nor encrypted)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-dv79lze",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-dv79lze"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本地Goland配置"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-ilgfifx",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-ilgfifx"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-0c2icda",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-0c2icda"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "首先安装Go，下载对应版本的Kubernetes代码"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-p6cb1ny",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-p6cb1ny"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "GoLand IDE界面"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "Run=\u0026gt;Debug=\u0026gt;Edit Configurations"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "新增"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "Go Remote debug"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "条目，同时配置相关"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "Host"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "以及"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "Port"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-320oecm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-320oecm"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image-20221004190021764"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/c1ae1581cd1a94edf4c90093119523f2-20230416093508-3md2xlu.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-02nq0gs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230416093508-02nq0gs"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调试效果"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-2so0oif",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-2so0oif"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image-20221004204546743"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/08d7524a0467ff63df593da5b721df09-20230416093508-7uii0gz.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-62az0r6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-62az0r6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "还原"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kube-apiserver"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的manifest文件"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-8ipgfmh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-8ipgfmh",
+				"updated": "20230416093705"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mv /etc/kubernetes/kube-apiserver.yaml /etc/kubernetes/manifests/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-8axh67m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230416093508-8axh67m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes daemonset组件调试"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-ti48meo",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-ti48meo"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-bbrno9y",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-bbrno9y"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本文以"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kube-proxy"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "为例，其他daemonset组件调试类似。"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-bgzyc2r",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-bgzyc2r"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "除了“Goland配置”，以下操作都是在远程Linux服务器中进行。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-vctoiqz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-vctoiqz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kube-proxy的启动方式不是static pod方式；是以daemonset+configmap配置文件方式启动服务的；"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-x6xgsbl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-x6xgsbl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编译kube-proxy组件"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-xioxt9g",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-xioxt9g"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-ew5w33w",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-ew5w33w"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "重编译的输出，在当前位置的"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "_output/bin/"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "目录下；"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-g3j6wu8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-g3j6wu8",
+				"updated": "20230416093702"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo make WHAT=\"cmd/kube-proxy\" GOGCFLAGS=\"-N -l\" GOLDFLAGS=\"\"  \n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-im7ov3k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-im7ov3k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查找kube-proxy配置"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-yjucrzn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-yjucrzn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先看看kube-proxy相关启动参数："
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-1xitycp",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-1xitycp"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-9mvumu0",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-9mvumu0"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "启动命令参数看daemonset中的command部分，配置文件看configmap中的config.conf和kubeconfig.conf"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-qzjx4m0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-qzjx4m0",
+				"updated": "20230416093657"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  # daemonset/kube-proxy  \n      ...\n      spec:\n        containers:\n        - command:\n          - /usr/local/bin/kube-proxy\n          - --config=/var/lib/kube-proxy/config.conf\n          - --hostname-override=$(NODE_NAME)\n          volumeMounts:\n          - mountPath: /var/lib/kube-proxy\n            name: kube-proxy\n          - mountPath: /run/xtables.lock\n            name: xtables-lock\n          - mountPath: /lib/modules\n            name: lib-modules\n            readOnly: true\n        ...  \n        volumes:\n        - configMap:\n            defaultMode: 420\n            name: kube-proxy\n          name: kube-proxy\n        - hostPath:\n            path: /run/xtables.lock\n            type: FileOrCreate\n          name: xtables-lock\n        - hostPath:\n            path: /lib/modules\n            type: \"\"\n          name: lib-modules\n        ...   \n  # configmap/kube-proxy\n  apiVersion: v1\n  data:\n    config.conf: |-\n      ...\n    kubeconfig.conf: |-\n      ...\n  kind: ConfigMap\n  ...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-3aav2tc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-3aav2tc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kube-proxy configmap中主要包含两部分："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "config.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "以及"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubeconfig.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，这里可以将"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "config.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的内容存放到单独的一个文件"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "config.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中，而kubeconfig.conf的内容则可以直接用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "$HOME/.kube/config"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "进行替代"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-b8iqjuz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-b8iqjuz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "停止kube-proxy"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-wweos7l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-wweos7l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里为了不影响其它母机上的kube-proxy，可以通过设置node标签以及nodeSelector的方式将某一个节点的kube-proxy停止："
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-3ss79th",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-3ss79th",
+				"updated": "20230416093653"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 方式一：设置node标签\nkubectl label nodes \u003cnode-name\u003e \u003clabel-key\u003e=\u003clabel-value\u003e\n# 方式一：修改nodeSelector，让node的标签匹配不上\nkubectl -n kube-system edit daemonsets.kube-proxy nodeSelector:beta.kubernetes.io/os:linux2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-yemqkay",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-yemqkay"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dlv启动kube-proxy"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-wv8blhq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-wv8blhq",
+				"updated": "20230416093651"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 注意nodeName替换成实际节点名称\n$dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /go/src/github.com/kubernetes/kubernetes/_output/local/bin/linux/amd64/kube-proxy -- \\\n--config=./config.conf \\\n--hostname-override=nodeName\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-5coszgq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-5coszgq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后，Goland设置kubelet代码断点并调试"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-6lwadzz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230416093508-6lwadzz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 二进制组件调试"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-jax3aay",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-jax3aay"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-zlesqe1",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-zlesqe1"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "kubelet是以二进制方式运行在宿主机上，是通过systemd管理的。"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-ergcupg",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-ergcupg"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "本文以"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kubelet"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "为例，其他二进制组件调试类似。"
+						}
+					]
+				},
+				{
+					"ID": "20230416093508-jvl2oxk",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-jvl2oxk"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "除了“Goland配置”，以下操作都是在远程Linux服务器中进行。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-xv7hodp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-xv7hodp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编译kubelet组件"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-7rslmzz",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230416093508-7rslmzz"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230416093508-2kyorcc",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230416093508-2kyorcc"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "重编译的输出，在当前位置的"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "_output/bin/"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "目录下；"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-6jldhoi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-6jldhoi",
+				"updated": "20230416093647"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo make WHAT=\"cmd/kubelet\" GOGCFLAGS=\"-N -l\" GOLDFLAGS=\"\"  \n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-q2o18d7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-q2o18d7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查找kubelet组件配置"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-dw87me1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-dw87me1",
+				"updated": "20230416093644"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@gv187 ~]# systemctl status -l kubelet \n● kubelet.service - kubelet: The Kubernetes Node Agent\n   Loaded: loaded (/usr/lib/systemd/system/kubelet.service; enabled; vendor preset: disabled)\n  Drop-In: /usr/lib/systemd/system/kubelet.service.d\n           └─10-kubeadm.conf\n   Active: active (running) since 一 2022-09-26 21:12:13 CST; 1 weeks 1 days ago\n     Docs: https://kubernetes.io/docs/\n Main PID: 20478 (kubelet)\n    Tasks: 74\n   Memory: 86.0M\n   CGroup: /system.slice/kubelet.service\n           └─20478 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --cgroup-driver=systemd --network-plugin=cni --pod-infra-container-image=k8s.gcr.io/pause:3.2\n     \n# 其中配置信息就是\n--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --cgroup-driver=systemd --network-plugin=cni --pod-infra-container-image=k8s.gcr.io/pause:3.2\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-lao0spl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-lao0spl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "停止kubelet组件"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-wfadnvx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-wfadnvx",
+				"updated": "20230416093642"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ systemctl stop kubelet.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-9axlq64",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230416093508-9axlq64"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dlv启动kubelet"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-jgzsb07",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230416093508-jgzsb07"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /go/src/github.com/kubernetes/kubernetes/_output/local/bin/linux/amd64/kubelet -- --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --cgroup-driver=systemd --network-plugin=cni --pod-infra-container-image=k8s.gcr.io/pause:3.2\n\n12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-go6xolf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-go6xolf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后，Goland设置kubelet代码断点并调试"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-58qkdgm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230416093508-58qkdgm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考"
+				}
+			]
+		},
+		{
+			"ID": "20230416093508-58232rk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230416093508-58232rk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "https://github.com/go-delve/delve/tree/master/Documentation/installation"
+				}
+			]
+		}
+	]
+}

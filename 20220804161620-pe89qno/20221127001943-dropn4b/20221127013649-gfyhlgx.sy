@@ -1,0 +1,2416 @@
+{
+	"ID": "20221127013649-gfyhlgx",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221127013649-gfyhlgx",
+		"title": "0-kube-ovn安装",
+		"updated": "20221127112216"
+	},
+	"Children": [
+		{
+			"ID": "20221127013649-ysantuv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127013649-ysantuv",
+				"updated": "20221127014326"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.环境准备"
+				}
+			]
+		},
+		{
+			"ID": "20221127014313-nxy9j0c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014313-nxy9j0c",
+				"updated": "20221127014313"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tKube-OVN 是一个符合 CNI 规范的网络组件，其运行需要依赖 Kubernetes 环境及对应的内核网络模块。 以下是通过测试的操作系统和软件版本，环境配置和所需要开放的端口信息。"
+				}
+			]
+		},
+		{
+			"ID": "20221127013804-oxznb3z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127013804-oxznb3z",
+				"updated": "20221127014413"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 软件版本"
+				}
+			]
+		},
+		{
+			"ID": "20221127013827-8i4n2xg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127013827-8i4n2xg",
+				"updated": "20221127013827"
+			},
+			"Children": [
+				{
+					"ID": "20221127013827-g8kywpz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-g8kywpz"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-1be3zoe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-1be3zoe"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubernetes \u003e= 1.16 且 \u003c 1.24，推荐 1.19 以上版本。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013827-lfen03b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-lfen03b"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-jpywtms",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-jpywtms"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Docker \u003e= 1.12.6, Containerd \u003e= 1.3.4。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013827-s8y3zip",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-s8y3zip"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-6f3hyub",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-6f3hyub"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "操作系统: CentOS 7/8, Ubuntu 16.04/18.04/20.04。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013827-v7gzfdp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127013827-v7gzfdp"
+					},
+					"Children": [
+						{
+							"ID": "20221127013827-y40ytm1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013827-y40ytm1"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "其他 Linux 发行版，需要检查一下内核模块是否存在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "geneve"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ", "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "openvswitch"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ", "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ip_tables"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "iptable_nat"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，Kube-OVN 正常工作依赖上述模块"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127013856-9sfkjka",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127013856-9sfkjka",
+				"updated": "20221127013903"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				}
+			]
+		},
+		{
+			"ID": "20221127013910-ww2cnt1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127013910-ww2cnt1",
+				"updated": "20221127013910"
+			},
+			"Children": [
+				{
+					"ID": "20221127013910-iji4x07",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127013910-iji4x07"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-hxigp9l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-hxigp9l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果内核版本为 3.10.0-862 内核 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "netfilter"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 模块存在 bug 会导致 Kube-OVN 内置负载均衡器无法工作，需要对内核升级，建议使用 CentOS 官方对应版本最新内核保证系统的安全。相关内核 bug 参考 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://bugs.launchpad.net/neutron/+bug/1776778",
+									"TextMarkTextContent": "Floating IPs broken after kernel upgrade to Centos/RHEL 7.5 - DNAT not working"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013910-jarwr7x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127013910-jarwr7x"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-rel7q72",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-rel7q72"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Rocky Linux 8.6 的内核 4.18.0-372.9.1.el8.x86_64 存在 TCP 通信问题 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/kubeovn/kube-ovn/issues/1647",
+									"TextMarkTextContent": "TCP connection failed in Rocky Linux 8.6"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "，请升级内核至 4.18.0-372.13.1.el8_6.x86_64 或更高版本。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013910-7izak3j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127013910-7izak3j"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-flu40c7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-flu40c7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果内核版本为 4.4 则对应的内核 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "openvswitch"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 模块存在问题，建议升级或手动编译 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "openvswitch"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 新版本模块进行更新"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127013910-p70j7cy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221127013910-p70j7cy"
+					},
+					"Children": [
+						{
+							"ID": "20221127013910-a45cl67",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127013910-a45cl67"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Geneve 隧道建立需要检查 IPv6，可通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "cat /proc/cmdline"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 检查内核启动参数， 相关内核 bug 请参考 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1794232",
+									"TextMarkTextContent": "Geneve tunnels don"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a code",
+									"TextMarkAHref": "https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1794232",
+									"TextMarkTextContent": "\u0026amp;#39;'"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1794232",
+									"TextMarkTextContent": "t work when ipv6 is disabled"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127013814-1c4xwl4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127013814-1c4xwl4",
+				"updated": "20221127014427"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 环境配置"
+				}
+			]
+		},
+		{
+			"ID": "20221127014120-k7f3fj4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127014120-k7f3fj4",
+				"updated": "20221127014120"
+			},
+			"Children": [
+				{
+					"ID": "20221127014120-5d79yd8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-5d79yd8"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-zgljzo8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-zgljzo8"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kernel 启动需要开启 ipv6, 如果 kernel 启动参数包含 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "ipv6.disable=1"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 需要将其设置为 0。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127014120-5k0tpuf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-5k0tpuf"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-oql3h21",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-oql3h21"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-proxy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 正常工作，Kube-OVN 可以通过 SVC IP 访问到 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-apiserver"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127014120-agrp0hu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-agrp0hu"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-j0ds8ga",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-j0ds8ga"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认 kubelet 配置参数开启了 CNI，并且配置在标准路径下, kubelet 启动时应包含如下参数 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--network-plugin=cni --cni-bin-dir=/opt/cni/bin --cni-conf-dir=/etc/cni/net.d"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127014120-pp1cb6f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127014120-pp1cb6f"
+					},
+					"Children": [
+						{
+							"ID": "20221127014120-3dh2t7z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127014120-3dh2t7z"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认未安装其他网络插件，或者其他网络插件已经被清除，检查 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "/etc/cni/net.d/"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 路径下无其他网络插件配置文件。如果之前安装过其他网络插件，建议删除后重启机器清理残留网络资源。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127014149-7seyjse",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127014149-7seyjse",
+				"updated": "20221127014435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3 端口信息"
+				}
+			]
+		},
+		{
+			"ID": "20221127014155-ypvnxlg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014155-ypvnxlg",
+				"updated": "20221127014157"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " \t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127014157-ktbbb9w.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127014159-hiog5z2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127014159-hiog5z2",
+				"updated": "20221127014529"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 一键安装"
+				}
+			]
+		},
+		{
+			"ID": "20221127014502-5ra3e3o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014502-5ra3e3o",
+				"updated": "20221127014503"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tKube-OVN 提供了一键安装脚本，可以帮助你快速安装一个高可用，生产就绪的 Kube-OVN 容器网络，默认部署为 Overlay 类型网络。"
+				}
+			]
+		},
+		{
+			"ID": "20221127014512-s7k7ozd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014512-s7k7ozd",
+				"updated": "20221127014513"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t如果默认网络需要搭建 Underlay/Vlan 网络，请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://kubeovn.github.io/docs/v1.10.x/start/underlay/",
+					"TextMarkTextContent": "Underlay 网络支持"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20221127014525-xu3ns1x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127014525-xu3ns1x",
+				"updated": "20221127014541"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 下载安装脚本"
+				}
+			]
+		},
+		{
+			"ID": "20221127014636-9qr99m5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014636-9qr99m5",
+				"updated": "20221127014659"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在生产环境使用稳定的 release 版本："
+				}
+			]
+		},
+		{
+			"ID": "20221127014706-varqg9p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127014706-varqg9p",
+				"updated": "20221127014706"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.10/dist/images/install.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127014552-7anyr8a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127014552-7anyr8a",
+				"updated": "20221127014625"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 修改配置参数"
+				}
+			]
+		},
+		{
+			"ID": "20221127014858-q60n61e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014858-q60n61e",
+				"updated": "20221127014859"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编辑器打开脚本，并修改下列变量为预期值"
+				}
+			]
+		},
+		{
+			"ID": "20221127014729-f0var3w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127014729-f0var3w",
+				"updated": "20221127014734"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "REGISTRY=\"kubeovn\"                     # 镜像仓库地址\nVERSION=\"v1.10.7\"                      # 镜像版本/Tag\nPOD_CIDR=\"10.16.0.0/16\"                # 默认子网 CIDR 不要和 SVC/NODE/JOIN CIDR 重叠\nSVC_CIDR=\"10.96.0.0/12\"                # 需要和 apiserver 的 service-cluster-ip-range 保持一致\nJOIN_CIDR=\"100.64.0.0/16\"              # Pod 和主机通信网络 CIDR，不要和 SVC/NODE/POD CIDR 重叠 \nLABEL=\"node-role.kubernetes.io/master\" # 部署 OVN DB 节点的标签\nIFACE=\"\"                               # 容器网络所使用的的宿主机网卡名，如果为空则使用 Kubernetes 中的 Node IP 所在网卡\nTUNNEL_TYPE=\"geneve\"                   # 隧道封装协议，可选 geneve, vxlan 或 stt，stt 需要单独编译 ovs 内核模块\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127014625-eqlfcp8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127014625-eqlfcp8",
+				"updated": "20221127014632"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 安装脚本"
+				}
+			]
+		},
+		{
+			"ID": "20221127014720-fnwrp07",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127014720-fnwrp07",
+				"updated": "20221127014826"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " bash install.sh"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 等待安装完成"
+				}
+			]
+		},
+		{
+			"ID": "20221127014947-7k0u8b0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127014947-7k0u8b0",
+				"updated": "20221127015017"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. underlay网络安装"
+				}
+			]
+		},
+		{
+			"ID": "20221127015040-t97w047",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127015040-t97w047",
+				"updated": "20221127015042"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t默认情况下 Kube-OVN 的默认子网使用 Geneve 对跨主机流量进行封装，在基础设施之上抽象出一层虚拟的 Overlay 网络。"
+				}
+			]
+		},
+		{
+			"ID": "20221127015148-3pnk1wv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127015148-3pnk1wv",
+				"updated": "20221127015149"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t对于希望容器网络直接使用物理网络地址段情况，可以将 Kube-OVN 的默认子网工作在 Underlay 模式，可以直接给容器分配物理网络中的地址资源，达到更好的性能以及和物理网络的连通性"
+				}
+			]
+		},
+		{
+			"ID": "20221127015102-xwmftn4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127015102-xwmftn4",
+				"updated": "20221127015105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127015104-gb5ggnn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127015323-wx6oiuz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127015323-wx6oiuz",
+				"updated": "20221127015336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 功能限制"
+				}
+			]
+		},
+		{
+			"ID": "20221127015400-wvuopkk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127015400-wvuopkk",
+				"updated": "20221127015401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t由于该模式下容器网络直接使用物理网络进行二层包转发，Overlay 模式下的 SNAT/EIP， 分布式网关/集中式网关等 L3 功能无法使用。"
+				}
+			]
+		},
+		{
+			"ID": "20221127015427-1ooz12f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127015427-1ooz12f",
+				"updated": "20221127015431"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 和 Macvlan 比较"
+				}
+			]
+		},
+		{
+			"ID": "20221127015501-taq38zp",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127015501-taq38zp",
+				"updated": "20221127015510"
+			},
+			"Children": [
+				{
+					"ID": "20221127015501-3gubjju",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127015501-3gubjju",
+						"updated": "20221127015510"
+					},
+					"Children": [
+						{
+							"ID": "20221127015501-x0jjapg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015501-x0jjapg",
+								"updated": "20221127015510"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": " Macvlan 的内核路径更短，不需要 OVS 对数据包进行处理，Macvlan 在吞吐量和延迟性能指标上表现会更好。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127015501-pe7y6lv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127015501-pe7y6lv"
+					},
+					"Children": [
+						{
+							"ID": "20221127015501-sg109ae",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015501-sg109ae"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kube-OVN 通过流表提供了 arp-proxy 功能，可以缓解大规模网络下的 arp 广播风暴风险。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127015501-5wsv31c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127015501-5wsv31c"
+					},
+					"Children": [
+						{
+							"ID": "20221127015501-waolz6e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015501-waolz6e"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "由于 Macvlan 工作在内核底层，会绕过宿主机的 netfilter，Service 和 NetworkPolicy 功能需要额外开发。Kube-OVN 通过 OVS 流表提供了 Service 和 NetworkPolicy 的能力。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127015501-cge1ydg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221127015501-cge1ydg"
+					},
+					"Children": [
+						{
+							"ID": "20221127015501-26ymyiq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015501-26ymyiq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kube-OVN 的 Underlay 模式相比 Macvlan 额外提供了地址管理，固定IP 和 QoS 等功能"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127015526-ngf6hv3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127015526-ngf6hv3",
+				"updated": "20221127015850"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3  环境要求"
+				}
+			]
+		},
+		{
+			"ID": "20221127015623-89823ji",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127015623-89823ji",
+				"updated": "20221127015637"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在 Underlay 模式下， OVS 将会桥接一个节点网卡到 OVS 网桥，并将数据包直接通过该节点网卡对外发送，L2/L3 层面的转发能力需要依赖底层网络设备。 需要预先在底层网络设备配置对应的网关、Vlan 和安全策略等配置。"
+				}
+			]
+		},
+		{
+			"ID": "20221127015700-xcao01y",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221127015700-xcao01y",
+				"updated": "20221127015700"
+			},
+			"Children": [
+				{
+					"ID": "20221127015700-ch6w70j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221127015700-ch6w70j"
+					},
+					"Children": [
+						{
+							"ID": "20221127015700-s9ou669",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015700-s9ou669"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于 OpenStack 的 VM 环境，需要将对应网络端口的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "PortSecurity"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 关闭。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127015700-ps62zbn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221127015700-ps62zbn"
+					},
+					"Children": [
+						{
+							"ID": "20221127015700-ufx1i0x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015700-ufx1i0x"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于 VMware 的 vSwitch 网络，需要将 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "MAC Address Changes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ", "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Forged Transmits"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Promiscuous Mode Operation"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 设置为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "allow"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127015700-gwj057t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221127015700-gwj057t"
+					},
+					"Children": [
+						{
+							"ID": "20221127015700-tm1dk3c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015700-tm1dk3c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "公有云，例如 AWS、GCE、阿里云等由于不支持用户自定义 Mac 无法支持 Underlay 模式网络。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127015700-ezm1ezy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221127015700-ezm1ezy"
+					},
+					"Children": [
+						{
+							"ID": "20221127015700-a7mrg9z",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127015700-a7mrg9z",
+								"updated": "20221127015810"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "桥接网卡不能为 Linux Bridge"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127020015-mqjei7p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127020015-mqjei7p",
+				"updated": "20221127020016"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t管理网和容器网使用同一个网卡的情况下，Kube-OVN 会将网卡的 Mac 地址、IP 地址、路由以及 MTU 将转移或复制至对应的 OVS Bridge， 以支持单网卡部署 Underlay 网络。OVS Bridge 名称格式为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "br-PROVIDER_NAME"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PROVIDER_NAME"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 为 Provider 网络名称（默认为 provider）"
+				}
+			]
+		},
+		{
+			"ID": "20221127015903-xo91lom",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127015903-xo91lom",
+				"updated": "20221127015916"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4 部署时指定网络模式"
+				}
+			]
+		},
+		{
+			"ID": "20221127020100-v9xfs47",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127020100-v9xfs47",
+				"updated": "20221127020101"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t部署模式将默认子网设置为 Underlay 模式，所有未指定子网的 Pod 均会默认运行在 Underlay 网络中。"
+				}
+			]
+		},
+		{
+			"ID": "20221127020105-hqwpnjp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127020105-hqwpnjp",
+				"updated": "20221127020346"
+			},
+			"Children": [
+				{
+					"ID": "20221127020109-v6ie6ej",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127020109-v6ie6ej"
+					},
+					"Children": [
+						{
+							"ID": "20221127020109-jpgri3t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127020109-jpgri3t",
+								"updated": "20221127020113"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下载安装脚本"
+								}
+							]
+						},
+						{
+							"ID": "20221127020203-wrq5gb2",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221127020203-wrq5gb2"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.10/dist/images/install.sh\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127020114-555mx8s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127020114-555mx8s"
+					},
+					"Children": [
+						{
+							"ID": "20221127020114-eohdkje",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127020114-eohdkje",
+								"updated": "20221127020139"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "修改脚本中响应配置"
+								}
+							]
+						},
+						{
+							"ID": "20221127020233-77aac42",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20221127020233-77aac42",
+								"updated": "20221127020242"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker",
+									"CodeBlockInfo": "XA=="
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "NETWORK_TYPE          # 设置为 vlan\nVLAN_INTERFACE_NAME   # 设置为宿主机上承担容器流量的网卡，例如 eth1\nVLAN_ID               # 交换机所接受的 VLAN Tag，若设置为 0 则不做 VLAN 封装\nPOD_CIDR              # 设置为物理网络 CIDR， 例如 192.168.1.0/24\nPOD_GATEWAY           # 设置为物理网络网关，例如192.168.1.1\nEXCLUDE_IPS           # 排除范围，避免容器网段和物理网络已用 IP 冲突，例如 192.168.1.1..192.168.1.100\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127020140-abeblbg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127020140-abeblbg",
+						"updated": "20221127020346"
+					},
+					"Children": [
+						{
+							"ID": "20221127020140-b30qfdv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127020140-b30qfdv",
+								"updated": "20221127020145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "运行安装脚本"
+								}
+							]
+						},
+						{
+							"ID": "20221127020329-10vysn1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127020329-10vysn1",
+								"updated": "20221127020346"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "bash install.sh"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127020348-33cd7gl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127020348-33cd7gl",
+				"updated": "20221127020425"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 通过CRD动态创建Underlay网络"
+				}
+			]
+		},
+		{
+			"ID": "20221127020425-t038boo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127020425-t038boo",
+				"updated": "20221127020434"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t该方式可在安装后动态的创建某个 Underlay 子网供 Pod 使用。需要配置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ProviderNetwork"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Vlan"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Subnet"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 三种自定义资源。"
+				}
+			]
+		},
+		{
+			"ID": "20221127020440-bciq71w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127020440-bciq71w",
+				"updated": "20221127020458"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.1 创建ProviderNetwork"
+				}
+			]
+		},
+		{
+			"ID": "20221127020731-iayas9w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127020731-iayas9w",
+				"updated": "20221127020737"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tProviderNetwork 提供了主机网卡到物理网络映射的抽象，将同属一个网络的网卡进行统一管理， 并解决在复杂环境下同机器多网卡、网卡名不一致、对应 Underlay 网络不一致等情况下的配置问题。"
+				}
+			]
+		},
+		{
+			"ID": "20221127020747-md3ikn8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127020747-md3ikn8",
+				"updated": "20221127020747"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建如下 ProviderNetwork 并应用:"
+				}
+			]
+		},
+		{
+			"ID": "20221127020747-8031cip",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127020747-8031cip",
+				"updated": "20221127020756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: ProviderNetwork\nmetadata:\n  name: net1\nspec:\n  defaultInterface: eth1\n  customInterfaces:\n    - interface: eth2\n      nodes:\n        - node1\n  excludeNodes:\n    - node2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127020837-9i49ns7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127020837-9i49ns7",
+				"updated": "20221127020855"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意：ProviderNetwork 资源名称的长度不得超过 12"
+				}
+			]
+		},
+		{
+			"ID": "20221127020902-sgghuwp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127020902-sgghuwp",
+				"updated": "20221127020902"
+			},
+			"Children": [
+				{
+					"ID": "20221127020902-cmknh79",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127020902-cmknh79"
+					},
+					"Children": [
+						{
+							"ID": "20221127020902-nm3gb9t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127020902-nm3gb9t"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "defaultInterface"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 为默认使用的节点网卡名称。 ProviderNetwork 创建成功后，各节点（除 excludeNodes 外）中会创建名为 br-net1（格式为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "br-NAME"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）的 OVS 网桥，并将指定的节点网卡桥接至此网桥。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127020902-utfoudw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127020902-utfoudw"
+					},
+					"Children": [
+						{
+							"ID": "20221127020902-x7f6td6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127020902-x7f6td6"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "customInterfaces"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 为可选项，可针对特定节点指定需要使用的网卡。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127020902-455io3u",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127020902-455io3u",
+				"updated": "20221127021020"
+			},
+			"Children": [
+				{
+					"ID": "20221127021020-gm9ifwr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127021020-gm9ifwr",
+						"updated": "20221127021020"
+					},
+					"Children": [
+						{
+							"ID": "20221127021020-cr2jbln",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127021020-cr2jbln",
+								"updated": "20221127021020"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "excludeNodes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 可选项，用于指定不桥接网卡的节点。该列表中的节点会被添加 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net1.provider-network.ovn.kubernetes.io/exclude=true"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 标签。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127021002-ic6rjsp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021002-ic6rjsp",
+				"updated": "20221127021002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其它节点会被添加如下标签："
+				}
+			]
+		},
+		{
+			"ID": "20221127021050-mer85ln",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021050-mer85ln",
+				"updated": "20221127021053"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20221127021053-q27wrti.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127021104-q4ihzvx",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20221127021104-q4ihzvx",
+				"updated": "20221127021104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20221127021104-vkeohzy",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20221127021104-vkeohzy"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "如果节点网卡上已经配置了 IP，则 IP 地址和网卡上的路由会被转移至对应的 OVS 网桥。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127020459-7rl4oto",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127020459-7rl4oto",
+				"updated": "20221127020512"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.2 创建VLAN"
+				}
+			]
+		},
+		{
+			"ID": "20221127021249-u47uunv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021249-u47uunv",
+				"updated": "20221127021307"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Vlan 提供了将 Vlan Tag 和 ProviderNetwork 进行绑定的能力。 \t"
+				}
+			]
+		},
+		{
+			"ID": "20221127021303-9be68ha",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021303-9be68ha",
+				"updated": "20221127021303"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建如下 VLAN 并应用："
+				}
+			]
+		},
+		{
+			"ID": "20221127021303-mk1ncdf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127021303-mk1ncdf",
+				"updated": "20221127021317"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Vlan\nmetadata:\n  name: vlan1\nspec:\n  id: 0\n  provider: net1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127021327-1867ln6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221127021327-1867ln6",
+				"updated": "20221127021327"
+			},
+			"Children": [
+				{
+					"ID": "20221127021327-rb6msrd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127021327-rb6msrd"
+					},
+					"Children": [
+						{
+							"ID": "20221127021327-xsva3wc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127021327-xsva3wc"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "id"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 为 VLAN ID/Tag，Kube-OVN 会对对该 Vlan 下的流量增加 Vlan 标签，为 0 时不增加任何标签。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221127021327-v6wpdol",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221127021327-v6wpdol"
+					},
+					"Children": [
+						{
+							"ID": "20221127021327-d0290tb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221127021327-d0290tb"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "provider"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ": 为需要使用的 ProviderNetwork 资源的名称。多个 VLAN 可以引用同一个 ProviderNetwork。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221127020512-5jis162",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127020512-5jis162",
+				"updated": "20221127020523"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.3 创建Subnet"
+				}
+			]
+		},
+		{
+			"ID": "20221127021337-z0hmxze",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021337-z0hmxze",
+				"updated": "20221127021337"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将 Vlan 和一个子网绑定，如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20221127021337-qvhdula",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127021337-qvhdula",
+				"updated": "20221127021351"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: subnet1\nspec:\n  protocol: IPv4\n  cidrBlock: 172.17.0.0/16\n  gateway: 172.17.0.1\n  vlan: vlan1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127020524-18s2fde",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127020524-18s2fde",
+				"updated": "20221127023457"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 容器创建"
+				}
+			]
+		},
+		{
+			"ID": "20221127021411-3z8bjai",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021411-3z8bjai",
+				"updated": "20221127021427"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可按正常容器创建方式进行创建，查看容器 IP 是否在规定范围内，以及容器是否可以和物理网络互通。"
+				}
+			]
+		},
+		{
+			"ID": "20221127021411-8ull9w5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021411-8ull9w5",
+				"updated": "20221127021411"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如有固定 IP 需求，可参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://kubeovn.github.io/docs/v1.10.x/guide/static-ip-mac/",
+					"TextMarkTextContent": "Pod 固定 IP 和 Mac"
+				}
+			]
+		},
+		{
+			"ID": "20221127020539-v0lndjk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127020539-v0lndjk",
+				"updated": "20221127020550"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. 使用逻辑网关"
+				}
+			]
+		},
+		{
+			"ID": "20221127021443-20t7c2e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021443-20t7c2e",
+				"updated": "20221127021443"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t对于物理网络不存在网关的情况，Kube-OVN 支持在 Underlay 模式的子网中配置使用逻辑网关。 若要使用此功能，设置子网的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "spec.logicalGateway"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "true"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 即可："
+				}
+			]
+		},
+		{
+			"ID": "20221127021443-nx6daav",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127021443-nx6daav",
+				"updated": "20221127021503"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: kubeovn.io/v1\nkind: Subnet\nmetadata:\n  name: subnet1\nspec:\n  protocol: IPv4\n  cidrBlock: 172.17.0.0/16\n  gateway: 172.17.0.1\n  vlan: vlan1\n  logicalGateway: true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127021459-8lzv4ap",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021459-8lzv4ap",
+				"updated": "20221127021500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开启此功能后，Pod 不使用外部网关，而是使用 Kube-OVN 创建的逻辑路由器（Logical Router）。对于跨网段通信进行转发。"
+				}
+			]
+		},
+		{
+			"ID": "20221127021901-kk9caof",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20221127021901-kk9caof",
+				"updated": "20221127021912"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 卸载"
+				}
+			]
+		},
+		{
+			"ID": "20221127021920-wgj39fy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127021920-wgj39fy",
+				"updated": "20221127021922"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t如果需要删除 Kube-OVN 并更换其他网络插件，请按照下列的步骤删除对应的 Kube-OVN 组件以及 OVS 配置，以避免对其他网络插件产生干扰。"
+				}
+			]
+		},
+		{
+			"ID": "20221127021929-xf6bkha",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127021929-xf6bkha",
+				"updated": "20221127022021"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.1 删除在 Kubernetes 中创建的资源"
+				}
+			]
+		},
+		{
+			"ID": "20221127022021-z0lwknt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127022021-z0lwknt",
+				"updated": "20221127022021"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t下载下面的脚本，执行脚本删除在 Kubernetes 中创建的资源："
+				}
+			]
+		},
+		{
+			"ID": "20221127022026-lm5j3wz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127022026-lm5j3wz",
+				"updated": "20221127022037"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.10/dist/images/cleanup.sh\nbash cleanup.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127021949-d5f28yx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127021949-d5f28yx",
+				"updated": "20221127022057"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.2 清理主机上的日志和配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20221127022058-gb1shyb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127022058-gb1shyb",
+				"updated": "20221127022058"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在每台机器上执行下列操作，清理 ovsdb 以及 openvswitch 保存的配置："
+				}
+			]
+		},
+		{
+			"ID": "20221127022058-0fuyuxm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221127022058-0fuyuxm",
+				"updated": "20221127022112"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "rm -rf /var/run/openvswitch\nrm -rf /var/run/ovn\nrm -rf /etc/origin/openvswitch/\nrm -rf /etc/origin/ovn/\nrm -rf /etc/cni/net.d/00-kube-ovn.conflist\nrm -rf /etc/cni/net.d/01-kube-ovn.conflist\nrm -rf /var/log/openvswitch\nrm -rf /var/log/ovn\nrm -fr /var/log/kube-ovn\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221127021953-w1fjrjl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221127021953-w1fjrjl",
+				"updated": "20221127022130"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.3 重启节点"
+				}
+			]
+		},
+		{
+			"ID": "20221127022130-9fov846",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127022130-9fov846",
+				"updated": "20221127022148"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 重启机器确保对应的网卡信息，iptable/ipset 规则得以清除，避免对其他网络插件的影响，也可以手动删除，建议重启"
+				}
+			]
+		},
+		{
+			"ID": "20221127022150-nj4wpqz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221127022150-nj4wpqz",
+				"updated": "20221127022155"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "reboot"
+				}
+			]
+		}
+	]
+}

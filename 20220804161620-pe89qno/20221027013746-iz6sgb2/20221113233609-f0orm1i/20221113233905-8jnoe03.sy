@@ -1,0 +1,2075 @@
+{
+	"ID": "20221113233905-8jnoe03",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221113233905-8jnoe03",
+		"title": "3. OpenShift 4 - 通过设置SDN的NetworkPolicy配置Pod访问策略_dawnsky.liu的博客-CSDN博客",
+		"updated": "20221114051755"
+	},
+	"Children": [
+		{
+			"ID": "20221113233905-meb4eju",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221113233905-meb4eju"
+			}
+		},
+		{
+			"ID": "20221113233905-pso3eo6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221113233905-pso3eo6",
+				"updated": "20221114051721"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-1vi7kcx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221113233905-1vi7kcx"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-qxgvzmr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-qxgvzmr"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/weixin_43902588/article/details/103536739",
+									"TextMarkTextContent": "https://blog.csdn.net/weixin_43902588/article/details/103536739"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-pfsn68i",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221113233905-pfsn68i"
+			}
+		},
+		{
+			"ID": "20221113233905-h6mvu65",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-h6mvu65",
+				"updated": "20221114051732"
+			}
+		},
+		{
+			"ID": "20221113233905-da5ow8z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-da5ow8z"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "NetworkPolicy简介"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-v9f0n1c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-v9f0n1c"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "NetworkPolicy 是 Kubernetes 和 OpenShift 定义通过网络访问 Pod 的安全策略，利用它可以在不通的 Project 和 Pod 之间定义细粒度的应用访问策略。在 NetworkPolicy 中以"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "白名单"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "的方式定义了针对“ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "XXX项目"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”的“ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "XXXPod"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”可以让“ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "XXX项目"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”的“ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "XXXPod"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”通过“ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "XXX端口"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ”访问。在 NetworkPolicy 白名单以外的 Pod 之间的访问都是无法联通的。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-ci60bnr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-ci60bnr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用环境和测试方法"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-ghie0bm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-ghie0bm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署测试应用"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-aziza5r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-aziza5r"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建如下资源："
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-fls324k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-fls324k"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ oc new-project project1\n$ oc label namespace project1 name=project1\n$ oc new-project project2\n$ oc label namespace project2 name=project2\n$ oc new-project project3\n$ oc label namespace project3 name=project3\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=web-db\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=web\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=db\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=mail\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=foobar\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=foo\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=bar\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=api\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=monitoring\n$ oc new-app -n project1 openshiftroadshow/parksmap --name=project1-app\n$ oc new-app -n project2 openshiftroadshow/parksmap --name=project2-app\n$ oc new-app -n project3 openshiftroadshow/parksmap --name=project3-app\n123456789101112131415161718\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-slo1qt5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-slo1qt5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "测试验证"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-s24nc6q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-s24nc6q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过以下方法验证可从应用的Pod中访问到同一项目或不同项目的应用Service地址。以下是从project2的project2-app的Pod经过project1的project1-app的Service的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "CLUSTER-IP"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "访问project1-app的Pod的说明。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-gw7vx9l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-gw7vx9l"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ APP_NAME=project1-app\n$ CLUSTER_IP=$(oc get svc ${ APP_NAME} -o jsonpath={ .spec.clusterIP} -n project1)\n$ POD_NAME=$(oc get pod -o custom-columns=project:metadata.name --no-headers -n project2)\n$ oc exec ${POD_NAME} -n project2 -- curl -Is ${CLUSTER_IP}:8080\nHTTP/1.1 200\nLast-Modified: Mon, 01 Apr 2019 16:54:28 GMT\nAccept-Ranges: bytes\nContent-Type: text/html;charset=UTF-8\nContent-Language: en-US\nContent-Length: 13338\nDate: Sat, 23 Apr 2022 16:13:57 GMT\n1234567891011\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-b36rgm8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-b36rgm8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "NetworkPolicy策略"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-1vqt8hb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-1vqt8hb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明：以下 NetworkPolicy 策略提供了 OpenShift 控制台的配置截图或 editor.cilium.io 的配置截图。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-o6gdah0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-o6gdah0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "拒绝所有Pod直接访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-ykivd8n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-ykivd8n"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191214135425311-20221113233905-f61u1jt.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-36mipfs",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-36mipfs"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-85nqjrg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-85nqjrg"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-vowf846",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-vowf846"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-yo1brft",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-yo1brft"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\nkind: NetworkPolicy\napiVersion: networking.k8s.io/v1\nmetadata:\n  name: deny-all-ingress\n  namespace: project1\nspec:\n  # 当前 namespace 中的所有 pod\n  podSelector: { }\n  # 因为没有定义 ingress，所以所有 ingress 都不被允许\n  policyTypes:\n    - Ingress\nEOF\n12345678910111213\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-85uqrvg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-85uqrvg"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/b7ae41204ee6424f925bd0d26d5e5f12-20221113233905-ne1pg77.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-0pbqkcw",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-0pbqkcw"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-vjsnhe9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233905-vjsnhe9"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-t5lv4qy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-t5lv4qy"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过“测试验证”步骤确认已经无法从任何项目的Pod访问到project1-app1的Service了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-phvqwmr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-phvqwmr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "拒绝有 Pod 的 Egress 流量"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-5mm8e1t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-5mm8e1t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以下是拒绝某个项目 Pod 的所有 Egress 流量的策略。注意：不过该策略不支持 OpenShift SDN网络环境。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-awmagu8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-awmagu8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: deny-all-egress\n  namespace: project1\nspec:\n  podSelector: { }\n  policyTypes:\n  - Egress\nEOF\n1234567891011\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-cxrhsxp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-cxrhsxp"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/da03a6eac8d44fa9b91d0f656a0cf27d-20221113233905-r3uhv19.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-ix7uz96",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-ix7uz96"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只允许来自相同项目的Pod访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-f25lm0k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-f25lm0k"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191214135228923-20221113233905-holrjwo.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-sv1p0km",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-sv1p0km"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-bfay0i9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-bfay0i9"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-qf6l8ha",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-qf6l8ha"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-gnlffm6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-gnlffm6"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\nkind: NetworkPolicy\napiVersion: networking.k8s.io/v1\nmetadata:\n  name: allow-same-namespace\n  namespace: project1\nspec:\n  # 当前 namespace 中的所有 pod\n  podSelector: { }\n  # 可以接收来自当前 namespace 中所有 pod 的 ingress 访问\n  ingress:\n    - from:\n        - podSelector: { }\n  policyTypes:\n    - Ingress\nEOF\n12345678910111213141516\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-yepd0bd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-yepd0bd"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/cda3d01b087a40c1a6721edc6933a65f-20221113233905-ck7nzqr.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-96oppys",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-96oppys"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-qgz356e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233905-qgz356e"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-fnl3upl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-fnl3upl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过“测试验证”步骤确认只能从project1的Pod访问project1-app的Service了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-awfj5tb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-awfj5tb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只允许来自同一项目的指定Pod访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-8xkaam8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-8xkaam8"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191214135644893-20221113233905-js520c3.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-ybtoqvx",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-ybtoqvx"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-9foorts",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-9foorts"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-4n660uq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-4n660uq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-v1beles",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-v1beles"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\nkind: NetworkPolicy\napiVersion: networking.k8s.io/v1\nmetadata:\n  name: allow-mail-access-db\n  namespace: project1\nspec:\n  # 当前 namespace 中有 app=db 标签的 pod\n  podSelector:\n    matchLabels:\n      app: db\n  # 可以接收来自当前 namespace 中有 app=mai 标签的 pod 的 ingress 访问\n  ingress:\n    - from:\n        - podSelector:\n            matchLabels:\n              app: mail\n  policyTypes:\n    - Ingress\nEOF\n1234567891011121314151617181920\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-6ev5sr8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-6ev5sr8"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/5ad467cf5368406a9579d577be4cf9a4-20221113233905-jpvogaq.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/cfb3353968644bd7a1b87b0e4d8e97fa-20221113233905-81mhzoo.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-r3ahsek",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-r3ahsek"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-wj1dm9z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233905-wj1dm9z"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-s5r8fy3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-s5r8fy3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过“测试验证”步骤确认只能从mail访问db的Service了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-8g31rj5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-8g31rj5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "允许从所有项目访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-gosg8qf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-gosg8qf"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191214154244845-20221113233905-zkt11ac.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-suze5rv",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-suze5rv"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-3ms6089",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-3ms6089"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-wx3j7vl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-wx3j7vl"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-3glxe3n",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-3glxe3n"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: allow-from-all-namespace\n  namespace: project1\nspec:\n  # 当前 namespace 中有 app=web-db 标签的 pod\n  podSelector:\n    matchLabels:\n      app: web-db\n  # 可以接收来自所有 namespace 的 pod 的 ingress 访问\n  ingress:\n    - from:\n        - namespaceSelector: { }\n  policyTypes:\n    - Ingress\nEOF\n123456789101112131415161718\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-9h20p5a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-9h20p5a"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/961dd742170f44139e9149f2ef157cf7-20221113233905-e3zt2s8.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/da11bda3ca5f4eeaab10d99b9cb4c91a-20221113233905-rey46mt.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-qewm6vb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-qewm6vb"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-jyy7leh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233905-jyy7leh"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-t7ucsmd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-t7ucsmd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过“测试验证”步骤确认只能从其它项目的Pod访问web-db的Service了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-5p37h9q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-5p37h9q"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只允许从指定的项目访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-6h3ry8x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-6h3ry8x"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191214161354210-20221113233905-1ixj1xn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-sy38yr3",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-sy38yr3"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-b2alf6w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-b2alf6w"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-6i7sq74",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-6i7sq74"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-3xaf0ag",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-3xaf0ag"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: allow-from-project2\n  namespace: project1\nspec:\n  # 当前 namespace 中有 app=web 标签的 pod\n  podSelector:\n    matchLabels:\n      app: web\n  # 可以接收来自标签中有 name=project2 的 namespace 里包含的 pod 的 ingress 访问\n  ingress:\n    - from:\n        - namespaceSelector:\n            matchLabels:\n              name: project2\n  policyTypes:\n    - Ingress\nEOF\n1234567891011121314151617181920\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-3yrecmw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-3yrecmw"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/c4b25c90277244409cda275286f36d3d-20221113233905-i05xzfa.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/c079a138e87b4f9e98aa191fd6c967cc-20221113233905-bf7s846.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-qjj6f2n",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-qjj6f2n"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-he44x01",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233905-he44x01"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-t5lcwwp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-t5lcwwp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过“测试验证”步骤确认只能从project2项目的Pod访问project1项目web的Service了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-s1r8zg9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-s1r8zg9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只允许从指定项目的指定Pod访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-7hrczia",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-7hrczia"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-sbpbtvz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-sbpbtvz"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-rol4dkr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-rol4dkr"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-yk17xjl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-yk17xjl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: allow-from-project2-mail\n  namespace: project1\nspec:\n  # 当前 namespace 中有 app=db 标签的 pod\n  podSelector:\n    matchLabels:\n      app: db\n  # 可以接收来自标签中有 name=project2 的 namespace 里包含 app=mail 标签的 pod 的 ingress 访问\n  ingress:\n    - from:\n        - namespaceSelector:\n            matchLabels:\n              name: project2\n          podSelector:\n            matchLabels:\n              app: mail\n  policyTypes:\n    - Ingress\nEOF\n1234567891011121314151617181920212223\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-1t8sura",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-1t8sura"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/8fff71ab261f4da3bcb8901340422ead-20221113233905-biqug47.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/c2c489bf45f843cb9e2459a57e04aaaf-20221113233905-nptk64j.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-ud7nt6t",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-ud7nt6t"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-r6e6qch",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221113233905-r6e6qch"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-d7brst7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-d7brst7"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过“测试验证”步骤确认只能从project2项目中mail的Pod访问project1项目web的Service了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-w7b9vqa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-w7b9vqa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ：以上代码的namespaceSelector和podSelector是“并且”的关系。而以下代码namespaceSelector和podSelecto是“或者”的关系。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-loudjl0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-loudjl0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "spec:\n  # 当前 namespace 中有 app=db 标签的 pod\n  podSelector:\n    matchLabels:\n      app: db\n  # 可以接收来自标签中有 name=project2 的 namespace 中所有 pod 的 ingress 访问，或当前 namespace 中有 app=mail 标签的 pod 的 ingress 访问\n  ingress:\n    - from:\n        - namespaceSelector:\n            matchLabels:\n              name: project2\n    - from:\n        - podSelector:\n            matchLabels:\n              app: mail\n  policyTypes:\n    - Ingress\n1234567891011121314151617\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-rl1dm8k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-rl1dm8k"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/e5521163c40f4880a0f4ef79e1d9e642-20221113233905-c0jxdbp.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n "
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/2dca6fc1752941cf9c6a04e31ed3d5dc-20221113233905-o1ctxin.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-4zdoxcg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-4zdoxcg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "只允许从指定的端口访问"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-zhye3a3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-zhye3a3"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/20191214173523605-20221113233905-v13prou.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-bz9awp1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221113233905-bz9awp1"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-u2g29wp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221113233905-u2g29wp"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-l2cg4e6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-l2cg4e6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建NetworkPolicy策略实施于project1。注意：为了不相互影响，需要将其它策略删除l。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-9dlisv7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20221113233905-9dlisv7"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat \u003c\u003c EOF | oc apply -f -\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: allow-port\n  namespace: project1\nspec:\n  # 当前 namespace 中有 app=api 标签的 pod\n  podSelector:\n    matchLabels:\n      app: api\n  # 可以从 80/443 端口接收来自当前 namespace 中有 app=monitoring 标签的 pod 的 ingress 访问\n  ingress:\n    - from:\n        - podSelector:\n            matchLabels:\n              app: monitoring\n      ports:\n        - protocol: TCP\n          port: 80\n        - protocol: TCP\n          port: 443\nEOF\n1234567891011121314151617181920212223\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-i8v3vwx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-i8v3vwx"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/c42d5c443f06498cb7f75b8bb91717a2-20221113233905-2y1ocmj.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-z6xi2j4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-z6xi2j4"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "混合策略"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-j4hd9qj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221113233905-j4hd9qj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果一个Pod被不同的NetworkPolicy定义了访问策略，则这些访问策略的全集适用于这个Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-7smtyi1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221113233905-7smtyi1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其它参考"
+				}
+			]
+		},
+		{
+			"ID": "20221113233905-tbzxdom",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221113233905-tbzxdom"
+			},
+			"Children": [
+				{
+					"ID": "20221113233905-07rtt3i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221113233905-07rtt3i"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-obywsgc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-obywsgc"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://kubernetes.io/docs/concepts/services-networking/network-policies/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221113233905-n3idfba",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221113233905-n3idfba"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-xh2ec8n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-xh2ec8n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://blog.openshift.com/whats-new-in-openshift-3-5-network-policy-tech-preview/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221113233905-qo51vd9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221113233905-qo51vd9"
+					},
+					"Children": [
+						{
+							"ID": "20221113233905-hnyxpcn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221113233905-hnyxpcn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://editor.cilium.io/"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

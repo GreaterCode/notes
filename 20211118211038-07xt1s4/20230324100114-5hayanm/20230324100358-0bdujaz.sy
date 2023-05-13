@@ -1,0 +1,5089 @@
+{
+	"ID": "20230324100358-0bdujaz",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230324100358-0bdujaz",
+		"title": "02-自动化运维工具-saltstack - Chrisjing的运维知识体系",
+		"updated": "20230324100358"
+	},
+	"Children": [
+		{
+			"ID": "20230324100358-rgj0yno",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230324100358-rgj0yno"
+			}
+		},
+		{
+			"ID": "20230324100358-tqlapoq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-tqlapoq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack工具简介"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-bzxgbqb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-bzxgbqb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "再说saltstack之前我们先设想几个场景，首先说你入职的是一家小公司，现在呢就有一台服务器，你该怎么管理？没错用CRT等工具登录呗。OK 随着时间的推移服务器变成了十几台，怎么办？可能有些人会说继续拿Crt连上搞呗。好吧没问题你说的对。那么又随着时间的推移，现在服务器到了百台，你还用CRT连接上啪啦啪啦的敲？No No 我觉得这样可是会出人命的，so 我们想假如有个工具或者程序，能够我敲一条命令，就能在成百上千台机器上进行执行，并能够返回结。或者我修改了一个配置文件，成百上千台服务器都跟着修改，那是不是很嗨皮呢？是的没错你这个想法非常好，力哥给你点个赞。因为你说的这些就是saltstack实现的东西。其实回归本质，任何一款运维工具都是为了解决运维的痛点（假如你就一台服务器用什么salt啊直接crt连过去啪啦啪啦敲就得了）。接下来我们将正式介绍我们的新朋友saltstack（以下简称salt）"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-e5f0vf9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-e5f0vf9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先saltstack使用Python开发的一款工具，在写本文时salt最新版本为8.7，并且提供了丰富的API方便后续的二次开发。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ac9yoee",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ac9yoee"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SaltStack是一个服务器基础架构集中化管理平台，具备配置管理、远程执行、监控等功能，一般可以理解为简化版的puppet和加强版的func。SaltStack基于Python语言实现，结合轻量级消息队列（ZeroMQ）与Python第三方模块（Pyzmq、PyCrypto、Pyjinjia2、python-msgpack和PyYAML等）构建。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0oc57mj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-0oc57mj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过部署SaltStack环境，我们可以在成千上万台服务器上做到批量执行命令，根据不同业务特性进行配置集中化管理、分发文件、采集服务器数据、操作系统基础及软件包管理等，SaltStack是运维人员提高工作效率、规范业务配置与操作的利器。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-eu5ftok",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-eu5ftok"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image-20220726172110380"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220726172110380-20230324100358-ck6zpyh.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-q67kg95",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-q67kg95"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-odtcvpx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-odtcvpx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Saltstack常用网址"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_1",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-axlxvs2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-axlxvs2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官方网站："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.saltstack.com/",
+					"TextMarkTextContent": "http://www.saltstack.com"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gbxzgiq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gbxzgiq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "官方文档："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://docs.saltstack.com/",
+					"TextMarkTextContent": "http://docs.saltstack.com"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2qzt8j7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-2qzt8j7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "GitHub："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/saltstack",
+					"TextMarkTextContent": "https://github.com/saltstack"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ixloqok",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ixloqok"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "中国SaltStack⽤户组："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.saltstack.cn/",
+					"TextMarkTextContent": "http://www.saltstack.cn"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2c4c55z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-2c4c55z"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SaltStack用户案例"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_2",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-w6zkjqs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-w6zkjqs"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "SaltStack目前在业内的用户案例："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-munbv10",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-munbv10"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "LinkedIn部署了约28,000的SaltStack"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ffqo2ky",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ffqo2ky"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Wikipedia部署了约8,000 SaltStack用于代码更新,"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-veoulmv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-veoulmv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Rackspace大约一半的服务使用SaltStack"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-688ozw5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-688ozw5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Hulu.com也采用了SaltStack。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gjtz1x0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gjtz1x0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "国内目前各大公司也在研究和使用SaltStack。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0tl4s6v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-0tl4s6v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同时，你可以通过搜索引擎获得SaltStack与Puppet、Chef、Ansible等工具的对比，我们不准备列举和讨论这些对比，让我们快速的进入SaltStack的世界，相信你可以自己寻找到自己的答案。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wg25qum",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-wg25qum"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack工具特性"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_3",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-oue8liu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-oue8liu"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(1)、部署简单、方便；"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-soyfqx8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-soyfqx8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(2)、支持大部分UNIX/Linux及Windows环境；"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-cfdeu33",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-cfdeu33"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(3)、主从集中化管理；"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-3i7ug0p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-3i7ug0p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(4)、配置简单、功能强大、扩展性强；"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-bovd9jx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-bovd9jx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(5)、主控端（master）和被控端（minion）基于证书认证，安全可靠；"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-bij5q8t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-bij5q8t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(6)、支持API及自定义模块，可通过Python轻松扩展。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-sf1vbo2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-sf1vbo2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack核心功能"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_4",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wuxs0rr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-wuxs0rr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.远程执行：如在1000台服务器上同时执行一条命令"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-u77khxc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-u77khxc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.配置管理：书写配置文件，然后自动部署服务，相当于神笔马良"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-h8k02lj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-h8k02lj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.云管理：支持阿里云，腾讯云，青云的云服务器的批量管理"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-qe3e69w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-qe3e69w"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack运行模式"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_5",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gdptgei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gdptgei"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（1）local（本地,一台机器玩耍，不建议）"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ogr9frb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ogr9frb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（2）Master、Minion（通过server/agent的方式进行管理）1000台机器 25秒搞定"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0m5c0mf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-0m5c0mf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "（3）Salt SSH （通过SSH方式进行管理，效率很低）1000台机器 83秒搞定"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-cn5oxtx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-cn5oxtx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这里有必要提一下salt的云管理，salt拥有强大的云管理功能，更支持如阿里云、亚马逊等一系列公有云的管理，so以后在创建阿里云主机的时候，就可以不需要登录相关账号密码，只需要一条命令即可创建。此外salt对openstack支持的也相当不错，同样能够管理openstack创建的虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-uliakf8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-uliakf8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Master与Minion认证"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#masterminion",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-trowzai",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-trowzai"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(1)、minion在第一次启动时，会在/etc/salt/pki/minion/（该路径在/etc/salt/minion里面设置）下自动生成minion.pem（private key）和 minion.pub（public key），然后将 minion.pub发送给master。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6td5h4n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6td5h4n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(2)、master在接收到minion的public key后，通过salt-key命令accept minion public key，这样在master的/etc/salt/pki/master/minions下的将会存放以minion id命名的 public key，然后master就能对minion发送指令了。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-kvv3kbz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-kvv3kbz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Master与Minion连接"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#masterminion_1",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-oemrbb0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-oemrbb0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(1)、SaltStack master启动后默认监听4505和4506两个端口。4505（publish_port）为saltstack的消息发布系统，4506（ret_port）为saltstack客户端与服务端通信的端口。如果使用lsof 查看4505端口，会发现所有的minion在4505端口持续保持在ESTABLISHED状态。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-mlxlkdp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-mlxlkdp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(2)、minion与master之间的通信模式如下："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ilxuswp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ilxuswp"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image-20211024100346188"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20211024100346188-20230324100358-5f6ll74.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8sbddny",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-8sbddny"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack支持的系统"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_6",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6bfk2ar",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6bfk2ar"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从官网来看salt支持的系统有很多，如下所示"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1xvfupr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-1xvfupr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CentoS，RedHat，Fedora，Gentoo，Debian，MAC OS X，Ubutun，suse，freeBSD，OpenBSD"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-huldmaq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-huldmaq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不过有必要提一点salt对Windows支持可能不太好，并且没有Windows的master端，因此十分不建议大家在windows上使用salt"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-do2rlw2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-do2rlw2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack环境准备"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_7",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-w1mzkp8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-w1mzkp8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "系统版本：CentOS Linux release 7.6.1810 (Core)\n系统内核：3.10.0-957.el7.x86_64"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-foflki2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-foflki2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装配置salt-master"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#salt-master",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-g86kssf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-g86kssf"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开启yum缓存"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wess799",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-wess799"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sed -i \"s#keepcache=0#keepcache=1#g\" /etc/yum.conf \ncat /etc/yum.conf |grep keepcache\nll /var/cache/yum/x86_64/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-e5bsh01",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-e5bsh01"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要配置saltstack源"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2wmwo2q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-2wmwo2q"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo rpm --import https://repo.saltproject.io/py3/redhat/7/x86_64/3004/SALTSTACK-GPG-KEY.pub\ncurl -fsSL https://repo.saltproject.io/py3/redhat/7/x86_64/3004.repo | sudo tee /etc/yum.repos.d/salt.repo\nyum repolist\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-h4p1wmc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-h4p1wmc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装master管理端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1zpsful",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-1zpsful"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "yum install salt-master salt-minion vim -y\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-62mdkoe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-62mdkoe"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置saltstack开机自动启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-g9pf47c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-g9pf47c"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl enable salt-master\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-jxq5zfy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-jxq5zfy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置/etc/salt/master文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-7brxrhp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-7brxrhp"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# vim /etc/salt/master\n#修改位置1\nfile_roots:             # 将此处的注释取消\n  base:                     # 前面必须有两个空格\n    - /srv/salt     # 前面必须有四个空格\n\n#修改位置2\npillar_roots:           # 将此处的注释取消\n  base:                     # 前面必须有两个空格 \n    - /srv/pillar   # 前面必须有四个空格\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-7ol82o1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-7ol82o1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将saltstack服务启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-m4u7dw1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-m4u7dw1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl start salt-master\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zmtu82v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-zmtu82v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查服务是否启动成功"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4tfv7qy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-4tfv7qy"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl status salt-master\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-mcwdiyh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-mcwdiyh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装配置salt-minion"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#salt-minion",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6czsa40",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6czsa40"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开启yum缓存"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-rhm1p54",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-rhm1p54"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sed -i \"s#keepcache=0#keepcache=1#g\" /etc/yum.conf \ncat /etc/yum.conf |grep keepcache\nll /var/cache/yum/x86_64/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-963psvh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-963psvh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要配置saltstack源"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-qji09ni",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-qji09ni"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo rpm --import https://repo.saltproject.io/py3/redhat/7/x86_64/3004/SALTSTACK-GPG-KEY.pub\ncurl -fsSL https://repo.saltproject.io/py3/redhat/7/x86_64/3004.repo | sudo tee /etc/yum.repos.d/salt.repo\nyum repolist\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-dadmb0i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-dadmb0i"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装minion客户端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-z9hop6v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-z9hop6v"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "yum install salt-minion vim -y\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-oqny1cl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-oqny1cl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置/etc/salt/minion文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zst3554",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-zst3554"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e12 ~]#  vim /etc/salt/minion\n# resolved, then the minion will fail to start.\nmaster: 192.168.2.11                            # 将此行取消注释，并填写master管理端的IP地址\nid: 192e168e2e12                                    # 将此行取消注释,这里是管理端显示的名称\n\n当然要想简单也可以采用如下方法\nsed -in 's\\#master: salt\\master: 192.168.2.11\\g' /etc/salt/minion\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-g903jjw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-g903jjw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "设置saltstack客户端开机自启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-vuvm85e",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-vuvm85e"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl enable salt-minion\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-66hh17g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-66hh17g"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将minion服务进行启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zvh7rv2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-zvh7rv2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl start salt-minion\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6o6hx3h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6o6hx3h"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查minion服务是否启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-up80m53",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-up80m53"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl status salt-minion\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-f6zaqhi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-f6zaqhi"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示当我们启动服务成功以后就会在对应目录生成一个公钥和私钥"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-fb4hybc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-fb4hybc"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e12 ~]# ll /etc/salt/pki/minion/\ntotal 8\n-r-------- 1 root root 1679 Jul 27 14:32 minion.pem\n-rw-r--r-- 1 root root  451 Jul 27 14:32 minion.pub\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-7bmo7ek",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-7bmo7ek"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当我们回到master管理端执行salt-key命令就可以看到被找到的客户端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2yznjvu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-2yznjvu"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-key -L\nAccepted Keys:\nDenied Keys:\nUnaccepted Keys:\n192e168e2e11\n192e168e2e12\nRejected Keys:\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1llaby5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-1llaby5"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "红色部分就是待管理的服务器列表，这里显示的是我们配置的ID名称"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-a5o2mq8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-a5o2mq8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt-key命令的使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#salt-key",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6fyna8b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6fyna8b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-j1vi4vi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-j1vi4vi"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（1）添加所有被管理端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8i1t1rx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-8i1t1rx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里我们使用-A参数，同意并管理saltstack的所有客户端的主机"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2bxilne",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-2bxilne"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-key -A  # 同意管理所有机器 交互式\nThe following keys are going to be accepted:\nUnaccepted Keys:\n192e168e2e11\n192e168e2e12\nProceed? [n/Y]    # 这里配置选择同意\n\n[root@192e168e2e11 ~]# salt-key -A -y  # 同意管理所有机器 非交互式\nThe following keys are going to be accepted:\nUnaccepted Keys:\n192e168e2e11\n192e168e2e12\nKey for minion 192e168e2e11 accepted.\nKey for minion 192e168e2e12 accepted.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-le7q78x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-le7q78x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查服务器是否已经被管理"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-b2ncs0o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-b2ncs0o"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-key -L   # 当我们再次查看的时候就会发现已经被管理\nAccepted Keys:   \n192e168e2e11   # 表示已经被saltstack master端管理\n192e168e2e12\nDenied Keys:\nUnaccepted Keys:\nRejected Keys:\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gg95r4l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gg95r4l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "管理状态说明："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-eh6reym",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-eh6reym"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（2）删除所有被管理端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-fevg81w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-fevg81w"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-key -d 192e168e2e11         # 小写的d参数，可以删除指定的被管理的客户端\nAccepted Keys:\n192e168e2e11\nProceed? [N/y] y\nKey for minion 192e168e2e11 deleted.\n[root@192e168e2e11 ~]# salt-key -D                              # 大写的d参数，表示删除所有被管理的客户端\nThe following keys are going to be deleted:\nAccepted Keys:\n192e168e2e12\nProceed? [N/y] y\nKey for minion 192e168e2e12 deleted.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-lhbn3u8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-lhbn3u8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当我们把所有的客户端删除以后，就会发现没有管理的客户端啦，只需将客户端的salt-minion服务重启，即可重新添加被管理的客户端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-h58csug",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-h58csug"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# systemctl restart salt-minion\n[root@192e168e2e12 ~]# systemctl restart salt-minion\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4zwnkz9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-4zwnkz9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们这里测试只同意管理web01服务器"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-9h4uw3m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-9h4uw3m"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-key -a 192e168e2e11\nThe following keys are going to be accepted:\nUnaccepted Keys:\n192e168e2e11\nProceed? [n/Y] y\nKey for minion 192e168e2e11 accepted.\n\n[root@192e168e2e11 ~]# salt-key -L\nAccepted Keys:\n192e168e2e11   已被管理的\nDenied Keys:\nUnaccepted Keys:\n192e168e2e12   未被管理的\nRejected Keys:\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-i68biq7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-i68biq7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们只需加大小写的-A参数即可同意管理所有客户端"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2qx4sqy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-2qx4sqy"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-key -A\nThe following keys are going to be accepted:\nUnaccepted Keys:\n192e168e2e12\nProceed? [n/Y] y\nKey for minion 192e168e2e12 accepted.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-cf34c8m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-cf34c8m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack远程执行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_8",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-dnv1fo1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-dnv1fo1"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "命令格式"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-l88mvrj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-l88mvrj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt   目标  模块.方法  返回信息"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gxoqkaw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gxoqkaw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "命令帮助"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-57pv6q9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-57pv6q9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt \"*\" sys.doc 'test'      查看test模块的使用帮助\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-qme4gv4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-qme4gv4"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "一：检查主机存活状态"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-l1lltyo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-l1lltyo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面我们来执行第一个远程命令"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ive1l1i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-ive1l1i"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt \"*\" test.ping               运行salt里面的test模块中的ping方法，检测主机的存活状态\n192e168e2e11:\n    True        # True状态表示已经可以管理，flase则无法管理\n192e168e2e12:\n    True\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-y84abix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-y84abix"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt \""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "\u0026quot; test.ping    #注意这里支持通配符哦，"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "表示所有，当然依旧也可以指定主机，在这里面test表示模块而ping则是方法。注意这里面的ping可不是Linux里面ICMP协议的ping是salt自己独有的东西"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-oedc4p0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-oedc4p0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "二：查看磁盘利用率"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-7b88a6t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-7b88a6t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们来尝试一下查看所有被管理端的磁盘利用率"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-xsgt1ni",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-xsgt1ni"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt \"*\" cmd.run \"df -h\"     # 运行salt里面的cmd模块中的run方法，实现远程执行命令\n192e168e2e11:\n    Filesystem      Size  Used Avail Use% Mounted on\n    /dev/sda2        20G  2.0G   18G  11% /\n    devtmpfs         16G     0   16G   0% /dev\n    tmpfs            16G  340K   16G   1% /dev/shm\n    tmpfs            16G   12M   16G   1% /run\n    tmpfs            16G     0   16G   0% /sys/fs/cgroup\n    /dev/sda1       509M  131M  379M  26% /boot\n    tmpfs           3.2G     0  3.2G   0% /run/user/0\n192e168e2e12:\n    Filesystem      Size  Used Avail Use% Mounted on\n    /dev/sda2        20G  2.0G   18G  10% /\n    devtmpfs         16G     0   16G   0% /dev\n    tmpfs            16G   60K   16G   1% /dev/shm\n    tmpfs            16G   12M   16G   1% /run\n    tmpfs            16G     0   16G   0% /sys/fs/cgroup\n    /dev/sda1       509M  131M  379M  26% /boot\n    tmpfs           3.2G     0  3.2G   0% /run/user/0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2dftnlk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-2dftnlk"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "三：查看内存剩余情况"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-kqblsnk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-kqblsnk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当然我们也可以通过远程执行命令查看客户端的内存使用情况"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-xsjvuuh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-xsjvuuh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "192e168e2e12:\n                  total        used        free      shared  buff/cache   available\n    Mem:            31G        399M         30G         11M        707M         30G\n    Swap:            0B          0B          0B\n192e168e2e11:\n                  total        used        free      shared  buff/cache   available\n    Mem:            31G        772M         29G         11M        750M         30G\n    Swap:            0B          0B          0B\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2enp8g0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-2enp8g0"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "四：查看远程系统CPU负载情况"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-3fe4zrg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-3fe4zrg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt '*' cmd.run 'uptime'\n192e168e2e12:\n     14:51:46 up 31 min,  1 user,  load average: 0.00, 0.01, 0.05\n192e168e2e11:\n     14:51:46 up 31 min,  1 user,  load average: 0.02, 0.03, 0.04\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-kf1sc28",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-kf1sc28"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "五：查看被控端操作系统类型"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8bc9tom",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-8bc9tom"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法1：通过远程执行命令的方法查看"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-vaqm6pj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-vaqm6pj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt \"*\" cmd.run \"cat /etc/redhat-release\" \n192e168e2e11:\n    CentOS Linux release 7.6.1810 (Core)\n192e168e2e12:\n    CentOS Linux release 7.6.1810 (Core)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-5b8lplw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-5b8lplw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "方法2：通过grains模块进行查看"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-d0qzoyn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-d0qzoyn"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt '*' grains.item os\n192e168e2e11:\n    ----------\n    os:\n        CentOS\n192e168e2e12:\n    ----------\n    os:\n        CentOS\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-xz8tyyh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-xz8tyyh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt \"*\" cmd.run \"df -h\"    #其中cmd为模块而run是方法df -h则是传入的参数.此时就能够返回各个主机的磁盘使用情况。cmd下的run方法后面可以接任何shell参数。因此这个模块非常之强大，当然也非常危险。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zmy70pq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-zmy70pq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "针对cmd.run这个模块这个缺点，不支持交互式的命令"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-k144jka",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-k144jka"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt \"*\" cmd.run \"vim /etc/hosts\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2wjci54",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-2wjci54"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack文件复制"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_9",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-9csu7l2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-9csu7l2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "四：远程拷贝文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-usyjcgp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-usyjcgp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们可以实现将本机的host文件直接复制到客户端的/etc目录下，不必担心文件权限的问题"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-opha3h9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-opha3h9"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-cp '*' /etc/hosts /tmp/\n192e168e2e11:\n    ----------\n    /tmp/hosts:\n        True\n192e168e2e12:\n    ----------\n    /tmp/hosts:\n        True\n[root@192e168e2e11 ~]# salt \"*\" cmd.run \"ls -l /tmp/hosts\"      \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-z36znfm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-z36znfm"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这种方法是最简单的，不必担心远程复制时文件权限的问题，这种方法可比ssh远程复制要简单的太多啦"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ykczf02",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-ykczf02"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack配置管理"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_10",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0ryrwqq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-0ryrwqq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "准备环境，开启saltstack配置配置文件设置"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-g0wwp8g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-g0wwp8g"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# vim /etc/salt/master # 编辑saltstack的mstaer端的配置文件\nfile_roots:\n  base:                             # 这里前面一定有两个空格\n    - /srv/salt             # 这里前面一定有四个空格\n提示：这里一定不要使用tab键，否则一定会报错\n[root@192e168e2e11 ~]# systemctl restart salt-master        # 重启master端其实配置文件生效\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-x134jy2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-x134jy2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这里有个特别需要我们注意的问题，一定要确保file_roots前面没有空格，而base前两个空格-前面四个空格，在salt的配置里面空格十分重要，我们必须高度注意，否则及其容易造成实验不成功，之所以对空格敏感主要salt基于Python开发，并采用了yaml的语法.（注意注意注意，不要使用tab键）"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-9n0ykgo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-9n0ykgo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有必要解释下相关配置内容:"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-w4m3zko",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-w4m3zko"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "base:代表环境（默认必须有），可就是说salt可以同时管理多个环境，比如测试、开发、生产等环境。其实从我们修改的行上方不难我们不难看出，salt拥有针对多环境的特点。至于底下的小- 则代表状态文件存放路径，可能有些同学对这个状态文件有些疑惑，我们拿软件安装来讲，我们想要批量安装，环境标准化。我们总得告诉系统，我们要安装什么，怎么安装。这时候我们就需要一个文件为系统指明，这个文件就是上面的状态文件。要注意-和后面的路径有中间有一个空格哦"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-u8fj4a0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-u8fj4a0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# mkdir -p /srv/salt                               # 创建一个存放配置文件的路径\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-vh7a3ss",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-vh7a3ss"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第一步:创建状态文件存放目录"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1paj8ba",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-1paj8ba"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# mkdir /srv/salt -p\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-tdba3go",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-tdba3go"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "一：apache状态配置安装"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-pp9avcc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-pp9avcc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们先写个配置文件，使其自动安装apache软件，然后自动启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gfuzeip",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-gfuzeip"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# cd /srv/salt/        切换到saltstack书写配置文件的目录下\n[root@192e168e2e11 salt]# vim apache.sls    配置文件的路径一定要是sls后缀\napache-install:                         # 这里只是设置一个名称\n  pkg.installed:                        # 这是一个方法，用来安装YUM软件的（前面两个空格）\n    - names:                                # 以软件的名称方式安装（前面四个空格）\n      - httpd                               # 指定安装的软件（前面六个空格）\n      - httpd-devel\napache-service:                         # 这是只是设置一个名称\n  service.running:                  # 安装安装以后自动启动服务\n    - name: httpd                       # 设置你要开启启动服务的服务的名称\n    - enable: True                  # 设置服务开机自动启动\n    - reload: True                  # 设置服务可以重载\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wvtav64",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-wvtav64"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置文件说明："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ibf9rxp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ibf9rxp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1代表功能说明，这一行目的是方便用户使其他用户能够清楚认识该状态模块的功能，注意不要丢掉结尾的冒号"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ms91ykr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ms91ykr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2代表采用pkg模块的installed方法。（为了方便理解我们可以把模块理解为职业而方法理解为这个职业拥有的技能），这里有必要说下install这个方法，这个方法在centos机器上会采用yum方式进行安装，而在Ubuntu上则采用apt方式安装，注意与开头空两个空格结尾有冒号"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-hcqrib6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-hcqrib6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3是installed方法的参数，- names作用是指定安装包（注意结尾的冒号以及开头的4个空格）"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0iw8gfx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-0iw8gfx"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4和5是要安装的软件包(注意开头的6个空格)"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-qmx4jbr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-qmx4jbr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6789则和上面的信息有些类似"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8shebet",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-8shebet"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6同样代表功能说明，而7是代表采用了service的running方法。8代表要操作的服务名称9代表安装完成之后是否启动，10代表当配置文件修改之后，是否自动重载"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-rvmhwgt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-rvmhwgt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在我们使用salt命令执行配置管理"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2edpqz1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-2edpqz1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# salt '192e168e2e12' state.sls apache      执行配置管理，批量安装服务\n提示：以上命令就是在所有服务器上执行，我们刚刚编写的配置文件\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4x4xbyn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-4x4xbyn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第四步:开始执行"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-p8sfyk7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-p8sfyk7"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt ' "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "' state.sls apache     #其中salt为命令不必多说 ‘"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ’代表在所有主机上,state则是模块而sls则是方法（这是由于这个方法所以我们之前所采用的后缀才为sls）而apache则是我们之前编写的状态文件名（不包含后缀），也是给前面传入的参数。所以这条命令就是在所有机器上执行apache这个状态"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-a0y659d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-a0y659d"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当执行此命令时，各个minion端将会开始工作，感兴趣的同学可以采用ps -ef|grep yum将会发现如下有趣的现象，发现yum自动工作了，嘿嘿是不是很神奇"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wulqgcp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-wulqgcp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第五步:验证返回"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-cmdhovg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-cmdhovg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "----------\n          ID: apache-service\n    Function: service.running\n        Name: httpd\n      Result: True\n     Comment: Service httpd has been enabled, and is running\n     Started: 15:03:06.263290\n    Duration: 152.692 ms\n     Changes:   \n              ----------\n              httpd:\n                  True\n\nSummary for 192e168e2e12\n------------\nSucceeded: 3 (changed=3)\nFailed:    0\n------------\nTotal states run:     3\nTotal run time:  13.731 s\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-o7ii0rn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-o7ii0rn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上图我们可以看出都是正常返回，没有报错信息（报错信息默认红色显示）。可能有些小伙伴们会疑惑这个3是什么意思，其实我们可以回想一下，我们写了要安装httpd、httpd-devel以及在安装完成之后启动，还有在配置文件修改后重启。不过我们可以发现我们没有对配置文件进行任何操作，因此最后一项没有执行，所以才会显示Succeeded 3以及changed=3"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-f67le2i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-f67le2i"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来我们对网站进行验证 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://192.168.2.12/",
+					"TextMarkTextContent": "http://192.168.2.12"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-pey4hfh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-pey4hfh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# curl http://192.168.2.12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-o4jgzsb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-o4jgzsb"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "二：nfs状态配置安装"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ktgpqzo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ktgpqzo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们当然也可以写个配置文件，使其自动安装nfs网络存储软件，然后设置自动启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zs743ue",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-zs743ue"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ]# cd /srv/salt/\n[root@192e168e2e11 salt]# vim nfs.sls       编写自动安装配置nfs服务的状态文件\nnfs-install:\n  pkg.installed:\n    - names:\n      - nfs-utils\n      - rpcbind\nnfs-service:\n  service.running:\n    - names:\n      - rpcbind\n      - nfs\n    - enable: True\n    - reload: True\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6tq5nuc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6tq5nuc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这时我们就可以远程执行配置文件使其自动安装nfs服务，并自动开启服务，设置开机自启动"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-7flqbh5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-7flqbh5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# salt '192e168e2e12' state.sls nfs   # 执行测试\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zj6m56j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-zj6m56j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三：nginx状态配置安装"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8ikq0re",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-8ikq0re"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# vim nginx.sls\nnginx-install:\n  pkg.installed:\n    - names:\n      - nginx\nnginx-service:\n  service.running:\n    - name: nginx\n    - enable: True\n    - reload: True\n[root@192e168e2e11 salt]# salt '192e168e2e11' state.sls nginx\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0sfq02r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-0sfq02r"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack定时任务"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_11",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-jx6r5ub",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-jx6r5ub"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四：创建定时任务的状态配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-rxkkx7b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-rxkkx7b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建定时任务配置文件的时间格式表"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-od20f8d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-od20f8d"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：如果不设置的话，默认为每 *"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-b8ff87m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-b8ff87m"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（1）创建一个定时任务"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-asos4l2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-asos4l2"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# vim crontab.sls\n/usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261:\n  cron.present:\n    - user: root\n    - minute: '*/5'\n[root@192e168e2e11 salt]# salt \"*\" state.sls crontab\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1e4i0ou",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-1e4i0ou"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们检查客户端，就会发现定时任务创建完成"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-bvajtux",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-bvajtux"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e12 salt]# crontab -l\n# SALT_CRON_IDENTIFIER:/usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261\n*/5 * * * * /usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4ne0nsp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-4ne0nsp"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（2）修改一个定时任务"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-hgrx925",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-hgrx925"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那么我们如何更改定时任务的配置文件为每3分钟执行一次呢？"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-sdk9ru1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-sdk9ru1"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# vi crontab.sls \n/usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261:\n  cron.present:\n    - user: root\n    - minute: '*/3'\n[root@192e168e2e11 salt]# salt \"*\" state.sls crontab\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-frsamig",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-frsamig"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "客户端检查定时任务是否修改"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8o8lf1v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-8o8lf1v"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# crontab -l\n# Lines below here are managed by Salt, do not edit\n# SALT_CRON_IDENTIFIER:/usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261\n*/3 * * * * /usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-16uz8xg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-16uz8xg"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（3）删除一个定时任务"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ims60uw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-ims60uw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在我们需要编写一个删除定时任务的配置管理文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-e8mvau0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-e8mvau0"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# vim del_cron.sls\n/usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261:\n  cron.absent:\n    - name: /usr/sbin/ntpdate times.aliyun.com \u003e/dev/null 2\u003e\u00261\n[root@192e168e2e11 salt]# salt \"*\" state.sls del_cron\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wde9eru",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-wde9eru"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "客户端进行检查"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-om0ryzf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-om0ryzf"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# crontab -l\n# Lines below here are managed by Salt, do not edit\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-sxc1a02",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-sxc1a02"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "到了这里我们就可以查看到定时任务被删除了"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ek45e8t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-ek45e8t"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Saltstack高级状态"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_12",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-dgwlodc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-dgwlodc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当然我们也可以根据不同的主机执行不同的状态配置文件，需要编辑top.sls即可实现（我们把这种状态称为高级状态）"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-hmjdoxn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-hmjdoxn"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ]# cd /srv/salt\n[root@192e168e2e11 salt]# vi top.sls        实现根据不同的主机执行不同的配置文件\nbase:                                       # 选择环境，base环境\n  '192e168e2e12':               # 要执行的主机，\n    - apache                        # 需要执行的配置文件\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-c37v47r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-c37v47r"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在我们来根据不同主机执行不同的状态配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0re7glo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-0re7glo"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# salt '192e168e2e12' state.highstate       执行salt的高级状态\nSummary for 192e168e2e12\n------------\nSucceeded: 3\nFailed:    0\n------------\nTotal states run:     3\nTotal run time: 750.663 ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ideyx90",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-ideyx90"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstack数据收集"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_13",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-kapcy10",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-kapcy10"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用场景："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-vuk8z05",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-vuk8z05"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（1）系统数据的收集"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-n65fala",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-n65fala"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt \"192e168e2e11\" grains.ls    列出所有grains的名称\n    - biosversion\n省略部分……………………….\n    - shell\n    - virtual\n    - zmqversion\n[root@192e168e2e11 ~]# salt \"192e168e2e11\" grains.items         # 显示所有grains的内容信息，包括系统系统\n[root@192e168e2e11 ~]# salt \"192e168e2e11\" grains.get fqdn  # 显示远程主机名\n192e168e2e11:\n    192e168e2e11.domain.local\n[root@192e168e2e11 ~]# salt \"192e168e2e11\" grains.get ip_interfaces:eth0        # 显示指定的网卡IP和MAC地址\n192e168e2e11:\n    - 192.168.2.11\n    - fe80::250:56ff:fe83:7bdb\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-xd5pxzv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-xd5pxzv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（2）匹配命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " （如果，想在所有CentOS的系统上执行一个命令）"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-j8kro5r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-j8kro5r"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@m01 salt]# salt \"web01\" grains.get os     首先我们使用os区别系统是否为CentOS系统\nweb01:\n    CentOS\n[root@m01 salt]# salt -G os:CentOS cmd.run \"w\"      匹配想要执行的主机，然后远程批量执行任务\nweb01:\n     02:26:54 up 15:19,  1 user,  load average: 0.00, 0.00, 0.00\n    USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT\n    oldboy   pts/0    10.0.0.1         19:46   44:12   0.11s  0.03s sshd: oldboy [p\nweb02:\n     02:26:54 up 15:14,  1 user,  load average: 0.00, 0.00, 0.00\n    USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT\n    oldboy   pts/0    10.0.0.1         19:46   44:07   0.02s  0.03s sshd: oldboy [p\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-j81150j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-j81150j"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "saltstackSSH模式"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstackssh",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-3dzhhi0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-3dzhhi0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考博文："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://docs.saltstack.cn/topics/ssh/index.html",
+					"TextMarkTextContent": "http://docs.saltstack.cn/topics/ssh/index.html"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-b4btn0f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-b4btn0f"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装salt-ssh"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-qdtg1pk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-qdtg1pk"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# yum -y install salt-ssh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-h36ityd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-h36ityd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置ssh主机列表"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-vvq5u3h",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-vvq5u3h"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# vim /etc/salt/roster\n192e168e2e11:\n  host: 192.168.2.11\n  user: root\n  port: 22\n  passwd: P@sswd\n\n192e168e2e12:\n  host: 192.168.2.12\n  user: root\n  port: 22\n  passwd: P@sswd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1u0cira",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-1u0cira"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行命令"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-juc3bh5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-juc3bh5"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-ssh '*' test.ping\n192e168e2e11:\n    True\n192e168e2e12:\n    True\n[root@192e168e2e11 ~]# salt-ssh '*' -r 'hostname'\n192e168e2e11:\n    ----------\n    retcode:\n        0\n    stderr:\n    stdout:\n        192e168e2e11\n192e168e2e12:\n    ----------\n    retcode:\n        0\n    stderr:\n    stdout:\n        192e168e2e12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-z12yepw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-z12yepw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "遇到的错误"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-27ylc38",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-27ylc38"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# salt-ssh '*' test.ping\n192e168e2e11:\n    ----------\n    retcode:\n        254\n    stderr:\n    stdout:\n        The host key needs to be accepted, to auto accept run salt-ssh with the -i flag:\n        The authenticity of host '192.168.2.11 (192.168.2.11)' can't be established.\n        ECDSA key fingerprint is SHA256:Z5knF4pDBliyzBTorp5oYJwGzqYy9a2PxxhMUvR/kHA.\n        ECDSA key fingerprint is MD5:54:57:81:0f:a9:3a:73:55:7b:0e:2f:09:b2:16:8f:c5.\n        Are you sure you want to continue connecting (yes/no)? \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gpi6ups",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gpi6ups"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方法："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-p9fv0bh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-p9fv0bh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat \u003e/root/.ssh/config\u003c\u003cEOF\nHost *\n    Port 22\n    User root\n    StrictHostKeyChecking no\n    UserKnownHostsFile=/dev/nul\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4jxp9bj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-4jxp9bj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SaltStack用户管理"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_14",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-qrkkfwy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-qrkkfwy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Salt.state中，user 模块是用来创建用户和管理用户设定的，用户可以被设置成 present 状态或者 absent 状态"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-z6fnkca",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-z6fnkca"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注释："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-v9dt1hx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-v9dt1hx"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  present：添加用户\n  absent  : 删除用户 \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-0eyv3uf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-0eyv3uf"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1. 用户管理"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2obsvdn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-2obsvdn"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Example 1:"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-659jphk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-659jphk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置/etc/salt/master文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-geewq0b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-geewq0b"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# vim /etc/salt/master\n#修改位置1\nfile_roots:             # 将此处的注释取消\n  base:                     # 前面必须有两个空格\n    - /srv/salt     # 前面必须有四个空格\n  prod:\n    - /srv/salt/prod\n\n[root@192e168e2e11 ~]# systemctl restart salt-master\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-shmff67",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-shmff67"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "添加一个普通用户(以下都是常用参数)"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-rddrnrt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-rddrnrt"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# mkdir -p /srv/salt/prod/modules/user\n###这是我的用户管理模块存放的位置，提前的file_roots中定义的。\n[root@192e168e2e11 ~]# cd /srv/salt/prod/modules/user\n[root@192e168e2e11 user]# vim usersadd.sls\nzhangsan:                          ### ID声明\n  group.present:               ### 状态模块,必须先有组，才能创建用户  \n    - name: group01            ### 组名称  \n    - gid: 1001                ### 组ID  \n\n  user.present:                ### 添加用户的状态模块  \n    - fullname: zhangsan       ### 全称，也就是useradd -c的功能  \n    - shell: /bin/bash         ### 指定用户登录的shell  \n    - home: /home/zhangsan     ### 用户家目录  \n    - uid: 1001                ### 用户ID  \n    - gid: 1001                ### 用户组ID   \n    - password: '$1$kora$7VTUs6hCvIEqHi/opbs1L.'\n\n密码生成方法如下：\n[root@192e168e2e11 user]# openssl passwd -1 -salt 'kora'\nPassword: 123456\n$1$kora$7VTUs6hCvIEqHi/opbs1L.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-5owfo47",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-5owfo47"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行如下命令配置管理："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4onlmx4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-4onlmx4"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 user]# salt '192e168e2e12' state.sls modules.user.usersadd saltenv=prod\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-82b03ad",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-82b03ad"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证用户密码是否正确"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-mhogteo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-mhogteo"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 user]# ssh zhangsan@192.168.2.12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1fphsjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-1fphsjd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其他常用参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-x7n111p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-x7n111p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "present常用参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-r1xoxz8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-r1xoxz8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "- fullname:          全称，也就是useradd -c的功能\n- shell:             指定用户登录的shell环境\n- home:             指定用户UID，相当于useradd -u功能\n- gid:             指定用户GID，相当于useradd -g功能\n- groups:            添加附加组，注：这些附加组在Minion端是必须存在的，否则执行会失败\n- system:           指定用户是否是系统用户，默认是False关闭的，如果想添加为系统用户，加上True\n- mindays            密码更改之间的最小数量的天\n- maxdays            密码更改之间的最大天数\n- inactdays            密码到期后的天数帐户被锁定\n- warndays           密码快到期是的前几天提醒用户\n- expire             用户到期时间\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-uqumodg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-uqumodg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "adsent常用参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-y3d02d3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-y3d02d3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "- name:            要删除的用户名\n- purge:            清理需要删除用户的所有文件以及用户（比如家目录）,默认是False，想开启设置问True\n- force:            如果用户已登录,执行absent state会失败。设置强制选择真正的删除用户,即使他们登录。不支持在FreeBSD和Solaris,默认是假的。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-s3tx6ec",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-s3tx6ec"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Saltstack文件管理"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack_15",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-1wivvop",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-1wivvop"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt命令管理文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-hugbryh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-hugbryh"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "salt “*”file.managed /etc/zabbix/zabbix_agentd.conf salt://file/zabbix_agentd.conf root root 755\nsalt的sls文件写法\n/opt/hosts:\n  file.managed:\n    - source: salt://hosts\n    - user: root\n    - group: root\n    - mode: 644\n\nsalt \"*\" state.sls filecopy\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-q9mztey",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-q9mztey"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目录管理file.directory"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ampiho7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-ampiho7"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "/root/test:\n  file.directory:\n    - user: root\n    - group: root\n    - mode: 755\n    - makedirs: Ture         #如果此目录用户不存在自动创建\n    - recurse:               #如果想强制将属注数组权限递归到文件夹内文件可以使用这个\n      - user\n      - group\n      - mode\n\nsalt \"*\" state.sls filedir\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-k3txmrz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-k3txmrz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "文件插入内容file.append"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-jscu0f8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-jscu0f8"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 salt]# vim fileadd.sls\n插入用户环境变量：\n/etc/profile:\n  file.append:\n    - text:\n      - export JAVA_HOME=/usr/local/jdk1.6.0_22\n      - export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH\n\n\n salt \"*\" state.sls fileadd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-njus5kq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-njus5kq"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "文件拷贝file.copy"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6t35oxl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-6t35oxl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此命令即可拷贝文件也可拷贝目录："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gkmn0rl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-gkmn0rl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "salt “*” file.copy /data/a.dump /backup/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-e08yfui",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-e08yfui"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这句话是把/data/a.dump拷贝到/backup/目录"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-kgululy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-kgululy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "文件软连接file.symlink"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zput6fj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-zput6fj"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "把/usr/local/zabbix/etc目录做软连接为/etc/zabbix"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-07llyph",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-07llyph"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "salt '*' file.symlink /usr/local/zabbix/etc/etc/zabbix\nsls写法\n\n[root@192e168e2e11 salt]# vim filelink.sls\n/tmp/test01:\n  file.symlink:\n    - target: /etc/hosts\n\n salt \"*\" state.sls filelink\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-db6fd92",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-db6fd92"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SaltStack state.sls"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack-statesls",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-3i74yb3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-3i74yb3"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SLS（代表SaLt State文件）是Salt State系统的核心。SLS描述了系统的目标状态，由格式简单的数据构成。这经常被称作配置管理 首先，在master上面定义salt的主目录，默认是在/srv/salt/下面，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=vim\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "vim"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " /etc/salt/master："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-8atgras",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-8atgras"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Salt.state中，user 模块是用来创建用户和管理用户设定的，用户可以被设置成 present 状态或者 absent 状态"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zj3e1jc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-zj3e1jc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注释："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-4kqsik3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-4kqsik3"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  present：添加用户\n  absent  : 删除用户 \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-fwlu2lh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-fwlu2lh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1. 用户管理"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-rzeun01",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-rzeun01"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Example 1:"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-42u509x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-42u509x"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置/etc/salt/master文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-vis83qg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-vis83qg"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# vim /etc/salt/master\n#修改位置1\nfile_roots:             # 将此处的注释取消\n  base:                     # 前面必须有两个空格\n    - /srv/salt     # 前面必须有四个空格\n  prod:\n    - /srv/salt/prod\n\n[root@192e168e2e11 ~]# systemctl restart salt-master\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-n5v1wm6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-n5v1wm6"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "添加一个普通用户(以下都是常用参数)"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-dqurc8o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-dqurc8o"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# mkdir -p /srv/salt/prod/modules/user\n###这是我的用户管理模块存放的位置，提前的file_roots中定义的。\n[root@192e168e2e11 ~]# cd /srv/salt/prod/modules/user\n[root@192e168e2e11 user]# vim usersadd.sls\nzhangsan:                          ### ID声明\n  group.present:               ### 状态模块,必须先有组，才能创建用户  \n    - name: group01            ### 组名称  \n    - gid: 1001                ### 组ID  \n\n  user.present:                ### 添加用户的状态模块  \n    - fullname: zhangsan       ### 全称，也就是useradd -c的功能  \n    - shell: /bin/bash         ### 指定用户登录的shell  \n    - home: /home/zhangsan     ### 用户家目录  \n    - uid: 1001                ### 用户ID  \n    - gid: 1001                ### 用户组ID   \n    - password: '$1$kora$7VTUs6hCvIEqHi/opbs1L.'\n\n密码生成方法如下：\n[root@192e168e2e11 user]# openssl passwd -1 -salt 'kora'\nPassword: 123456\n$1$kora$7VTUs6hCvIEqHi/opbs1L.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-dki9g3l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-dki9g3l"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行如下命令配置管理："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-b20bm6o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-b20bm6o"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 user]# salt '192e168e2e12' state.sls modules.user.usersadd saltenv=prod\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-cvqh8xy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-cvqh8xy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证用户密码是否正确"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-i7atwla",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-i7atwla"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 user]# ssh zhangsan@192.168.2.12\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-j4zq7tr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-j4zq7tr"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其他常用参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-b9udh46",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-b9udh46"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "present常用参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-jnhwf58",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-jnhwf58"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "- fullname:          全称，也就是useradd -c的功能\n- shell:             指定用户登录的shell环境\n- home:             指定用户UID，相当于useradd -u功能\n- gid:             指定用户GID，相当于useradd -g功能\n- groups:            添加附加组，注：这些附加组在Minion端是必须存在的，否则执行会失败\n- system:           指定用户是否是系统用户，默认是False关闭的，如果想添加为系统用户，加上True\n- mindays            密码更改之间的最小数量的天\n- maxdays            密码更改之间的最大天数\n- inactdays            密码到期后的天数帐户被锁定\n- warndays           密码快到期是的前几天提醒用户\n- expire             用户到期时间\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-2b2enrz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-2b2enrz"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "adsent常用参数："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-3qohwpi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-3qohwpi"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "- name:            要删除的用户名\n- purge:            清理需要删除用户的所有文件以及用户（比如家目录）,默认是False，想开启设置问True\n- force:            如果用户已登录,执行absent state会失败。设置强制选择真正的删除用户,即使他们登录。不支持在FreeBSD和Solaris,默认是假的。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-6li07r0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-6li07r0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Saltstack state.highstate"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstack-statehighstate",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-van9wkt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-van9wkt"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "state.highstate 这个是全局的所有的环境的所有的状态生效；"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-21fo456",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-21fo456"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "state.sls 用来指定特定sls进行处理。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-s7nbvbb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-s7nbvbb"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当使用 salt '*' state.highstate 没有任何问题"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-weyr4l0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-weyr4l0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可是当执行 salt '*' state.sls servers_packages 发现没法执行"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-tss0tnp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-tss0tnp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "翻看官方文档发现：state.sls 是不会去读取top.sls 的如果没有指定saltenv 它就直接读取file_roots 里面的base。所以执行不了。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-zs9wyso",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-zs9wyso"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方法有两个："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-avhvxl0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-avhvxl0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、在file_roots base 里添加dev路径"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-a9rhesa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-a9rhesa"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、在有就是执行时添加路径"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-gjt826b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-gjt826b"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt '*' state.sls dev.servers_packages"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-nuunevp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-nuunevp"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有的文章说指定 saltenv 可以解决，我发现在我的版本不支持。或者我指定的位置有问题吧，不过上面两种方法，亲测可以正常使用。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-unx8kiv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-unx8kiv"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "salt文件状态管理模块file.managed"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-pu8b8rj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-pu8b8rj"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# mkdir -p /srv/salt/base/ -p\n[root@192e168e2e11 ~]# cd /srv/salt/base/\n[root@192e168e2e11 base]# mkdir -p system/files\n[root@192e168e2e11 base]# touch system/files/hosts\n[root@192e168e2e11 base]# touch system/hosts.sls\n[root@192e168e2e11 base]# touch top.sls\n[root@192e168e2e11 base]# yum -y install tree\n\n[root@salt-master base]# tree\n.\n├── system\n│   ├── files\n│   │   └── hosts\n│   └── hosts.sls\n└── top.sls\n\n2 directories, 3\nfiles\n[root@192e168e2e11 base]# cat top.sls             \nbase:                      # 这里指定的环境是base，所以这个top.sls在/srv/salt/base目录下\n  \"*\":                     # “*”是所有主机的意思，指定单个主机直接写“salt-minion1”\n    - system.hosts         # 这里指调用了那些sls配置文件，“点”在这里是目录分级\n                           # 也就是system没有可以下的hosts.sls配置文件\n\n[root@192e168e2e11 base]# cat system/hosts.sls\n/tmp/hosts:                                                 # 这个是配置ID和文件存放位置，是不可重复的\n  file.managed:                                             # 这里调用了“file.managed”salt的文件管理模块\n    - source: salt://system/files/hosts         # source是指定文件源，\"salt://\"是指salt项目下文件\n    - mode: 644                                             # 文件权限644\n    - user: root                                            # 文件用户属主\n    - group: root                                           # 文件的用户组\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-wwxthge",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-wwxthge"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置/etc/salt/master文件"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-ulwlxxi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-ulwlxxi"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@192e168e2e11 ~]# vim /etc/salt/master\n#修改位置1\nfile_roots:           \n  base:                   \n    - /srv/salt/base\n\n[root@192e168e2e11 ~]# systemctl restart salt-master\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-jdeq9i1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-jdeq9i1"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面文件状态配置执行详解："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-55ylkwy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-55ylkwy"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@salt-master system]# salt '192e168e2e12' state.highstate      #salt '执行节点' 执行模块   \n下面是执行结果\nsalt-minion1:                              #执行节点\n----------\n          ID: /etc/hosts                   #配置ID\n    Function: file.managed                 #模块\n      Result: True                         #执行结果True为成功\n     Comment: File /etc/hosts updated      #文件执行操作【更新】\n     Started: 14:15:55.120499              #执行命令开始时间\n    Duration: 24.284 ms                    #执行的时长\n     Changes:                              #是否产生更改\n              ----------\n              diff:\n                  --- \n                  +++ \n                  @@ -1,2 +1,4 @@\n                   127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n                   ::1         localhost localhost.localdomainlocalhost6 localhost6.localdomain\n                  +salt-master 10.0.0.11    #在这个带有“+”号的行是增加的,\"-\"号为减少行\n                  +salt-minion1 10.0.0.21\n\nSummary\n------------\nSucceeded: 1 (changed=1)                    #执行成功1个，有一个文件状态发生更改\nFailed:    0                                #执行失败0个\n------------\nTotal states run:     1                     #执行状态个数\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-esy1w0k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-esy1w0k"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SaltStack与ZeroMQ"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#saltstackzeromq",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-r6brtjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-r6brtjd"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们进行自动化运维大多数情况下，是我们的服务器数量已经远远超过人工SSH维护的范围，SaltStack可以支数以千计，甚至更多的服务器。这些性能的提供主要来自于ZeroMQ，因为SaltStack底层是基于ZeroMQ进行高效的网络通信。ZMQ用于node与node间的通信，node可以是主机也可以是进程。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "ZeroMQ简介"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  ZeroMQ（我们通常还会用ØMQ , 0MQ, zmq等来表示）是一个简单好用的传输层，像框架一样的一个套接字库，他使得Socket编程更加简单、简洁和性能更高。它还是一个消息处理队列库，可在多个线程、内核和主机盒之间弹性伸缩。 发布与订阅 ZeroMQ支持Publish/Subscribe，即发布与订阅模式，我们经常简称Pub/Sub。 [attach]2[/attach]  Salt Master运行两个网络服务，其中一个是ZeroMQ PUB系统，默认监听4505端口。可以通过修改/etc/salt/master配置文件的publish_port参数设置。它是salt的消息发布系统，如果查看4505端口，会发现所有的Minion连接到Master的4505端口，TCP状态持续保持为ESTABLISHED。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-pxmqexl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-pxmqexl"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@ master]# lsof -i:4505\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-edutzlh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-edutzlh"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样Salt Master发布一个消息，所有连接到4505这个Pub端口上的Minion都会接收到这个消息。然后每个Minion会再判断自己是否需要执行这个消息。 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "请求与响应"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ZeroMQ支持Request-Reply，即请求与响应模式，我们经常简称REQ/REP。 [attach]3[/attach]    Salt Master运行的第二个网络服务就是ZeroMQ REP系统，默认监听4506端口，可以通过修改/etc/salt/master配置文件的ret_port参数设置。它是salt客户端与服务端通信的端口。比如说Minion执行某个命令后的返回值就是发送给Master的4506这个REP端口 由于我们在最初安装了python-setproctitle软件包，所以我们可以直接看到Salt Master启动的进程的名称。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-y87s907",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230324100358-y87s907"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Salt遇到的错误总结"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://www.chrisjing.com/005-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/02-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7-saltstack/#salt",
+					"TextMarkATitle": "Permanent link",
+					"TextMarkTextContent": "¶"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-7qekqcg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-7qekqcg"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当我在执行配置文件的时候出现以下错误，因为之前强制将salt批量执行配置状态停止，所以导致出现以下错误。"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-trdgole",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-trdgole"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@m01 salt]# salt '*' state.sls apache\nweb01:\n    Data failed to compile:\n----------\n    The function \"state.highstate\" is running as PID 4196 and was started at 2016, Jul 04 23:22:10.990897 with jid 20160704232210990897\nweb02:\n    Data failed to compile:\n----------\n    The function \"state.highstate\" is running as PID 5138 and was started at 2016, Jul 04 23:22:10.990897 with jid 20160704232210990897\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-hvyknh0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230324100358-hvyknh0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决方法："
+				}
+			]
+		},
+		{
+			"ID": "20230324100358-bllqx7v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230324100358-bllqx7v"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@m01 salt]# salt ‘*’ saltutil.kill_job jid\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

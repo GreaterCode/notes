@@ -1,0 +1,1447 @@
+{
+	"ID": "20221226104641-6uakm52",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20221226104641-6uakm52",
+		"title": "Prometheus架构优化",
+		"updated": "20221226104641"
+	},
+	"Children": [
+		{
+			"ID": "20221226104641-62zfi7r",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221226104641-62zfi7r",
+				"updated": "20221226104641"
+			}
+		},
+		{
+			"ID": "20221226104641-cmhdd6h",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-cmhdd6h",
+				"updated": "20221226104641"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-yucnou4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-yucnou4",
+						"updated": "20221226104641"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-98gg1oy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-98gg1oy",
+								"updated": "20221226104641"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus + Thanos"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-3uyj5pz",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20221226104641-3uyj5pz"
+			}
+		},
+		{
+			"ID": "20221226104641-hoy9lwe",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221226104641-hoy9lwe"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当前架构"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-fb465xe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-fb465xe"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Prometheus + Thanos"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-oolqqkp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-oolqqkp"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-13_14-2-24-20221226104641-mgxmn5d.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-nk568hx",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-nk568hx"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-j90jq5o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-j90jq5o"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-9l7781p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-9l7781p"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus：数据采集、告警评估；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-41gb8ru",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-41gb8ru"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-bzh9k9o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-bzh9k9o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Thanos：历史数据保存、监控数据查询。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-vqswulk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221226104641-vqswulk"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不合理设计"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-3yhy2d8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-3yhy2d8"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、在使用Thanos的同时，告警功能由Prometheus实现，有以下几个问题："
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-v4gm8qg",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-v4gm8qg"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-i3nbrcu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-i3nbrcu"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-c938haz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-c938haz"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus需要保留全量历史数据（当前为10d），但该历史数据已经写入到Thanos，数据重复保留，占用不必要的存储资源；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-fjtr3nm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-fjtr3nm"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-w7c65nw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-w7c65nw"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "单个Prometheus需要保留全量历史数据，意味着Prometheus无法分片，在大规模场景下，容易触发单机性能瓶颈；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-7rve9hx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-7rve9hx"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-gawmnd2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-gawmnd2"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus采集全量数据，在大规模场景下，pod重启后重放WAL日志需要消耗几分钟甚至十几分钟，极端情况下，可能无法重新拉起；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-bq3v8x0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-bq3v8x0"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、Thanos receiver默认保留15d的原始样本的历史数据，占用不必要的存储资源。"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-nv96wlf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-nv96wlf"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-13_18-54-53-20221226104641-svy184k.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-1739i4m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221226104641-1739i4m"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如何改进"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-vvuig4r",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-vvuig4r"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-4gdi8og",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-4gdi8og"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-n4z1pcn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-n4z1pcn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "告警功能迁移到Thanos Ruler，统一监控和告警的查询入口；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-9u7zykg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-9u7zykg"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-qnz8g5n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-qnz8g5n"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus通过Thanos Receiver实时将数据写到Thanos集群，Prometheus本地只保留最近很短一段时间的数据，几乎可以做到无状态；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-b65mjj8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-b65mjj8"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-lq0pztq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-lq0pztq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启用Prometheus分片，降低单实例的性能压力（根据集群规模设置不同的分片数）；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-wcti6vl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-wcti6vl"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-4eq2xpp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-4eq2xpp"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "减少Thanos Receiver本地原始样本数据的保留时间。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-sk4cnfu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-sk4cnfu"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-13_14-21-3-20221226104641-qhmztdx.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-2rqa2do",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-2rqa2do"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如上图，和当前版本对比，将告警功能从Prometheus迁移到Thanos Ruler，这样做的好处："
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-095dbhe",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-095dbhe"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-y9ql1g3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-y9ql1g3"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-g69d5qs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-g69d5qs"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "因Prometheus将数据实时远程写到Thanos Receiver，将告警功能迁出后，Prometheus无需再保存全量历史数据，Prometheus可以做到无状态，减少了存储资源的使用；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-i2pju3n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-i2pju3n"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-brdpm1o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-brdpm1o"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus更加轻量和灵活，可以通过启用分片等方式进行扩缩容，或者考虑根据集群规模设置不同的分片数；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-yvuafxl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-yvuafxl"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-yvmjjpq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-yvmjjpq"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "统一监控和告警的查询入口，避免监控和告警数据不一致的情况。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-sbcrh07",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20221226104641-sbcrh07"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "优化方案"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-a8s1555",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-a8s1555"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在小规模场景下，因为只使用Prometheus，监控和告警功能均由Prometheus提供，依旧保持现有的实现方式。"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-iu4tzpw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-iu4tzpw"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在大规模场景下，单机Prometheus的性能压力较大，将告警功能从Prometheus迁移到Thanos Ruler，同时减少Prometheus和Thanos Receiver历史数据的保留时长。具体实施如下："
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-npuz1p9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-npuz1p9"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、启用Thanos Ruler，并将Prometheus中生成告警规则的Sidecar容器迁移到Thanos Ruler中"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-j13ryw2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-j13ryw2"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2022-7-14_15-10-3-20221226104641-w6lfl0g.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-zkg1i3p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-zkg1i3p"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "涉及更改："
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-0gdcdvt",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-0gdcdvt"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-d1tcuwc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-d1tcuwc"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-73myxyt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-73myxyt"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://code.cestc.cn/product-baseline/coc-monitor/-/blob/master/manage/thanos-manage/templates/ruler/statefulset.yaml",
+									"TextMarkTextContent": "Thanos Ruler"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：添加生成告警规则的Sidecar容器"
+								}
+							]
+						},
+						{
+							"ID": "20221226104641-wm5gawt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-wm5gawt"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image2022-7-14_15-18-52-20221226104641-82xhmqe.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-eprbyi6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-eprbyi6"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-1w26659",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-1w26659"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://code.cestc.cn/product-baseline/coc-monitor/-/blob/master/manage/thanos-manage/charts/kube-prometheus-stack/templates/prometheus/prometheus.yaml",
+									"TextMarkTextContent": "Prometheus"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：移除生成告警规则的Sidecar容器"
+								}
+							]
+						},
+						{
+							"ID": "20221226104641-qsw2ser",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-qsw2ser"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image2022-7-14_15-17-25-20221226104641-e65e7xm.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-pzypqt4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-pzypqt4"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-r3er6vm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-r3er6vm"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Shenyu网关：因shenyu网关现在使用的是coc-prometheus作为告警的南向服务，迁移后需要改为coc-monitor-thanos-ruler（此service在小规模不部署thanos的场景下也会创建，实际指向的是prometheus），使用coc-monitor-thanos-ruler在不同场景下可以兼容"
+								}
+							]
+						},
+						{
+							"ID": "20221226104641-2dxbd55",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-2dxbd55"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image2022-7-14_16-28-40-20221226104641-96pekdc.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-g01r85e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-g01r85e"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、减少历史数据保留时长"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-zqo8zdl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-zqo8zdl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "涉及更改："
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-w7srb3a",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-w7srb3a"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-l2i1zqr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-l2i1zqr"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-8r3epbx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-8r3epbx"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://code.cestc.cn/product-baseline/coc-monitor/-/blob/master/manage/thanos-manage/charts/kube-prometheus-stack/templates/prometheus/prometheus.yaml",
+									"TextMarkTextContent": "Prometheus"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：10d→ 2h"
+								}
+							]
+						},
+						{
+							"ID": "20221226104641-ogqj5ls",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-ogqj5ls"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image2022-7-14_15-22-14-20221226104641-lyjse56.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104641-eehat81",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-eehat81"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-r955kye",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-r955kye"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://code.cestc.cn/product-baseline/coc-monitor/-/blob/master/manage/thanos-manage/templates/receive/statefulset.yaml",
+									"TextMarkTextContent": "Thanos Receiver"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：15d→ 1d"
+								}
+							]
+						},
+						{
+							"ID": "20221226104641-lohqhl5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-lohqhl5"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image2022-7-14_15-26-42-20221226104641-00qdcpi.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-2qnrnld",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-2qnrnld"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、按集群规模动态调整Prometheus副本和分片"
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-iga2y9v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104641-iga2y9v"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "涉及更改："
+				}
+			]
+		},
+		{
+			"ID": "20221226104641-id55i2k",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20221226104641-id55i2k"
+			},
+			"Children": [
+				{
+					"ID": "20221226104641-0xywzh7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20221226104641-0xywzh7"
+					},
+					"Children": [
+						{
+							"ID": "20221226104641-cc357aw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-cc357aw"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://code.cestc.cn/product-baseline/coc-monitor/-/blob/master/manage/thanos-manage/charts/kube-prometheus-stack/templates/prometheus/prometheus.yaml",
+									"TextMarkTextContent": "Prometheus"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：具体分片和副本数需要根据集群规模进一步评估"
+								}
+							]
+						},
+						{
+							"ID": "20221226104641-r4mzbdl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104641-r4mzbdl"
+							},
+							"Children": [
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image2022-7-14_15-30-7-20221226104641-axlrkcx.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104733-woxetdi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104733-woxetdi",
+				"updated": "20221226104733"
+			}
+		},
+		{
+			"ID": "20221226104734-q5dqkwl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104734-q5dqkwl",
+				"updated": "20221226104734"
+			}
+		},
+		{
+			"ID": "20221226104735-z6ew95k",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20221226104735-z6ew95k",
+				"updated": "20221226104735"
+			},
+			"Children": [
+				{
+					"ID": "20221226104735-fqmshax",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20221226104735-fqmshax"
+					},
+					"Children": [
+						{
+							"ID": "20221226104735-hlhbd8f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104735-hlhbd8f"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "prometheus agent模式于2.32.0（2021-12-09）正式发布，距今仅有半年左右，其agent模式是否稳定？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104735-qvfjv8j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20221226104735-qvfjv8j"
+					},
+					"Children": [
+						{
+							"ID": "20221226104735-d727v33",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104735-d727v33"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "thanos receiver如何保证监控数据的双副本？具体方案是什么样的？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104735-3vhfak6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20221226104735-3vhfak6"
+					},
+					"Children": [
+						{
+							"ID": "20221226104735-i8yuyqv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104735-i8yuyqv"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ruler官方文档中推荐将告警规则配置到prometheus实例上，以避免ruler → thanos query → thanos receiver 此长访问链条可能带来的风险，告警规则配置到prometheus实例上做告警的时候算是本地查询。 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": "It is recommended to keep deploying rules inside the relevant Prometheus servers locally. Use ruler only on specific cases. （"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em a",
+									"TextMarkAHref": "https://thanos.io/tip/components/rule.md/#risk",
+									"TextMarkTextContent": "https://thanos.io/tip/components/rule.md/#risk"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": "）。"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 对于官方描述的这种风险，我们如何处理或者规避？"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20221226104735-tpbwllk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20221226104735-tpbwllk"
+					},
+					"Children": [
+						{
+							"ID": "20221226104735-d3v452h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20221226104735-d3v452h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "agent模式下，当prometheus无法访问thanos receiver，比如由于某些原因receiver不断oom（当前仿真环境的情况），假设prometheus配置的是2小时，那么2小时之后，此时receiver恢复，是不是就会丢失数据？"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20221226104746-aq1srlg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104746-aq1srlg",
+				"updated": "20221226104746"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不使用agent模式，只是将告警功能迁移到Thanos Ruler。agent模式适用于一些资源有限的边缘场景，关闭了UI查询能力，不利于debug"
+				}
+			]
+		},
+		{
+			"ID": "20221226104746-1cicr2i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104746-1cicr2i",
+				"updated": "20221226104746"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、设置--receive.replication-factor=2启用数据双副本"
+				}
+			]
+		},
+		{
+			"ID": "20221226104746-vbec42u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104746-vbec42u",
+				"updated": "20221226104746"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、在该场景下，需要保证query和receiver的稳定性"
+				}
+			]
+		},
+		{
+			"ID": "20221226104746-w00qsip",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221226104746-w00qsip",
+				"updated": "20221226104746"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4、对于过老的样本数据，receiver会drop掉，（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://thanos.io/tip/operating/troubleshooting.md/#out-of-bound-error%EF%BC%89",
+					"TextMarkTextContent": "https://thanos.io/tip/operating/troubleshooting.md/#out-of-bound-error）"
+				}
+			]
+		},
+		{
+			"ID": "20221227021952-hgbtg3a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20221227021952-hgbtg3a",
+				"updated": "20221227021952"
+			}
+		}
+	]
+}

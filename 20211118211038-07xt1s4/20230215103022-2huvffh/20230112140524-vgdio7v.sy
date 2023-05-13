@@ -1,0 +1,384 @@
+{
+	"ID": "20230112140524-vgdio7v",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230112140524-vgdio7v",
+		"title": "Linux下rsyslog日志收集服务环境部署记录",
+		"updated": "20230130143809"
+	},
+	"Children": [
+		{
+			"ID": "20230112140524-diu30t3",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230112140524-diu30t3",
+				"updated": "20230130142332"
+			}
+		},
+		{
+			"ID": "20230130142338-fx9ucpa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130142338-fx9ucpa",
+				"updated": "20230130142347"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "rsyslog 可以理解为多线程增强版的syslog。 在syslog的基础上扩展了很多其他功能，如数据库支持（MySQL、PostgreSQL、Oracle等）、日志内容筛选、定义日志格式模板等。目前大多数Linux发行版默认也是使用rsyslog进行日志记录。"
+				}
+			]
+		},
+		{
+			"ID": "20230130142409-t1usjr2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130142409-t1usjr2",
+				"updated": "20230130142417"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "rsyslog提供了三种远程传输协议："
+				}
+			]
+		},
+		{
+			"ID": "20230130142438-44ntz63",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230130142438-44ntz63",
+				"updated": "20230130142442"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "UDP 传输协议\n基于传统UDP协议进行远程日志传输，也是传统syslog使用的传输协议； 可靠性比较低，但性能损耗最少， 在网络情况比较差， 或者接收服务器压力比较高情况下，\n可能存在丢日志情况。 在对日志完整性要求不是很高，在可靠的局域网环境下可以使用。\n \nTCP 传输协议\n基于传统TCP协议明文传输，需要回传进行确认，可靠性比较高； 但在接收服务器宕机或者两者之间网络出问题的情况下，会出现丢日志情况。 这种协议相比于UDP在\n可靠性方面已经好很多，并且rsyslog原生支持，配置简单， 同时针对可能丢日志情况，可以进行额外配置提高可靠性，因此使用比较广。\n \nRELP 传输协议\nRELP（Reliable Event Logging Protocol）是基于TCP封装的可靠日志消息传输协议； 是为了解决TCP 与 UDP 协议的缺点而在应用层实现的传输协议，也是三者\n之中最可靠的。 需要多安装一个包rsyslog-relp以支持该协议。\n \n对于线上服务器，为了日志安全起见，建议使用还是使用 RELP 协议进行传输。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230130142811-vf6ytld",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230130142811-vf6ytld",
+				"updated": "20230130143319"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例1：简单配置记录"
+				}
+			]
+		},
+		{
+			"ID": "20230130142350-i5jfqpt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130142350-i5jfqpt",
+				"updated": "20230130142518"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "rsyslog的简单配置记录（如下将公司防火墙上的日志（UDP）打到IDC的rsyslog日志服务器上）"
+				}
+			]
+		},
+		{
+			"ID": "20230130142518-4eyh289",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230130142518-4eyh289",
+				"updated": "20230130142556"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "一、rsyslog服务端的部署\n安装rsyslog 程序（rsyslog默认已经在各发行版安装，如果系统中没有的话，可以用yum 进行安装，如下：）\n[root@zabbix ~]# yum install rsyslog -y\n \n配置：\n[root@zabbix ~]# cat /etc/rsyslog.conf\n# rsyslog v5 configuration file\n \n# For more information see /usr/share/doc/rsyslog-*/rsyslog_conf.html\n# If you experience problems, see http://www.rsyslog.com/doc/troubleshoot.html\n \n#### MODULES ####\n \n$ModLoad imuxsock # provides support for local system logging (e.g. via logger command)\n$ModLoad imklog   # provides kernel logging support (previously done by rklogd)\n$ModLoad immark  # provides --MARK-- message capability\n \n# Provides UDP syslog reception\n$ModLoad imudp                                          #开启udp的514端口。也可以开启tcp的514端口，这里只接受udp的\n$UDPServerRun 514\n \n# Provides TCP syslog reception\n#$ModLoad imtcp\n#$InputTCPServerRun 514\n \n$WorkDirectory /var/lib/rsyslog\n$AllowedSender udp, 192.168.17.0/8                    #仅仅接收来自192.168.17.0/8网段的主机的udp日志（这个是公司防火墙的ip地址）\n#### GLOBAL DIRECTIVES ####\n \n# Use default timestamp format\n$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat\n$template Remote,\"/data/fw_logs/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%$DAY%.log\"           #定义模板，接受日志文件路径，区分了不同主机的日志\n:fromhost-ip, !isequal, \"127.0.0.1\" ?Remote                                                        # 过滤server 本机的日志\n# File syncing capability is disabled by default. This feature is usually not required,\n# not useful and an extreme performance hit\n#$ActionFileEnableSync on\n \n# Include all config files in /etc/rsyslog.d/\n$IncludeConfig /etc/rsyslog.d/*.conf\n \n \n#### RULES ####\n \n# Log all kernel messages to the console.\n# Logging much else clutters up the screen.\n#kern.*                                                 /dev/console\n \n# Log anything (except mail) of level info or higher.\n# Don't log private authentication messages!\n*.info;mail.none;authpriv.none;cron.none                /var/log/messages\n \n# The authpriv file has restricted access.\nauthpriv.*                                              /var/log/secure\n \n# Log all the mail messages in one place.\nmail.*                                                  -/var/log/maillog\nlocal4.*                                                /data/fw.log\n \n# Log cron stuff\ncron.*                                                  /var/log/cron\n \n# Everybody gets emergency messages\n*.emerg                                                 *\n \n# Save news errors of level crit and higher in a special file.\nuucp,news.crit                                          /var/log/spooler\n \n# Save boot messages also to boot.log\nlocal7.*                                                /var/log/boot.log\n \n \n# ### begin forwarding rule ###\n# The statement between the begin ... end define a SINGLE forwarding\n# rule. They belong together, do NOT split them. If you create multiple\n# forwarding rules, duplicate the whole block!\n# Remote Logging (we use TCP for reliable delivery)\n#\n# An on-disk queue is created for this action. If the remote host is\n# down, messages are spooled to disk and sent when it is up again.\n#$WorkDirectory /var/lib/rsyslog # where to place spool files\n#$ActionQueueFileName fwdRule1 # unique name prefix for spool files\n#$ActionQueueMaxDiskSpace 1g   # 1gb space limit (use as much as possible)\n#$ActionQueueSaveOnShutdown on # save messages to disk on shutdown\n#$ActionQueueType LinkedList   # run asynchronously\n#$ActionResumeRetryCount -1    # infinite retries if host is down\n# remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional\n#*.* @@remote-host:514\n# ### end of the forwarding rule ###\n \n \n[root@zabbix ~]# mkdir /data/fw_logs/\n \n[root@zabbix ~]# /etc/init.d/rsyslog restart\n \n \n二、在公司防火墙（192.168.17.41/42）上配置udp日志输出策略（在防火墙添加rsyslog服务端的ip和514端口）\n \n三、过一会儿，在rsyslog日志服务器上设置的日志目录下就能看到防火墙的日志输出了\n[root@zabbix ~]# ll /data/fw_logs/\ntotal 4.0K\ndrwxrwxrwx   4 root root   46 Jul 28 10:40 .\ndrwxr-xr-x. 18 root root 4.0K Jul 28 10:38 ..\ndrwx------   2 root root   41 Jul 28 10:37 192.168.17.41\ndrwx------   2 root root   41 Jul 28 10:40 192.168.17.42\n[root@zabbix ~]# ll /data/fw_logs/192.168.17.41\ntotal 16K\ndrwx------ 2 root root  41 Jul 28 10:37 .\ndrwxrwxrwx 4 root root  46 Jul 28 10:40 ..\n-rw------- 1 root root 13K Jul 28 14:02 192.168.17.41_2017-07-28.log\n \n \n------------------------------------------------------------------------------------\n可以将上面rsyslog服务端的rsyslog.conf里的ip白名单设置为客户机的ip端，比如：\n$AllowedSender tcp, 172.18.0.0/16                  #表示接收172.18.0.0/16网段的客户机的tcp日志输入，前提是打开tcp的514端口\n \n客户机的配置：\n只需要在rsyslog.conf文件里添加下面一行：\n*.*                               @172.18.10.20                     #后面的ip是rsyslog服务端的ip地址\n \n启动rsyslog日志即可！\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230130142928-ti3vlcd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230130142928-ti3vlcd",
+				"updated": "20230130143310"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例2：将公司防火墙的日志打到rsyslog里"
+				}
+			]
+		},
+		{
+			"ID": "20230130142642-mqduzr3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130142642-mqduzr3",
+				"updated": "20230130142928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上配置的是将公司防火墙的日志打到rsyslog里。现在有这么一个需求：\n公司IDC的另外两台服务器172.19.10.24和172.19.10.25上部署了gitlab、nexus、jenkins、jira和wiki，上面的权限设置的比较杂，很多人都有登录需求。现在需要将登录到这两台服务器上的用户的所有操作过程记录下来，记录达到rsyslog日志里，相当于做用户操作记录的审计工作。"
+				}
+			]
+		},
+		{
+			"ID": "20230130142658-v2t1iui",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230130142658-v2t1iui",
+				"updated": "20230130142711"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "配置如下（结合上面的安装配置）（服务端的ip是172.19.16.21）：\n1）rsyslog服务端配置  （相比于上面的配置，这里去掉了AllowedSender的来源ip的白名单限制。即允许接收所有机器的日志；上面的防火墙日志还是能继续收集）\n[root@zabbix ~]# cat /etc/rsyslog.conf|grep -v \"#\"|grep -v \"^$\"\n$ModLoad imudp\n$UDPServerRun 514\n$WorkDirectory /var/lib/rsyslog\n$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat\n$template Remote,\"/data/fw_logs/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%$DAY%.log\"\n:fromhost-ip, !isequal, \"127.0.0.1\" ?Remote\n$IncludeConfig /etc/rsyslog.d/*.conf\n*.info;mail.none;authpriv.none;cron.none                /var/log/messages\nauthpriv.*                                              /var/log/secure\nmail.*                                                  -/var/log/maillog\ncron.*                                                  /var/log/cron\n*.emerg                                                 *\nuucp,news.crit                                          /var/log/spooler\nlocal7.*                                                /var/log/boot.log\nlocal5.*                                              /var/log/history.log\n \n[root@zabbix ~]# /etc/init.d/rsyslog restart\n \n2）在172.19.10.24上的配置\n[root@gitlab ~]# cat /etc/rsyslog.conf|grep -v \"#\"|grep -v \"^$\"\n$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat\n$IncludeConfig /etc/rsyslog.d/*.conf\n*.info;mail.none;authpriv.none;cron.none                /var/log/messages\nauthpriv.*                                              /var/log/secure\nmail.*                                                  -/var/log/maillog\ncron.*                                                  /var/log/cron\n*.emerg                                                 *\nuucp,news.crit                                          /var/log/spooler\nlocal7.*                                                /var/log/boot.log\nlocal5.*    @172.19.16.21\n \n[root@gitlab ~]# /etc/init.d/rsyslog restart\n \n[root@gitlab ~]# cat /etc/profile                  #在该文件的底部添加下面内容\n.......\nexport HISTTIMEFORMAT\nexport PROMPT_COMMAND='{ command=$(history 1 | { read x y; echo $y; }); logger -p local5.notice -t bash -i \"user=$USER,ppid=$PPID,from=$SSH_CLIENT,pwd=$PWD,command:$command\"; }'\n \n3）在另一台172.19.10.25上做类似配置配置\n[root@nexus ~]# cat /etc/rsyslog.conf |grep -v \"#\"|grep -v \"^$\"\n$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat\n$IncludeConfig /etc/rsyslog.d/*.conf\n*.info;mail.none;authpriv.none;cron.none                /var/log/messages\nauthpriv.*                                              /var/log/secure\nmail.*                                                  -/var/log/maillog\ncron.*                                                  /var/log/cron\n*.emerg                                                 *\nuucp,news.crit                                          /var/log/spooler\nlocal7.*                                                /var/log/boot.log\nlocal5.*   @172.19.16.21\n \n[root@nexus ~]# /etc/init.d/rsyslog restart\n \n[root@nexus ~]# cat /etc/profile\n.......\nexport HISTTIMEFORMAT\nexport PROMPT_COMMAND='{ command=$(history 1 | { read x y; echo $y; }); logger -p local5.notice -t bash -i \"user=$USER,ppid=$PPID,from=$SSH_CLIENT,pwd=$PWD,command:$command\"; }'\n \n4）过一段时间，发现在rsyslog服务端的日志目录/data/fw_logs下面已经有收集到的日志了\n[root@zabbix fw_logs]# pwd\n/data/fw_logs\n[root@zabbix fw_logs]# cd\n[root@zabbix ~]# cd /data/fw_logs/\n[root@zabbix fw_logs]# ll\ntotal 12K\ndrwxrwxrwx   6 root root   84 Aug 16 18:28 .\ndrwxr-xr-x. 18 root root 4.0K Aug 16 17:58 ..\ndrwx------   2 root root   74 Aug 17 09:50 172.19.10.24\ndrwx------   2 root root   74 Aug 17 10:00 172.19.10.25\ndrwx------   2 root root 4.0K Aug 17 00:01 192.168.17.41\ndrwx------   2 root root 4.0K Aug 17 00:01 192.168.17.42\n[root@zabbix fw_logs]# cd 172.19.10.24/\n[root@zabbix 172.19.10.24]# ll\ntotal 20K\ndrwx------ 2 root root  74 Aug 17 09:50 .\ndrwxrwxrwx 6 root root  84 Aug 16 18:28 ..\n-rw------- 1 root root 14K Aug 16 20:45 172.19.10.24_2017-08-16.log\n-rw------- 1 root root 771 Aug 17 10:03 172.19.10.24_2017-08-17.log\n[root@zabbix 172.19.10.24]# cat 172.19.10.24_2017-08-16.log\nAug 16 18:39:56 gitlab bash[138413]: user=root,ppid=124297,from=172.19.16.28 29338 22,pwd=/root,command:[2017-08-16 18:39:56]root pts/5 2017-08-16 17:23 (172.19.16.28)/etc/init.d/rsyslog restart\nAug 16 18:39:56 gitlab bash[138418]: user=root,ppid=124297,from=172.19.16.28 29338 22,pwd=/root,command:[2017-08-16 18:39:56]root pts/5 2017-08-16 17:23 (172.19.16.28)/etc/init.d/rsyslog restart\nAug 16 18:39:56 gitlab bash[138422]: user=root,ppid=124297,from=172.19.16.28 29338 22,pwd=/root,command:[2017-08-16 18:39:56]root pts/5 2017-08-16 17:23 (172.19.16.28)/etc/init.d/rsyslog restart\nAug 16 18:39:57 gitlab bash[138426]: user=root,ppid=124297,from=172.19.16.28 29338 22,pwd=/root,command:[2017-08-16 18:39:56]root pts/5 2017-08-16 17:23 (172.19.16.28)/etc/init.d/rsyslog restart\nAug 16 18:40:30 gitlab bash[138610]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/root,command:[2017-08-16 18:40:03]root pts/0 2017-08-16 18:40 (172.16.255.202)exit\nAug 16 18:40:43 gitlab bash[138652]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data,command:[2017-08-16 18:40:43]root pts/0 2017-08-16 18:40 (172.16.255.202)cd /data/\nAug 16 18:40:43 gitlab bash[138657]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data,command:[2017-08-16 18:40:43]root pts/0 2017-08-16 18:40 (172.16.255.202)ls\nAug 16 18:40:47 gitlab bash[138666]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data,command:[2017-08-16 18:40:47]root pts/0 2017-08-16 18:40 (172.16.255.202)mkdir hahahahah\nAug 16 18:40:48 gitlab bash[138671]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data/hahahahah,command:[2017-08-16 18:40:48]root pts/0 2017-08-16 18:40 (172.16.255.202)cd hahahahah/\nAug 16 18:40:48 gitlab bash[138677]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data/hahahahah,command:[2017-08-16 18:40:48]root pts/0 2017-08-16 18:40 (172.16.255.202)ls\nAug 16 18:40:54 gitlab bash[138696]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data/hahahahah,command:[2017-08-16 18:40:54]root pts/0 2017-08-16 18:40 (172.16.255.202)echo \"Asdfasdf\" \u003eheihei\nAug 16 18:40:54 gitlab bash[138702]: user=root,ppid=138586,from=172.16.255.202 52496 22,pwd=/data/hahahahah,command:[2017-08-16 18:40:54]root pts/0 2017-08-16 18:40 (172.16.255.202)ls\n.......\n \n有上面日志可以看出，在172.19.10.24这台机器上的操作记录都被详细记录下来了。这样，就能清楚地知道登录到这台机器上的用户都做了些什么了.......\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230130143249-f1d0m56",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230130143249-f1d0m56",
+				"updated": "20230130143302"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例3："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "rsyslog收集nginx日志到远程服务器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ":"
+				}
+			]
+		},
+		{
+			"ID": "20230130142801-7gqp4w3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130142801-7gqp4w3",
+				"updated": "20230130143249"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需求说明："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "通过rsyslog服务将192.168.10.21服务器上的/data/nginx/logs/www.kevin.com-access.log日志实时同步到192.168.10.52服务器上（路径为/data/rsyslog/nginx）"
+				}
+			]
+		},
+		{
+			"ID": "20230130143405-bbbufjt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230130143405-bbbufjt",
+				"updated": "20230130143411"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1）192.168.10.21为rsyslog客户端，即日志的推送端。rsyslog日志是客户机主动将自己的日志推送到远程服务器上。\n操作如下：\n[root@nginx-server ~]# yum install rsyslog -y\n[root@nginx-server ~]# cp /etc/rsyslog.conf /etc/rsyslog.conf.bak\n[root@nginx-server ~]# cat /etc/rsyslog.conf\n# rsyslog v5 configuration file\n\n# For more information see /usr/share/doc/rsyslog-*/rsyslog_conf.html\n# If you experience problems, see http://www.rsyslog.com/doc/troubleshoot.html\n\n#### MODULES ####\n\n$ModLoad imuxsock # provides support for local system logging (e.g. via logger command)\n$ModLoad imklog # provides kernel logging support (previously done by rklogd)\n#$ModLoad immark # provides --MARK-- message capability\n$ModLoad imfile                               ##装载imfile模块，这一行手动添加\n\n# Provides UDP syslog reception\n#$ModLoad imudp\n#$UDPServerRun 514\n\n# Provides TCP syslog reception\n#$ModLoad imtcp\n#$InputTCPServerRun 514\n\n\n#### GLOBAL DIRECTIVES ####\n\n# Use default timestamp format\n$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat\n\n# File syncing capability is disabled by default. This feature is usually not required,\n# not useful and an extreme performance hit\n#$ActionFileEnableSync on\n\n# Include all config files in /etc/rsyslog.d/\n$IncludeConfig /etc/rsyslog.d/*.conf\n\n\n#### RULES ####\n\n# Log all kernel messages to the console.\n# Logging much else clutters up the screen.\n#kern.* /dev/console\n\n# Log anything (except mail) of level info or higher.\n# Don't log private authentication messages!\n*.info;mail.none;authpriv.none;cron.none;local5.none /var/log/messages             ##不记录local5的日志\n\n# The authpriv file has restricted access.\nauthpriv.* /var/log/secure\n\n# Log all the mail messages in one place.\nmail.* -/var/log/maillog\n\n\n# Log cron stuff\ncron.* /var/log/cron\n\n# Everybody gets emergency messages\n*.emerg *\n\n# Save news errors of level crit and higher in a special file.\nuucp,news.crit /var/log/spooler\n\n# Save boot messages also to boot.log\nlocal7.* /var/log/boot.log\n\n\n# ### begin forwarding rule ###\n# The statement between the begin ... end define a SINGLE forwarding\n# rule. They belong together, do NOT split them. If you create multiple\n# forwarding rules, duplicate the whole block!\n# Remote Logging (we use TCP for reliable delivery)\n#\n# An on-disk queue is created for this action. If the remote host is\n# down, messages are spooled to disk and sent when it is up again.\n#$WorkDirectory /var/lib/rsyslog # where to place spool files\n#$ActionQueueFileName fwdRule1 # unique name prefix for spool files\n#$ActionQueueMaxDiskSpace 1g # 1gb space limit (use as much as possible)\n#$ActionQueueSaveOnShutdown on # save messages to disk on shutdown\n#$ActionQueueType LinkedList # run asynchronously\n#$ActionResumeRetryCount -1 # infinite retries if host is down\n# remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional\n#*.* @@remote-host:514\n# ### end of the forwarding rule ###\nuser.info /var/log/history\n\n#在文件底部添加下面几行内容\n$InputFileName /data/nginx/logs/www.kevin.com-access.log        ##读取日志文件（要监控的日志文件）\n$InputFileTag web_access             ##日志写入日志附加标签字符串\n$InputFileSeverity info           ##日志等级\n$InputFileStateFile /etc/rsyslog.d/stat-access         ##记录日志点等信息。(相当于msyql的master.info)文件名变了，\n这个StateFile标志必须变，否则无法传输。\n$InputFileFacility local5         ##设施类别\n$InputFilePollInterval 1          ##检查日志文件间隔（秒）\n$InputFilePersistStateInterval 1       ##回写偏移量数据到文件间隔时间（秒）\n$InputRunFileMonitor                          ##激活读取，可以设置多组日志读取，每组结束时设置本参数。以示生效。\nlocal5.* @192.168.10.52            ##代表local5设施的所有级别通过udp协议传送到192.168.10.51\n\n重启rsyslog服务\n[root@nginx-server ~]# /etc/init.d/rsyslog restart\n关闭系统日志记录器： [确定]\n启动系统日志记录器： [确定]\n\n由于作为日志的推送端，rsyslog日志不需要开启514端口（如上在rsyslog.conf文件里没有打开dup或tcp的514端口）\n[root@nginx-server ~]# lsof -i:514\n[root@nginx-server ~]#\n\n2）192.168.10.52为rsyslog服务端，即日志的接收端。\n配置如下：\n[root@log-server ~]# yum install rsyslog -y\n[root@log-server ~]# cp /etc/rsyslog.conf /etc/rsyslog.conf.bak\n# rsyslog configuration file\n\n# For more information see /usr/share/doc/rsyslog-*/rsyslog_conf.html\n# If you experience problems, see http://www.rsyslog.com/doc/troubleshoot.html\n\n#### MODULES ####\n\n# The imjournal module bellow is now used as a message source instead of imuxsock.\n$ModLoad imuxsock # provides support for local system logging (e.g. via logger command)\n$ModLoad imjournal # provides access to the systemd journal\n#$ModLoad imklog # reads kernel messages (the same are read from journald)\n#$ModLoad immark # provides --MARK-- message capability\n\n# Provides UDP syslog reception\n$ModLoad imudp                   ##载入imudp模块\n$UDPServerRun 514            ##开启udp接收并制定端口号\n\n# Provides TCP syslog reception\n$ModLoad imtcp                 ##载入imtcp模块。\n$InputTCPServerRun 514             ##开启tcp接收并制定端口号。tcp和udp两个端口模块可以同时使用！\n\n#### GLOBAL DIRECTIVES ####\n\n# Where to place auxiliary files\n$WorkDirectory /var/lib/rsyslog\n\n# Use default timestamp format\n$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat\n\n#定义一个模板用来指定接收的日志消息的格式（默认会在记录的日志前加几个字段）\n$template  SpiceTmpl,\"%msg%\\n\"                   ##%msg:2:$%为去掉日志开头的空格\n\n#定义一个模板用来指定接收的日志文件的存放路径%……%之间的是定义日志按照年-月-日命名\n$template  DynaFile,\"/data/rsyslog/nginx/%$YEAR%-%$MONTH%-%$DAY%.log\"\n\n# File syncing capability is disabled by default. This feature is usually not required,\n# not useful and an extreme performance hit\n#$ActionFileEnableSync on\n\n# Include all config files in /etc/rsyslog.d/\n$IncludeConfig /etc/rsyslog.d/*.conf\n\n# Turn off message reception via local log socket;\n# local messages are retrieved through imjournal now.\n$OmitLocalLogging on\n\n# File to store the position in the journal\n$IMJournalStateFile imjournal.state\n\n\n#### RULES ####\n\n# Log all kernel messages to the console.\n# Logging much else clutters up the screen.\n#kern.* /dev/console\n\n# Log anything (except mail) of level info or higher.\n# Don't log private authentication messages!\n*.info;mail.none;authpriv.none;cron.none;local5.none                /var/log/messages            ##不记录local5设施的日志\n\n# The authpriv file has restricted access.\nauthpriv.* /var/log/secure\n\n# Log all the mail messages in one place.\nmail.* -/var/log/maillog\n\n\n# Log cron stuff\ncron.* /var/log/cron\n\n# Everybody gets emergency messages\n*.emerg :omusrmsg:*\n\n# Save news errors of level crit and higher in a special file.\nuucp,news.crit /var/log/spooler\n\n# Save boot messages also to boot.log\nlocal7.* /var/log/boot.log\n\n#接收客户端local5设施传送来的日志并存放到指定位置（位置可用定义的模板。?代表使用动态的模板）\nlocal5.*                       ?DynaFile;SpiceTmpl\n\n# ### begin forwarding rule ###\n# The statement between the begin ... end define a SINGLE forwarding\n# rule. They belong together, do NOT split them. If you create multiple\n# forwarding rules, duplicate the whole block!\n# Remote Logging (we use TCP for reliable delivery)\n#\n# An on-disk queue is created for this action. If the remote host is\n# down, messages are spooled to disk and sent when it is up again.\n#$ActionQueueFileName fwdRule1 # unique name prefix for spool files\n#$ActionQueueMaxDiskSpace 1g # 1gb space limit (use as much as possible)\n#$ActionQueueSaveOnShutdown on # save messages to disk on shutdown\n#$ActionQueueType LinkedList # run asynchronously\n#$ActionResumeRetryCount -1 # infinite retries if host is down\n# remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional\n#*.* @@remote-host:514\n# ### end of the forwarding rule ###\n\n编辑/etc/sysconfig/rsyslog中\"SYSLOGD_OPTIONS=\"开启远程日志接收功能\n[root@log-server ~]# cat /etc/sysconfig/rsyslog\n# Options for rsyslogd\n# Syslogd options are deprecated since rsyslog v3.\n# If you want to use them, switch to compatibility mode 2 by \"-c 2\"\n# See rsyslogd(8) for more details\nSYSLOGD_OPTIONS=\"-c 5\"\n\n创建日志接收过来后定义的存放目录\n[root@log-server ~]# mkdir -p /data/rsyslog/nginx\n\n重启rsyslog服务\n[root@log-server ~]# /etc/init.d/rsyslog restart\nShutting down system logger: [ OK ]\nStarting system logger: [ OK ]\n[root@log-server ~]# lsof -i:514\nCOMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME\nrsyslogd 24594 root 2u IPv4 38927639 0t0 TCP *:shell (LISTEN)\nrsyslogd 24594 root 3u IPv4 38927635 0t0 UDP *:syslog\nrsyslogd 24594 root 4u IPv6 38927636 0t0 UDP *:syslog\nrsyslogd 24594 root 5u IPv6 38927640 0t0 TCP *:shell (LISTEN)\n\n查看日志是否接收过来了\n[root@log-server ~]# ll /data/rsyslog/nginx/\ntotal 550876\n-rw------- 1 root root 483539594 Jun 13 12:58 2018-06-13.log\n[root@log-server ~]# tail -2 /data/rsyslog/nginx/2018-06-13.log\n1.203.163.198 - [27/Apr/2018:00:17:53 +0800] \"POST /scf/%7B%7BloginConfig.loginSubmitUrl%7D%7D HTTP/1.1\" 302 0 \"https://www.kevin.com/scf/login\" Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36 - 0.010 0.003 10.0.54.21:9020 302\n1.203.163.198 - [27/Apr/2018:00:17:53 +0800] \"POST /scf/%7B%7BloginConfig.loginSubmitUrl%7D%7D HTTP/1.1\" 302 0 \"https://www.kevin.com/scf/login\" Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36 - 0.012 0.003 10.0.54.21:9020 302\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230130143502-quhizro",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130143502-quhizro",
+				"updated": "20230130143512"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "=========================温馨提示========================"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "rsyslog也可以收集多个日志文件，需要注意的是："
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n$InputFileTag        定义的APPNAME必须唯一，同一台主机上不同的应用应当使用不同的APPNAME，否则会导致新定义的TOKEN和TAG不生效；\n$template         定义的模板名必须唯一，否则会导致新定义的TOKEN和TAG不生效；\n$InputFileStateFile       定义的StateFile必须唯一，它被rsyslog用于记录文件上传进度，否则会导致混乱；"
+				}
+			]
+		},
+		{
+			"ID": "20230130143535-qo7qsdt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230130143535-qo7qsdt",
+				"updated": "20230130143538"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@external-lb01 ~]# cat /etc/rsyslog.conf\n..........\n$ModLoad imfile\n \n.........\n*.info;mail.none;authpriv.none;cron.none;local5.none;local4.none                /var/log/messages\n \n.........\n \n$InputFileName /data/nginx/logs/portal.kevin.com-access.log\n$InputFileTag portal_access\n$InputFileSeverity info\n$InputFileStateFile /etc/rsyslog.d/stat1-access\n$InputFileFacility local4\n$InputFilePollInterval 1\n$InputFilePersistStateInterval 1\n$InputRunFileMonitor\nlocal4.*  @192.168.10.52\n \n$InputFileName /data/nginx/logs/www.kevin.com-access.log\n$InputFileTag web_access\n$InputFileSeverity info\n$InputFileStateFile /etc/rsyslog.d/stat-access\n$InputFileFacility local5\n$InputFilePollInterval 1\n$InputFilePersistStateInterval 1\n$InputRunFileMonitor\nlocal5.*  @192.168.10.52\n \n重启日志发送端的rsyslog服务\n[root@external-lb01 ~]# /etc/init.d/rsyslog restart\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230130143551-0bptxtg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130143551-0bptxtg",
+				"updated": "20230130143608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "日志的接收端配置"
+				}
+			]
+		},
+		{
+			"ID": "20230130143720-d2lr92s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230130143720-d2lr92s",
+				"updated": "20230130143723"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "XA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@open-falcon01 ~]# cat /etc/rsyslog.conf\n........\n$ModLoad imudp\n$UDPServerRun 514\n \n# Provides TCP syslog reception\n$ModLoad imtcp\n$InputTCPServerRun 514\n \n.........\n$template SpiceTmpl,\"%msg%\\n\"\n$template DynaFile,\"/data/external-lb/nginx/nginx-access.log\"\n \n$template SpiceTmpl2,\"%msg%\\n\"\n$template DynaFile2,\"/data/external-lb/portal/portal-access.log\"\n \n.........\n*.info;mail.none;authpriv.none;cron.none;local5.none;local4.none                /var/log/messages\n \n.........\nlocal5.*                                                ?DynaFile;SpiceTmpl\nlocal4.*                                                ?DynaFile2;SpiceTmpl2\n \n重启日志接收端的rsyslog服务\n[root@open-falcon01 ~]# /etc/init.d/rsyslog restart\n \n查看，当访问对应对应的url时，就会有转发后的文件产生，并实时有日志内容转发过来\n[root@open-falcon01 ~]# ll /data/external-lb/nginx/nginx-access.log\n-rw------- 1 root root 1067372 Oct  9 10:51 /data/external-lb/nginx/nginx-access.log\n[root@open-falcon01 ~]# ll /data/external-lb/portal/portal-access.log\n-rw------- 1 root root 88141 Oct  9 22:26 /data/external-lb/portal/portal-access.log\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230130143558-x67wsik",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230130143558-x67wsik",
+				"updated": "20230130143809"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\na）如果发现日志还没有接收过来，即/data/rsyslog/nginx目录下没有日志产生，就同时重启推送端和接收端的rsyslog服务。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "确保双方的iptables防火墙和selinux关闭！"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nb）也可以自行修改接收的日志文件的存放路径，如改为下面的配置：\n$template DynaFile,\"/data/rsyslog/nginx/nginx-access.log\"\n则日志收集后存放的文件如下：\n[root@log-server ~]# ll /data/rsyslog/nginx/\ntotal 571716\n-rw------- 1 root root 483539594 Jun 13 12:58 2018-06-13.log\n-rw------- 1 root root 101893593 Jun 13 13:13 nginx-access.log"
+				}
+			]
+		}
+	]
+}

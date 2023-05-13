@@ -1,0 +1,352 @@
+{
+	"ID": "20230406170939-dshinj4",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230406170939-dshinj4",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230406170939-rqwfbt4\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230406172831-uj9q0gg\u0026quot;,\u0026quot;scrollTop\u0026quot;:300,\u0026quot;focusId\u0026quot;:\u0026quot;20230406170939-rqwfbt4\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "etcd对disk和network的规格要求 ",
+		"updated": "20230406172831"
+	},
+	"Children": [
+		{
+			"ID": "20230406170939-rqwfbt4",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230406170939-rqwfbt4"
+			}
+		},
+		{
+			"ID": "20230406170939-h8kmbz2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-h8kmbz2"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.4/op-guide/hardware/#disks",
+					"TextMarkTextContent": "https://etcd.io/docs/v3.4/op-guide/hardware/#disks"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-2zfqyjw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-2zfqyjw",
+				"updated": "20230406171938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "IOPS    500+ sequential IOPS   注意，是串行IOPS\n           5000+ concurrent IOPS\n带宽    100MB/s +，对于大型集群，建议 100MB/s 或更高，以便在 15 秒内恢复 1GB 数据"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-4ztl4o2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-4ztl4o2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体的，可以使用fio测试，测试命令为："
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-0nbfkib",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"id": "20230406170939-0nbfkib",
+				"updated": "20230406171031"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"TableCellContentWidth": 3,
+									"TableCellContentMaxWidth": 3,
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "1"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"TableCellContentWidth": 110,
+									"TableCellContentMaxWidth": 110,
+									"Children": [
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "fio --rw=write --ioengine"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "sync--fdatasync=1 --directory="
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "test"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "-data --size=22m --bs=2300 --name=mytest`"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-mdcercc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-mdcercc"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "fdatasync的p99得显著小于10ms，才表明disk的性能满足etcd要求。"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-l4o9pte",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-l4o9pte"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用中有两点需要注意："
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-5532jfe",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230406170939-5532jfe"
+			},
+			"Children": [
+				{
+					"ID": "20230406170939-ws4cyzx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230406170939-ws4cyzx"
+					},
+					"Children": [
+						{
+							"ID": "20230406170939-qt0y5h5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406170939-qt0y5h5"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "需测试所有master节点的性能，因为etcd跑在master节点上"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230406170939-mpgq5om",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230406170939-mpgq5om"
+					},
+					"Children": [
+						{
+							"ID": "20230406170939-ib4j20c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230406170939-ib4j20c"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "需要多测试几次，关注fdatasync的p99值是否稳定"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-2uluki2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-2uluki2"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参见文档： "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.ibm.com/cloud/blog/using-fio-to-tell-whether-your-storage-is-fast-enough-for-etcd",
+					"TextMarkTextContent": "https://www.ibm.com/cloud/blog/using-fio-to-tell-whether-your-storage-is-fast-enough-for-etcd"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-ix8cbgo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230406170939-ix8cbgo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "network"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-l5wjfmh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-l5wjfmh"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.3/op-guide/hardware/",
+					"TextMarkTextContent": "https://etcd.io/docs/v3.3/op-guide/hardware/"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-g2pa1gy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-g2pa1gy"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "网络带宽： 1Gbps +"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-cy67gdl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-cy67gdl"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "rtt： 若按照默认心跳100ms算，其为rtt的1.5倍，则rtt应该小于66ms。"
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-n527oxk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-n527oxk"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image2023-3-8_15-12-9-20230406170939-9nrm652.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230406170939-dncvhul",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406170939-dncvhul"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若rtt大于66ms，应相应的调整心跳和选举超时时间。"
+				}
+			]
+		},
+		{
+			"ID": "20230406172831-uj9q0gg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230406172831-uj9q0gg",
+				"updated": "20230406172831"
+			}
+		}
+	]
+}

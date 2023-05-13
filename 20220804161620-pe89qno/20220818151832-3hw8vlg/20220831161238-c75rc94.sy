@@ -1,0 +1,1207 @@
+{
+	"ID": "20220831161238-c75rc94",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20220831161238-c75rc94",
+		"title": "kubelet Resources QoS Classes介绍",
+		"updated": "20220902113928"
+	},
+	"Children": [
+		{
+			"ID": "20220831161238-a8g9m71",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220831161238-a8g9m71",
+				"updated": "20220831161845"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 基本概念 "
+				}
+			]
+		},
+		{
+			"ID": "20220831161846-mw9ho5q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831161846-mw9ho5q",
+				"updated": "20220831163800"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tKubernetes根据Pod中Containers Resource的request和limit的值来定义Pod的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "QoS Class"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。其中，指定容器request，代表系统确保能够提供的资源下限值。指定容器limit，代表系统允许提供的资源上限值。"
+				}
+			]
+		},
+		{
+			"ID": "20220831164113-3nlzfyg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164113-3nlzfyg",
+				"updated": "20220831170402"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tQoS(Quality of Service) 即服务质量，是 Kubernetes 中的一种控制机制，其会对运行在 Kubernetes 中的 Pod 进行一个质量划分，根据 Pod 中 container 的 Limit 和 request 将 Pod 分为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "Guaranteed，Burstable，BestEffort"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 三类并对所有 Pod 进行一个打分，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "它们的QoS级别依次递减"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。在资源尤其是内存这种不可压缩资源不够时，为保证整体质量的稳定，Kubernetes 就会根据 QoS 的不同优先级，对 Pod 进行资源回收。这也是有时集群中的 Pod 突然被 kill 掉的原因。"
+				}
+			]
+		},
+		{
+			"ID": "20220831163846-bypf93f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831163846-bypf93f",
+				"updated": "20220831164546"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t通常，Kubernetes通过设置request和limit的值来指定超卖比例，进而提升资源利用率。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "K8S的调度基于request，而不是limit。"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "Borg通过使用“non-guranteed”的资源，提升了20%的资源利用率。"
+				}
+			]
+		},
+		{
+			"ID": "20220831164659-z1lfa9j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164659-z1lfa9j",
+				"updated": "20220831164659"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "\tGuaranteed 如果Pod中所有Container的所有Resource的limit和request都相等且不为0，则这个Pod的QoS Class就是Guaranteed。"
+				}
+			]
+		},
+		{
+			"ID": "20220831163846-jd5189d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831163846-jd5189d",
+				"updated": "20220831164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "\t注意："
+				}
+			]
+		},
+		{
+			"ID": "20220831164208-b8lbfwn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164208-b8lbfwn",
+				"updated": "20220831164208"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\t如果一个容器只指明了limit，而未指明request，则表明request的值等于limit的值。"
+				}
+			]
+		},
+		{
+			"ID": "20220831164621-fdx886z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164621-fdx886z",
+				"updated": "20220831164622"
+			},
+			"Children": [
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220831164622-a8m0qhx.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831165756-9q5fumu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220831165756-9q5fumu",
+				"updated": "20220831170227"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 压缩资源和不可压缩资源"
+				}
+			]
+		},
+		{
+			"ID": "20220831165746-8g8tujs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831165746-8g8tujs",
+				"updated": "20220831165751"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在Kubernetes中，CPU这样的资源被称为\"可压缩资源\"，所谓可压缩资源就是当可用资源不足的时候，Pod只会\"饥饿\"，不会退出。而向Memory这样的资源被称为\"不可压缩资源\"，所谓的不可压缩资源就是当资源不足的时候Pod只会OOM。"
+				}
+			]
+		},
+		{
+			"ID": "20220831165849-hgr43j1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831165849-hgr43j1",
+				"updated": "20220831165850"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tCPU的设置单位是CPU的个数，比如CPU=1就表示这个Pod的CPU限额是1个CPU，而到底是1个CPU核心、是1个vCPU还是1个CPU超线程，这要取决于宿主机上CPU实现方式，而Kunernetes只需要保证该Pod能够使用到1个CPU的使用能力。"
+				}
+			]
+		},
+		{
+			"ID": "20220831165859-kjtwjh8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831165859-kjtwjh8",
+				"updated": "20220831165904"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tKubernetes允许将CPU的限额设置位分数，比如上面我们设置的CPU.limits的值为500m，而所谓的500m就是500milliCPU，也就是0.5个CPU，这样，这个Pod就会被分到一个CPU一半的计算能力。所以我们可以直接把配置写成cpu=0.5，不过官方推荐500m的写法，这是Kubernetes内部的CPU计算方式。"
+				}
+			]
+		},
+		{
+			"ID": "20220831165951-ovb00rr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831165951-ovb00rr",
+				"updated": "20220831165951"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t在Kubernetes中，内存资源的单位是bytes，支持使用Ei，Pi，Ti，Gi，Mi，Ki的方式作为bytes的值，其中需要注意Mi和M的区别（1Mi=1024_1024，1M=1000_1000）。"
+				}
+			]
+		},
+		{
+			"ID": "20220831170023-lfxhiuc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831170023-lfxhiuc",
+				"updated": "20220831170138"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "requests和limits区别："
+				}
+			]
+		},
+		{
+			"ID": "20220831170024-fzpgma4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220831170024-fzpgma4",
+				"updated": "20220831170057"
+			},
+			"Children": [
+				{
+					"ID": "20220831170024-d8u5a9h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220831170024-d8u5a9h",
+						"updated": "20220831170053"
+					},
+					"Children": [
+						{
+							"ID": "20220831170024-hr4qerg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220831170024-hr4qerg",
+								"updated": "20220831170053"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在调度的时候，kube-scheduler会按照requests的值进行计算；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220831170024-f4467ta",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220831170024-f4467ta",
+						"updated": "20220831170057"
+					},
+					"Children": [
+						{
+							"ID": "20220831170024-hcepxdb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220831170024-hcepxdb",
+								"updated": "20220831170057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在设置CGroups的时候，kubelet会按照limits的值来进行设置；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831163859-1brljra",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220831163859-1brljra",
+				"updated": "20220831170230"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. QoS打分"
+				}
+			]
+		},
+		{
+			"ID": "20220831164837-mcq2zi5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164837-mcq2zi5",
+				"updated": "20220831164847"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220831164847-v14enza.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831171417-rb1fljg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831171417-rb1fljg",
+				"updated": "20220831171612"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t对于kubernetes来说，通过cgroup就可以给POD设置QoS级别，当资源不够使用时，先kill优先级低的POD，在实际使用时，是通过OOM（Out of Memory）分数值来实现的，OOM分数值从0到1000。OOM分数值是根据OOM_ADJ参数计算出来的，对于Guaranteed级别的POD，OOM_ADJ参数设置成了-998，对于BestEffort级别的POD，OOM_ADJ参数设置成了1000，对于Burstable级别的POD，OOM_ADJ参数取值从2到999，对于kube保留的资源，比如kubelet，OOM_ADJ参数设置成了-999。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "OOM_ADJ参数设置的越大，通过OOM_ADJ参数计算出来的OOM分数越高，OOM分数越高，这个POD的优先级就越低，在出现资源竞争的时候，就越早被kill====掉"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，对于OOM_ADJ参数是-999的代表kubernetes永远不会因为OOM而被kill掉。\n \t在Kubernetes中，常用服务的OOM分值："
+				}
+			]
+		},
+		{
+			"ID": "20220831171612-p5svx7c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831171612-p5svx7c",
+				"updated": "20220831171627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220831171627-6ta8j7v.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220902110523-v5ana2w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220902110523-v5ana2w",
+				"updated": "20220902110523"
+			}
+		},
+		{
+			"ID": "20220902104018-skutadx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220902104018-skutadx",
+				"updated": "20220902110526"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Pod OOM的打分设置："
+				}
+			]
+		},
+		{
+			"ID": "20220902110544-nugcmo3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220902110544-nugcmo3",
+				"updated": "20220902110544"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tmm/oom_kill.c 中的badness()给每个进程一个OOM score，更高OOM得分的进程更容易被kill。得分取决于："
+				}
+			]
+		},
+		{
+			"ID": "20220902110550-8egjt1y",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220902110550-8egjt1y",
+				"updated": "20220902110711"
+			},
+			"Children": [
+				{
+					"ID": "20220902110559-783fg0e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220902110559-783fg0e"
+					},
+					"Children": [
+						{
+							"ID": "20220902110559-04vdax0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220902110559-04vdax0",
+								"updated": "20220902110606"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "主要是看进程的内存消耗情况，包括驻留内存、pagetable和swap的使用"
+								}
+							]
+						},
+						{
+							"ID": "20220902110629-3p58w0f",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20220902110629-3p58w0f"
+							},
+							"Children": [
+								{
+									"ID": "20220902110629-l3hza5o",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220902110629-l3hza5o"
+									},
+									"Children": [
+										{
+											"ID": "20220902110634-cqqw6v7",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220902110634-cqqw6v7"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "一般是内存耗费的百分比*10（percent-times-ten）"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220902110615-mfh7sow",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220902110615-mfh7sow"
+					},
+					"Children": [
+						{
+							"ID": "20220902110625-gp42pnf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220902110625-gp42pnf",
+								"updated": "20220902110711"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "参考用户权限，比如root权限启动的进程，打分会减少30"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220902110711-swsr9c6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220902110711-swsr9c6",
+						"updated": "20220902110711"
+					},
+					"Children": [
+						{
+							"ID": "20220902110712-c95ziac",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220902110712-c95ziac"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "OOM打分因子：/proc/pid/oom_score_adj (加减) 和 /proc/pid/oom_adj（乘除）"
+								}
+							]
+						},
+						{
+							"ID": "20220902110712-03teuu3",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20220902110712-03teuu3"
+							},
+							"Children": [
+								{
+									"ID": "20220902110712-wajdj98",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220902110712-wajdj98"
+									},
+									"Children": [
+										{
+											"ID": "20220902110712-42123so",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220902110712-42123so"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "oom_adj： -15～ 15的系数调整"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220902110712-aq8va74",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220902110712-aq8va74"
+									},
+									"Children": [
+										{
+											"ID": "20220902110712-j3xok5n",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220902110712-j3xok5n"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "oom_score_adj：oom_score会加上oom_score_adj这个值"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220902110712-w4ozv0v",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220902110712-w4ozv0v"
+									},
+									"Children": [
+										{
+											"ID": "20220902110712-oqbchl2",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220902110712-oqbchl2"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "最终oom score的值 还是在 0～1000"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220902104018-5i4wzxf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220902104018-5i4wzxf",
+				"updated": "20220902110909"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "计算系统上oom_score分数TPO10进程（最容易被oom killer杀掉的进程）脚本："
+				}
+			]
+		},
+		{
+			"ID": "20220902110921-m18fqgk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20220902110921-m18fqgk",
+				"updated": "20220902111056"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# vim oomscore.sh \n#!/bin/bash \nfor proc in $(find /proc -maxdepth 1 -regex '/proc/[0-9]+'); \ndo -printf \"%2d %5d %s\\n\" \\\n \"$(cat $proc/oom_score)\" \\\n \"$(basename $proc)\" \\\n \"$(cat $proc/cmdline | tr '\\0' ' ' | head -c 50)\" \ndone 2\u003e/dev/null | sort -nr | head -n 10\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20220831164839-rymnq0l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20220831164839-rymnq0l",
+				"updated": "20220831170233"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. QoS的本质区别"
+				}
+			]
+		},
+		{
+			"ID": "20220831164925-ftovhqm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164925-ftovhqm",
+				"updated": "20220831164940"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三种 QoS 在调度和实现都存在着区别："
+				}
+			]
+		},
+		{
+			"ID": "20220831164934-73csdnu",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220831164934-73csdnu",
+				"updated": "20220831165014"
+			},
+			"Children": [
+				{
+					"ID": "20220831165014-ssakhau",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220831165014-ssakhau"
+					},
+					"Children": [
+						{
+							"ID": "20220831165014-9ovempn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220831165014-9ovempn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调度时，调度器只会根据 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "mark",
+									"TextMarkTextContent": "request 值"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "进行调度，这也就解释了有些 Node 节点 Resource Limit 超出 100% 的情况"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831165010-snqh2qe",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20220831165010-snqh2qe",
+				"updated": "20220902113928"
+			},
+			"Children": [
+				{
+					"ID": "20220831165017-u8gsks4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220831165017-u8gsks4"
+					},
+					"Children": [
+						{
+							"ID": "20220831165017-fn3gnz8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220831165017-fn3gnz8",
+								"updated": "20220831165036"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当 OOM 时，系统会根据 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oom_score"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 值来选择优先 kill 掉的进程，分数越高越先被 kill 掉。"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oom_score"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 由系统计算所得，用户是不能设置的。但是如上文所述，而根据 QoS 的类型，kubelet 会计算出 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oom_score_adj"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的值，通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oom_score_adj"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 来调整 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "oom_score"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 的分数，从而影响 OOM 被 kill 进程的优先级。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220831165034-kgb7t6m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220831165034-kgb7t6m",
+						"updated": "20220902113928"
+					},
+					"Children": [
+						{
+							"ID": "20220831165034-iqds8pu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220831165034-iqds8pu"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于资源的限制，是由 CGroup 来完成的。kubelet 会为三种 QoS 分别创建 QoS level CGroup：   "
+								}
+							]
+						},
+						{
+							"ID": "20220902111659-sysmd53",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20220902111659-sysmd53",
+								"updated": "20220902113928"
+							},
+							"Children": [
+								{
+									"ID": "20220831165045-sh3scvb",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220831165045-sh3scvb"
+									},
+									"Children": [
+										{
+											"ID": "20220831165045-hdvcg95",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220831165045-hdvcg95",
+												"updated": "20220831165051"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "Guaranteed"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " Pod Qos 的 CGroup level 会直接创建在 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "RootCgroup/kubepods"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 下    "
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220831165053-5j5ar27",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220831165053-5j5ar27"
+									},
+									"Children": [
+										{
+											"ID": "20220831165053-gw28ko6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220831165053-gw28ko6",
+												"updated": "20220831165056"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "Burstable"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " Pod Qos 的创建在 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "RootCgroup/kubepods/burstable"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 下    "
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220831165057-083qi2e",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220831165057-083qi2e"
+									},
+									"Children": [
+										{
+											"ID": "20220831165057-7rh6umk",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220831165057-7rh6umk"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "BestEffort"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " Pod Qos 的创建在 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "RootCgroup/kubepods/BestEffort"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "下"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20220902111714-ad9jmno",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20220902111714-ad9jmno",
+										"updated": "20220902113928"
+									},
+									"Children": [
+										{
+											"ID": "20220902111714-qpjvibg",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20220902111714-qpjvibg",
+												"updated": "20220902113928"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "RootCgroup"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "通过 "
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "mount |grep  cgroup"
+												},
+												{
+													"Type": "NodeText",
+													"Data": " 可以看到，在 cgroup 的每个子系统下都会创建 Qos level cgroups， 此外在对应的 QoS level cgroups 还会为 pod 创建 Pod level cgroups，大部分默认在"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "/sys/fs/cgroup"
+												},
+												{
+													"Type": "NodeText",
+													"Data": ","
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20220831165101-figlosj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20220831165101-figlosj",
+						"updated": "20220831165102"
+					},
+					"Children": [
+						{
+							"ID": "20220831165101-2unt2xx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20220831165101-2unt2xx",
+								"updated": "20220831165102"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "而在 Pod level CGroup 中还会创建 Container level CGroup，其结构如下图所示："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220831164909-o39w37k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220831164909-o39w37k",
+				"updated": "20220831165112"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image.png"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20220831165112-pot1hjn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20220901143212-pdalxsg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20220901143212-pdalxsg",
+				"updated": "20220901143212"
+			}
+		}
+	]
+}
