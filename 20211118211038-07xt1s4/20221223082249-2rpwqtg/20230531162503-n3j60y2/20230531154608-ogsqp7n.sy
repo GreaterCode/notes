@@ -1,0 +1,1447 @@
+{
+	"ID": "20230531154608-ogsqp7n",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230531154608-ogsqp7n",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230531154608-bf35huh\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230531154608-hlcsgg2\u0026quot;,\u0026quot;scrollTop\u0026quot;:1896,\u0026quot;focusId\u0026quot;:\u0026quot;20230601135449-70ji472\u0026quot;,\u0026quot;focusStart\u0026quot;:706,\u0026quot;focusEnd\u0026quot;:706}",
+		"title": " crash工具分析Kdump下vmcore文件常用命令总结（三） ",
+		"updated": "20230601135500"
+	},
+	"Children": [
+		{
+			"ID": "20230531154608-bf35huh",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230531154608-bf35huh",
+				"updated": "20230531154608"
+			}
+		},
+		{
+			"ID": "20230531154608-p4w9mic",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230531154608-p4w9mic",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"ID": "20230531154608-nob3jdf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230531154608-nob3jdf",
+						"updated": "20230531154608"
+					},
+					"Children": [
+						{
+							"ID": "20230531154608-tdplnr0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230531154608-tdplnr0",
+								"updated": "20230531154608"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124612386",
+									"TextMarkTextContent": "https://blog.csdn.net/Luckiers/article/details/124612386"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-p46w49w",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230531154608-p46w49w",
+				"updated": "20230531154608"
+			}
+		},
+		{
+			"ID": "20230531154608-2rg9u9p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531154608-2rg9u9p",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、简介"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-prdtoh7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-prdtoh7",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文主要介绍使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=crash\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "crash"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "工具对kdump生成的vmcore文件进行分析，解析常见的crash命令，前面已讲述两章关于Kdump的内容，读者感兴趣可以点击下面的链接："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-dmx7vjx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-dmx7vjx",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124562993",
+					"TextMarkTextContent": "1、Kdump调试机理总结（一）"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-5m8qj8g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-5m8qj8g",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124581570",
+					"TextMarkTextContent": "2、Kdump配置及使用详细总结（二）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n系统产生异常时，触发Kdump机制，启动捕获内核，用以对生产内核下的内存进行收集和转存。\nKdump用于对内存镜像的转储，它不但可以转储内存镜像到本地硬盘，还可以将内存镜像通过NFS，SSH等协议转储到不同机器的设备上。\n本文是将生产内核的内存数据转储在/var/crash目录下，下面开始对其进行分析。"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-s0xwwu3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-s0xwwu3",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "分析vmcore的主要目的:"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n1、明白内核崩溃的大致原因;\n2、对内核崩溃的原因做更细致的分析;"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-k07hjvf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-k07hjvf",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "crash是一个被广泛应用的内核奔溃转储文件分析工具。crash工具跟gdb很类似，它可以交互的分析运行中的内核，也可以分析由kdump、netdump、diskdump、xendump产生的core "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=dump%E6%96%87%E4%BB%B6\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "dump文件"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-9wxlecu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531154608-9wxlecu",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、vmcore分析"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-hyc38ox",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-hyc38ox",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.1 环境及相关文件准备"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n使用crash工具分析vmcore，需要：\n（1）crash工具(crash)；\n（2）崩溃转储文件(vmcore)；\n（3）发生崩溃的内核映像文件(vmlinux)，包含调试内核所需调试信息；\n（4）crash下不同命令分析vmcore文件。"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-s9os1zw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-s9os1zw",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体操作：\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（1）安装crash工具"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-qgkxhgy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-qgkxhgy",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# yum install crash\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-sbxhj1b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-sbxhj1b",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（2）崩溃转储文件(vmcore)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n发生Kdump后在/var/crash下会生成vmcore文件，也可以手动进入Kdump生成vmcore，具体操作可参考本人博客kdump第二篇，具体链接在文章开头。"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-kjhj2tk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-kjhj2tk",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（3）准备内核映像文件"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n一般系统在安装后在/boot目录下，也有个内核映像文件，vmlinuxz开头的文件，但是它是压缩过后的，无法完成调试工作。\n我们需要一个带内核调试信息的vmlinux镜像，它有两种获取方式：\n1、手动编译vmlinux\n手动编译就是正常的编译一个Linux内核，不具体介绍了。\n需要注意的是，make menuconfig里配置CONFIG_DEBUG_INFO=y。\n2、官网下载vmlinux\n下载带有完整调试信息的内核映像文件，内核调试信息包kernel-debuginfo有两个："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-b81ignt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-b81ignt",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kernel-debuginfo\nkernel-debuginfo-common\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-ncqig7i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-ncqig7i",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于centos系统，可以在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://debuginfo.centos.org/",
+					"TextMarkTextContent": "http://debuginfo.centos.org/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "上下载到各发行版本所需的调试包。\n可以通过直接解开这两个包找到vmlinux或者安装这两个包在/lib/debug/lib/modules/3.10.0.x86_64/目录下看到vmlinux内核映像文件："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-gw7zp4i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-gw7zp4i",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# rpm2cpio xxx.rpm|cpio -idvm //当前目录解开该安装包\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-yjsepbb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-yjsepbb",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（4）crash下不同命令分析vmcore文件1、进入crash环境"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-fqeexih",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-fqeexih",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# crash /lib/debug/lib/modules/3.10.0.el7.x86_64/vmlinux /var/crash/127.0.0.1-2022-05-06-17\\:25\\:34/vmcore\n\nGNU gdb (GDB) 7.6\nCopyright (C) 2013 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later \u003chttp://gnu.org/licenses/gpl.html\u003e\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.  Type \"show copying\"\nand \"show warranty\" for details.\nThis GDB was configured as \"x86_64-unknown-linux-gnu\"...\n\n      KERNEL: /boot/vmlinux                   \n    DUMPFILE: /var/crash/127.0.0.1-2022-05-06-17:25:41/vmcore  [PARTIAL DUMP]\n        CPUS: 8\n        DATE: Fri May 06 17:25:34 2022\n      UPTIME: 00:34:45\nLOAD AVERAGE: 3.37, 3.71, 3.38\n       TASKS: 1316\n    NODENAME: fe0fdb76-b761-11e9-b107-0014101e89e7\n     RELEASE: 3.10.0+\n     VERSION: #1 SMP Thu Dec 24 16:27:16 CST 2020\n     MACHINE: x86_64  (3408 Mhz)\n      MEMORY: 31.9 GB\n       PANIC: \"SysRq : Trigger a crash\"\n         PID: 1942\n     COMMAND: \"bash\"\n        TASK: ffff88068c957300  [THREAD_INFO: ffff88062b8f4000]\n         CPU: 2\n       STATE: TASK_RUNNING (SYSRQ)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601135441-ohrhnq4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230601135441-ohrhnq4",
+				"updated": "20230601135448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常用命令"
+				}
+			]
+		},
+		{
+			"ID": "20230601135449-70ji472",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601135449-70ji472",
+				"updated": "20230601135500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "log/dmesg: 打印出故障现场的kmsg缓冲区log_buf中的内容。\nstruct：展示结构体的定义，或者从指定的地址开始解析一个结构体。\nunion：与struct类似，但是用于union的展示\np：print查看某个变量的值，实际上是调用gdb的p命令\nwhatis：展示结构体、联合体等定义\nbt \u003cpid\u003e：展示调用堆栈信息，如果不加参数那么就可以利用SP和FP进行栈回溯打印；\n-T显示一个进程从thread_info以上一直到堆栈底部的所有symbol信息，一般比不加参数打印出的信息更多；\n-a显示所有active task的堆栈信息。\nps：展示系统中的进程状态，和正常系统运行时的ps命令类似\ntask \u003cpid\u003e：展示某个pid的task_struct内容，不加pid则表示当前进程\ndis \u003caddress\u003e：反汇编命令，-l可以展示源代码行。\nmount：展示当前挂载的文件系统的命令\nnet：展示网络相关的信息\nrd \u003caddress\u003e: read memory操作，读取一个地址处的内容\nfile \u003cpid\u003e：查看某一个进程中的所有打开的文件\nsearch -t \u003cvalue/symbol\u003e：在所有进程的stack页面中查找一个value或者一个symbol，并打印出来结果\n————————————————\n版权声明：本文为CSDN博主「程序猿Ricky的日常干货」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。\n原文链接：https://blog.csdn.net/rikeyone/article/details/105991074\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-6oqgh6k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-6oqgh6k",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2、bt命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nbacktrace打印内核栈回溯信息，bt pid 打印指定进程栈信息。"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-78hl0mx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-78hl0mx",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e bt 1942\nPID: 1942   TASK: ffff88068c957300  CPU: 2   COMMAND: \"bash\"\n #0 [ffff88062b8f7b48] machine_kexec at ffffffff81051e9b\n #1 [ffff88062b8f7ba8] crash_kexec at ffffffff810f27e2\n #2 [ffff88062b8f7c78] oops_end at ffffffff81689948\n #3 [ffff88062b8f7ca0] no_context at ffffffff816793f1\n #4 [ffff88062b8f7cf0] __bad_area_nosemaphore at ffffffff81679487\n #5 [ffff88062b8f7d38] bad_area_nosemaphore at ffffffff816795f1\n #6 [ffff88062b8f7d48] __do_page_fault at ffffffff8168c6ce\n #7 [ffff88062b8f7da8] do_page_fault at ffffffff8168c863\n #8 [ffff88062b8f7dd0] page_fault at ffffffff81688b48\n    [exception RIP: sysrq_handle_crash+22]\n    RIP: ffffffff813baf16  RSP: ffff88062b8f7e80  RFLAGS: 00010046\n    RAX: 000000000000000f  RBX: ffffffff81a7b180  RCX: 0000000000000000\n    RDX: 0000000000000000  RSI: ffff88086ec8f6c8  RDI: 0000000000000063\n    RBP: ffff88062b8f7e80   R8: 0000000000000092   R9: 0000000000000e37\n    R10: 0000000000000e36  R11: 0000000000000003  R12: 0000000000000063\n    R13: 0000000000000246  R14: 0000000000000004  R15: 0000000000000000\n    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018\n #9 [ffff88062b8f7e88] __handle_sysrq at ffffffff813bb6d2\n#10 [ffff88062b8f7ec0] write_sysrq_trigger at ffffffff813bbbaf\n#11 [ffff88062b8f7ed8] proc_reg_write at ffffffff812494bd\n#12 [ffff88062b8f7ef8] vfs_write at ffffffff811dee9d\n#13 [ffff88062b8f7f38] sys_write at ffffffff811df93f\n#14 [ffff88062b8f7f80] system_call_fastpath at ffffffff81691049\n    RIP: 00007fb320bcb500  RSP: 00007ffde533c198  RFLAGS: 00000246\n    RAX: 0000000000000001  RBX: ffffffff81691049  RCX: ffffffffffffffff\n    RDX: 0000000000000002  RSI: 00007fb3214eb000  RDI: 0000000000000001\n    RBP: 00007fb3214eb000   R8: 000000000000000a   R9: 00007fb3214d5740\n    R10: 0000000000000001  R11: 0000000000000246  R12: 0000000000000001\n    R13: 0000000000000002  R14: 00007fb320e9f400  R15: 0000000000000002\n    ORIG_RAX: 0000000000000001  CS: 0033  SS: 002b\n\n解析：\n    可以看到最后几步触发了缺页异常，进入crash_kexec的流程，最后调用 machine_kexec()。这通常是一个硬件相关的函数。它会引导启动捕获内核，从而完成 kdump 的过程。\n    代码就是走到了sysrq_handle_crash函数首地址+0x22这段命令的时候，触发的缺页异常。\n\n注意：\n    这里，对应x86-64汇编，应用层下来的系统调用对应的6个参数存放的寄存器依次对应：rdi、rsi、rdx、rcx、r8、r9。对于多于6个参数的，仍存储在栈上。\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-2pc0qzn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-2pc0qzn",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3、log命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n打印vmcore所在的系统内核dmesg日志信息"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-zi4pqpt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-zi4pqpt",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e log\n[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd070]\n[    0.000000] Linux version 4.20.0-rc4-00007-gef78e5e (root@localhost.localdomain) (gcc version 7.3.1 20180425 [linaro-7.3-2018.05 revision d29120a424ecfbc167ef90065c0eeb7f91977701] (Linaro GCC 7.3-2018.05)) #3 SMP PREEMPT Wed Jan 15 07:52:10 PST 2020\n[    0.000000] Machine model: linux,dummy-virt\n[    0.000000] efi: Getting EFI parameters from FDT:\n[    0.000000] efi: UEFI not found.\n[    0.000000] cma: Reserved 32 MiB at 0x00000000be000000\n[    0.000000] NUMA: No NUMA configuration found\n[    0.000000] NUMA: Faking a node at [mem 0x0000000040000000-0x00000000bfffffff]\n[    0.000000] NUMA: NODE_DATA [mem 0xbdfea840-0xbdfebfff]\n[    0.000000] Zone ranges:\n[    0.000000]   DMA32    [mem 0x0000000040000000-0x00000000bfffffff]\n[    0.000000]   Normal   empty\n[    0.000000] Movable zone start for each node\n[    0.000000] Early memory node ranges\n[    0.000000]   node   0: [mem 0x0000000040000000-0x00000000bfffffff]\n[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x00000000bfffffff]\n[    0.000000] On node 0 totalpages: 524288\n[    0.000000]   DMA32 zone: 8192 pages used for memmap\n[    0.000000]   DMA32 zone: 0 pages reserved\n[    0.000000]   DMA32 zone: 524288 pages, LIFO batch:63\n[    0.000000] psci: probing for conduit method from DT.\n[    0.000000] psci: PSCIv0.2 detected in firmware.\n[    0.000000] psci: Using standard PSCI v0.2 function IDs\n[    0.000000] psci: Trusted OS migration not required\n[    0.000000] random: get_random_bytes called from start_kernel+0xa8/0x418 with crng_init=0\n[    0.000000] percpu: Embedded 23 pages/cpu @(____ptrval____) s55704 r8192 d30312 u94208\n[    0.000000] pcpu-alloc: s55704 r8192 d30312 u94208 alloc=23*4096\n[    0.000000] pcpu-alloc: [0] 0 [0] 1 \n[    0.000000] Detected PIPT I-cache on CPU0\n[    0.000000] CPU features: enabling workaround for ARM erratum 832075\n[    0.000000] CPU features: enabling workaround for ARM erratum 834220\n[    0.000000] CPU features: enabling workaround for EL2 vector hardening\n[    0.000000] CPU features: detected: Kernel page table isolation (KPTI)\n[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 516096\n[    0.000000] Policy zone: DMA32\n[    0.000000] Kernel command line: rdinit=/linuxrc console=ttyAMA0\n[    0.000000] Memory: 2009884K/2097152K available (10876K kernel code, 1414K rwdata, 5100K rodata, 1344K init, 380K bss, 54500K reserved, 32768K cma-reserved)\n[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1\n[    0.000000] rcu: Preemptible hierarchical RCU implementation.\n[    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=2.\n[    0.000000]  Tasks RCU enabled.\n[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.\n[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=2\n[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0\n[    0.000000] GICv2m: range[mem 0x08020000-0x08020fff], SPI[80:143]\n[    0.000000] arch_timer: cp15 timer(s) running at 62.50MHz (virt).\n[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x1cd42e208c, max_idle_ns: 881590405314 ns\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-c805aei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-c805aei",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4、dis命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\ndis -l (function+offset) 10 反汇编出指令所在代码，10代表打印该指定位置开始的10行信息。"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-ds765z1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-ds765z1",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e dis -l sysrq_handle_crash+22 10\n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0/drivers/tty/sysrq.c: 138\n0xffffffff813baf16 \u003csysrq_handle_crash+22\u003e:     movb   $0x1,0x0\n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0/drivers/tty/sysrq.c: 139\n0xffffffff813baf1e \u003csysrq_handle_crash+30\u003e:     pop    %rbp\n0xffffffff813baf1f \u003csysrq_handle_crash+31\u003e:     retq   \n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0/drivers/tty/sysrq.c: 85\n0xffffffff813baf20 \u003csysrq_handle_loglevel\u003e:     nopl   0x0(%rax,%rax,1) [FTRACE NOP]\n0xffffffff813baf25 \u003csysrq_handle_loglevel+5\u003e:   push   %rbp\n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0/drivers/tty/sysrq.c: 90\n0xffffffff813baf26 \u003csysrq_handle_loglevel+6\u003e:   xor    %eax,%eax\n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0/drivers/tty/sysrq.c: 89\n0xffffffff813baf28 \u003csysrq_handle_loglevel+8\u003e:   movl   $0x7,0x6322be(%rip)        # 0xffffffff819ed1f0 \u003cconsole_printk\u003e\n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0/drivers/tty/sysrq.c: 85\n0xffffffff813baf32 \u003csysrq_handle_loglevel+18\u003e:  mov    %rsp,%rbp\n0xffffffff813baf35 \u003csysrq_handle_loglevel+21\u003e:  push   %rbx\n/home/zhugeyifan/source/jd4000/jd4000_x86/packages/linux_lsp/kernel/linux-3.10.0 -- MORE --  forward: \u003cSPACE\u003e, \u003cENTER\u003e or j  backward: b or k\n/drivers/tty/sysrq.c: 88\n0xffffffff813baf36 \u003csysrq_handle_loglevel+22\u003e:  lea    -0x30(%rdi),%ebx\n\n解析：\n    代码位置+函数+函数偏移位置+该位置的汇编指令...\n    很容易定义到具体的哪一行代码，更方便我们去分析问题的原因！\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-x9ju1cq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-x9ju1cq",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5、mod命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nmod 查看当时内核加载的所有内核模块信息\n重装加载进改内核模块："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-tjz22bj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-tjz22bj",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e mod -s my_test_lkm /mnt/shared/my_test.ko\n     MODULE       NAME                            SIZE  OBJECT FILE\nffffffffc07c7000  my_test                    12740  /mnt/shared/my_test.ko\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-wnh7udu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-wnh7udu",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "6、sym命令"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-skq2u8j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-skq2u8j",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "“sym 内存地址”转换指定符号为其虚拟地址，显示系统中对应的符号表信息，并且具体到源代码的那一行\n如上面bt打印的RIP: ffffffffc07c5024，使用sym转换查看系统符号信息\nsym addr 通过虚拟地址，显示symbol和源码位置"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-p5t43ns",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-p5t43ns",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e sym ffffffffc07c5024\nffffffffc07c5024 (t) my_openat+36 [my_test_lkm] /mnt/hgfs/test_ko/lkm-test05/my_lkm.c: 25\n\nsym symbol 通过symbol，显示虚拟地址和源码位置：\ncrash\u003e sym vfs_fstat\nffffffff81196f30 (T) vfs_fstat ../debug/kernel-3.8.13/linux-3.8.13-44.1.1.el6uek/fs/stat.c: 59\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-ykknt26",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-ykknt26",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "7、ps命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nps 打印内核崩溃时，正常的进程信息\n带 \u003e 标识代表是活跃的进程，ps pid打印某指定进程的状态信息："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-cqadgxp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-cqadgxp",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e ps 27005\n   PID    PPID  CPU       TASK        ST  %MEM     VSZ    RSS  COMM\n\u003e 27005   7783   1  ffff997b388ae180  RU   0.2   91732   4124  pickup\n\u003e \n查看指定进程的进程树，显示进程父子关系（ps -p pid） \ncrash\u003e ps -p 85151\nPID: 0      TASK: ffffffff818b6420  CPU: 0   COMMAND: \"swapper/0\"\n PID: 1      TASK: ffff881f91dae040  CPU: 28  COMMAND: \"init\"\n  PID: 14544  TASK: ffff881f8d7b05c0  CPU: 11  COMMAND: \"init.tfa\"\n   PID: 85138  TASK: ffff880bab01a400  CPU: 8   COMMAND: \"tfactl\"\n    PID: 85151  TASK: ffff880b7a728380  CPU: 17  COMMAND: \"perl\"\nps -t [pid]: 显示进程运行时间\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-rama0zv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-rama0zv",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "8、files命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nfiles pid 打印指定进程所打开的文件信息\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/5474746b95a346bd9ad55cba1f97d461-20230531154607-58bg8x8.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-xjl7aov",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-xjl7aov",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "9、vm命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nvm pid 打印某指定进程当时虚拟内存基本信息\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/31bf9995bc2e4ed0ac3842b542212738-20230531154607-r13xz4y.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-ull79l4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-ull79l4",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "10、task命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\ntask 查看当前进程或指定进程task_struct和thread_info的信息\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/4edd3ef3347d41318650a889adb07c57-20230531154607-jj4phva.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-0h2mjff",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-0h2mjff",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "11、kmem命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n查看当时系统内存使用信息"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-v0mncfq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-v0mncfq",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kmem [-f|-F|-c|-C|-i|-v|-V|-n|-z|-o|-h] [-p | -m member[,member]]\n       [[-s|-S] [slab] [-I slab[,slab]]] [-g [flags]] [[-P] address]]\nkmem -i         //查看内存整体使用情况\nkmem -s        //查看slab使用情况\nkmem [addr]   //搜索地址所属的内存结构\ncrash\u003e kmem -i\n                 PAGES        TOTAL      PERCENTAGE\n    TOTAL MEM   511276         2 GB         ----\n         FREE   506631       1.9 GB   99% of TOTAL MEM\n         USED     4645      18.1 MB    0% of TOTAL MEM\n       SHARED      353       1.4 MB    0% of TOTAL MEM\n      BUFFERS        0            0    0% of TOTAL MEM\n       CACHED      480       1.9 MB    0% of TOTAL MEM\n         SLAB     1930       7.5 MB    0% of TOTAL MEM\n\n   TOTAL HUGE        0            0         ----\n    HUGE FREE        0            0    0% of TOTAL HUGE\n\n   TOTAL SWAP        0            0         ----\n    SWAP USED        0            0    0% of TOTAL SWAP\n    SWAP FREE        0            0    0% of TOTAL SWAP\n\n COMMIT LIMIT   255638     998.6 MB         ----\n    COMMITTED      479       1.9 MB    0% of TOTAL LIMIT\ncrash\u003e \n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-sltn8i3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-sltn8i3",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "12、struct命令"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-1mmn4w3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-1mmn4w3",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "struct -o [struct]            //显示结构体中成员的偏移\nstruct [struct] [address]    //显示对应地址结构体的值\n[struct] [address]          //简化形式显示对应地址结构体的值\n[struct] [address] -xo     //打印结构体定义和大小\n[struct].member[address]  //显示某个成员的值\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-26yz160",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-26yz160",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、查看结构体成员变量，直接struct后面跟结构体名，比如我要看下内核中dentry结构体的定义，可以这样："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-q2tkilm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-q2tkilm",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e struct dentry\nstruct dentry { \n    unsigned int d_flags;\n    seqcount_t d_seq;\n    struct hlist_bl_node d_hash;\n    struct dentry *d_parent;\n    struct qstr d_name;\n    struct inode *d_inode;\n    unsigned char d_iname[32];\n    unsigned int d_count;\n    spinlock_t d_lock;\n    const struct dentry_operations *d_op;\n    struct super_block *d_sb;\n    long unsigned int d_time;\n    void *d_fsdata;\n    struct list_head d_lru;\n    union { \n        struct list_head d_child;\n        struct callback_head d_rcu;\n    } d_u;\n    struct list_head d_subdirs;\n    struct hlist_node d_alias;\n}\nSIZE: 192\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-71ghmff",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-71ghmff",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、查看成员变量在结构体中的偏移量，struct加-o选项："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-luqib3j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-luqib3j",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e struct dentry -o\nstruct dentry { \n    [0] unsigned int d_flags;\n    [4] seqcount_t d_seq;\n    [8] struct hlist_bl_node d_hash;\n   [24] struct dentry *d_parent;\n   [32] struct qstr d_name;\n   [48] struct inode *d_inode;\n   [56] unsigned char d_iname[32];\n   [88] unsigned int d_count;\n   [92] spinlock_t d_lock;\n   [96] const struct dentry_operations *d_op;\n  [104] struct super_block *d_sb;\n  [112] long unsigned int d_time;\n  [120] void *d_fsdata;\n  [128] struct list_head d_lru;\n        union { \n            struct list_head d_child;\n            struct callback_head d_rcu;\n  [144] } d_u;\n  [160] struct list_head d_subdirs;\n  [176] struct hlist_node d_alias;\n}\nSIZE: 192\n\ncrash\u003e struct dentry.d_inode\nstruct dentry { \n   [48] struct inode *d_inode;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-0vnt1rw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-0vnt1rw",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、查看内存中指定结构体的值，struct后跟指针地址"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-ysm0g26",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-ysm0g26",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e struct dentry ffff881fbdc02c80\nstruct dentry { \n  d_flags = 136, \n  d_seq = { \n    sequence = 4\n  }, \n  d_hash = { \n    next = 0x0, \n    pprev = 0xffffc900031bd8a0\n  }, \n  d_parent = 0xffff881fbdc02ec0, \n  d_name = { \n    { \n      { \n        hash = 1819047278, \n        len = 4\n      }, \n      hash_len = 18998916462\n    }, \n    name = 0xffff881fbdc02cb8 \"null\"\n  }, \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-xr0mlkc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-xr0mlkc",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注：如果要查看二阶指针的值，可以通过rd命令需要先获取一级指针的值，然后再用struct 结构体名 + addr获取具体的值\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "13、rd命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n读取内存内容"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-si4632r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-si4632r",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "rd [addr] [len]                  //查看指定地址，长度为len的内存\nrd -S [addr][len]               //尝试将地址转换为对应的符号\nrd [addr] -e [addr]            //查看指定内存区域内容\ncrash\u003e rd ffff0000085dc0d0 32\nffff0000085dc0d0:  a8c17bfd39000020 d503201fd65f03c0    ..9.{ ...._.. ..\nffff0000085dc0e0:  910003fda9bf7bfd 97ec827fd50342ff   .{ .......B......\nffff0000085dc0f0:  d65f03c0a8c17bfd 910003fda9bd7bfd   .{ ...._..{ ......\nffff0000085dc100:  b0005d73a90153f3 aa0103f4911b2262   .S..s]..b\"......\nffff0000085dc110:  f90017a1f9400041 910083a2d2800001   A.@.............\nffff0000085dc120:  37f8018097f909a2 f10bfc7ff94013a3   .......7..@.....\nffff0000085dc130:  b000656154000228 f940128491018021   (..Tae..!.....@.\nffff0000085dc140:  b940402252800000 1100044279000083   ...R\"@@....yB...\nffff0000085dc150:  911b2273b9004022 f9400261f94017a2   \"@..s\"....@.a.@.\nffff0000085dc160:  b50000c1ca010041 a8c37bfda94153f3   A........SA..{ ..\nffff0000085dc170:  128002a0d65f03c0 97ebee0b17fffff7   .._.............\nffff0000085dc180:  910003fda9be7bfd aa0003f4a90153f3   .{ .......S......\nffff0000085dc190:  940b05adf9400013 97ec5fb991012260   ..@.....`\"..._..\nffff0000085dc1a0:  97edbddd91052260 940b05c5aa1403e0   `\"..............\nffff0000085dc1b0:  97f0ec85aa1303e0 a8c27bfda94153f3   .........SA..{ ..\nffff0000085dc1c0:  d503201fd65f03c0 52800021a9bf7bfd   .._.. ...{ ..!..R\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-s2ja3o0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-s2ja3o0",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面将通过struct file**fd的地址，获取fd指针数组中各个file结构体成员地址（二阶指针存放的是file指针的地址，所以可以通过rd获取一级指针的地址；二阶指针+8，则指向下一个file结构体指针）："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-id560h6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-id560h6",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "14、p命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\np命令可以用来打印出表达式或者变量的值"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-4ebwvgn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-4ebwvgn",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e p jiffies\njiffies = $7 = 4314305182\ncrash\u003e\ncrash\u003e p old_close_func\nold_close_func = $5 = (close_t) 0xffffffff811ffd60 \u003cSyS_close\u003e\ncrash\u003e p SyS_close\nSyS_close = $6 = \n { long (long)} 0xffffffff811ffd60 \u003cSyS_close\u003e\ncrash\u003e sym SyS_close\nffffffff811ffd60 (T) SyS_close /usr/src/debug/kernel-3.10.0-693.el7/linux-3.10.0.el7.x86_64/fs/open.c: 1113\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-sr2odis",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-sr2odis",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "15、查看某个命令使用方法及使用示例"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n使用help+某个命令，可以查看这个命令的使用方法及使用示例：\n比如我们想看struct命令如何使用，可以执行 help struct命令："
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-o5iyf20",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531154608-o5iyf20",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "crash\u003e help struct\n\nNAME\n  struct - structure contents\n\nSYNOPSIS\n  struct struct_name[.member[,member]][-o][-l offset][-rfuxdp][address | symbol]\n         [count | -c count]\n\nDESCRIPTION\n  This command displays either a structure definition, or a formatted display\n  of the contents of a structure at a specified address.  When no address is\n  specified, the structure definition is shown along with the structure size.\n  A structure member may be appended to the structure name in order to limit\n  the scope of the data displayed to that particular member; when no address\n  is specified, the member's offset and definition are shown.\n\n    struct_name  name of a C-code structure used by the kernel.\n        .member  name of a structure member; to display multiple members of a\n                 structure, use a comma-separated list of members.\n             -o  show member offsets when displaying structure definitions; \n                 if used with an address or symbol argument, each member will\n                 be preceded by its virtual address.\n      -l offset  if the address argument is a pointer to a structure member that\n                 is contained by the target data structure, typically a pointer\n                 to an embedded list_head, the offset to the embedded member may\n                 be entered in either of the following manners:\n                   1. in \"structure.member\" format.\n                   2. a number of bytes. \n             -r  raw dump of structure data.\n             -f  address argument is a dumpfile offset.\n             -u  address argument is a user virtual address in the current\n                 context.\n             -x  override default output format with hexadecimal format.\n             -d  override default output format with decimal format.\n             -p  if a structure member is a pointer value, show the member's\n                 data type on the output line; and on the subsequent line(s),\n                 dereference the pointer, display the pointer target's symbol\n                 value in brackets if appropriate, and if possible, display the\n                 target data; requires an address argument.\n        address  hexadecimal address of a structure; if the address points\n                 to an embedded list_head structure contained within the\n                 target data structure, then the \"-l\" option must be used.\n         symbol  symbolic reference to the address of a structure.\n          count  count of structures to dump from an array of structures;\n                 if used, this must be the last argument entered.\n       -c count  \"-c\" is only required if \"count\" is not the last argument\n                 entered or if a negative number is entered; if a negative\n                 value is entered, the (positive) \"count\" structures that\n                 lead up to and include the target structure will be displayed.\n\n  Structure data, sizes, and member offsets are shown in the current output\n  radix unless the -x or -d option is specified.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601135222-ut4v4io",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230601135222-ut4v4io",
+				"updated": "20230601135259"
+			},
+			"Children": [
+				{
+					"ID": "20230601135225-v2b2knr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MTYu",
+						"Num": 16
+					},
+					"Properties": {
+						"id": "20230601135225-v2b2knr",
+						"updated": "20230601135259"
+					},
+					"Children": [
+						{
+							"ID": "20230601135225-3lj0wy2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230601135225-3lj0wy2",
+								"updated": "20230601135231"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "查找功能"
+								}
+							]
+						},
+						{
+							"ID": "20230601135237-v2s9v01",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230601135237-v2s9v01",
+								"updated": "20230601135237"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "比如在堆栈中查找symbol:bug_handler"
+								}
+							]
+						},
+						{
+							"ID": "20230601135244-ly2ro44",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230601135244-ly2ro44",
+								"updated": "20230601135259"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "crash\u003e search -t bug_handler\nPID: 574    TASK: ffffffff9fba8080  CPU: 4   COMMAND: \"modprobe\"\nffffff801b5cb7f8: ffffff85e088b810 (bug_handler)\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20230601135237-zfv7v5z",
+							"Type": "NodeHTMLBlock",
+							"Data": "\u003cpre data-index=\"11\" class=\"prettyprint\"\u003e\u003cbr class=\"Apple-interchange-newline\"/\u003e\u003c/pre\u003e",
+							"Properties": {
+								"id": "20230601135237-zfv7v5z",
+								"updated": "20230601135237"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-sfad6nk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531154608-sfad6nk",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、其他相关链接"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-cawp7nc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-cawp7nc",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124562993",
+					"TextMarkTextContent": "1、Kdump调试机理总结（一）"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-5xddlim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-5xddlim",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124581570",
+					"TextMarkTextContent": "2、Kdump配置及使用详细总结（二）"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-w8i3npo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-w8i3npo",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124568399",
+					"TextMarkTextContent": "3、gdb调试常见命令总结"
+				}
+			]
+		},
+		{
+			"ID": "20230531154608-hlcsgg2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531154608-hlcsgg2",
+				"updated": "20230531154608"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124607351",
+					"TextMarkTextContent": "4、Linux下objdump反编译文件命令总结"
+				}
+			]
+		}
+	]
+}

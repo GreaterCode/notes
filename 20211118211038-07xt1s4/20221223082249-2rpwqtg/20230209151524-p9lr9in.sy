@@ -5,7 +5,7 @@
 	"Properties": {
 		"id": "20230209151524-p9lr9in",
 		"title": "EXT3-fs error和EXT4-fs error小总结",
-		"updated": "20230209151641"
+		"updated": "20230602185921"
 	},
 	"Children": [
 		{
@@ -520,6 +520,151 @@
 									"TextMarkType": "a",
 									"TextMarkAHref": "https://bugzilla.redhat.com/show_bug.cgi?id=494927",
 									"TextMarkTextContent": "Read-only filesystem after ‘ext3_free_blocks_sb: bit already cleared for block’ errors"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230602185700-15rxj35",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230602185700-15rxj35",
+				"updated": "20230602185723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. sdx xfs错误进入紧急模式"
+				}
+			]
+		},
+		{
+			"ID": "20230602185723-0blhics",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230602185723-0blhics",
+				"updated": "20230602185747"
+			},
+			"Children": [
+				{
+					"ID": "20230602185741-c9z6u3k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230602185741-c9z6u3k",
+						"updated": "20230602185747"
+					},
+					"Children": [
+						{
+							"ID": "20230602185741-5x2ho47",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230602185741-5x2ho47",
+								"updated": "20230602185741"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "错误信息"
+								}
+							]
+						},
+						{
+							"ID": "20230602185742-7vz52hf",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230602185742-7vz52hf",
+								"updated": "20230602185747"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "XFS (sda3): Metadata corruption detected at xfs_agi_verify+0x148/0x1d0 [xfs]\nXFS (sda3): Unmount and run xfs repair\nXFS (sda3): First 128 bytes of corrupted metadata buffer:\n00000000: 58 41 47 49 00 00 00 01 00 00 00 00 00 6f 91 c0    XAGI....\n00000010:\n00000020:\n00000030:\n00000040:\n00000050:\n00000060:\n00000070: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff\nXFS (sda3): metadata I/O error in \"xfs_read_agi+0x9c/0x160 [xfs]\" at daddr 0x10 len 8 error 117\nXFS (sda3): Unmount and run xfs repair\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230602185754-jphli51",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230602185754-jphli51",
+				"updated": "20230602185921"
+			},
+			"Children": [
+				{
+					"ID": "20230602185755-x2cch0m",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230602185755-x2cch0m",
+						"updated": "20230602185921"
+					},
+					"Children": [
+						{
+							"ID": "20230602185755-nrzo62c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230602185755-nrzo62c",
+								"updated": "20230602185800"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "修复办法"
+								}
+							]
+						},
+						{
+							"ID": "20230602185801-6donzf8",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230602185801-6donzf8",
+								"updated": "20230602185921"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "1. xfs_repair /dev/sda3\n 修复成功，reboot\n\n2. 重启后，系统工作一切正常。journalctl -b没有XFS相关的告警。\n\n3. 检查磁盘sda3，没有发现什么问题。\n\tsmartctl -i /dev/sda\n\tsmartctl -H /dev/sda\n\tsmartctl --scan\n\tsmartctl -H /dev/bus/8 -d megaraid,9\n\tsmartctl -H /dev/bus/8 -d megaraid,10\n\tsmartctl -H /dev/bus/8 -d megaraid,11\n\tsmartctl -H /dev/bus/8 -d megaraid,12\n\tsmartctl -H /dev/bus/8 -d megaraid,13\n\tsmartctl -H /dev/bus/8 -d megaraid,14\n\tsmartctl -H /dev/bus/8 -d megaraid,15\n\tsmartctl -H /dev/bus/8 -d megaraid,16\n\tsmartctl -H /dev/bus/8 -d megaraid,17\n\tsmartctl -H /dev/bus/8 -d megaraid,18\n\tsmartctl -H /dev/bus/8 -d megaraid,19\n\tsmartctl -H /dev/bus/8 -d megaraid,20\n\n4. ipmictl sel list没有什么异常。\n\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
 								}
 							]
 						}

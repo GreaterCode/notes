@@ -1,0 +1,977 @@
+{
+	"ID": "20230531162756-o3bojew",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230531162756-o3bojew",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230531162756-pa7n1kd\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230531162756-toc8984\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230531162756-465o8fu\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "Kdump配置及使用（详细）总结（二） ",
+		"updated": "20230531162843"
+	},
+	"Children": [
+		{
+			"ID": "20230531162756-pa7n1kd",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230531162756-pa7n1kd",
+				"updated": "20230531162756"
+			}
+		},
+		{
+			"ID": "20230531162756-nbf1fpd",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230531162756-nbf1fpd",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"ID": "20230531162756-hrgn34q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230531162756-hrgn34q",
+						"updated": "20230531162756"
+					},
+					"Children": [
+						{
+							"ID": "20230531162756-465o8fu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230531162756-465o8fu",
+								"updated": "20230531162756"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124581570",
+									"TextMarkTextContent": "https://blog.csdn.net/Luckiers/article/details/124581570"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-lbg8fyr",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230531162756-lbg8fyr",
+				"updated": "20230531162756"
+			}
+		},
+		{
+			"ID": "20230531162756-ckthke8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531162756-ckthke8",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、简介"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-sdyftjy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-sdyftjy",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文主要介绍如何打开Kdump并对其相关文件进行配置。前面章节已经对Kdump调试机理进行总结总结，具体可以点击下面链接："
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-0xex6mz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-0xex6mz",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124562993",
+					"TextMarkTextContent": "Kdump调试机理总结（一）"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-lz4p8cg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-lz4p8cg",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124612386",
+					"TextMarkTextContent": "crash工具分析vmcore文件常用命令总结（三）"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-i35eglh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531162756-i35eglh",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、Kdump整体介绍"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-ghc0y0h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-ghc0y0h",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1、kdump"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nkdump 是一种先进的基于 kexec 的内核崩溃转储机制，用来捕获kernel "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://so.csdn.net/so/search?q=crash\u0026spm=1001.2101.3001.7020",
+					"TextMarkTextContent": "crash"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "（内核崩溃）的时候产生的crash dump。当内核产生错误时，kdump会将内存导出为vmcore保存到磁盘。"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-oq35i6r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-oq35i6r",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2、 kdump流程"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n当系统崩溃时，kdump 使用 kexec 启动到第二个内核。第二个内核通常叫做捕获内核，以很小内存启动以捕获转储镜像。第一个内核启动时会保留一段内存给kdump用。\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/2e1750d6d0b44458a096efa2a75bc4dd-20230531162756-d41o55k.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-019atzz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-019atzz",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3、kdump的配置流程具体如下："
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-6scyrn5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-6scyrn5",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "内核配置\n安装kdump（kexec-tools）工具\n修改内核启动参数\n修改kdump配置文件\n启动kdump功能\n验证Kdump功能\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-mc2cxu9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531162756-mc2cxu9",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、Kdump具体配置"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-fpl3tjr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-fpl3tjr",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.1 内核配置"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n通常设备默认内核是已经配置了Kdump功能的。\n想要确认当前内核是否支持kexec，可通过查看在/sys/kernel/下有没有kexec等文件去确认，同时通过查看 /sys/kernel/kexec_crash_loaded 的值，判断Kdump功能是否加载（“1”为已经加载，“0”为还未加载）"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-apu0qp8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-apu0qp8",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# cat /sys/kernel/kexec_crash_loaded\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-qudinni",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-qudinni",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果没有，则需要我们对内核进行配置，具体如下（make menuconfig）："
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-5794qw9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-5794qw9",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "CONFIG_KEXEC=y\nBoot options  ---\u003e[*] Kexec system call (EXPERIMENTAL)\n//此参数告诉系统使用Kexec跳过BIOS和引导（新）内核。（提供内核层面的kexec功能支持）\nCONFIG_CRASH_DUMP=y\nBoot options  ---\u003e[*] Build kdump crash kernel (EXPERIMENTAL)\n//崩溃转储需要启用。没有此选项，Kdump将毫无用处。（提供内核层面的kdump功能支持）\nCONFIG_SYSFS=y\nFile systems  ---\u003ePseudo filesystems  ---\u003e[*] Tmpfs virtual memory file system support\n//启用sysfs文件系统支持\nCONFIG_PROC_VMCORE=y\nFile systems  ---\u003ePseudo filesystems  ---\u003e-*- /proc file system support---\u003e[*]   /proc/vmcore support\n//此配置允许Kdump将内存转储保存到/proc/vmcore。\nCONFIG_DEBUG_INFO=y\nKernel hacking  ---\u003eCompile-time checks and compiler options  ---\u003e[*] Compile the kernel with debug info\n//此参数表示将使用调试符号构建内核。尽管这将增加内核映像的大小，但是具有可用的符号对于深入分析内核崩溃非常有用，因为它不仅使您可以跟踪导致崩溃的有问题的函数调用问题，而且可以跟踪特定行在相关来源中。\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-n91sa9t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-n91sa9t",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.2 安装kdump（kexec-tools）工具"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-iizyp5q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-iizyp5q",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# yum install kexec-tools\n//安装完成之后可以通过kexec -v查看kexec的版本\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-84jm5zg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-84jm5zg",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.3 修改内核启动参数(1)直接配置"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-5ff1got",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-5ff1got",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# vim /boot/grub2/grub.cfg\n//直接在加载内核这一行（linux ${prefix}/vmlinuz console=tty  xxx）最后加上crashkernel=auto\n//auto为自动根据内存分配vmcore的生成的大小，也可以指定具体大小，如crashkernel=128M，具体grub.cfg的配置可以查看本人博客：\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-6e12r2t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-6e12r2t",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/113387209",
+					"TextMarkTextContent": "grub.cfg配置总结"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-dzagb7x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-dzagb7x",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（2）通过工具重置grub.cfg"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-knosu93",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-knosu93",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]#  vim /etc/default/grub\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-hwwyj3z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-hwwyj3z",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改为"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-p83zpcq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-p83zpcq",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "GRUB_CMDLINE_LINUX=\"crashkernel=auto\" //自动分配大小，部分系统需要指定固定大小\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-llgc1zy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-llgc1zy",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明：\ncrashkernel=xxx //预留内存大小\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n注意预留内存大小，过大/过小都会导致生成vmcore文件失败（不知道设置多少时，可以尝试每次增加128M）"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-phe4t6p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-phe4t6p",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]#  grub2-mkconfig -o /boot/grub2/grub.cfg\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-mpzc48n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-mpzc48n",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "（3）重启确认配置是否成功"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-84c910a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-84c910a",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# reboot\n[root@localhost /]# cat /proc/cmdline \nBOOT_IMAGE=/vmlinuz-4.4.13-200.nd7.3.x86_64 root=/dev/sda3 ro rhgb quiet loglevel=0 LANG=zh_CN.UTF-8 crashkernel=auto\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-8cj82qj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-8cj82qj",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明：\n如果在cmdline里找到了crashkernel参数，代表已经将配置写入内核了."
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-f5nomo0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-f5nomo0",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.4 修改kdump配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-lq52t5i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-lq52t5i",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]#  vim /etc/kdump.conf  //其中需要注意的三行内容：\npath /var/crash                                            #指定coredump文件放在/var/crash文件夹中\ncore_collector makedumpfile -c -l -message-level 1 -d 31   #加上-c表示压缩，原文件中没有\ndefault reboot                                             #生成coredump后，重启系统\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-v2x22uh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-v2x22uh",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.5 启动kdump功能"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-ksvfl6s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-ksvfl6s",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]#  systemctl enable kdump.service\n[root@localhost /]#  systemctl start kdump.service\n[root@localhost 桌面]# systemctl status kdump.service\n● kdump.service - Crash recovery kernel arming\n   Loaded: loaded (/usr/lib/systemd/system/kdump.service; disabled)\n   Active: active (exited) since 四 2022-05-05 19:12:31 CST; 1min 14s ago\n  Process: 2272 ExecStart=/usr/bin/kdumpctl start (code=exited, status=0/SUCCESS)\n Main PID: 2272 (code=exited, status=0/SUCCESS)\n   CGroup: /system.slice/kdump.service\n\n5月 05 19:12:31 localhost kdumpctl[2272]: kexec: loaded kdump kernel\n5月 05 19:12:31 localhost kdumpctl[2272]: Starting kdump: [OK]\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-yu9n5f5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-yu9n5f5",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意：本人在用x86的系统打开kdump服务时,指定的crashkernel=auto不生效，导致启动失败，可以用crashkernel=128M@48M格式测试；"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-cqme6up",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-cqme6up",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.6 验证Kdump功能"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n我们来模拟系统异常崩溃，验证之前的操作是否都成功了："
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-aie6ymj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-aie6ymj",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# echo 1 \u003e /proc/sys/kernel/sysrq\n[root@localhost /]# echo c \u003e /proc/sysrq-trigger\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-70y8z4f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-70y8z4f",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重启后，查看/var/crash目录"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-8xxt7zv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-8xxt7zv",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# ls /var/crash/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-wnna37u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-wnna37u",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "保留内存是否预留成功，可以通过cat /proc/meminfo查看。"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-bvdlt04",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230531162756-bvdlt04",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Yw=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost /]# cat /proc/meminfo | grep Crash\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-aph40kp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230531162756-aph40kp",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、其他相关链接"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-7h1lx3u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-7h1lx3u",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124562993"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124562993",
+					"TextMarkTextContent": "1、Kdump调试机理总结（一"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124562993",
+					"TextMarkTextContent": "）"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-tj6trv7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-tj6trv7",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124612386",
+					"TextMarkTextContent": "2、crash工具分析vmcore文件常用命令总结（三）"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-47zcvix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-47zcvix",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/113387209",
+					"TextMarkTextContent": "3、grub.cfg配置总结"
+				}
+			]
+		},
+		{
+			"ID": "20230531162756-toc8984",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230531162756-toc8984",
+				"updated": "20230531162756"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://blog.csdn.net/Luckiers/article/details/124544179",
+					"TextMarkTextContent": "4、编译linux内核常见报错总结"
+				}
+			]
+		}
+	]
+}

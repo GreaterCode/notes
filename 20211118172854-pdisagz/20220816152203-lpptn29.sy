@@ -4,8 +4,9 @@
 	"Type": "NodeDocument",
 	"Properties": {
 		"id": "20220816152203-lpptn29",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816152203-ztko94p\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230515232352-tv4m7ho\u0026quot;,\u0026quot;scrollTop\u0026quot;:1273,\u0026quot;focusId\u0026quot;:\u0026quot;20230515232231-vn46t9p\u0026quot;,\u0026quot;focusStart\u0026quot;:265,\u0026quot;focusEnd\u0026quot;:265}",
 		"title": "nsenter",
-		"updated": "20220816153159"
+		"updated": "20230515232354"
 	},
 	"Children": [
 		{
@@ -496,11 +497,141 @@
 		},
 		{
 			"ID": "20220816152230-4unlyld",
-			"Type": "NodeParagraph",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
 			"Properties": {
 				"id": "20220816152230-4unlyld",
-				"updated": "20220816152230"
-			}
+				"updated": "20230515232211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 各种使用示例"
+				}
+			]
+		},
+		{
+			"ID": "20230515232212-3bvliin",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230515232212-3bvliin",
+				"updated": "20230515232222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.1 docker"
+				}
+			]
+		},
+		{
+			"ID": "20230515232231-vn46t9p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230515232231-vn46t9p",
+				"updated": "20230515232232"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl describe po xxx|grep 'Container ID’ // Container ID:  docker://32675b6981856985d87f8a5f1e2204e058a0d41f35ba39e946baea5ab478b612\n登录pod所在节点\ndocker inspect 32675b6981856985d87f8a5f1e2204e058a0d41f35ba39e946baea5ab478b612|grep \"NetworkMode\" // \"NetworkMode\": \"container:f32634b73e285ba8f70f3ed8a7a673bacc95b2be505bfc63e51447fe09d3ac88\",\ndocker inspect f32634b73e285ba8f70f3ed8a7a673bacc95b2be505bfc63e51447fe09d3ac88 |grep netns // \"SandboxKey\": \"/var/run/docker/netns/db22ae4487a0\",\nnsenter --net=\"/var/run/docker/netns/db22ae4487a0\" sh  // 至此进入了容器的网络命名空间，同时又可以使用宿主机的命令 \n使用完成后记得exit返回主机网络netns\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230515232159-m1rje0t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230515232159-m1rje0t",
+				"updated": "20230515232306"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.2 containerd"
+				}
+			]
+		},
+		{
+			"ID": "20230515232315-yvkupsl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230515232315-yvkupsl",
+				"updated": "20230515232322"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nkubectl describe po xxx |grep 'Container ID' // Container ID:   containerd://8c4238f4336db782d3085ba859e2af32ae15c6e7c7b3642e3e8a0b5a198ab7d3\n登录pod所在节点\nctr --namespace k8s.io c  info 8c4238f4336db782d3085ba859e2af32ae15c6e7c7b3642e3e8a0b5a198ab7d3 |grep ns/net  // \"path\": \"/proc/67062/ns/net\"\nnsenter --net=\"/proc/67062/ns/net\" sh  // 至此进入了容器的网络命名空间，同时又可以使用宿主机的命令\n使用完成后记得exit返回主机网络netns\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230515232310-3lt26e4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230515232310-3lt26e4",
+				"updated": "20230515232342"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5.3  crio"
+				}
+			]
+		},
+		{
+			"ID": "20230515232352-tv4m7ho",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230515232352-tv4m7ho",
+				"updated": "20230515232354"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nkubectl describe po xxx|grep 'Container ID' // Container ID:  cri-o://18362184e312245ddfaea39626e2c2b88d5162187f991cb5c47aadcb1f028e1f\n登录pod所在节点\ncrictl inspect 18362184e312245ddfaea39626e2c2b88d5162187f991cb5c47aadcb1f028e1f|grep netns // \"path\": \"/var/run/netns/44002d05-6855-4923-92e4-78aa06d823d6\"\nnsenter --net=\"/var/run/netns/44002d05-6855-4923-92e4-78aa06d823d6\" sh  // 至此进入了容器的网络命名空间，同时又可以使用宿主机的命令 \n使用完成后记得exit返回主机网络netns\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
 		}
 	]
 }

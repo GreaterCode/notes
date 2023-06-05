@@ -1,0 +1,330 @@
+{
+	"ID": "20230601143758-o85sg79",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230601143758-o85sg79",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230601143758-gkoqev2\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230601150827-9aibj3g\u0026quot;,\u0026quot;scrollTop\u0026quot;:1031,\u0026quot;focusId\u0026quot;:\u0026quot;20230601150300-r5o3y52\u0026quot;,\u0026quot;focusStart\u0026quot;:11,\u0026quot;focusEnd\u0026quot;:11}",
+		"title": " 使用 8 个命令调试k8s集群",
+		"updated": "20230601151537"
+	},
+	"Children": [
+		{
+			"ID": "20230601143758-gkoqev2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601143758-gkoqev2",
+				"updated": "20230601143829"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl version --short\nkubectl cluster-info\nkubectl get componentstatus\nkubectl api-resources -o wide --sort-by name\nkubectl get events -A\nkubectl get nodes -o wide\nkubectl get pods -A -o wide\nkubectl run a --image alpine --command -- /bin/sleep 1d\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601143832-r7vdaw4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601143832-r7vdaw4",
+				"updated": "20230601150437"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.查看正在运行的 API 服务器版本"
+				}
+			]
+		},
+		{
+			"ID": "20230601143915-2meqi8p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601143915-2meqi8p",
+				"updated": "20230601151404"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#kubectl version --short\nClient Version: v1.18.8\nServer Version: v1.18.8-xx-0.2.0-rc.0-44-gccb058a14f94ff-dirty\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601143924-daghzs6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601143924-daghzs6",
+				"updated": "20230601150517"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.了解集群信息"
+				}
+			]
+		},
+		{
+			"ID": "20230601143955-py9xlm1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601143955-py9xlm1",
+				"updated": "20230601150515"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl cluster-info\nKubernetes master is running at https://127.0.0.1:6443\nCoreDNS is running at https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy\nKubeDNSUpstream is running at https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/kube-dns-upstream:dns/proxy\n\nTo further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601144032-7n4wd18",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601144032-7n4wd18",
+				"updated": "20230601150526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 查看组件健康状态"
+				}
+			]
+		},
+		{
+			"ID": "20230601144109-rtb8abs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601144109-rtb8abs",
+				"updated": "20230601150522"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl get componentstatus\nNAME                 STATUS      MESSAGE                                                                                     ERROR\ncontroller-manager   Unhealthy   Get http://127.0.0.1:10252/healthz: dial tcp 127.0.0.1:10252: connect: connection refused   \nscheduler            Healthy     ok                                                                                        \netcd-0               Healthy     {\"health\":\"true\"}  \n\n#查看其他健康端点,此命令不显示调度程序或控制器管理器的输出，但它添加了许多额外的检查\n#kubectl get --raw '/healthz?verbose'\n[+]ping ok\n[+]log ok\n[+]etcd ok\n[+]poststarthook/start-kube-apiserver-admission-initializer ok\n[+]poststarthook/generic-apiserver-start-informers ok\n[+]poststarthook/start-apiextensions-informers ok\n[+]poststarthook/start-apiextensions-controllers ok\n[+]poststarthook/crd-informer-synced ok\n[+]poststarthook/bootstrap-controller ok\n[+]poststarthook/rbac/bootstrap-roles ok\n[+]poststarthook/scheduling/bootstrap-system-priority-classes ok\n[+]poststarthook/apiserver/bootstrap-system-flowcontrol-configuration ok\n[+]poststarthook/start-cluster-authentication-info-controller ok\n[+]poststarthook/start-kube-aggregator-informers ok\n[+]poststarthook/apiservice-registration-controller ok\n[+]poststarthook/apiservice-status-available-controller ok\n[+]poststarthook/kube-apiserver-autoregistration ok\n[+]autoregister-completion ok\n[+]poststarthook/apiservice-openapi-controller ok\nhealthz check passed\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601150300-r5o3y52",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601150300-r5o3y52",
+				"updated": "20230601150541"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 查看集群内部资源"
+				}
+			]
+		},
+		{
+			"ID": "20230601150323-3eheh62",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601150323-3eheh62",
+				"updated": "20230601151537"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl api-resources  \nNAME                              SHORTNAMES   APIGROUP                       NAMESPACED   KIND\nbindings                                                                      true         Binding\ncomponentstatuses                 cs                                          false        ComponentStatus\nconfigmaps                        cm                                          true         ConfigMap\nendpoints                         ep                                          true         Endpoints\nevents                            ev                                          true         Event\nlimitranges                       limits                                      true         LimitRange\nnamespaces                        ns                                          false        Namespace\nnodes                             no                                          false        Node\npersistentvolumeclaims            pvc                                         true         PersistentVolumeClaim\npersistentvolumes                 pv                                          false        PersistentVolume\npods                              po                                          true         Pod\npodtemplates                                                                  true         PodTemplate\nreplicationcontrollers            rc                                          true         ReplicationController\nresourcequotas                    quota                                       true         ResourceQuota\nsecrets                                                                       true         Secret\n。。。。。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601150428-r8rg9dr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601150428-r8rg9dr",
+				"updated": "20230601150608"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 查看集群中所有事件"
+				}
+			]
+		},
+		{
+			"ID": "20230601150608-t6hrach",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601150608-t6hrach",
+				"updated": "20230601150629"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubecl get events -A\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601150626-gys2sq1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601150626-gys2sq1",
+				"updated": "20230601150721"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6.  查看集群中所有pod和node状态"
+				}
+			]
+		},
+		{
+			"ID": "20230601150722-dhbwir8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230601150722-dhbwir8",
+				"updated": "20230601150736"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get nodes -o wide\nkubectl get pods -A -o wide\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230601150752-va2xaro",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601150752-va2xaro",
+				"updated": "20230601150816"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 启动一个pod，进行调试"
+				}
+			]
+		},
+		{
+			"ID": "20230601150822-dlmqqxx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230601150822-dlmqqxx",
+				"updated": "20230601150829"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubectl run d –image alpine –command — /bin/sleep 1d"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20230601150827-9aibj3g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230601150827-9aibj3g"
+			}
+		}
+	]
+}
