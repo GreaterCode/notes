@@ -1,0 +1,1362 @@
+{
+	"ID": "20230621104619-q1kldom",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230621104619-q1kldom",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230621104619-89iaavd\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230621104619-10e90j6\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230621104619-89iaavd\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "Kubernetes Pod获取地址（flannel）",
+		"updated": "20230621104755"
+	},
+	"Children": [
+		{
+			"ID": "20230621104619-89iaavd",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230621104619-89iaavd",
+				"updated": "20230621104619"
+			}
+		},
+		{
+			"ID": "20230621104619-zy5nwdp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621104619-zy5nwdp",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"ID": "20230621104619-1f8jl7a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621104619-1f8jl7a",
+						"updated": "20230621104619"
+					},
+					"Children": [
+						{
+							"ID": "20230621104619-yexzsb3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621104619-yexzsb3",
+								"updated": "20230621104619"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s/4_R_kSnDFYCLapFjsRhHuQ",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s/4_R_kSnDFYCLapFjsRhHuQ - 微信公众平台"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-l6nfo0v",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230621104619-l6nfo0v",
+				"updated": "20230621104619"
+			}
+		},
+		{
+			"ID": "20230621104619-11ugsch",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-11ugsch",
+				"updated": "20230621104720"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-59eynml",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-59eynml",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 网络模型的核心要求之一是每个 Pod 都拥有自己的 IP 地址并可以使用该 IP 地址进行通信。很多人刚开始使用 Kubernetes 时，还不清楚如何为每个 Pod 分配 IP 地址。他们了解各种组件如何独立工作，但不清楚这些组件如何组合在一起使用。例如，他们了解什么是 CNI 插件，但是不知道它们是如何被调用的。本文就介绍了各种网络组件在 Kubernetes 集群中是如何交互的，以及如何帮助每个 Pod 都获取 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-3je089c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-3je089c",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kubernetes 中有多种网络设置方法，以及 container runtime 的各种选项。这篇文章将使用 Flannel 作为 network provider，并使用 Containered 作为 container runtime。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-2w2p5kf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-2w2p5kf",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "背景概念"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-lwqse1u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-lwqse1u",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器网络"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-5neq6fv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-5neq6fv",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "同一主机上的容器"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-mv54bes",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-mv54bes",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在同一主机上运行的容器通过 IP 地址相互通信的方法之一是使用 Linux Bridge，即在 Kubernetes（和 Docker）世界中，创建 veth（虚拟以太网）设备。该 veth 设备的一端连接在容器网络命名空间，另一端连接到主机网络上的 Linux Bridge。同一主机上的所有容器都将这 veth pair 的一端连接到 Linux Bridge，它们可以通过 Bridge 使用 IP 地址相互通信。Linux Bridge 也被分配了一个 IP 地址，它充当从目的地到不同节点的 Pod 流出流量的网关。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-4cyoy50",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-4cyoy50",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104619-nlthm7y.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-k115n9t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-k115n9t",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "不同主机上的容器"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-lmkm12v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-lmkm12v",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在不同主机上运行的容器可以通过其 IP 地址相互通信的方式之一是使用数据包封装（packet encapsulation）。Flannel 通过 vxlan 使用该功能，vxlan 将原始数据包封装在 UDP 数据包中并将其发送到目的地。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-yfswm2n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-yfswm2n",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Kubernetes 集群中，Flannel 会在每个节点上创建一个 vxlan 设备和一些路由表。每个发往不同主机上的容器的数据包都会通过 vxlan 设备，并封装在 UDP 数据包中。在目标位置，它会提取封装的数据包，然后将数据包路由到目的地 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-7muot43",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-7muot43",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-23ecrkb.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-2mxtgej",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621104619-2mxtgej",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621104619-hkbfdsk",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621104619-hkbfdsk",
+						"updated": "20230621104619"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "注意：这只是配置容器之间网络的方法之一。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-lg1ce86",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-lg1ce86",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CRI"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-6n03ik9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-6n03ik9",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CRI（容器运行时接口）是一个插件接口，允许 kubelet 使用不同的 container runtimes。各种 container runtimes 都实现了 CRI API，这使用户可以在 Kubernetes 安装中使用他们想要的 container runtimes。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-qaav7io",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-qaav7io",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-w81kya3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-w81kya3",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI（容器网络接口）项目包含一个为 Linux 容器提供基于通用插件网络解决方案的规则。它由各种插件组成，这些插件在配置 Pod 网络时执行不同的功能。CNI 插件是遵循 CNI 规范的可执行文件。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-64bpzem",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-64bpzem",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "为节点子网分配 Pod IP 地址"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-2joyro5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-2joyro5",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果要求所有 Pod 具有 IP 地址，那么就要确保整个集群中的所有 Pod 的 IP 地址是唯一的。这可以通过为每个节点分配一个唯一的子网来实现，即从子网中为 Pod 分配节点 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-zsqabca",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-zsqabca",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "节点 IPAM 控制器"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-iv2yo8h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-iv2yo8h",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;nodeipam\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 传递给 kube-controller-manager 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;--controllers\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 命令行标志时，它将为每个节点分配来自集群 CIDR（集群网络的 IP 范围）的专用子网（podCIDR）。由于这些 podCIDR 是不相交的子网，因此它可以为每个 Pod 分配唯一的 IP 地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-mzggtsa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-mzggtsa",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当 Kubernetes 节点首次在集群上注册时，会被分配一个 podCIDR。要更改分配给集群中节点的 podCIDR，需要先注销节点，然后使用应用于 Kubernetes 控制平面的任何配置更改来重新注册节点。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;podCIDR\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 可以使用以下命令列出节点的名称："
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-j0oty6z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-j0oty6z",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-4dic0h9.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-ygoqr4p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-ygoqr4p",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Kubelet、Container Runtime 和 CNI 插件交互"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-bt8jmht",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-bt8jmht",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当在节点上调度 Pod 时，一启动 Pod 就会发生很多事情。这里我们仅关注与 Pod 配置网络有关的动态。一旦在节点上调度了 Pod，将配置网络并启动应用程序容器。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-448xky8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-448xky8",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-q64i96y.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-xh49rmg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-xh49rmg",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考：容器式 cri 插件架构"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-f7sk5n8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-f7sk5n8",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Container Runtime 与 CNI 插件的交互"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-fqj5rrf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-fqj5rrf",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每个 network provider 都有一个 CNI 插件，container runtime 会调用该插件，在 Pod 启动时配置网络。使用容器化作为 container runtime，容器化 CRI 插件将调用 CNI 插件。每个 network provider 都在每个 Kubernetes 节点上安装了一个代理，以配置 Pod 网络。安装 network provider agent 后，它会随 CNI 一起配置或者在节点上创建，CRI 插件会使用它来确定要调用哪个 CNI 插件。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-zxn7xgw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-zxn7xgw",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI 配置文件的位置是可配置的，默认值为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;/etc/cni/net.d/\u0026lt;config-file\u0026gt;\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。集群管理员需要在每个节点上交付 CNI 插件。CNI 插件的位置也是可配置的，默认值为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;/opt/cni/bin\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-a0dpi6s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-a0dpi6s",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果使用 containerd 作为 container runtime，则可以在 containerd config 部分下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;[plugins.\u0026quot;io.containerd.grpc.v1.cri\u0026quot;.cni]\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 指定 CNI 配置和 CNI 插件的路径。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-ssr8e24",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-ssr8e24",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文中我们将 Flannel 作为 network provider，这里简单介绍一下 Flannel 的设置。Flanneld 是 Flannel 守护程序，通常 install-cni 作为带有初始化容器的守护程序安装在 Kubernetes 集群上。install-cni 容器创建 CNI 配置文件在每个节点上 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;/etc/cni/net.d/10-flannel.conflist\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。Flanneld 创建一个 vxlan 设备，从 apiserver 获取网络元数据，并监控 Pod 上的更新。创建 Pod 时，它将在整个集群中为所有 Pod 分配路由，这些路由允许 Pod 通过 IP 地址相互连接。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-rtgivta",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-rtgivta",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Containerd CRI 插件和 CNI 插件之间的交互可以如下所示："
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-am7helk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-am7helk",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-7avgwpn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-cu7bjdt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-cu7bjdt",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如上所述，kubelet 调用 Containered CRI 插件创建容器，再调用 CNI 插件为容器配置网络。Network provider CNI 插件调用其他基本 CNI 插件来配置网络。CNI 插件之间的交互如下所述。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-mln0il9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-mln0il9",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CNI 插件之间的交互"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-ce4podu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-ce4podu",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有多种 CNI 插件可帮助配置主机上容器之间的网络，本文主要讨论以下 3 个插件。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-csnzar6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-csnzar6",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Flannel CNI 插件"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-4zux0cu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-4zux0cu",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当使用 Flannel 作为 network provider 时，Containered CRI 插件使用 CNI 配置文件，调用 Flannel CNI 插件：/etc/cni/net.d/10-flannel.conflist。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-jlgib26",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-jlgib26",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-lo7ejco.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-4j0uljh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-4j0uljh",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Fannel CNI 插件与 Flanneld 结合使用，当 Flanneld 启动时，它将从 apiserver 中获取 podCIDR 和其他与网络相关的详细信息，并将它们存储在文件中/run/flannel/subnet.env。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-k8940ca",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-k8940ca",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-6qssa72.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-nxmmw8e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-nxmmw8e",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Flannel CNI 插件使用 /run/flannel/subnet.env 的信息来配置和调用 Bridge CNI 插件。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-39bgaue",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-39bgaue",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Bridge CNI 插件"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-qri4ubn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-qri4ubn",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Flannel CNI 插件使用以下配置调用 Bridge CNI 插件："
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-t0d5u99",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-t0d5u99",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-sc16wnt.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-10e90j6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-10e90j6",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当 Bridge CNI 插件第一次调用时，它会创建一个 Linux Bridge "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;\u0026quot;name\u0026quot;: \u0026quot;cni0\u0026quot;\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 在配置文件中，然后为每个 Pod 创建 veth pair，其一端在容器的网络命名空间中，另一端连接到主机网络上的 Linux Bridge。使用 Bridge CNI 插件，主机上的所有容器都连接到主机网络上的 Linux Bridge。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-ngnzs3z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-ngnzs3z",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置完 veth pair 后，Bridge 插件将调用主机本地 IPAM CNI 插件。我们可以在 CNI config 中配置要使用的 IPAM 插件，CRI 插件用于调用 Flannel CNI插件。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-i2hhc7w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-i2hhc7w",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "主机本地 IPAM CNI 插件"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-qenw8xk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-qenw8xk",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Bridge CNI 插件使用以下配置调用主机本地 IPAM CNI 插件："
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-bf3r9jb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-bf3r9jb",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-4yv9ghp.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-88tmue4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-88tmue4",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "主机本地 IPAM（IP 地址管理）插件从中返回容器的 IP 地址，subnet将分配的 IP 本地存储在主机下"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;dataDir\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​指定的目录中"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-zkd7cs0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-zkd7cs0",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;/var/lib/cni/networks/\u0026lt;network-name=cni0\u0026gt;/\u0026lt;ip\u0026gt;\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-54lsmmr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-54lsmmr",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;/var/lib/cni/networks/\u0026lt;network-name=cni0\u0026gt;/\u0026lt;ip\u0026gt;\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​文件包含 IP 分配到的容器 ID。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-s7nqla6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-s7nqla6",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调用时，主机本地 IPAM 插件返回以下有效负载："
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-thlf0xd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-thlf0xd",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20230621104618-i4tamgo.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-ifyjwdi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-ifyjwdi",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-cmsb7qw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-cmsb7qw",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kube-controller-manager 为每个节点分配一个 podCIDR。从 podCIDR 中的子网值为节点上的 Pod 分配了 IP 地址。由于所有节点上的 podCIDR 是不相交的子网，因此它允许为每个 pod 分配唯一的IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-77k97gx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-77k97gx",
+				"updated": "20230621104619"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Kubernetes 集群管理员可配置和安装 kubelet、container runtime、network provider，并在每个节点上分发 CNI 插件。Network provider agent 启动时，将生成 CNI 配置。在节点上调度 Pod 后，kubelet 会调用 CRI 插件来创建 Pod。在容器情况下，容器的 CRI 插件调用 CNI 配置中指定的 CNI 插件来配置 Pod 网络。所有这些都会影响 Pod 获取 IP地址。"
+				}
+			]
+		},
+		{
+			"ID": "20230621104619-wl36xda",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621104619-wl36xda",
+				"updated": "20230621104755"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		}
+	]
+}

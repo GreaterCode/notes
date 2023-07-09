@@ -1,0 +1,290 @@
+{
+	"ID": "20230612143538-ipqfb66",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230612143538-ipqfb66",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230612143538-ga3zwvs\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230612144226-69do60a\u0026quot;,\u0026quot;scrollTop\u0026quot;:342,\u0026quot;focusId\u0026quot;:\u0026quot;20230612144127-cywcpt7\u0026quot;,\u0026quot;focusStart\u0026quot;:167,\u0026quot;focusEnd\u0026quot;:167}",
+		"title": "containerd容器残留",
+		"updated": "20230612144244"
+	},
+	"Children": [
+		{
+			"ID": "20230612143538-ga3zwvs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230612143538-ga3zwvs",
+				"updated": "20230612143800"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 问题背景"
+				}
+			]
+		},
+		{
+			"ID": "20230612143626-3ndjotp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612143626-3ndjotp",
+				"updated": "20230612143642"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "containerd反复启动失败，报错信息如下："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "failed to recover state: failed to reserve sandbox name"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612143644-yyl4tx1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612143644-yyl4tx1",
+				"updated": "20230612143728"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "node1 containerd[80463]: time=\"2022-08-02T17:13:13.092422629Z\" level=fatal msg=\"Failed to run CRI service\" error=\"failed to recover state: failed to reserve sandbox name \"kube-scheduler-node1_kube-system_705e7ce1217a37349a5567101e60165d_2\": name \"kube-scheduler-node1_kube-system_705e7ce1217a37349a5567101e60165d_2\" is reserved for \"139bb0ac7e050e9e28b994e78f651a8609f426f1b5bbfc887a0d4a3350b4eee2\"\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612143741-k3amuxx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612143741-k3amuxx",
+				"updated": "20230612143741"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "日志很明显提升，容日中有一层信息损坏。 通过重启来取活动新数据；"
+				}
+			]
+		},
+		{
+			"ID": "20230612143748-fa9m8k3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230612143748-fa9m8k3",
+				"updated": "20230612143757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 处理办法"
+				}
+			]
+		},
+		{
+			"ID": "20230612143757-typ7ayi",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230612143757-typ7ayi",
+				"updated": "20230612144112"
+			},
+			"Children": [
+				{
+					"ID": "20230612144025-vaa8et0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612144025-vaa8et0",
+						"updated": "20230612144112"
+					},
+					"Children": [
+						{
+							"ID": "20230612144025-ulmpryy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612144025-ulmpryy",
+								"updated": "20230612144040"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "若containerd可以启动"
+								}
+							]
+						},
+						{
+							"ID": "20230612144054-7dikdr5",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230612144054-7dikdr5",
+								"updated": "20230612144112"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "$ ctr -n=k8s.io containers info 139bb0ac7e050e9e28b994e78f651a8609f426f1b5bbfc887a0d4a3350b4eee2\n$ ctr -n=k8s.io containers rm 139bb0ac7e050e9e28b994e78f651a8609f426f1b5bbfc887a0d4a3350b4eee2\n\n$ systemctl daemon-reload \u0026\u0026 systemctl restart containerd  \u0026\u0026 systemctl restart kubelet\n\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230612144113-cni5quc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230612144113-cni5quc",
+				"updated": "20230612144244"
+			},
+			"Children": [
+				{
+					"ID": "20230612144115-du5uds6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612144115-du5uds6",
+						"updated": "20230612144244"
+					},
+					"Children": [
+						{
+							"ID": "20230612144115-8hqaqgh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612144115-8hqaqgh",
+								"updated": "20230612144244"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "若containerd无法启动"
+								}
+							]
+						},
+						{
+							"ID": "20230612144147-chqoxtd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612144147-chqoxtd",
+								"updated": "20230612144154"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行清理进程脚本"
+								}
+							]
+						},
+						{
+							"ID": "20230612144127-cywcpt7",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230612144127-cywcpt7",
+								"updated": "20230612144145"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "#!/bin/bash\nset -ex\n \nlist=$(runc --root /run/containerd/runc/k8s.io/ list|grep -v ID|awk '{print$1}')\n \nif [[ -z $list ]]; then\n   echo \"no runc process\"\n   exit 0\nfi\n \nfor cid in $list; do\n    runc --root /run/containerd/runc/k8s.io/ delete -f $cid\ndone\n \n \nlist1=$(ps aux |grep /usr/bin/containerd-shim-runc-v2|grep -v auto|awk '{print$2}'|xargs echo)\n \nkill -9 $list1\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230612144159-j425h37",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612144159-j425h37",
+				"updated": "20230612144225"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "     清理相关数据，然后重启containerd服务"
+				}
+			]
+		},
+		{
+			"ID": "20230612144226-69do60a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612144226-69do60a",
+				"updated": "20230612144235"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "3，mv /var/lib/containerd /var/lib/containerd.bak\n\n\n\n4，mv /run/containerd/   /run/containerd.bak\n\n\n\n5,systemctl start containerd.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

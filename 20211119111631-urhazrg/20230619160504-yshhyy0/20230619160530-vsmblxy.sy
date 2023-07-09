@@ -1,0 +1,155 @@
+{
+	"ID": "20230619160530-vsmblxy",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230619160530-vsmblxy",
+		"title": "静态pod升级脚本",
+		"updated": "20230619160805"
+	},
+	"Children": [
+		{
+			"ID": "20230619160626-nj5psxq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160626-nj5psxq",
+				"updated": "20230619160651"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "升级方式： sh  update_k8s_static.sh    v1.18.8-xx-rc2     v1.18.8-xx-rc3"
+				}
+			]
+		},
+		{
+			"ID": "20230619160616-4vv8n3i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160616-4vv8n3i",
+				"updated": "20230619160653"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "回滚方式： sh  update_k8s_static.sh    v1.18.8-xx-rc3     v1.18.8-xx-rc2"
+				}
+			]
+		},
+		{
+			"ID": "20230619160541-erx3mr8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619160541-erx3mr8",
+				"updated": "20230619160554"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nset -ex\n \nOLDTAG=${1}\nUPDATETAG=${2}\n \n \nif [ -z \"$OLDTAG\" ];\nthen\n   echo \"OLDTAG  net set !!!!\"\n   exit 1\nfi\n \nif [ -z \"$UPDATETAG\" ];\nthen\n   echo \"UPDATETAG net set !!!!\"\n   exit 1\nfi\n \n \nlist=$(ls -l /etc/kubernetes/manifests|grep yaml|grep \" kube-\"|awk '{print$9}')\n \nif [[ -z $list ]]; then\n   echo \"no static yaml\"\n     exit 0\nfi\n \nfor staticYaml in $list; do\n    cName=$(echo $staticYaml |awk -F . '{print$1}')\n    cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    if [ -z $cid ]; then\n       echo \"cid  not  exist\"\n         exit 1\n    fi\n    mv /etc/kubernetes/manifests/$staticYaml /etc/kubernetes/\n    sleep 5s\n    cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    while [[ -n \"$cid\" ]]\n    do\n        sleep 5s\n        cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    done\n \n \n    sed -i 's/':$OLDTAG'/':$UPDATETAG'/g' /etc/kubernetes/$staticYaml\n    mv /etc/kubernetes/$staticYaml /etc/kubernetes/manifests/\n    cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    while [[ -z \"$cid\" ]]\n    do\n        sleep 5s\n        cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    done\n \n    imageTag=$(crictl inspect $cid|jq .status.image |grep :|awk -F : '{print$3}'|awk -F \\\" '{print$1}')\n    if [ $UPDATETAG == $imageTag ]\n    then\n        echo \"update sucess\"\n    else\n        echo \"update failed\"\n        exit 1\n    fi\n \ndone\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619160703-3q3km4e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160703-3q3km4e",
+				"updated": "20230619160717"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "升级etcd脚本："
+				}
+			]
+		},
+		{
+			"ID": "20230619160805-m3w38zu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160805-m3w38zu",
+				"updated": "20230619160805"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd镜像tag跟上面3个不一致，因此需要单独处理"
+				}
+			]
+		},
+		{
+			"ID": "20230619160805-o5f1hhk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160805-o5f1hhk",
+				"updated": "20230619160805"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sh  update_etcd_static.sh    v3.4.13.1  v3.4.13.2    (v3.4.13.1  代表旧tag ，v3.4.13.2    代表新tag)"
+				}
+			]
+		},
+		{
+			"ID": "20230619160805-4iaj33f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160805-4iaj33f",
+				"updated": "20230619160805"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "回滚方式： sh  update_etcd_static.sh    v3.4.13.2  v3.4.13.1"
+				}
+			]
+		},
+		{
+			"ID": "20230619160720-620d4fa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619160720-620d4fa",
+				"updated": "20230619160732"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\nset -ex\n \nOLDTAG=${1}\nUPDATETAG=${2}\n \n \nif [ -z \"$OLDTAG\" ];\nthen\n   echo \"OLDTAG  net set !!!!\"\n   exit 1\nfi\n \nif [ -z \"$UPDATETAG\" ];\nthen\n   echo \"UPDATETAG net set !!!!\"\n   exit 1\nfi\n \n \nlist=$(ls -l /etc/kubernetes/manifests|grep \" etcd.yaml \"|awk '{print$9}')\n \nif [[ -z $list ]]; then\n   echo \"no static yaml\"\n     exit 0\nfi\n \nfor staticYaml in $list; do\n    cName=$(echo $staticYaml |awk -F . '{print$1}')\n    cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    if [ -z $cid ]; then\n       echo \"cid  not  exist\"\n         exit 1\n    fi\n    mv /etc/kubernetes/manifests/$staticYaml /etc/kubernetes/\n    sleep 5s\n    cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    while [[ -n \"$cid\" ]]\n    do\n        sleep 5s\n        cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    done\n \n \n    sed -i 's/':$OLDTAG'/':$UPDATETAG'/g' /etc/kubernetes/$staticYaml\n    mv /etc/kubernetes/$staticYaml /etc/kubernetes/manifests/\n    cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    while [[ -z \"$cid\" ]]\n    do\n        sleep 5s\n        cid=$(crictl ps |grep \" $cName \"|awk '{print$1}')\n    done\n \n    imageTag=$(crictl inspect $cid|jq .status.image |grep :|awk -F : '{print$3}'|awk -F \\\" '{print$1}')\n    if [ $UPDATETAG == $imageTag ]\n    then\n        echo \"update sucess\"\n    else\n        echo \"update failed\"\n        exit 1\n    fi\n \ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619160707-amgjhfa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619160707-amgjhfa"
+			}
+		}
+	]
+}

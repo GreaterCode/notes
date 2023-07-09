@@ -1,0 +1,2460 @@
+{
+	"ID": "20230621114004-ioaoqy3",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230621114004-ioaoqy3",
+		"title": "如何精简 Prometheus 的指标和存储占用",
+		"updated": "20230621114214"
+	},
+	"Children": [
+		{
+			"ID": "20230621114004-6qwitdw",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-6qwitdw",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-vzt0605",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-vzt0605",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-1hdythr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-1hdythr",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/7182369883462729783#heading-16",
+									"TextMarkTextContent": "https://juejin.cn/post/7182369883462729783#heading-16"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-vjzeon1",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230621114004-vjzeon1",
+				"updated": "20230621114004"
+			}
+		},
+		{
+			"ID": "20230621114004-rr1gne6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230621114004-rr1gne6",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前言"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-j4m64i4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-j4m64i4",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "随着 Prometheus 监控的组件、数量、指标越来越多，Prometheus 对计算性能的要求会越来越高，存储占用也会越来越多。"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-a09pi5p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-a09pi5p",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这种情况下，要优化 Prometheus 性能, 优化存储占用. 第一时间想到的可能是各种 Prometheus 的兼容存储方案, 如 Thanos 或 VM、Mimir 等。但是实际上虽然集中存储、长期存储、存储降采样及存储压缩可以一定程度解决相关问题，但是治标不治本。"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-3defyj2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-3defyj2",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-fhs46qd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-fhs46qd",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-8cleiwi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-8cleiwi",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "真正的本，还是在于指标量（series）过于庞大。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-rx0m0wy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-rx0m0wy",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-7mqknd0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-7mqknd0",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "治本之法，应该是减少指标量。有 2 种办法："
+								}
+							]
+						},
+						{
+							"ID": "20230621114004-nlvd8r6",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230621114004-nlvd8r6",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"ID": "20230621114004-x2dedz6",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230621114004-x2dedz6",
+										"updated": "20230621114004"
+									},
+									"Children": [
+										{
+											"ID": "20230621114004-d4lsx03",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230621114004-d4lsx03",
+												"updated": "20230621114004"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fewhisper.cn%2Fposts%2F16339%2F",
+													"TextMarkATitle": "https://ewhisper.cn/posts/16339/",
+													"TextMarkTextContent": "Prometheus 性能调优 - 解决高基数问题"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230621114004-m6etxhb",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230621114004-m6etxhb",
+										"updated": "20230621114004"
+									},
+									"Children": [
+										{
+											"ID": "20230621114004-6cw0ogl",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230621114004-6cw0ogl",
+												"updated": "20230621114004"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "根据实际使用情况，只保留（keep）展示（Grafana Dashboards）和告警（prometheus rules）会用到的指标。"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-4vq425d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-4vq425d",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本次重点介绍第二种办法：如何根据实际的使用情况精简 Prometheus 的指标和存储占用？"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-q2ajvgq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230621114004-q2ajvgq",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "思路"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-dehqb6m",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230621114004-dehqb6m",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-uvwudbw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230621114004-uvwudbw",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-eqrppgh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-eqrppgh",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析当前 Prometheus 中存储的所有的 metric name（指标项）；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-074s9dw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230621114004-074s9dw",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-3rofegi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-3rofegi",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析展示环节用到的所有 metric name，即 Grafana 的 Dashboards 用到的所有指标；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-hu0a2ci",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230621114004-hu0a2ci",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-3p33j2d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-3p33j2d",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析告警环节用到的所有 metric name，即 Prometheus Rule 配置中用到的所有指标；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-bputslq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230621114004-bputslq",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-gaffwmq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-gaffwmq",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "（可选）分析诊断环境用到的所有 metric name，即经常在 Prometheus UI 上 query 的指标；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-d5mi1ea",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20230621114004-d5mi1ea",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-8ohdivz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-8ohdivz",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a code",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fewhisper.cn%2Fposts%2F53316%2F",
+									"TextMarkATitle": "https://ewhisper.cn/posts/53316/",
+									"TextMarkTextContent": "relabel"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "metric_relabel_configs"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 或 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "write_relabel_configs"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 仅 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "keep"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 2-4 中的指标, 以此大幅减少 Prometheus 需要存储的指标量."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-bjlfhv4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-bjlfhv4",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要具体实现这个思路, 可以通过 Grafana Labs 出品的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fgrafana%2Fmimir%2Freleases",
+					"TextMarkATitle": "https://github.com/grafana/mimir/releases",
+					"TextMarkTextContent": "mimirtool"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 来搞定."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-0h1sz9o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-0h1sz9o",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我这里有个前后的对比效果, 可供参考这样做效果有多惊人:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-n76be9c",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230621114004-n76be9c",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-g6ozbcu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230621114004-g6ozbcu",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-dzv1ohm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-dzv1ohm",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "精简前: 270336 活动 series"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-dr89pyy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230621114004-dr89pyy",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-bjzjlw3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-bjzjlw3",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "精简后: 61055 活动 series"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-fmdbot4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230621114004-fmdbot4",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-9kwtpmz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-9kwtpmz",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "精简效果: 将近 5 倍的精简率!"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-b5gb8ou",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230621114004-b5gb8ou",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Grafana Mimirtool"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-e5ujgwv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-e5ujgwv",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Grafana Mimir 是一款以对象存储为存储方式的 Prometheus 长期存储解决方案, 从 Cortex 演化而来. 官方号称支持亿级别的 series 写入存储和查询."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-p5a5p2z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-p5a5p2z",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Grafana Mimirtool 是 Mimir 发布的一个实用工具, 可单独使用."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-p5w4odb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-p5w4odb",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Grafana Mimirtool 支持从以下方面提取指标:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-8o8ylme",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-8o8ylme",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-u9grx4e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-u9grx4e",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-7nll5qe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-7nll5qe",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Grafana 实例中的Grafana Dashboards(通过 Grafana API)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-dus8nnn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-dus8nnn",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-zy7vse7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-zy7vse7",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Mimir 实例中的 Prometheus alerting 和 recording rules"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-xoo9iok",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-xoo9iok",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-sv0m3dm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-sv0m3dm",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Grafana Dashboards JSON文件"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-c1nfx9u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-c1nfx9u",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-ffi1l0i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-ffi1l0i",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Prometheus记alerting 和 recording rules 的 YAML文件"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-1b8br18",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-1b8br18",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后，Grafana Mimirtool可以将这些提取的指标与Prometheus或Cloud Prometheus实例中的活动 series 进行比较，并输出一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "used"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 指标和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "unused"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 指标的列表。"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-n66ymph",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230621114004-n66ymph",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Prometheus 精简指标实战"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-favriio",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621114004-favriio",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "假设"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-aood1c3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-aood1c3",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "假定:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-w2bez3e",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-w2bez3e",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-7l749rq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-7l749rq",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-p3hvbv1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-p3hvbv1",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过kube-prometheus-stack 安装 Prometheus"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-8n3mw90",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-8n3mw90",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-d6i5ldp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-d6i5ldp",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "已安装 Grafana 且作为展示端"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-3gg7duf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-3gg7duf",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-l876ioa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-l876ioa",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "已配置相应的 告警规则"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-qseersf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-qseersf",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-utcln44",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-utcln44",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "除此之外, 无其他需要额外保留的指标"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-ad3xr2a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621114004-ad3xr2a",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前提"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-qmk94dj",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230621114004-qmk94dj",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-yxqmw1b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230621114004-yxqmw1b",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-1hzy6oh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-1hzy6oh",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fgrafana%2Fmimir%2Freleases",
+									"TextMarkATitle": "https://github.com/grafana/mimir/releases",
+									"TextMarkTextContent": "Grafana Mimirtool"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 从 releases 中找到 mimirtool 对应平台的版本下载即可使用;"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-lmp6y0e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230621114004-lmp6y0e",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-tps8dqe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-tps8dqe",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "已"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgrafana.com%2Fdocs%2Fgrafana%2Flatest%2Fhttp_api%2Fauth%2F%23create-api-token",
+									"TextMarkATitle": "https://grafana.com/docs/grafana/latest/http_api/auth/#create-api-token",
+									"TextMarkTextContent": "创建 Grafana API token"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-0o94q09",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230621114004-0o94q09",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-5csomaf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-5csomaf",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fprometheus.io%2F",
+									"TextMarkATitle": "https://prometheus.io/",
+									"TextMarkTextContent": "Prometheus"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "已安装和配置."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-q3h4rl8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621114004-q3h4rl8",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第一步: 分析 Grafana Dashboards 用到的指标"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-pi86zg4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230621114004-pi86zg4",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 Grafana API"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-agvseht",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-agvseht",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-2jtiokj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-2jtiokj",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 通过 Grafana API分析 Grafana 用到的指标\n# 前提是现在 Grafana上创建 API Keys\nmimirtool analyze grafana --address http://172.16.0.20:32651 --key=eyJrIjoiYjBWMGVoTHZTY3BnM3V5UzNVem9iWDBDSG5sdFRxRVoiLCJuIjoibWltaXJ0b29sIiwiaWQiOjF9\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-xjlwoji",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-xjlwoji",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "📝说明:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-ypfwr2p",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-ypfwr2p",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-z7rly2h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-z7rly2h",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-11lwhe6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-11lwhe6",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "http://172.16.0.20:32651"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 是 Grafana 地址"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-ywuz1y3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-ywuz1y3",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-uia583f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-uia583f",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--key=eyJr"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 是 Grafana API Token. 通过如下界面获得:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-ibigjsn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-ibigjsn",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "创建 Grafana API Token"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/a8c85d073da6a0afbe811da5c26ce9c4-20220922204041-20230621114004-7ooni5q.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-26gg5jz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-26gg5jz",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取到的是一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metrics-in-grafana.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 内容概述如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-1kux6cz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-1kux6cz",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "anNvbg=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\n    \"metricsUsed\": [\n        \":node_memory_MemAvailable_bytes:sum\",\n        \"alertmanager_alerts\",\n        \"alertmanager_alerts_invalid_total\",\n        \"alertmanager_alerts_received_total\",\n        \"alertmanager_notification_latency_seconds_bucket\",\n        \"alertmanager_notification_latency_seconds_count\",\n        \"alertmanager_notification_latency_seconds_sum\",\n        \"alertmanager_notifications_failed_total\",\n        \"alertmanager_notifications_total\",\n        \"cluster\",\n        \"cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits\",\n        \"cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests\",\n        \"cluster:namespace:pod_memory:active:kube_pod_container_resource_limits\",\n        \"cluster:namespace:pod_memory:active:kube_pod_container_resource_requests\",\n        \"cluster:node_cpu:ratio_rate5m\",\n        \"container_cpu_cfs_periods_total\",\n        \"container_cpu_cfs_throttled_periods_total\",\n        \"...\"\n    ],\n    \"dashboards\": [\n        {\n            \"slug\": \"\",\n            \"uid\": \"alertmanager-overview\",\n            \"title\": \"Alertmanager / Overview\",\n            \"metrics\": [\n                \"alertmanager_alerts\",\n                \"alertmanager_alerts_invalid_total\",\n                \"alertmanager_alerts_received_total\",\n                \"alertmanager_notification_latency_seconds_bucket\",\n                \"alertmanager_notification_latency_seconds_count\",\n                \"alertmanager_notification_latency_seconds_sum\",\n                \"alertmanager_notifications_failed_total\",\n                \"alertmanager_notifications_total\"\n            ],\n            \"parse_errors\": null\n        },\n        {\n            \"slug\": \"\",\n            \"uid\": \"c2f4e12cdf69feb95caa41a5a1b423d9\",\n            \"title\": \"etcd\",\n            \"metrics\": [\n                \"etcd_disk_backend_commit_duration_seconds_bucket\",\n                \"etcd_disk_wal_fsync_duration_seconds_bucket\",\n                \"etcd_mvcc_db_total_size_in_bytes\",\n                \"etcd_network_client_grpc_received_bytes_total\",\n                \"etcd_network_client_grpc_sent_bytes_total\",\n                \"etcd_network_peer_received_bytes_total\",\n                \"etcd_network_peer_sent_bytes_total\",\n                \"etcd_server_has_leader\",\n                \"etcd_server_leader_changes_seen_total\",\n                \"etcd_server_proposals_applied_total\",\n                \"etcd_server_proposals_committed_total\",\n                \"etcd_server_proposals_failed_total\",\n                \"etcd_server_proposals_pending\",\n                \"grpc_server_handled_total\",\n                \"grpc_server_started_total\",\n                \"process_resident_memory_bytes\"\n            ],\n            \"parse_errors\": null\n        },\n        {...}\n    ]\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-l0z3wdk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230621114004-l0z3wdk",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(可选)通过 Grafana Dashboards json 文件"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-gvevfv9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-gvevfv9",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果无法创建 Grafana API Token, 只要有 Grafana Dashboards json 文件, 也可以用来分析, 示例如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-7pckolk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-7pckolk",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 通过 Grafana Dashboard json 分析 Grafana 用到的指标\nmimirtool analyze dashboard grafana_dashboards/blackboxexporter-probe.json\nmimirtool analyze dashboard grafana_dashboards/es.json\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-qyf8phg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-qyf8phg",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "得到的 json 结构和上一节类似, 就不赘述了."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-smbdkmf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621114004-smbdkmf",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第二步: 分析 Prometheus Alerting 和 Recording Rules 用到的指标"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-xm45cse",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-xm45cse",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体操作如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-djowu0p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-djowu0p",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# (可选)通过 kubectl cp 将用到的 rule files 拷贝到本地\nkubectl cp \u003cprompod\u003e:/etc/prometheus/rules/\u003creleasename\u003e-kube-prometheus-st-prometheus-rulefiles-0 -c prometheus ./kube-prometheus-stack/rulefiles/\n\n# 通过 Prometheus rule files 分析 Prometheus Rule 用到的指标(涉及 recording rule 和 alert rules)\nmimirtool analyze rule-file ./kube-prometheus-stack/rulefiles/*\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-kki0g56",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-kki0g56",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "结果如下 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metrics-in-ruler.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-3rzk8r3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-3rzk8r3",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "anNvbg=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\n  \"metricsUsed\": [\n    \"ALERTS\",\n    \"aggregator_unavailable_apiservice\",\n    \"aggregator_unavailable_apiservice_total\",\n    \"apiserver_client_certificate_expiration_seconds_bucket\",\n    \"apiserver_client_certificate_expiration_seconds_count\",\n    \"apiserver_request_terminations_total\",\n    \"apiserver_request_total\",\n    \"blackbox_exporter_config_last_reload_successful\",\n    \"...\"\n  ],\n  \"ruleGroups\": [\n    {\n      \"namspace\": \"default-monitor-kube-prometheus-st-kubernetes-apps-ae2b16e5-41d8-4069-9297-075c28c6969e\",\n      \"name\": \"kubernetes-apps\",\n      \"metrics\": [\n        \"kube_daemonset_status_current_number_scheduled\",\n        \"kube_daemonset_status_desired_number_scheduled\",\n        \"kube_daemonset_status_number_available\",\n        \"kube_daemonset_status_number_misscheduled\",\n        \"kube_daemonset_status_updated_number_scheduled\",\n        \"...\"\n      ]\n      \"parse_errors\": null\n    },\n    {\n      \"namspace\": \"default-monitor-kube-prometheus-st-kubernetes-resources-ccb4a7bc-f2a0-4fe4-87f7-0b000468f18f\",\n      \"name\": \"kubernetes-resources\",\n      \"metrics\": [\n        \"container_cpu_cfs_periods_total\",\n        \"container_cpu_cfs_throttled_periods_total\",\n        \"kube_node_status_allocatable\",\n        \"kube_resourcequota\",\n        \"namespace_cpu:kube_pod_container_resource_requests:sum\",\n        \"namespace_memory:kube_pod_container_resource_requests:sum\"\n      ],\n      \"parse_errors\": null\n    }, \n    {...}\n  ]\n}          \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-mj8vilr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621114004-mj8vilr",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第三步: 分析没用到的指标"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-0gn1bj1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-0gn1bj1",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-lwavea5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-lwavea5",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 综合分析 Prometheus 采集到的 VS. (展示(Grafana Dashboards) + 记录及告警(Rule files))\nmimirtool analyze prometheus --address=http://172.16.0.20:30090/ --grafana-metrics-file=\"metrics-in-grafana.json\" --ruler-metrics-file=\"metrics-in-ruler.json\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-d0hkoip",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-d0hkoip",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "📝说明:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-cs593ca",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-cs593ca",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-f7z131p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-f7z131p",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-h8dic7m",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-h8dic7m",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--address=http://172.16.0.20:30090/"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 为 prometheus 地址"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-0hs9mz1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-0hs9mz1",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-n02p1ve",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-n02p1ve",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--grafana-metrics-file=\u0026quot;metrics-in-grafana.json\u0026quot;"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 为第一步得到的 json 文件"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-mz6ptqk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-mz6ptqk",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-wlj06na",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-wlj06na",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--ruler-metrics-file=\u0026quot;kube-prometheus-stack-metrics-in-ruler.json\u0026quot;"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 为第二步得到的 json 文件"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-aev1bxg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-aev1bxg",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "输出结果"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "prometheus-metrics.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-mu5muu1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-mu5muu1",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "anNvbg=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\n  \"total_active_series\": 270336,\n  \"in_use_active_series\": 61055,\n  \"additional_active_series\": 209281,\n  \"in_use_metric_counts\": [\n    {\n      \"metric\": \"rest_client_request_duration_seconds_bucket\",\n      \"count\": 8855,\n      \"job_counts\": [\n        {\n          \"job\": \"kubelet\",\n          \"count\": 4840\n        }, \n        {\n          \"job\": \"kube-controller-manager\",\n          \"count\": 1958\n        },\n        {...}\n      ]\n    },\n    {\n      \"metric\": \"grpc_server_handled_total\",\n      \"count\": 4394,\n      \"job_counts\": [\n        {\n          \"job\": \"kube-etcd\",\n          \"count\": 4386\n        },\n        {\n          \"job\": \"default/kubernetes-ebao-ebaoops-pods\",\n          \"count\": 8\n        }\n      ]\n    },\n    {...}\n  ],\n  \"additional_metric_counts\": [  \n    {\n      \"metric\": \"rest_client_rate_limiter_duration_seconds_bucket\",\n      \"count\": 81917,\n      \"job_counts\": [\n        {\n          \"job\": \"kubelet\",\n          \"count\": 53966\n        },\n        {\n          \"job\": \"kube-proxy\",\n          \"count\": 23595\n        },\n        {\n          \"job\": \"kube-scheduler\",\n          \"count\": 2398\n        },\n        {\n          \"job\": \"kube-controller-manager\",\n          \"count\": 1958\n        }\n      ]\n    },  \n    {\n      \"metric\": \"rest_client_rate_limiter_duration_seconds_count\",\n      \"count\": 7447,\n      \"job_counts\": [\n        {\n          \"job\": \"kubelet\",\n          \"count\": 4906\n        },\n        {\n          \"job\": \"kube-proxy\",\n          \"count\": 2145\n        },\n        {\n          \"job\": \"kube-scheduler\",\n          \"count\": 218\n        },\n        {\n          \"job\": \"kube-controller-manager\",\n          \"count\": 178\n        }\n      ]\n    },\n    {...}\n  ]\n}                               \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-ojaljo7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621114004-ojaljo7",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第四步: 仅 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 用到的指标"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-pmh1wba",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230621114004-pmh1wba",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "write_relabel_configs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 环节配置"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-ec5bden",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-ec5bden",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你有使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "remote_write"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 那么直接在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "write_relabel_configs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 环节配置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ relabel 规则, 简单粗暴."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-ugq13mk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-ugq13mk",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以先用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "jp"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 命令得到所有需要 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的metric name:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-6r06z5i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-6r06z5i",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "jq '.metricsUsed' metrics-in-grafana.json \\\n| tr -d '\", ' \\\n| sed '1d;$d' \\\n| grep -v 'grafanacloud*' \\\n| paste -s -d '|' -\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-hr5qhag",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-hr5qhag",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "输出结果类似如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-4pjhsw5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-4pjhsw5",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "bWFrZWZpbGU="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "instance:node_cpu_utilisation:rate1m|instance:node_load1_per_cpu:ratio|instance:node_memory_utilisation:ratio|instance:node_network_receive_bytes_excluding_lo:rate1m|instance:node_network_receive_drop_excluding_lo:rate1m|instance:node_network_transmit_bytes_excluding_lo:rate1m|instance:node_network_transmit_drop_excluding_lo:rate1m|instance:node_vmstat_pgmajfault:rate1m|instance_device:node_disk_io_time_seconds:rate1m|instance_device:node_disk_io_time_weighted_seconds:rate1m|node_cpu_seconds_total|node_disk_io_time_seconds_total|node_disk_read_bytes_total|node_disk_written_bytes_total|node_filesystem_avail_bytes|node_filesystem_size_bytes|node_load1|node_load15|node_load5|node_memory_Buffers_bytes|node_memory_Cached_bytes|node_memory_MemAvailable_bytes|node_memory_MemFree_bytes|node_memory_MemTotal_bytes|node_network_receive_bytes_total|node_network_transmit_bytes_total|node_uname_info|up\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-wtcgvkp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-wtcgvkp",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后直接在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "write_relabel_configs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 环节配置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ relabel 规则:"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-wmcghtq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-wmcghtq",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "remote_write:\n- url: \u003cremote_write endpoint\u003e\n  basic_auth:\n    username: \u003c按需\u003e\n    password: \u003c按需\u003e\n  write_relabel_configs:\n  - source_labels: [__name__]\n    regex: instance:node_cpu_utilisation:rate1m|instance:node_load1_per_cpu:ratio|instance:node_memory_utilisation:ratio|instance:node_network_receive_bytes_excluding_lo:rate1m|instance:node_network_receive_drop_excluding_lo:rate1m|instance:node_network_transmit_bytes_excluding_lo:rate1m|instance:node_network_transmit_drop_excluding_lo:rate1m|instance:node_vmstat_pgmajfault:rate1m|instance_device:node_disk_io_time_seconds:rate1m|instance_device:node_disk_io_time_weighted_seconds:rate1m|node_cpu_seconds_total|node_disk_io_time_seconds_total|node_disk_read_bytes_total|node_disk_written_bytes_total|node_filesystem_avail_bytes|node_filesystem_size_bytes|node_load1|node_load15|node_load5|node_memory_Buffers_bytes|node_memory_Cached_bytes|node_memory_MemAvailable_bytes|node_memory_MemFree_bytes|node_memory_MemTotal_bytes|node_network_receive_bytes_total|node_network_transmit_bytes_total|node_uname_info|up\n    action: keep\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-blvftnh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230621114004-blvftnh",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metric_relabel_configs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 环节配置"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-vnmj6x1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-vnmj6x1",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果没有使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "remote_write"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 那么只能在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "metric_relabel_configs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 环节配置了."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-inpxb74",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-inpxb74",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以 etcd job 为例: (以 prometheus 配置为例, Prometheus Operator 请自行按需调整)"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-uvorikp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621114004-uvorikp",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "eWFtbA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "- job_name: serviceMonitor/default/monitor-kube-prometheus-st-kube-etcd/0\n  honor_labels: false\n  kubernetes_sd_configs:\n  - role: endpoints\n    namespaces:\n      names:\n      - kube-system\n  scheme: https\n  tls_config:\n    insecure_skip_verify: true\n    ca_file: /etc/prometheus/secrets/etcd-certs/ca.crt\n    cert_file: /etc/prometheus/secrets/etcd-certs/healthcheck-client.crt\n    key_file: /etc/prometheus/secrets/etcd-certs/healthcheck-client.key\n  relabel_configs:\n  - source_labels:\n    - job\n    target_label: __tmp_prometheus_job_name\n  - ...\n  metric_relabel_configs: \n  - source_labels: [__name__]\n    regex: etcd_disk_backend_commit_duration_seconds_bucket|etcd_disk_wal_fsync_duration_seconds_bucket|etcd_mvcc_db_total_size_in_bytes|etcd_network_client_grpc_received_bytes_total|etcd_network_client_grpc_sent_bytes_total|etcd_network_peer_received_bytes_total|etcd_network_peer_sent_bytes_total|etcd_server_has_leader|etcd_server_leader_changes_seen_total|etcd_server_proposals_applied_total|etcd_server_proposals_committed_total|etcd_server_proposals_failed_total|etcd_server_proposals_pending|grpc_server_handled_total|grpc_server_started_total|process_resident_memory_bytes|etcd_http_failed_total|etcd_http_received_total|etcd_http_successful_duration_seconds_bucket|etcd_network_peer_round_trip_time_seconds_bucket|grpc_server_handling_seconds_bucket|up\n    action: keep  \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-we9sjs1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230621114004-we9sjs1",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 而使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "drop"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-jajmz0s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-jajmz0s",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同样滴, 不用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 而改为使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "drop"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 也是可以的. 这里不再赘述."
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-s69y5bi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-s69y5bi",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "🎉🎉🎉"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-aso8ehq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230621114004-aso8ehq",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-4uxevcy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-4uxevcy",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文中，介绍了精简 Prometheus 指标的需求, 然后说明如何使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mimirtool analyze"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 命令来确定Grafana Dashboards 以及 Prometheus Rules 中用到的指标。然后用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "analyze prometheus"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 分析了展示和告警中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "used"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "unused"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的活动 series，最后配置了 Prometheus 以仅 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "keep"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 用到的指标。"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-upkmefi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621114004-upkmefi",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "结合这次实战, 精简率可以达到 5 倍左右, 效果还是非常明显的. 推荐试一试. 👍️👍️👍️"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-4qo4i7k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230621114004-4qo4i7k",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "📚️ 参考文档"
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-hvrez9s",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621114004-hvrez9s",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"ID": "20230621114004-7fne7z4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-7fne7z4",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-wlf2vzu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-wlf2vzu",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fgrafana%2Fmimir",
+									"TextMarkATitle": "https://github.com/grafana/mimir",
+									"TextMarkTextContent": "grafana/mimir: Grafana Mimir provides horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus. (github.com)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230621114004-znag79q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621114004-znag79q",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"ID": "20230621114004-f5ugg5g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621114004-f5ugg5g",
+								"updated": "20230621114004"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgrafana.com%2Fdocs%2Fgrafana-cloud%2Fbilling-and-usage%2Fcontrol-prometheus-metrics-usage%2Fusage-analysis-mimirtool%2F",
+									"TextMarkATitle": "https://grafana.com/docs/grafana-cloud/billing-and-usage/control-prometheus-metrics-usage/usage-analysis-mimirtool/",
+									"TextMarkTextContent": "Analyzing and reducing metrics usage with Grafana Mimirtool | Grafana Cloud documentation"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621114004-7evvdqx",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621114004-7evvdqx",
+				"updated": "20230621114004"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621114004-6sf0tga",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621114004-6sf0tga",
+						"updated": "20230621114004"
+					},
+					"Children": [
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "em",
+							"TextMarkTextContent": "三人行, 必有我师; 知识共享, 天下为公."
+						},
+						{
+							"Type": "NodeText",
+							"Data": "  本文由东风微鸣技术博客 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "a",
+							"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2FEWhisper.cn",
+							"TextMarkATitle": "https://EWhisper.cn",
+							"TextMarkTextContent": "EWhisper.cn"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 编写."
+						}
+					]
+				}
+			]
+		}
+	]
+}

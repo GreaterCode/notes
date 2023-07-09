@@ -4,9 +4,9 @@
 	"Type": "NodeDocument",
 	"Properties": {
 		"id": "20230601143758-o85sg79",
-		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230601143758-gkoqev2\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230601150827-9aibj3g\u0026quot;,\u0026quot;scrollTop\u0026quot;:1031,\u0026quot;focusId\u0026quot;:\u0026quot;20230601150300-r5o3y52\u0026quot;,\u0026quot;focusStart\u0026quot;:11,\u0026quot;focusEnd\u0026quot;:11}",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230601143758-gkoqev2\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230621105921-vmeyklj\u0026quot;,\u0026quot;scrollTop\u0026quot;:3420,\u0026quot;focusId\u0026quot;:\u0026quot;20230621105921-vmeyklj\u0026quot;,\u0026quot;focusStart\u0026quot;:351,\u0026quot;focusEnd\u0026quot;:351}",
 		"title": " 使用 8 个命令调试k8s集群",
-		"updated": "20230601151537"
+		"updated": "20230621105923"
 	},
 	"Children": [
 		{
@@ -321,10 +321,276 @@
 		},
 		{
 			"ID": "20230601150827-9aibj3g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230601150827-9aibj3g",
+				"updated": "20230621105448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8. 打印当前使用的api"
+				}
+			]
+		},
+		{
+			"ID": "20230621105459-4wqpgh5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621105459-4wqpgh5",
+				"updated": "20230621105459"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# kubectl 的主要作用就是与 ApiServer 进行交互, 而交互的过程, 我们可以通过下面的方式来打印, \n# 这个命令尤其适合调试自己的api接口时使用.\n$ kubectl get ns -v=9\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621105508-lviq1xv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230621105508-lviq1xv",
+				"updated": "20230621105513"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9. 按状态筛选容器以及删除"
+				}
+			]
+		},
+		{
+			"ID": "20230621105532-xbn8w1e",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621105532-xbn8w1e",
+				"updated": "20230621105533"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nkubectl get pods --all-namespaces --field-selector status.phase=Pending -o json | \\\n  jq '.items[] | \"kubectl delete pods \\(.metadata.name) -n \\(.metadata.namespace)\"' | \\\n  xargs -n 1 bash -c\n\n# 这个命令要拆开来看\n# 首先, 获取所有ns中状态为Pending的pods, 并以json形式输出\n# 这个语句其实由很多变体, 比如,我想查找Failed的状态, 或是某个deployment\nkubectl get pods --all-namespaces --field-selector status.phase=Pending -o json \n\n# 针对json变量进行处理, 生成可用的脚本\n# 这里是我想介绍的重点, 利用jq以及kubectl的输出, 构建出可用的命令\njq '.items[] | \"kubectl delete pods \\(.metadata.name) -n \\(.metadata.namespace)\"'\n\n# 执行每一条命令\n# 注意, 这种命令一定要好好调试, 删掉预期之外的pod就不好了.\nxargs -n 1 bash -c\n\n# 例如, 下面的语句可以找到所有的Pods并打印可以执行的语句\nkubectl get pods --all-namespaces --field-selector status.phase=Running -o json | \\\n  jq '.items[] | \"kubectl get pods \\(.metadata.name) -o wide -n \\(.metadata.namespace)\"'\n\n\"kubectl get pods metrics-server-6d684c7b5-gtd6q -o wide -n kube-system\"\n\"kubectl get pods local-path-provisioner-58fb86bdfd-98frc -o wide -n kube-system\"\n\"kubectl get pods nginx-deployment-574b87c764-xppmx -o wide -n default\"\n\n# 当然, 如果只是删除单个NS下面的一些pods, 我会选择下面的方法, 但是它操作多个NS就很不方便了.\nkubectl -n default get pods  | grep Completed | awk '{print $1}' | xargs kubectl -n default delete pods\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621105516-7gz39wf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230621105516-7gz39wf",
+				"updated": "20230621105610"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10. 统计具体某台机器上运行的所有pod"
+				}
+			]
+		},
+		{
+			"ID": "20230621105617-acotz9p",
 			"Type": "NodeParagraph",
 			"Properties": {
-				"id": "20230601150827-9aibj3g"
-			}
+				"id": "20230621105617-acotz9p",
+				"updated": "20230621105617"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl可以使用两种选择器, 一种是label, 一种是field, 可以看官网的介绍:"
+				}
+			]
+		},
+		{
+			"ID": "20230621105627-i7yamwl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621105627-i7yamwl",
+				"updated": "20230621105646"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nkubectl可以使用两种选择器, 一种是label, 一种是field, 可以看官网的介绍:\n\nLabels and Selectors\nField Selectors\n\n# 它是一种选择器, 可以与上面的awk或者xargs配合使用.\n# 我个人平时都不喜欢用这个, 直接get全部pods, 然后grep查找感觉更快\nkubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=pve-node1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621105657-lo5tera",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230621105657-lo5tera",
+				"updated": "20230621105711"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "11.  统计 Pod 在不同机器的具体数量分布"
+				}
+			]
+		},
+		{
+			"ID": "20230621105719-my1z6b8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621105719-my1z6b8",
+				"updated": "20230621105720"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "均衡分布的工作前提是得知pod在各个机器的分布情况。最好的办法就是我们得到pod信息之后进行简单的统计，这个工作可以使用awk实现。"
+				}
+			]
+		},
+		{
+			"ID": "20230621105728-d862kx9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621105728-d862kx9",
+				"updated": "20230621105730"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n default get pods -o wide -l app=\"nginx\" | awk '{print $7}'|\\\n awk '{ count[$0]++  } \n END { \n   printf(\"%-35s: %s\\n\",\"Word\",\"Count\");\n   for(ind in count){\n    printf(\"%-35s: %d\\n\",ind,count[ind]);\n   }\n }'\n\n# 执行结果如下\nWord                               : Count\nNODE                               : 1\npve-node1                          : 1\npve-node2                          : 1\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621105759-jrsumom",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230621105759-jrsumom",
+				"updated": "20230621105807"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "12. kube-proxy的使用"
+				}
+			]
+		},
+		{
+			"ID": "20230621105837-m4rnlbw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621105837-m4rnlbw",
+				"updated": "20230621105917"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n# 当你没有设置kubeconfig而直接调用kubectl时\nkubectl get ns -v=9\n# 可以打印出下面类似的错误\ncurl -k -v -XGET  -H \"Accept: application/json, */*\" -H \"User-Agent: kubectl/v1.21.3 (linux/amd64) kubernetes/ca643a4\" 'http://localhost:8080/api?timeout=32s'\nskipped caching discovery info due to Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused                 \n# 也就是说当你不指定kubeconfig文件时, kubectl会默认访问本机的8080端口\n# 那么我们先启动一个kubectl proxy, 然后指定监听8080, 再使用kubectl直接访问, 是不是就可行了呢, \n# 事实证明, 安全与预想一致.\nKUBECONFIG=~/.kube/config-symv3 kubectl proxy  -p 8080\nkubectl get ns\nNAME                           STATUS   AGE\ndefault                        Active   127d\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621105906-9pv5fl5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621105906-9pv5fl5",
+				"updated": "20230621105906"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认启动的 proxy 是屏蔽了某些 api 的，并且有一些限制，例如无法使用 exec 进入 pod 之中可以使用 kubectl proxy —help 来看，例如"
+				}
+			]
+		},
+		{
+			"ID": "20230621105921-vmeyklj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621105921-vmeyklj",
+				"updated": "20230621105923"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n# 仅允许本机访问\n--accept-hosts='^localhost$,^127\\.0\\.0\\.1$,^\\[::1\\]$': Regular expression for hosts that the proxy should accept.\n# 不允许访问下面的api, 也就是说默认没法exec进入容器\n--reject-paths='^/api/.*/pods/.*/exec,^/api/.*/pods/.*/attach': Regular expression for paths that the proxy should reject. Paths specified here will be rejected even accepted by --accept-paths.\n\n# 想跳过exec的限制也很简单, 把reject-paths去掉就可以了\nkubectl proxy -p 8080 --keepalive 3600s --reject-paths='' -v=9\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
 		}
 	]
 }

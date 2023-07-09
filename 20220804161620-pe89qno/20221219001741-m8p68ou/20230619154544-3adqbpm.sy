@@ -1,0 +1,489 @@
+{
+	"ID": "20230619154544-3adqbpm",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230619154544-3adqbpm",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230619154544-5aqfsew\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230619155005-ny0f0ku\u0026quot;,\u0026quot;scrollTop\u0026quot;:828,\u0026quot;focusId\u0026quot;:\u0026quot;20230619154945-u9b2kui\u0026quot;,\u0026quot;focusStart\u0026quot;:192,\u0026quot;focusEnd\u0026quot;:192}",
+		"title": "containerd配置代理",
+		"updated": "20230619155237"
+	},
+	"Children": [
+		{
+			"ID": "20230619154544-5aqfsew",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230619154544-5aqfsew",
+				"updated": "20230619154620"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 背景"
+				}
+			]
+		},
+		{
+			"ID": "20230619154830-v2bqokk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154830-v2bqokk",
+				"updated": "20230619154830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "containerd 的配置一般位于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/containerd/config.toml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 下，service 文件位于："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/systemd/system/containerd.service"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配置 Proxy 可以通过 service 环境变量方式配置，具体如下："
+				}
+			]
+		},
+		{
+			"ID": "20230619154830-ajqg3r2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154830-ajqg3r2",
+				"updated": "20230619154830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建或编辑文件："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/systemd/system/containerd.service.d/http-proxy.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230619154830-sd81omx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154830-sd81omx",
+				"updated": "20230619154830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内容如下："
+				}
+			]
+		},
+		{
+			"ID": "20230619154830-c8qnest",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619154830-c8qnest",
+				"updated": "20230619154830"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[Service]\nEnvironment=\"HTTP_PROXY=http://127.0.0.1:7890\"\nEnvironment=\"HTTPS_PROXY=http://127.0.0.1:7890\"\nEnvironment=\"NO_PROXY=localhost\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619154830-8y1g06n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154830-8y1g06n",
+				"updated": "20230619154830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置后保存重启即可："
+				}
+			]
+		},
+		{
+			"ID": "20230619154830-hfozfjw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619154830-hfozfjw",
+				"updated": "20230619154830"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl restart containerd.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619154621-hodvbov",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619154621-hodvbov",
+				"updated": "20230619154645"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "在某些 air gap 场景中，往往需要离线或使用代理 (Proxy), 例如：\n1.需要通过 Proxy pull 容器镜像：\n\t1.Docker Hub: docker.io\n\t2.Quay: quay.io\n\t3.GCR: gcr.io\n\t4.GitHub 镜像库：ghcr.io\n2.在某些企业环境中，需要通过代理访问外部服务\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619154656-qoczj8l",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230619154656-qoczj8l",
+				"updated": "20230619154728"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230619154712-ber6pt4",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230619154712-ber6pt4",
+						"updated": "20230619154728"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "还有一种场景需要 containerd 配置 proxy, 就是将 Dragonfly 和 containerd 结合使用"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "sup",
+							"TextMarkTextContent": "[2]"
+						},
+						{
+							"Type": "NodeText",
+							"Data": " 的时候。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230619154714-podcs2o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230619154714-podcs2o",
+				"updated": "20230619154757"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Containerd 配置 Proxy 步骤"
+				}
+			]
+		},
+		{
+			"ID": "20230619154834-z3m21k4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154834-z3m21k4",
+				"updated": "20230619154834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "containerd 的配置一般位于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/containerd/config.toml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 下，service 文件位于："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/systemd/system/containerd.service"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配置 Proxy 可以通过 service 环境变量方式配置，具体如下："
+				}
+			]
+		},
+		{
+			"ID": "20230619154834-oobbk4f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154834-oobbk4f",
+				"updated": "20230619154834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建或编辑文件："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/systemd/system/containerd.service.d/http-proxy.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230619154834-pi2rk9i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154834-pi2rk9i",
+				"updated": "20230619154834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内容如下："
+				}
+			]
+		},
+		{
+			"ID": "20230619154834-eglrr7j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619154834-eglrr7j",
+				"updated": "20230619154834"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[Service]\nEnvironment=\"HTTP_PROXY=http://127.0.0.1:7890\"\nEnvironment=\"HTTPS_PROXY=http://127.0.0.1:7890\"\nEnvironment=\"NO_PROXY=localhost\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619154834-1qxnwao",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154834-1qxnwao",
+				"updated": "20230619154834"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "配置后保存重启即可："
+				}
+			]
+		},
+		{
+			"ID": "20230619154834-80ujqcm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619154834-80ujqcm",
+				"updated": "20230619154834"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl restart containerd.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619154843-wzgrxvp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230619154843-wzgrxvp",
+				"updated": "20230619154904"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 最佳实践：Proxy 中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NO_PROXY"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的推荐配置"
+				}
+			]
+		},
+		{
+			"ID": "20230619154920-thz3m16",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154920-thz3m16",
+				"updated": "20230619154944"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "NO_PROXY"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​推荐配置："
+				}
+			]
+		},
+		{
+			"ID": "20230619154945-u9b2kui",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619154945-u9b2kui",
+				"updated": "20230619155237"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1.本地地址和网段：localhost 和 127.0.0.1 或 127.0.0.0/8\n2.Kubernetes 的默认域名后缀：.svc 和 .cluster.local\n3.Kubernetes Node 的网段甚至所有应该不用 proxy 访问的 node 网段：\u003cnodeCIDR\u003e\n4.APIServer 的内部 URL: \u003cAPIServerInternalURL\u003e \n5.Service Network: \u003cserviceNetworkCIDRs\u003e\n6.（如有）etcd 的 Discovery Domain: \u003cetcdDiscoveryDomain\u003e\n7.Cluster Network: \u003cclusterNetworkCIDRs\u003e\n8.其他特定平台相关网段（如 DevOps, Git/制品仓库。..): \u003cplatformSpecific\u003e\n9.其他特定 NO_PROXY 网段：\u003cREST_OF_CUSTOM_EXCEPTIONS\u003e\n10.常用内网网段：\n\t1.10.0.0.0/8\n\t2.172.16.0.0/12\n\t3.192.168.0.0/16\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619154920-efpcqpn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619154920-efpcqpn",
+				"updated": "20230619155004"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 最终配置如下："
+				}
+			]
+		},
+		{
+			"ID": "20230619155005-ny0f0ku",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619155005-ny0f0ku",
+				"updated": "20230619155011"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n[Service]\nEnvironment=\"HTTP_PROXY=http://127.0.0.1:7890\"\nEnvironment=\"HTTPS_PROXY=http://127.0.0.1:7890\"\nEnvironment=\"NO_PROXY=localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.cluster.local,.ewhisper.cn,\u003cnodeCIDR\u003e,\u003cAPIServerInternalURL\u003e,\u003cserviceNetworkCIDRs\u003e,\u003cetcdDiscoveryDomain\u003e,\u003cclusterNetworkCIDRs\u003e,\u003cplatformSpecific\u003e,\u003cREST_OF_CUSTOM_EXCEPTIONS\u003e\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

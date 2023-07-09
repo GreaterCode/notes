@@ -1,0 +1,2412 @@
+{
+	"ID": "20230612152926-p1r36h9",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230612152926-p1r36h9",
+		"title": "runc 简介",
+		"updated": "20230619161949"
+	},
+	"Children": [
+		{
+			"ID": "20230612152926-2h57epj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-2h57epj",
+				"updated": "20230612153540"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "#RunC 是什么？"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-wajnkj7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-wajnkj7",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 是一个轻量级的工具，它是用来运行容器的，只用来做这一件事，并且这一件事要做好。我们可以认为它就是个命令行小工具，可以不用通过 docker 引擎，直接运行容器。事实上，runC 是标准化的产物，它根据 OCI 标准来创建和运行容器。而 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.opencontainers.org/",
+					"TextMarkTextContent": "OCI(Open Container Initiative)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "组织，旨在围绕容器格式和运行时制定一个开放的工业化标准。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-1fllh95",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-1fllh95",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "安装 runC"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-b5kj3z5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-b5kj3z5",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 是用 golang 创建的项目，因此编译它之前需要在本地安装 golang 的开发环境。Golang 的安装请参考《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/sparkdev/p/10634479.html",
+					"TextMarkTextContent": "Golang 入门 : 打造开发环境"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》一文，这里不再赘述。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-7ay30vh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-7ay30vh",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "安装 libseccomp-dev"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-x27hrju",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-x27hrju",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 默认的编译配置是支持 seccomp 的，所以我们需要先安装 libseccomp-dev："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-cjiazf7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-cjiazf7",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo apt install libseccomp-dev\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-90yn5ju",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-90yn5ju",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "seccomp 的全称为 secure computing mode，即安全计算模型，这是 Linux 内核提供的功能。我们可以通过它来限制容器中进程的行为。关于 seccomp 的更多内容，请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://docs.docker.com/engine/security/seccomp/",
+					"TextMarkTextContent": "Seccomp security profiles for Docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-ay8evn6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-ay8evn6",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "获取 runC 的代码"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-jr2e4vw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-jr2e4vw",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先创建 $GOPATH/src/github.com 目录："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-clgjy7v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-clgjy7v",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mkdir -p $HOME/go/src/github.com\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-r773s8g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-r773s8g",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过 go get 命令就可以从 github 上下载到 runC 的代码，但是要保证事先安装了 git："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-bvwewo1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-bvwewo1",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ go get github.com/opencontainers/runc\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-31fpzz7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-31fpzz7",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后进入 $HOME/go/src/github.com/opencontainers/runc 目录，并 checkout 最新的稳定状态的代码 tag v1.0.0-rc5："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-858jt33",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-858jt33",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cd $HOME/go/src/github.com/opencontainers/runc\n$ git checkout v1.0.0-rc5\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-cpv7s06",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-cpv7s06",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看代码当前的状态："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-3w2cmyh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-3w2cmyh",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ git status\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-8jzd1ma",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-8jzd1ma",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513145634789-1130329507-20230612152926-cncrw8r.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-xtcq47f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-xtcq47f",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "v1.0.0-rc5 是当前最新的版本。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-tmgjgae",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-tmgjgae",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "编译并安装"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-ludpofh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-ludpofh",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ make\n$ sudo make install\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-tg05de5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-tg05de5",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513145722027-618126424-20230612152926-qy57nux.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-co8py6y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-co8py6y",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如上图所示，runC 被安装在了 /usr/local/sbin/runc 目录。\n可以通过 -v 选项查看一下版本号："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-pv80gfy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-pv80gfy",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc -v\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-7sxt80p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-7sxt80p",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513145755579-1620331135-20230612152926-iryjtg9.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-h6tvqdn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-h6tvqdn",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "至此，runC 就算是安装成功了。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-q9x640l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-q9x640l",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "准备 OCI bundle"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-n5u4tv7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-n5u4tv7",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 是运行容器的运行时，它负责利用符合标准的文件等资源运行容器，但是它不包含 docker 那样的镜像管理功能。所以要用 runC 运行容器，我们先得准备好容器的文件系统。所谓的 OCI bundle 就是指容器的文件系统和一个 config.json 文件。有了容器的文件系统后我们可以通过 runc spec 命令来生成 config.json 文件。使用 docker 可轻松的生成容器的文件系统，因为 runC 本来就是 docker 贡献给社区的嘛！\n下面我们准备一个运行 busybox 容器所需的文件系统："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-mmhfqtv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-mmhfqtv",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ docker pull busybox\n$ mkdir -p /tmp/mycontainer/rootfs\n$ cd /tmp/mycontainer\n$ docker export $(docker create busybox) | tar -C rootfs -xvf -\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-ja5lq0a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-ja5lq0a",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在 rootfs 目录下就是 busybox 镜像的文件系统，然后生成 config.json 文件："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-nmhfd57",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-nmhfd57",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc spec\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-mrmjjmf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-mrmjjmf",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513145848329-867222313-20230612152926-o54flqj.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-anugjmk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-anugjmk",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果直接使用生成的 config.json，接下来的演示不会太流畅，所以简单起见，我们稍微修改一下刚刚生成的 config.json 文件。就是把 \"terminal\": true 改为 false，把 \"args\": [\"sh\"] 改为 \"args\": [\"sleep\", \"30\"]："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-hzt99nx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-hzt99nx",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513145925097-671513815-20230612152926-rxl8862.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-397zt8k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-397zt8k",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "理解容器状态转移"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-geezitg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-geezitg",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在运行 busybox 容器前让我们先来看看 OCI 都定义了哪几种容器状态，以及这些状态是如何转移的。先看容器的状态："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-e7jb3v0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230612152926-e7jb3v0",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"ID": "20230612152926-44pxach",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612152926-44pxach",
+						"updated": "20230612152926"
+					},
+					"Children": [
+						{
+							"ID": "20230612152926-6xrs09u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612152926-6xrs09u",
+								"updated": "20230612152926"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "creating：使用 create 命令创建容器，这个过程称为创建中。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230612152926-uy3mmfx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612152926-uy3mmfx",
+						"updated": "20230612152926"
+					},
+					"Children": [
+						{
+							"ID": "20230612152926-mq7fj5s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612152926-mq7fj5s",
+								"updated": "20230612152926"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "created：容器已经创建出来，但是还没有运行，表示镜像文件和配置没有错误，容器能够在当前平台上运行。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230612152926-sc6rohf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612152926-sc6rohf",
+						"updated": "20230612152926"
+					},
+					"Children": [
+						{
+							"ID": "20230612152926-2jtba7g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612152926-2jtba7g",
+								"updated": "20230612152926"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "running：容器里面的进程处于运行状态，正在执行用户设定的任务。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230612152926-t7j7cyu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612152926-t7j7cyu",
+						"updated": "20230612152926"
+					},
+					"Children": [
+						{
+							"ID": "20230612152926-i337yvj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612152926-i337yvj",
+								"updated": "20230612152926"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "stopped：容器运行完成，或者运行出错，或者 stop 命令之后，容器处于暂停状态。这个状态，容器还有很多信息保存在平台中，并没有完全被删除。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230612152926-e2sq8tr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230612152926-e2sq8tr",
+						"updated": "20230612152926"
+					},
+					"Children": [
+						{
+							"ID": "20230612152926-b6pku9p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230612152926-b6pku9p",
+								"updated": "20230612152926"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "paused：暂停容器中的所有进程，可以使用 resume 命令恢复这些进程的执行。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-122mdoh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-122mdoh",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下图则是对容器不同状态间转移的一个粗略描述："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-8qtd3tx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-8qtd3tx",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150014145-179338855-20230612152927-mnerst1.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-u0qs0fx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-u0qs0fx",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 命令"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-0ug56d3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-0ug56d3",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要想了解 runC 都能干什么，最好是通过它提供的命令来操作容器。下面是笔者整理的 runC 命令的主要使用场景。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-dd4hd0d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-dd4hd0d",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "查看帮助"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-rprm8ul",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-rprm8ul",
+				"updated": "20230612153617"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc help subcommand\nCOMMANDS:\n   checkpoint  checkpoint a running container\n   create      create a container\n   delete      delete any resources held by the container often used with detached container\n   events      display container events such as OOM notifications, cpu, memory, and IO usage statistics\n   exec        execute new process inside the container\n   kill        kill sends the specified signal (default: SIGTERM) to the container's init process\n   list        lists containers started by runc with the given root\n   pause       pause suspends all processes inside the container\n   ps          ps displays the processes running inside a container\n   restore     restore a container from a previous checkpoint\n   resume      resumes all processes that have been previously paused\n   run         create and run a container\n   spec        create a new specification file\n   start       executes the user defined process in a created container\n   state       output the state of a container\n   update      update container resource constraints\n   features    show the enabled features\n   help, h     Shows a list of commands or help for one command\n\nGLOBAL OPTIONS:\n   --debug             enable debug logging\n   --log value         set the log file to write runc logs to (default is '/dev/stderr')\n   --log-format value  set the log format ('text' (default), or 'json') (default: \"text\")\n   --root value        root directory for storage of container state (this should be located in tmpfs) (default: \"/run/runc\")\n   --criu value        path to the criu binary used for checkpoint and restore (default: \"criu\")\n   --systemd-cgroup    enable systemd cgroup support, expects cgroupsPath to be of form \"slice:prefix:name\" for e.g. \"system.slice:runc:434234\"\n   --rootless value    ignore cgroup permission errors ('true', 'false', or 'auto') (default: \"auto\")\n   --help, -h          show help\n   --version, -v       print the version\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-oubrcu6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-oubrcu6",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "查看子命令的帮助"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-qp2ervo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-qp2ervo",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc help subcommand\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-we7p7or",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-we7p7or",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 create 命令创建容器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n进入到 /tmp/mycontainer 目录中："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-khd284g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-khd284g",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cd /tmp/mycontainer\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-kiemeqq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-kiemeqq",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后创建名为 mybusybox 的容器："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-9y42gnb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-9y42gnb",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc create mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-mlkreei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-mlkreei",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 list 命令查看当前存在的容器"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-s1sggxe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-s1sggxe",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc list\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-rgydo60",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-rgydo60",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150129102-1211174962-20230612152927-rxgn4p5.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-z79e8mt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-z79e8mt",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 state 命令查看容器的状态"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-h5cnhpz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-h5cnhpz",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc state mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-vks8sti",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-vks8sti",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150157081-408889937-20230612152927-7cebzrh.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-p4gmcyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-p4gmcyy",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意图中的 \"status\": \"created\"，当通过 create 成功创建了容器后，容器的状态就是 \"created\"。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-05vd2zp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-05vd2zp",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 ps 命令看看容器内运行的进程"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-v0l70r3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-v0l70r3",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc ps mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-aajqv78",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-aajqv78",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150239051-508789368-20230612152927-6odim8g.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-x4qgzns",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-x4qgzns",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时 mybusybox 容器内有一个名为 init 的进程在运行。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-0izbqdq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-0izbqdq",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 start 命令执行容器中定义的任务"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-eyjjr1j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-eyjjr1j",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc start \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-6o7jath",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-6o7jath",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用 start 命令启动容器后，让我们再用 ps 命令看看容器内运行了什么进程："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-5jr3ihw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-5jr3ihw",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150419067-1927539157-20230612152927-qe821ke.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-ot4obys",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-ot4obys",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时我们在 config.json 中定义的 sleep 进程在运行。再用 state 命令看看容器此时的状态，此时已经变成了 running！"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-5yk9yxk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-5yk9yxk",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 exec 命令在容器中执行命令"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n通过 exec 命令我们可以在处于 created 状态和 running 状态的容器中执行命令："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-ekqd4zc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-ekqd4zc",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc exec mybusybox ls\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-hnjr8o5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-hnjr8o5",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150456613-742255266-20230612152927-pj91pl3.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-60kokcn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-60kokcn",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当容器中的用户任务结束后，容器会变成 stopped 状态，这时就不能再通过 exec 执行其它的命令了。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-6v4nn4a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-6v4nn4a",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 delete 命令删除容器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n我们可以通过 delete 命令删除容器，当然，一般情况下是删除 stopped 状态的容器："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-tvjerg5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-tvjerg5",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc delete mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-0q3x47c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-0q3x47c",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 run 命令创建并运行容器"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n就像 docker run 命令一样，它会创建容器并运行容器中的命令："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-y82np55",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-y82np55",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc run mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-rhwzacp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-rhwzacp",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当容器中的命令退出后容器随即被删除。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-1ji6fbw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-1ji6fbw",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 kill 命令停止容器中的任务"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n如果要停止一个容器中正在运行的任务，可以使用 kill 命令："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-f9gg760",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-f9gg760",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc kill mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-k2smt3s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-k2smt3s",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认它会优雅的结束容器中的进程，但是碰到特殊情况，你就得使用终极信号 9："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-son2qhw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-son2qhw",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc kill mybusybox 9\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-wyghxzi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-wyghxzi",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 pause 命令暂停容器中的所有进程"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n我们先启动容器 mybusybox，然后用 pause 命令暂停它："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-v0txzz3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-v0txzz3",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc pause mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-sedvwyb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-sedvwyb",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150559595-671683905-20230612152927-b947tph.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-8fimamt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-8fimamt",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行 pause 命令后，容器的状态由 running 变成了 paused。然后我们再通过 resume 命令恢复容器中进程的执行："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-jsvmlh6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-jsvmlh6",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc resume mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-gidn42u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-gidn42u",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150629905-1237312081-20230612152927-yp1n31f.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-85vpjqm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-85vpjqm",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时容器的状态又恢复到了 running。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-aq6r31x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-aq6r31x",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "使用 events 命令获取容器的资源使用情况"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\nevents 命令能够向我们报告容器事件及其资源占用的统计信息："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-oslnluy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-oslnluy",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ sudo runc events mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-ml1b05l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-ml1b05l",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-952033-20180513150703502-679679100-20230612152927-gcvfgo9.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-bmpcstp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-bmpcstp",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "rootless containers"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-xu4qgei",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-xu4qgei",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前面我们运行的所有命令都是以 root 权限执行的。能不能以普通用户的权限运行容器呢？答案是可以的，并被称为 rootless。要想以 rootless 的方式运行容器，需要我们在生成容器的配置文件时就为 spec 命令指定 rootless 参数："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-plkqkwi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-plkqkwi",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc spec --rootless\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-rsjzu54",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-rsjzu54",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "并且在运行容器时通过 --root 参数指定一个存放容器状态的路径："
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-nvglj6w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230612152926-nvglj6w",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc --root /tmp/runc run mybusybox\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-suqmfa4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-suqmfa4",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "容器的热迁移操作"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-rpigjr6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-rpigjr6",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 支持容器的热迁移操作，所谓热迁移就是将一个容器进行 checkpoint 操作，并获得一系列文件，使用这一系列文件可以在本机或者其他主机上进行容器的 restore 工作。这也是 checkpoint  和 restore 两个命令存在的原因。热迁移属于比较复杂的操作，目前 runC 使用了 CRIU 作为热迁移的工具。RunC 主要是调用 CRIU（Checkpoint and Restore in Userspace）来完成热迁移操作。CIRU 负责冻结进程，并将作为一系列文件存储在硬盘上。并负责使用这些文件还原这个被冻结的进程。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-m003fdk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230612152926-m003fdk",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-a94gaaj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-a94gaaj",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RunC 作为标准化容器运行时的一个实现目前已经被 docker 内置为默认的容器运行时。相信随着 runC 自身的成熟和完善会有越来越多的大厂把 runC 作为默认的容器运行时。"
+				}
+			]
+		},
+		{
+			"ID": "20230612152926-w7ih70b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612152926-w7ih70b",
+				"updated": "20230612152926"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "参考："
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/opencontainers/runc",
+					"TextMarkTextContent": "Runc Github"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://cizixs.com/2017/11/05/oci-and-runc",
+					"TextMarkTextContent": "OCI和runc容器标准化和docker"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://dockone.io/article/776",
+					"TextMarkTextContent": "OCI标准和runC原理解读"
+				}
+			]
+		},
+		{
+			"ID": "20230612153642-kpmej3b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230612153642-kpmej3b"
+			}
+		}
+	]
+}

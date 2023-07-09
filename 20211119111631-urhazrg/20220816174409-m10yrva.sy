@@ -4,9 +4,9 @@
 	"Type": "NodeDocument",
 	"Properties": {
 		"id": "20220816174409-m10yrva",
-		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230419153230-65zaik6\u0026quot;,\u0026quot;scrollTop\u0026quot;:5043,\u0026quot;focusId\u0026quot;:\u0026quot;20220915144632-ylmosyv\u0026quot;,\u0026quot;focusStart\u0026quot;:5,\u0026quot;focusEnd\u0026quot;:5}",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230616180946-odhisse\u0026quot;,\u0026quot;scrollTop\u0026quot;:8000,\u0026quot;focusId\u0026quot;:\u0026quot;20230616180946-odhisse\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
 		"title": "便捷操作",
-		"updated": "20230419153156"
+		"updated": "20230619162504"
 	},
 	"Children": [
 		{
@@ -1415,6 +1415,54 @@
 					"Data": "```"
 				}
 			]
+		},
+		{
+			"ID": "20230616180930-nv22rgg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230616180930-nv22rgg",
+				"updated": "20230619162153"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "17.  runc和containerd排错入口"
+				}
+			]
+		},
+		{
+			"ID": "20230619162153-i2c99x9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619162153-i2c99x9",
+				"updated": "20230619162204"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "查看容器相关审计日志\njournalctl -k | grep \u003ccontainer id\u003e\nrunc查看容器状态\nrunc --root=/run/containerd/runc/k8s.io list | grep \u003ccontainer id\u003e\nrunc查看容器错误日志\ncd  /run/containerd/io.containerd.runtime.v2.task/k8s.io/\u003ccontainer id\u003e\ncontainerd查看task状态\nctr -n k8s.io task list | grep \u003ccontainer id\u003e\n查看containerd task对应的shim进程\nps -ef | grep \u003cpod id\u003e\n通过容器id反查pod\nkubectl get pod -o jsonpath='{range .items[?(@.status.containerStatuses[].containerID==\"containerd://\u003ccontainer_id\u003e\")]}{.metadata.name}{end}' -A\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619162504-vwd23yu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619162504-vwd23yu"
+			}
 		}
 	]
 }

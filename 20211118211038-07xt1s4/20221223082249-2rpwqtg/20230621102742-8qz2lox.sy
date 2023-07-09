@@ -1,0 +1,883 @@
+{
+	"ID": "20230621102742-8qz2lox",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230621102742-8qz2lox",
+		"title": "Linux 服务器必备的安全加固",
+		"updated": "20230621103056"
+	},
+	"Children": [
+		{
+			"ID": "20230621102742-o2jivj0",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230621102742-o2jivj0",
+				"updated": "20230621102742"
+			}
+		},
+		{
+			"ID": "20230621102742-x5g4siz",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621102742-x5g4siz",
+				"updated": "20230621102818"
+			},
+			"Children": [
+				{
+					"ID": "20230621102742-cl3n3n6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621102742-cl3n3n6",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"ID": "20230621102742-wz3fxsx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621102742-wz3fxsx",
+								"updated": "20230621102742"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s/a8_JiCTXTczC9E2gb3KFyw",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s/a8_JiCTXTczC9E2gb3KFyw - 微信公众平台"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-e3hi26p",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230621102742-e3hi26p",
+				"updated": "20230621102742"
+			}
+		},
+		{
+			"ID": "20230621102742-osmb0yn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-osmb0yn",
+				"updated": "20230621102817"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-ti2id6m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-ti2id6m",
+				"updated": "20230621102825"
+			}
+		},
+		{
+			"ID": "20230621102742-siv66a2",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-siv66a2",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-rwt359m",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-rwt359m",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "下面告诉你一些简单的方法提高服务器的安全系数，我的云服务器就是这么配置的，虽然有些麻烦，但是感觉安心一些。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-1vi5t99",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621102742-1vi5t99",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改 ssh 登陆配置"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-14qwvdb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-14qwvdb",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "打开 ssh 配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-0l8h5zh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-0l8h5zh",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "vim /etc/ssh/sshd_config#修改以下几项\nPort 10000\n#更改SSH端口，最好改为10000以上，别人扫描到端口的机率也会下降。防火墙要开放配置好的端口号，如果是阿里云服务器，你还需要去阿里云后台配置开发相应的端口才可以，否则登不上哦！如果你觉得麻烦，可以不用改 Protocol 2\n#禁用版本1协议, 因为其设计缺陷, 很容易使密码被黑掉。 PermitRootLogin no\n#尝试任何情况先都不允许 Root 登录. 生效后我们就不能直接以root的方式登录了，我们需要用一个普通的帐号来登录，然后用su来切换到root帐号，注意 su和su - 是有一点小小区别的。关键在于环境变量的不同，su -的环境变量更全面。 PermitEmptyPasswords no\n＃禁止空密码登陆。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-pnbt4gg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-pnbt4gg",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后需要重启 sshd 服务"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-qja4su6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-qja4su6",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "service sshd restart\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-sqa9drl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621102742-sqa9drl",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "禁止系统响应任何从外部 / 内部来的 ping 请求"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-ujidrzj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-ujidrzj",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "echo “1”\u003e /proc/sys/net/ipv4/icmp_echo_ignore_all\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-f9bha8n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-f9bha8n",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其默认值为 0"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-8ylnses",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621102742-8ylnses",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用户管理"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-tzjnotb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-tzjnotb",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面是基本的用户管理命令"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-7s7ssob",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-7s7ssob",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "查看用户列表：cat /etc/passwd\n查看组列表：cat /etc/group\n查看当前登陆用户：who\n查看用户登陆历史记录：last\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-k5k25co",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-k5k25co",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-imts9nk",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-imts9nk",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "一般需要删除系统默认的不必要的用户和组，避免被别人用来爆破："
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-mwvux0c",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-mwvux0c",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "userdel sync\nuserdel shutdown\n# 需要删除的多余用户共有：sync shutdown halt uucp operator games gopher\ngroupdel adm\ngroupdel games\n# 需要删除的多余用户组共有：adm lp games dip\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-yrjlpdl",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-yrjlpdl",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-9kda0ws",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-9kda0ws",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "Linux 中的帐号和口令是依据 /etc/passwd 、/etc/shadow、 /etc/group 、/etc/gshadow 这四个文档的，所以需要更改其权限提高安全性："
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-0rdfy7a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-0rdfy7a",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "chattr +i /etc/passwd\nchattr +i /etc/shadow\nchattr +i /etc/group\nchattr +i /etc/gshadow\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-9u3rt9p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-9u3rt9p",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果还原，把 +i 改成 -i , 再执行一下上面四条命令。"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-fn097eh",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-fn097eh",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-2xtcshm",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-2xtcshm",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "注：i 属性：不允许对这个文件进行修改，删除或重命名，设定连结也无法写入或新增数据！只有 root 才能设定这个属性。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-q8jjokq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621102742-q8jjokq",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建新用户"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-xpc8z5l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-xpc8z5l",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建新用户命令：adduser username"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-4o5est3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-4o5est3",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "更改用户密码名：passwd username"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-aqpckws",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-aqpckws",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-gbtj7u4",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-gbtj7u4",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "个人用户的权限只可以在本 home 下有完整权限，其他目录要看别人授权。而经常需要 root 用户的权限，这时候 sudo 可以化身为 root 来操作。我记得我曾经 sudo 创建了文件，然后发现自己并没有读写权限，因为查看权限是 root 创建的。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-i3i8st8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-i3i8st8",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sudoers 只有只读的权限，如果想要修改的话，需要先添加 w 权限：chmod -v u+w /etc/sudoers 然后就可以添加内容了，在下面的一行下追加新增的用户：wq 保存退出，这时候要记得将写权限收回：chmod -v u-w /etc/sudoers"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-4guzy1w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230621102742-4guzy1w",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "赋予 root 权限"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-w7wxm6t",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621102742-w7wxm6t",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"ID": "20230621102742-cat4ro6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621102742-cat4ro6",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"ID": "20230621102742-kb3q9ev",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621102742-kb3q9ev",
+								"updated": "20230621102742"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "方法一：修改 /etc/sudoers 文件，找到下面一行，把前面的注释（#）去掉"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-pfqunvn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-pfqunvn",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "## Allows people in group wheel to run all commands\n# 去掉下面一句的前面的注释 # \n%wheel ALL=(ALL) ALL\n# 然后修改用户，使其属于root组（wheel），命令如下：\n# usermod -g root uusama\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-muvuqug",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-muvuqug",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-g5jajw7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-g5jajw7",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "修改完毕，现在可以用 uusama 帐号登录，然后用命令 su – ，即可获得 root 权限进行操作。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-k0xgbmf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621102742-k0xgbmf",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"ID": "20230621102742-4bnqqip",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621102742-4bnqqip",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"ID": "20230621102742-p74ubdh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621102742-p74ubdh",
+								"updated": "20230621102742"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "方法二（推荐）：修改 /etc/sudoers 文件，找到下面一行，在 root 下面添加一行，如下所示："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-qqjpf9k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-qqjpf9k",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "## Allow root to run any commands anywhere\nroot ALL=(ALL) ALL\nuusama ALL=(ALL) ALL\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-547ezal",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-547ezal",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改完毕，现在可以用 uusama 帐号登录，然后用命令 sudo -s ，即可获得 root 权限进行操作。"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-ekbrgo1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230621102742-ekbrgo1",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"ID": "20230621102742-s2z8g6y",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230621102742-s2z8g6y",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"ID": "20230621102742-86ltfh3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230621102742-86ltfh3",
+								"updated": "20230621102742"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "方法三：修改 /etc/passwd 文件，找到如下行，把用户 ID 修改为 0 ，如下所示："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-bpz6l51",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230621102742-bpz6l51",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "uusama:x:500:500:tommy:/home/uusama:/bin/bash\n# 修改后如下\nuusama:x:0:500:tommy:/home/uusama:/bin/bash\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-eareacv",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230621102742-eareacv",
+				"updated": "20230621102742"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230621102742-vh6sbna",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230621102742-vh6sbna",
+						"updated": "20230621102742"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "保存，用 uusama 账户登录后，直接获取的就是 root 帐号的权限。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-vqmh4rg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-vqmh4rg",
+				"updated": "20230621103056"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "i",
+					"TextMarkTextContent": " "
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-2x9ybio",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-2x9ybio",
+				"updated": "20230621103055"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "i",
+					"TextMarkTextContent": " "
+				}
+			]
+		},
+		{
+			"ID": "20230621102742-m3x6fss",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230621102742-m3x6fss",
+				"updated": "20230621103053"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		}
+	]
+}

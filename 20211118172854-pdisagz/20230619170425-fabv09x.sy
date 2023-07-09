@@ -1,0 +1,919 @@
+{
+	"ID": "20230619170425-fabv09x",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230619170425-fabv09x",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230619170425-5590zws\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230626022333-0t45b8i\u0026quot;,\u0026quot;scrollTop\u0026quot;:3380,\u0026quot;focusId\u0026quot;:\u0026quot;20230626022333-0t45b8i\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "buildah",
+		"updated": "20230626022402"
+	},
+	"Children": [
+		{
+			"ID": "20230619170425-5590zws",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230619170425-5590zws",
+				"updated": "20230619170950"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 简介"
+				}
+			]
+		},
+		{
+			"ID": "20230619170951-tlcv1qk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619170951-tlcv1qk",
+				"updated": "20230619170951"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Buildah 是一个命令行工具，可以方便、快捷的构建与开放容器标准Open Container Initiative（OCI）兼容的容器镜像，这意味着其构建的镜像与 Docker 和 Kubernetes 兼容。"
+				}
+			]
+		},
+		{
+			"ID": "20230619171006-v3k7l9u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619171006-v3k7l9u",
+				"updated": "20230619171006"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 该工具可作为 Docker 守护进程 docker build 命令（即使用传统的 Dockerfile 构建镜像）的一种简单drop-in替换，而且更加灵活，允许构建镜像时使用你擅长的工具。"
+				}
+			]
+		},
+		{
+			"ID": "20230619171006-obhqrh8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619171006-obhqrh8",
+				"updated": "20230619171006"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " Buildah 可以轻松与脚本集成并生成流水线pipeline，最好之处在于构建镜像不再需要运行容器守护进程。"
+				}
+			]
+		},
+		{
+			"ID": "20230619170952-l40eayv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230619170952-l40eayv",
+				"updated": "20230619171026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 依赖"
+				}
+			]
+		},
+		{
+			"ID": "20230619171027-rl9erlm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619171027-rl9erlm",
+				"updated": "20230619171030"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "make\ngolang (Requires version 1.13 or higher.)\nbats\nbtrfs-progs-devel\nbzip2\ndevice-mapper-devel\ngit\ngo-md2man\ngpgme-devel\nglib2-devel\nlibassuan-devel\nlibseccomp-devel\nrunc (Requires version 1.0 RC4 or higher.)\ncontainers-common (包含大多数的配置文件信息，可由buildah源码编译后获取对应配置文件)\ncontainer-selinux\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619171016-3imte6u",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230619171016-3imte6u",
+				"updated": "20230619171109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 使用案例"
+				}
+			]
+		},
+		{
+			"ID": "20230619172948-hobh5pr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619172948-hobh5pr",
+				"updated": "20230619173022"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "命令使用说明："
+				}
+			]
+		},
+		{
+			"ID": "20230619173022-29i90g5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619173022-29i90g5",
+				"updated": "20230619173449"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "基于镜像创建工作容器: buildah from  xxx:\n查看buildah容器信息: buildah containers --json\n\nbuildah config\n\t --cmd: 该命令用于设置容器启动的命令\n\t\t命令:\n\n\t语法: buildah config --cmd command containerID，其中 command 为执行的命令，containerID 为容器ID\n\n\t--entrypoint:该命令用于基于镜像设置启动命令\n\n\t语法: buildah config --entrypoint command containerID，其中command为执行的命令，containerID为容器ID\n\t这里提及一下cmd和entrypoint的区别\n\t大概是这样的，cmd在启动容器是，会被替换掉，例如，我们使用buildah设置了buildah config --cmd ./redis-server containerID , 但是我们在run容器时候，使用了命令，例如: podman run -it redis /bin/bash，则 cmd命令会被替换为/bin/bash\n\t而entrypoint则不会，若run时指定了命令，它会附着在entrypoint后面，不会替换掉原有命令\n\n\t--env: 该命令用于设置容器环境变量\n\n\t语法: buildah config --env var=value containerID，其中var为变量名称，value为其值，containerID 为容器ID\n\n\t--hostname： 该命令用于设置容器hostname\n\n\t语法: buildah config --hostname domanhostname containerID, 其中domanhostnae为设置的主机名称\n\n\t--port: 该命令用于设置容器开放的端口\n\n\t语法: buildah config --port port containerID，其中port为要开放的端口\n\n\t--workingdir设置容器工作目录\n\n\t语法: buildah config --workingdir dir containerID，其中dir为新指定的工作目录\n\nbuildah copy: 该命令用作拷贝文件进容器中\nbuildah add: 该命令和buildah copy类似，不过add可以从网络上拷贝文件，若是压缩文件，还会自动解压\nbuildah run: 该命令为容器执行命令，格式buildah run command containerID，其中command为容器中要执行的命令\nbuildah commit: 从工作容器中创建镜像\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619171423-rsskzar",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230619171423-rsskzar",
+				"updated": "20230619171858"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 查看当前目录下文件\nls \nblogReader  Dockerfile  main.go\n# 我们的目的是将blogReader拷贝进镜像中，并且制作为容器，现在我们开始吧\n \n# 我们基于centos创建一个容器哈\nbuildah from centos\n\n# 我们得到了该容器名称: centos-working-container-2\n \n# 创建维护者信息\nbuildah config --label MAINTAINER=\"pdudo juejin buildah\" centos-working-container-2\n\n# 将blogReader可执行文件拷贝进容器中\nbuildah copy centos-working-container-2 blogReader ./blogReader \n \n# 赋予文件可执行权限\nbuildah run centos-working-container-2 chmod +x ./blogReader\n\n# 将容器端口开放出去\nbuildah config --port 9091 centos-working-container-2\n\n# 定义容器启动命令\nbuildah config --cmd ./blogReader centos-working-container-2\n\n# 保持镜像到磁盘\nbuildah commit centos-working-container newblogreader\n\n# 查看容器镜像\npodman images | head -n 1; podman images | grep newblogreader\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230619173546-iykhzxk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619173546-iykhzxk",
+				"updated": "20230619173703"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "挂载容器: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "buildah mount containerID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ "
+				}
+			]
+		},
+		{
+			"ID": "20230619173627-73pvb0y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619173627-73pvb0y",
+				"updated": "20230619173659"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "卸载容器："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "buildah umount containerID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230619173822-097w7iu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619173822-097w7iu",
+				"updated": "20230619173833"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将上面命令整理成脚本，进行验证："
+				}
+			]
+		},
+		{
+			"ID": "20230619173803-jiyu03m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619173803-jiyu03m",
+				"updated": "20230619173820"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230619173820-dvu3uu1.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20230619173846-wzqcqem",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230619173846-wzqcqem",
+				"updated": "20230619173847"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "开启了“debug”，所以，我们执行脚本看下"
+				}
+			]
+		},
+		{
+			"ID": "20230626020324-07p8b2e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230626020324-07p8b2e",
+				"updated": "20230626020324"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230626020324-1980qze.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230626020331-10qup4l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230626020331-10qup4l",
+				"updated": "20230626020519"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 将镜像推送到镜像仓库"
+				}
+			]
+		},
+		{
+			"ID": "20230626020530-mn75ik0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230626020530-mn75ik0",
+				"updated": "20230626020722"
+			},
+			"Children": [
+				{
+					"ID": "20230626020600-fcozigy",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230626020600-fcozigy"
+					},
+					"Children": [
+						{
+							"ID": "20230626020600-dwoobm8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020600-dwoobm8",
+								"updated": "20230626020605"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "登陆仓库"
+								}
+							]
+						},
+						{
+							"ID": "20230626020532-4k7362s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020532-4k7362s",
+								"updated": "20230626020539"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "buildah login"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230626020540-tan0hrk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230626020540-tan0hrk"
+					},
+					"Children": [
+						{
+							"ID": "20230626020540-r56j07s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020540-r56j07s",
+								"updated": "20230626020615"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "退出登陆"
+								}
+							]
+						},
+						{
+							"ID": "20230626020619-f1nkeuz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020619-f1nkeuz",
+								"updated": "20230626020628"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "buildah logout"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230626020629-dduzp66",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230626020629-dduzp66",
+						"updated": "20230626020722"
+					},
+					"Children": [
+						{
+							"ID": "20230626020629-jgb3ako",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020629-jgb3ako",
+								"updated": "20230626020636"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "拉取远程镜像"
+								}
+							]
+						},
+						{
+							"ID": "20230626020637-33gtgq9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020637-33gtgq9",
+								"updated": "20230626020722"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "buildah pull xxx"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230626020644-ygb7752",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230626020644-ygb7752",
+						"updated": "20230626020719"
+					},
+					"Children": [
+						{
+							"ID": "20230626020644-amugd4x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020644-amugd4x",
+								"updated": "20230626020654"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "推送镜像"
+								}
+							]
+						},
+						{
+							"ID": "20230626020654-yamrv3x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020654-yamrv3x",
+								"updated": "20230626020719"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "build push xxx"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230626020519-ohnxnuk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230626020519-ohnxnuk",
+				"updated": "20230626020753"
+			},
+			"Children": [
+				{
+					"ID": "20230626020712-ravpe8x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230626020712-ravpe8x",
+						"updated": "20230626020753"
+					},
+					"Children": [
+						{
+							"ID": "20230626020712-ddy19oi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020712-ddy19oi",
+								"updated": "20230626020715"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "删除镜像"
+								}
+							]
+						},
+						{
+							"ID": "20230626020725-bsm8u1u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626020725-bsm8u1u",
+								"updated": "20230626020753"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "podman rmi xxx  或者buildah  rmi  xxx"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230626020837-so7tixy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230626020837-so7tixy",
+				"updated": "20230626020848"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 完整使用"
+				}
+			]
+		},
+		{
+			"ID": "20230626021719-n7mjw06",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230626021719-n7mjw06",
+				"updated": "20230626021728"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.1 安装"
+				}
+			]
+		},
+		{
+			"ID": "20230626021733-pxc9mcx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230626021733-pxc9mcx",
+				"updated": "20230626021750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "# dnf -y install buildah"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230626021746-f00g4si",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230626021746-f00g4si",
+				"updated": "20230626021758"
+			},
+			"Children": [
+				{
+					"ID": "20230626021758-mnx2qjn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230626021758-mnx2qjn",
+						"updated": "20230626021758"
+					},
+					"Children": [
+						{
+							"ID": "20230626021758-iyjt5fq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230626021758-iyjt5fq",
+								"updated": "20230626021758"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "源码安装"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230626020849-bqj4cdj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230626020849-bqj4cdj",
+				"updated": "20230626021810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "### 安装依赖\n# dnf -y install make golang bats btrfs-progs-devel \\\n  device-mapper-devel gpgme-devel libassuan-devel \\\n  git bzip2 go-md2man runc skopeo-containers\n\n###  编译安装\n# mkdir ~/buildah\n# cd ~/buildah\n# export GOPATH=`pwd`\n# git clone https://github.com/projectatomic/buildah \\\n ./src/github.com/projectatomic/buildah\n# cd ./src/github.com/projectatomic/buildah\n# make\n# make install\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230626021618-73s7eqo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230626021618-73s7eqo",
+				"updated": "20230626021826"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.2 使用"
+				}
+			]
+		},
+		{
+			"ID": "20230626021854-6939rgx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230626021854-6939rgx",
+				"updated": "20230626021945"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# container=$(buildah from fedora)\nGetting image source signatures\nCopying blob  sha256:691bc14ee27487db536172a1fcdbbf956f460d1e1e1b201828e3a2bab81c5ec8\n 72.22 MiB / 72.22 MiB   [=======================================================]\nCopying config sha256:15895ef0b3b2b4e61bf03d38f82b42011ff7f226c681705a4022ae3d1d643888\n 0 B / 2.29 KiB [--------------------------------------------------------------]\nWriting manifest to image destination\nStoring signatures\n\n# buildah images\nIMAGE ID     IMAGE NAME\ndc3a60619440 docker.io/library/fedora:latest\n\n# buildah containers\nCONTAINER ID IMAGE ID     IMAGE NAME CONTAINER NAME\nae93de45778a dc3a60619440 fedora     fedora-working-container\n\n\n#####Look Ma! No container runtime is running!\n# systemctl status docker\nUnit docker.service could not be found.\n\n# rpm -qa docker\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230626021959-nfan7zv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230626021959-nfan7zv",
+				"updated": "20230626022117"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.3 操作镜像"
+				}
+			]
+		},
+		{
+			"ID": "20230626022131-fzrye1s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230626022131-fzrye1s",
+				"updated": "20230626022234"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mountpoint=$(buildah mount $container)\n\n# ls $mountpoint\nbin   dev  home  lib64  mnt  proc  run   srv  tmp  var\nboot  etc  lib   media  opt  root  sbin  sys  usr\n\n# cat /tmp/moveit.txt\nMove this file to the Buildah container's /tmp directory.\n\n# ls $mountpoint/tmp\nanaconda-post.log  ks-script-64xpp1a9  ks-script-sw0bp7j4\n\n# cp /tmp/moveit.txt $mountpoint/tmp\n# ls $mountpoint/tmp\nanaconda-post.log  ks-script-64xpp1a9  ks-script-sw0bp7j4  moveit.txt\n\n# cat $mountpoint/tmp/moveit.txt\nMove this file to the Buildah container's /tmp directory.\n\n\n# buildah commit $container containers-storage:first-new-image\n# buildah images\nIMAGE ID        IMAGE NAME\ndc3a60619440 docker.io/library/fedora:latest\n54e012885dcf docker.io/library/first-new-image:latest\n\n\n# buildah umount \"$container\"\n# buildah rm \"$container\"\nae93de45778a5f3905c52de9378f14d54c2617e4336766efde6311596541e98c\n# buildah containers  # No more containers\n\n# container2=$(buildah from first-new-image)\n# buildah containers\nCONTAINER ID IMAGE ID     IMAGE NAME      CONTAINER NAME\n757b5b595f0a 54e012885dcf first-new-image first-new-image-working-container\n\n\n# mountpoint2=$(buildah mount $container2)\n# ls $mountpoint2/tmp\nanaconda-post.log  ks-script-64xpp1a9  ks-script-sw0bp7j4  moveit.txt\n# cat $mountpoint2/tmp/moveit.txt\nMove this file to the Buildah container's /tmp directory.\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230626022238-mdjfdth",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230626022238-mdjfdth",
+				"updated": "20230626022250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2.4 使用dockerfiles"
+				}
+			]
+		},
+		{
+			"ID": "20230626022251-6mia040",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230626022251-6mia040",
+				"updated": "20230626022258"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "FROM python\nADD HelloFromContainer.py /\nCMD [\"python\",\"./HelloFromContainer.py\"]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230626022259-4ys17p9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230626022259-4ys17p9",
+				"updated": "20230626022310"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "HelloFromContainer.py内容"
+				}
+			]
+		},
+		{
+			"ID": "20230626022310-13cb32t",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230626022310-13cb32t",
+				"updated": "20230626022317"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/usr/bin/env python3\n#\n\nimport sys\n\ndef main(argv):\n    for i in range(0,10):\n        print (\"Hello World from Container Land! Message # [%d]\" % i)\n\nif __name__ == \"__main__\":\n    main(sys.argv[1:])\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230626022322-8v5c8sy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230626022322-8v5c8sy",
+				"updated": "20230626022402"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ls HelloFromContainer.py\nHelloFromContainer.py\n# ls Dockerfile\nDockerfile\n# buildah bud -t hellofromcontainer .\nSTEP 1: FROM python\nGetting image source signatures\nCopying blob sha256:ef0380f84d05d3cdc5a5f66023 ...\n 49.55 MiB / 50.13 MiB [==========================]\n...\nCopying config sha256:74145628c3310c1a8634aa04 ...\n 0 B / 6.91 KiB [---------------------------------]\nWriting manifest to image destination\nStoring signatures\nSTEP 2: ADD HelloFromContainer.py /\nSTEP 3: CMD [\"python\",\"./HelloFromContainer.py\"]\nSTEP 4: COMMIT containers-storage:[overlay@/var/lib/containers/storage]docker.io/library/hellofromcontainer:latest\n 6.91 KiB / 6.91 KiB [============================]\n\n\n# buildah images\nIMAGE ID        IMAGE NAME\ndc3a60619440 docker.io/library/fedora:latest\n54e012885dcf docker.io/library/first-new-image:latest\n35de96ee8fb5 docker.io/library/python:latest\nf19ac91f7e60 docker.io/library/hellofromcontainer:latest\n\n\n# buildah run hellofromcontainer-working-container\nHello World from Container Land! Message # [0]\nHello World from Container Land! Message # [1]\nHello World from Container Land! Message # [2]\nHello World from Container Land! Message # [3]\nHello World from Container Land! Message # [4]\nHello World from Container Land! Message # [5]\nHello World from Container Land! Message # [6]\nHello World from Container Land! Message # [7]\nHello World from Container Land! Message # [8]\nHello World from Container Land! Message # [9]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230626022333-0t45b8i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230626022333-0t45b8i"
+			}
+		}
+	]
+}

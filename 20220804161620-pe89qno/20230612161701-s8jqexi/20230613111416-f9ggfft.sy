@@ -1,0 +1,1448 @@
+{
+	"ID": "20230613111416-f9ggfft",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230613111416-f9ggfft",
+		"title": "【runC】03-runC-源码分析-exec",
+		"updated": "20230613111416"
+	},
+	"Children": [
+		{
+			"ID": "20230613111416-ync46wq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-ync46wq",
+				"updated": "20230613111453"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-7a8v3pb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-7a8v3pb",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-yghe7zs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-yghe7zs",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6906150205532405774",
+									"TextMarkTextContent": "https://juejin.cn/post/6906150205532405774"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-3if9nsx",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230613111416-3if9nsx",
+				"updated": "20230613111416"
+			}
+		},
+		{
+			"ID": "20230613111416-sruac3a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613111416-sruac3a",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "回顾"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-pqyysau",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-pqyysau",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-kzy0ea7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-kzy0ea7",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-jc16guy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-jc16guy",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6900589795370598414",
+									"TextMarkATitle": "https://juejin.cn/post/6900589795370598414",
+									"TextMarkTextContent": "【runC】01-runC-介绍与命令"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613111416-88ag8af",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-88ag8af",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-heacwww",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-heacwww",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkATitle": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkTextContent": "【runC】02-runC-源码分析-[create, init, start]"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 前面已经介绍过容器的初始化过程，及启动流程；今天将分析runc exec 如何进入容器进程执行命令;"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-m6e0hus",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613111416-m6e0hus",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "预热"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-5z8guqw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613111416-5z8guqw",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "关键技术点"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-tf61lgt",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-tf61lgt",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-5cewko6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-5cewko6",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-ynmafwt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-ynmafwt",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "syscall.exec"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ exec是操作系统的功能，该功能在现有进程的上下文中运行可执行文件，以替换先前的可执行文件。此操作也称为覆盖。尽管在其他类Unix系统中，它尤其重要。由于未创建新进程，因此进程标识符（PID）不会更改，但是进程的机器代码，数据，堆和堆栈将被新程序的机器代码，数据，堆和堆栈所替代。\n"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": "runc 的exec最终也是会调用该系统调用呢"
+								}
+							]
+						},
+						{
+							"ID": "20230613111416-yzxz0x5",
+							"Type": "NodeBlockquote",
+							"Properties": {
+								"id": "20230613111416-yzxz0x5",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeBlockquoteMarker",
+									"Data": "\u003e"
+								},
+								{
+									"ID": "20230613111416-f13lacl",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230613111416-f13lacl",
+										"updated": "20230613111416"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "exec： "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "a",
+											"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FExec_(system_call)",
+											"TextMarkTextContent": "en.wikipedia.org/wiki/Exec_(…"
+										},
+										{
+											"Type": "NodeText",
+											"Data": " \""
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "a",
+											"TextMarkAHref": "https://en.wikipedia.org/wiki/Exec_(system_call)%22",
+											"TextMarkTextContent": "https://en.wikipedia.org/wiki/Exec_(system_call)\u0026quot;"
+										},
+										{
+											"Type": "NodeText",
+											"Data": ")"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-am31m5j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613111416-am31m5j",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "命令参数"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-abe675l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-abe675l",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# runc exec -h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-3j5v0x0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613111416-3j5v0x0",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/50b101ea05604540b63d2cecb9f22cf8tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230613111416-vrmvv40.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-v9hddfs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613111416-v9hddfs",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从命令参数上看，可以设置当前程序是否需要获得"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "tty"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​， 是需要指定"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "user"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​甚至可以设置安全相关的参数"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "apparmor"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "cap"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​；这个看起来和在容器建立的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "config.json"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 文件里面能指定的内容有点相似；后面深入代码看看是否进入容器和启动容器有相似之处；"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-mz4sk5k",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613111416-mz4sk5k",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "源码分析"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-6osu47m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613111416-6osu47m",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runc exec"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-hqwb25v",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-hqwb25v",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-ohg3l77",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-ohg3l77",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-t965dtz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-t965dtz",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "runc/exec.go"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-6aei3pz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613111416-6aei3pz",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runc exec 的命令入口"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-x6wxw2m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-x6wxw2m",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "var execCommand = cli.Command{\n\tName:  \"exec\",\n\tUsage: \"execute new process inside the container\",\n\t...\n\tAction: func(context *cli.Context) error {\n\t\t...\n\t\t// 执行exec 的函数入口\n\t\tstatus, err := execProcess(context)\n\t\tif err == nil {\n\t\t\tos.Exit(status)\n\t\t}\n\t\treturn fmt.Errorf(\"exec failed: %v\", err)\n\t},\n\tSkipArgReorder: true,\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-lars89t",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-lars89t",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-blonj3j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-blonj3j",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-ruejyx8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-ruejyx8",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "runc/exec.go execProcess"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n这里出现了一个在"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkATitle": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkTextContent": "前一章"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "的容器创建过程中提到过的函数，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "getContainer"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 该函数主要是获取一个container 的方式，是通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "libcontainer.Factory"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 容器工厂类加载containerID 及其配置获取一个可运行的容器（里面会调用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "runc init"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​来准备容器环境）。最后也是通过前面提到的"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "runner"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​进行容器的启动，但这次不同于创建容器流程，不需要进行环境大规模的配置初始化（env，cgroups，namespace，rootfs， mounts等）；后面进入 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "r.run(p)"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-99bxeuy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-99bxeuy",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func execProcess(context *cli.Context) (int, error) {\n\t// 获取指定\u003ccontainerID\u003e 的容器对象\n\tcontainer, err := getContainer(context)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\t...\n\t// 获取一个符合OCI规范在容器内的 process 配置\n\tp, err := getProcess(context, bundle)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\t...\n\t // runner 结构体\n\tr := \u0026runner{\n\t\tenableSubreaper: false,\n\t\tshouldDestroy:   false,\n\t\tcontainer:       container,\n\t\tconsoleSocket:   context.String(\"console-socket\"),\n\t\tdetach:          detach,\n\t\tpidFile:         context.String(\"pid-file\"),\n\t\t// 动作变为run\n\t\taction:          CT_ACT_RUN,\n \t\t// 不需要初始化\n\t\tinit:            false,\n\t\tpreserveFDs:     context.Int(\"preserve-fds\"),\n\t\tlogLevel:        logLevel,\n\t}\n\t// 进入该方法\n\treturn r.run(p)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-06jm31f",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-06jm31f",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-9c2qe2a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-9c2qe2a",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-4msyh3y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-4msyh3y",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "runc/utils_linux.go runner.run"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n在上一章中也是通过这个入口进入了容器的创建流程，下面只上重点代码（需要详解请看回"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkATitle": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkTextContent": "前一章"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "），解析留意一下"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "代码注释"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-b0h4eqd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-b0h4eqd",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (r *runner) run(config *specs.Process) (int, error) {\n\t...\n\t// 创建一个libcontainer 的 process 结构体对象, 该对象是一个容器进程的抽象结构，主要统一配置应用\n\tprocess, err := newProcess(*config, r.init, r.logLevel)\n\tif err != nil {\n\t\treturn -1, err\n\t...\n\ttty, err := setupIO(process, rootuid, rootgid, config.Terminal, detach, r.consoleSocket)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\tdefer tty.Close()\n\n\tswitch r.action {\n\tcase CT_ACT_CREATE:\n\t\terr = r.container.Start(process)\n\tcase CT_ACT_RESTORE:\n\t\terr = r.container.Restore(process, r.criuOpts)\n\t// 本次执行，会跑run 动作\n\tcase CT_ACT_RUN:\n\t\terr = r.container.Run(process)\n\tdefault:\n\t\tpanic(\"Unknown action\")\n\t}\n\t...\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-ha13vkt",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-ha13vkt",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-mofcj0p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-mofcj0p",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-98102gn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-98102gn",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下面继续看看 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "r.container.Run(process)"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 留意"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "代码注释"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-ucmzdps",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-ucmzdps",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) Run(process *Process) error {\n\t// linux container 去启动容器的process， 进入看看\n\tif err := c.Start(process); err != nil {\n\t\treturn err\n\t}\n    \t// 这段代码是不会跑的，因为我们这次启动是不需要初始化的\n\tif process.Init {\n\t\treturn c.exec()\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-c1w1bjy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-c1w1bjy",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-f3hnuda",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-f3hnuda",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-3nab1fe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-3nab1fe",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下面继续看看 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "c.Start(process)"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​  留意"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "代码注释"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-5i0snxn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-5i0snxn",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) Start(process *Process) error {\n\t...\n\t// 这段代码是不会跑的, 同样只有在创建完整容器环境的时候才会跑\n\tif process.Init {\n\t\tif err := c.createExecFifo(); err != nil {\n\t\t\treturn err\n\t\t}\n\t}\n\t// 进入该代码段\n\tif err := c.start(process); err != nil {\n\t\t...\n\t\treturn err\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-6gcudm2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-6gcudm2",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-pccm0sl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-pccm0sl",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-h3o3cc8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-h3o3cc8",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下面继续看看 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "c.start(process)"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​  留意"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "代码注释"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n经历了几次跳转终于来到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "核心"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "的调用, "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "c.newParentProcess"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 会提供一个pipe作为和子进程的通信通道，使用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "socketpair"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​建立，最后组装到 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "runc init"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 的命令里面(如未指定cwd，命令会在容器的rootfs下执行), 以及返回一个"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "setnsProcess"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​(核心的启动命令)。这里省略了代码展示，因为"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkATitle": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkTextContent": "前一章"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "已经用了大量篇幅解析了"
+								}
+							]
+						},
+						{
+							"ID": "20230613111416-8pbc2kz",
+							"Type": "NodeBlockquote",
+							"Properties": {
+								"id": "20230613111416-8pbc2kz",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeBlockquoteMarker",
+									"Data": "\u003e"
+								},
+								{
+									"ID": "20230613111416-1nzt4ug",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230613111416-1nzt4ug",
+										"updated": "20230613111416"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "socketpair: "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "a",
+											"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fman7.org%2Flinux%2Fman-pages%2Fman2%2Fsocketpair.2.html",
+											"TextMarkATitle": "https://man7.org/linux/man-pages/man2/socketpair.2.html",
+											"TextMarkTextContent": "man7.org/linux/man-p…"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-4x90nzr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-4x90nzr",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) start(process *Process) error {\n\t// 返回一个setnsProcess\n \t// 设置进程env _LIBCONTAINER_INITTYPE=setns\n\tparent, err := c.newParentProcess(process)\n\tif err != nil {\n\t\treturn newSystemErrorWithCause(err, \"creating new parent process\")\n\t}\n\t// 读取parent 日志文件管道\n\tparent.forwardChildLogs()\n\t// 启动进程\n\tif err := parent.start(); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"starting container process\")\n\t}\n\t...\n\t...\n\treturn nil\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-ux7s3oy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-ux7s3oy",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-9gdhtks",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-9gdhtks",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-4rzf9f5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-4rzf9f5",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "下面继续看看 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "parent.start"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​\ncmd终于的开始执行了，执行"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "runc init"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "init"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 程序会调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nsexec.c"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 的代码（这也是一个子进程，而且是在init进程前启动，设置ns后就会退出）;通过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "_LIBCONTAINER_INITTYPE=setns"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 这个环境变量判别用什么模式进行setns，如果是"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "standard"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 则是使用clone namespace 为容器建立新的namespace，这里我们是"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "setns"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​所以是为容器指定了我们需要进入的进程namespace。这一步的信息传递是通过socket与"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "nsexec.c"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 这个程序交互，进程间通信技术完成信息传递；容器启动的需要的namespace 数据放到"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "setnsProcess.bootstrapData"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​内；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-5dzqcir",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-5dzqcir",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (p *setnsProcess) start() (retErr error) {\n\t...\n\t// 执行命令 runc init\n\terr := p.cmd.Start()\n\tif err != nil {\n\t\treturn newSystemErrorWithCause(err, \"starting setns process\")\n\t}\n\t...\n\t...\n \t// 将namespace 数据传输到nsenter 上\n\tif p.bootstrapData != nil {\n\t\tif _, err := io.Copy(p.messageSockPair.parent, p.bootstrapData); err != nil {\n\t\t\treturn newSystemErrorWithCause(err, \"copying bootstrap data to pipe\")\n\t\t}\n\t}\n\t// 等待exec 设置namespace 数据, 并且通过消息管道返回父进程号，然后设置process属性为runc init 的进程号，方便后面对process的操作；\n\tif err := p.execSetns(); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"executing setns process\")\n\t}\n\tif len(p.cgroupPaths) \u003e 0 {\n\t\t// 把runc init进程加入到, 已有容器的cgroup中\n\t\tif err := cgroups.EnterPid(p.cgroupPaths, p.pid()); err != nil \u0026\u0026 !p.rootlessCgroups {\n\t\t\t// On cgroup v2 + nesting + domain controllers, EnterPid may fail with EBUSY.\n\t\t\t// https://github.com/opencontainers/runc/issues/2356#issuecomment-621277643\n\t\t\t// Try to join the cgroup of InitProcessPid.\n\t\t\t...\n\t\t\t...\n\t\t}\n\t}\n\t...\n\t...\n    // 关闭通信的socket\n\tif err := unix.Shutdown(int(p.messageSockPair.parent.Fd()), unix.SHUT_WR); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"calling shutdown on init pipe\")\n\t}\n\t// 等待命令执行结束，即exec结束\n\tif ierr != nil {\n\t\tp.wait()\n\t\treturn ierr\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-nqvqddj",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230613111416-nqvqddj",
+				"updated": "20230613111416"
+			}
+		},
+		{
+			"ID": "20230613111416-j1yqhfk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613111416-j1yqhfk",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "至此 exec 的第一阶段完成了，下面进入第二阶段 init 过程"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-r6lb7nx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613111416-r6lb7nx",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runc init"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-g8fiws5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-g8fiws5",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-fzhrmv8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-fzhrmv8",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-8h4ak0w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-8h4ak0w",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "runc/libcontainer/setns_init_linux.go"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "\n我们直接看核心代码块"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-396rfq5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613111416-396rfq5",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (l *linuxSetnsInit) Init() error {\n\truntime.LockOSThread()\n\tdefer runtime.UnlockOSThread()\n\t...\n\t// 省略了大量代码\n\t...\n    // 最终通过exec对容器进程空间执行命令\n\treturn system.Execv(l.config.Args[0], l.config.Args[0:], os.Environ())\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-zgagme5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613111416-zgagme5",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20230613111416-u1qw860",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613111416-u1qw860",
+				"updated": "20230613111416"
+			},
+			"Children": [
+				{
+					"ID": "20230613111416-ui484gt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613111416-ui484gt",
+						"updated": "20230613111416"
+					},
+					"Children": [
+						{
+							"ID": "20230613111416-t3l9rm7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-t3l9rm7",
+								"updated": "20230613111416"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "exec 调用时序图"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/d95347d1d510460bb785a0e56e9deb9ctplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230613111416-b6fzkyr.awebp"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						},
+						{
+							"ID": "20230613111416-bqg0siy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613111416-bqg0siy",
+								"updated": "20230613111547"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613111543-31wu1ev",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613111543-31wu1ev"
+			}
+		}
+	]
+}

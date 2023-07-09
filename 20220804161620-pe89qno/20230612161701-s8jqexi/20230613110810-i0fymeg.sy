@@ -1,0 +1,2621 @@
+{
+	"ID": "20230613110810-i0fymeg",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230613110810-i0fymeg",
+		"title": "【runC】02-runC-源码分析-[create, init, start] - 掘金",
+		"updated": "20230613110810"
+	},
+	"Children": [
+		{
+			"ID": "20230613110810-7h358zb",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230613110810-7h358zb",
+				"updated": "20230613110810"
+			}
+		},
+		{
+			"ID": "20230613110810-gbnwxsh",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-gbnwxsh",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-yjlypcb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-yjlypcb",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-3ieixjv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-3ieixjv",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://juejin.cn/post/6903527508784873485",
+									"TextMarkTextContent": "https://juejin.cn/post/6903527508784873485"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613110810-990l99v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-990l99v",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-hvvd928",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-hvvd928",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "runC 是一个OCI 规范的实现，容器标准化的产物。今天开始逐步从容器创建开始深入分析源码，尽可能的深入到自己的知识盲区，且短时间不能弄懂的区域；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613110810-cmdu04l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-cmdu04l",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-bcmdv3g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-bcmdv3g",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2023-06-13 11:08:10"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-5qg4m9m",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230613110810-5qg4m9m",
+				"updated": "20230613110810"
+			}
+		},
+		{
+			"ID": "20230613110810-oxu5mew",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613110810-oxu5mew",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "0、回顾"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-cuoyie8",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-cuoyie8",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-wro952w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-wro952w",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-m52d672",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-m52d672",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "runC 是一个OCI 规范的实现，容器标准化的产物。今天开始逐步从容器创建开始深入分析源码，尽可能的深入到自己的知识盲区，且短时间不能弄懂的区域；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613110810-zxi3uq8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-zxi3uq8",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-l1fp9yt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-l1fp9yt",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "往期："
+								}
+							]
+						},
+						{
+							"ID": "20230613110810-accctv2",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230613110810-accctv2",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"ID": "20230613110810-aixxrf7",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-aixxrf7",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-erg3oj3",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-erg3oj3",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "https://juejin.cn/post/6900589795370598414",
+													"TextMarkATitle": "https://juejin.cn/post/6900589795370598414",
+													"TextMarkTextContent": "【runC】01-runC-介绍与命令"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-eknihcv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613110810-eknihcv",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、runC 目录结构介绍"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-w2mm592",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-w2mm592",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runC 的代码结构是非常清晰，只要具备一点golang基础便可以轻松入坑，下面大致介绍下结构："
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-vw1rj5d",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-vw1rj5d",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-jeoa979",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-jeoa979",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-gogpz95",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-gogpz95",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "runc/main.go 文件是命令的入口文件，其余子命令模块也存在于该层目录，如 create.go，delete.go,  exec.go 等；整个命令模块的组装使用了 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "github.com/urfave/cli"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 这个库"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613110810-d8ro169",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-d8ro169",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-70080t2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-70080t2",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "runc/libcontainer 目录是主要存放每个子命令模块的工作主体逻辑； "
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/87b7c3f2501148aab276af37d3c4073ctplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230613110810-tfpxk3u.awebp"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-x4aumfa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-x4aumfa",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上是比较重要的两点，其他的有兴趣自行查看，下面进入主题；"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-5dofb3c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613110810-5dofb3c",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、源码分析"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-7pcybay",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613110810-7pcybay",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1、简要介绍"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-vhr6ezm",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-vhr6ezm",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-fh7ay9u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-fh7ay9u",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-gfgcwdh",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-gfgcwdh",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一个容器启动主要分为三大部分，如文章题目所示"
+								}
+							]
+						},
+						{
+							"ID": "20230613110810-fp8eabm",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230613110810-fp8eabm",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"ID": "20230613110810-ja9udzp",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-ja9udzp",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-l9up722",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-l9up722",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "create"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​:  主要是为了解析、组装容器启动的配置和与子进程的消息通道等；"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230613110810-0xhnzhq",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-0xhnzhq",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-q48s4fv",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-q48s4fv",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "init"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​    :  主要根据容器配置启动容器整个运行环境，包括熟知ns，cgroups, seccomp, apparmor, caps等;"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230613110810-67s9mm7",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-67s9mm7",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-glfmugs",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-glfmugs",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "​"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "code",
+													"TextMarkTextContent": "start"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "​  :  主要是为了通知init 进程启动容器；"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613110810-zliqzd2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-zliqzd2",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-b5qhuk2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-b5qhuk2",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "所以启动流程大致如下"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-5ghk1cs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-5ghk1cs",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "runc create --\u003e runc init --\u003e runc start\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-4dce4mp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-4dce4mp",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-tzm6l5p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-tzm6l5p",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-hmtoxo8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-hmtoxo8",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "create | init | start 三者的关系时序图 "
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/3944e4afd6d0410e950b21729b0ec04dtplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230613110810-wkcgj2a.awebp"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230613110810-jq3fia3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-jq3fia3",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-12969xw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-12969xw",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "源码下载"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-knb8kkf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-knb8kkf",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ git clone https://github.com/opencontainers/runc\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-00thxqx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613110810-00thxqx",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2、runc create"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-b78cu7c",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-b78cu7c",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-dxgtqod",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-dxgtqod",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-pifmu00",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-pifmu00",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "参数展示"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-tdg4rf1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-tdg4rf1",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ runc create -h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-p5itr21",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-p5itr21",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/4612e23b6c0c40918263461f4d7eeaf7tplv-k3u1fbpfcp-zoom-in-crop-mark4536000-20230613110810-o9j46zv.awebp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-5up5ccy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 5,
+			"Properties": {
+				"id": "20230613110810-5up5ccy",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runc/create.go"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-8a35p3i",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-8a35p3i",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-au8ovw1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-au8ovw1",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-gwox2qv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-gwox2qv",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "create 命令入口"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-95r0nbb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-95r0nbb",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "var createCommand = cli.Command{\n\tName:  \"create\",\n\tUsage: \"create a container\",\n\t...\n\t},\n\tAction: func(context *cli.Context) error {\n\t\t.....\n\t\t// 获取规范配置文件，并进行简单的检查及赋值\n\t\tspec, err := setupSpec(context)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t// 开始组装container 配置，动作为【create】\n        // [进入 startContainer]\n\t\tstatus, err := startContainer(context, spec, CT_ACT_CREATE, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\tos.Exit(status)\n\t\treturn nil\n\t},\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-8z3z4sg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-8z3z4sg",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "后面进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "startContainer"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-89ky2a1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-89ky2a1",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/utils_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "startContainer (1)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-vcmtjvi",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-vcmtjvi",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-xh3y4b7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-xh3y4b7",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-g0f9ngc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-g0f9ngc",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "startContainer， 这部分代码主要分为两部分"
+								}
+							]
+						},
+						{
+							"ID": "20230613110810-8fo206r",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230613110810-8fo206r",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"ID": "20230613110810-kq6poo6",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-kq6poo6",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-9xc0u2m",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-9xc0u2m",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "一个是createContaienr函数；"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230613110810-dpe1jrz",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-dpe1jrz",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-wzz45e6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-wzz45e6",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "一个是runner结构体的run方法；"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-2n50g4p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-2n50g4p",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func startContainer(context *cli.Context, spec *specs.Spec, action CtAct, criuOpts *libcontainer.CriuOpts) (int, error) {\n\tid := context.Args().First()\n\tif id == \"\" {\n\t\treturn -1, errEmptyID\n\t}\n       // 建立接收console 信息的sockt 非必要, 该socket用于接收整个创建过程的状态变化\n\tnotifySocket := newNotifySocket(context, os.Getenv(\"NOTIFY_SOCKET\"), id)\n\tif notifySocket != nil {\n\t\tif err := notifySocket.setupSpec(context, spec); err != nil {\n\t\t\treturn -1, err\n\t\t}\n\t}\n\t// [先进入 crateContainer]\n\tcontainer, err := createContainer(context, id, spec)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\t...\n        // 后面会继续贴剩下的代码及注释\n\tr := \u0026runner{\n\t\tenableSubreaper: !context.Bool(\"no-subreaper\"),\n\t\tshouldDestroy:   true,\n\t\tcontainer:       container,\n\t\tlistenFDs:       listenFDs,\n\t\tnotifySocket:    notifySocket,\n\t\tconsoleSocket:   context.String(\"console-socket\"),\n\t\tdetach:          context.Bool(\"detach\"),\n\t\tpidFile:         context.String(\"pid-file\"),\n\t\tpreserveFDs:     context.Int(\"preserve-fds\"),\n\t\taction:          action,\n\t\tcriuOpts:        criuOpts,\n\t\tinit:            true,\n\t\tlogLevel:        logLevel,\n\t}\n\treturn r.run(spec.Process)\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-ku4pu0o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-ku4pu0o",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/utils_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "createContainer"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-c05g0nd",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-c05g0nd",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-co3jyhe",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-co3jyhe",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-q8ilyrb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-q8ilyrb",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": "createContainer"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-3tm26cv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-3tm26cv",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func createContainer(context *cli.Context, id string, spec *specs.Spec) (libcontainer.Container, error) {\n\t // 是否使用非root 的cgroup\n\trootlessCg, err := shouldUseRootlessCgroupManager(context)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 根据OCI 规范创建 container 配置文件\n    // [进入CreateLibcontainerConfig]\n\tconfig, err := specconv.CreateLibcontainerConfig(\u0026specconv.CreateOpts{\n\t\tCgroupName:       id,\n        \t// 是否使用systemd-cgroup， 不使用的话默认选择 user.slice\n\t\tUseSystemdCgroup: context.GlobalBool(\"systemd-cgroup\"),\n        \t// 是否不 pivotroot, 一般只有rootfs 在闪存上才不固定rootfs\n\t\tNoPivotRoot:      context.Bool(\"no-pivot\"),\n\t\tNoNewKeyring:     context.Bool(\"no-new-keyring\"),\n\t\tSpec:             spec,\n        \t// 获取EUID, 用于系统决定用户对系统资源的访问权限，通常情况下等于RUID。 非root 情况启动；\n\t\tRootlessEUID:     os.Geteuid() != 0,\n\t\tRootlessCgroups:  rootlessCg,\n\t})\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 通过命令上下文，加载一个可执行的工厂容器类，创建一个runc init 的容器对象 【进入loadFactory】\n\tfactory, err := loadFactory(context)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t// 创建一个容器，对container 的root 目录，即bundle 目录进行设置，当前容器状态为 stopped\n\treturn factory.Create(id, config)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-fx81um1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-fx81um1",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面将进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "CreateLibcontainerConfig"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，看看OCI 规范了容器哪些配置，及它们是如何生效；"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-4syacv2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-4syacv2",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libcontainer/specconv/spec_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "CreateLibcontainerConfig"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-l0b1myq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-l0b1myq",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-gi3y6bw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-gi3y6bw",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-ldba15e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-ldba15e",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": "CreateLibcontainerConfig"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "   由于这块代码块篇幅有点长想了解详情的可以点击 ["
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fopencontainers%2Frunc%2Fblob%2Fmaster%2Flibcontainer%2Fspecconv%2Fspec_linux.go%23L205",
+									"TextMarkATitle": "https://github.com/opencontainers/runc/blob/master/libcontainer/specconv/spec_linux.go#L205",
+									"TextMarkTextContent": "code"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "] 进入"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-zuncb6r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-zuncb6r",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func CreateLibcontainerConfig(opts *CreateOpts) (*configs.Config, error) {\n       // 让runc 的工作目录固定在bundle 直到的目录下，没有指定即当前目录\n\trcwd, err := os.Getwd()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\t...\n\t// 指定rootfs, 在 config.json 里面指定了当前目录的 rootfs 文件夹\n\trootfsPath := spec.Root.Path\n\tif !filepath.IsAbs(rootfsPath) {\n\t\trootfsPath = filepath.Join(cwd, rootfsPath)\n\t}\n\tlabels := []string{}\n\tfor k, v := range spec.Annotations {\n\t\tlabels = append(labels, k+\"=\"+v)\n\t}\n\t// 将已有的createOpts 组装到最终的 config 上\n\tconfig := \u0026configs.Config{\n\t\tRootfs:          rootfsPath,\n\t\tNoPivotRoot:     opts.NoPivotRoot,\n\t\tReadonlyfs:      spec.Root.Readonly,\n\t\tHostname:        spec.Hostname,\n\t\tLabels:          append(labels, \"bundle=\"+cwd),\n\t\tNoNewKeyring:    opts.NoNewKeyring,\n\t\tRootlessEUID:    opts.RootlessEUID,\n\t\tRootlessCgroups: opts.RootlessCgroups,\n\t}\n \t// 根据规范挂载目录，对应的是config.json 的 mounts 字段\n// 如： /proc, /dev, /dev/pts, /dev/shm, /dev/mqueue, /sys/, /sys/fs/cgroup 等\n\tfor _, m := range spec.Mounts {\n\t\tconfig.Mounts = append(config.Mounts, createLibcontainerMount(cwd, m))\n\t}\n\n\t// 创建挂载分区, 默认挂载分区 AllowedDevices 和 OCI 规范的分区\n\t// AllowedDevices https://github.com/opencontainers/runc/blob/master/libcontainer/specconv/spec_linux.go#L64\n\tdefaultDevs, err := createDevices(spec, config)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\t// 创建cgroup 资源控制的配置, 传入默认分区, 返回 cgroup 资源配置\n\t/* 可控的资源对象\n\tlegacySubsystems = []subsystem{\n\t\t\u0026fs.CpusetGroup{},\n\t\t\u0026fs.DevicesGroup{},\n\t\t\u0026fs.MemoryGroup{},\n\t\t\u0026fs.CpuGroup{},\n\t\t\u0026fs.CpuacctGroup{},\n\t\t\u0026fs.PidsGroup{},\n\t\t\u0026fs.BlkioGroup{},\n\t\t\u0026fs.HugetlbGroup{},\n\t\t\u0026fs.PerfEventGroup{},\n\t\t\u0026fs.FreezerGroup{},\n\t\t\u0026fs.NetPrioGroup{},\n\t\t\u0026fs.NetClsGroup{},\n\t\t\u0026fs.NameGroup{GroupName: \"name=systemd\"},\n\t}\n\t*/\n\tc, err := CreateCgroupConfig(opts, defaultDevs)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tconfig.Cgroups = c\n\n\t// set linux-specific config\n\tif spec.Linux != nil {\n\t\t...\n\n\t\t// 加载namespace， 默认加载 pid, network, ipc, uts, mount\n\t\tfor _, ns := range spec.Linux.Namespaces {\n\t\t\tt, exists := namespaceMapping[ns.Type]\n\t\t\tif !exists {\n\t\t\t\treturn nil, fmt.Errorf(\"namespace %q does not exist\", ns)\n\t\t\t}\n\t\t\tif config.Namespaces.Contains(t) {\n\t\t\t\treturn nil, fmt.Errorf(\"malformed spec file: duplicated ns %q\", ns)\n\t\t\t}\n\t\t\tconfig.Namespaces.Add(t, ns.Path)\n\t\t}\n  \t\t// 如果存在network ns 就设置 lookback 回环地址\n\t\tif config.Namespaces.Contains(configs.NEWNET) \u0026\u0026 config.Namespaces.PathOf(configs.NEWNET) == \"\" {\n\t\t\tconfig.Networks = []*configs.Network{\n\t\t\t\t{\n\t\t\t\t\tType: \"loopback\",\n\t\t\t\t},\n\t\t\t}\n\t\t}\n\t\t// 如果存在user ns 就设置user 的 rootID groupID\n\t\tif config.Namespaces.Contains(configs.NEWUSER) {\n\t\t\tif err := setupUserNamespace(spec, config); err != nil {\n\t\t\t\treturn nil, err\n\t\t\t}\n\t\t}\n\t\t...\n  \t\t// 设置intel 芯片参数\n\t\tif spec.Linux.IntelRdt != nil {\n\t\t\tconfig.IntelRdt = \u0026configs.IntelRdt{}\n\t\t\tif spec.Linux.IntelRdt.L3CacheSchema != \"\" {\n\t\t\t\tconfig.IntelRdt.L3CacheSchema = spec.Linux.IntelRdt.L3CacheSchema\n\t\t\t}\n\t\t\tif spec.Linux.IntelRdt.MemBwSchema != \"\" {\n\t\t\t\tconfig.IntelRdt.MemBwSchema = spec.Linux.IntelRdt.MemBwSchema\n\t\t\t}\n\t\t}\n\t}\n\tif spec.Process != nil {\n  \t\t// 设置 oom scoret\n\t\tconfig.OomScoreAdj = spec.Process.OOMScoreAdj\n\t\t// privileges\n\t\tconfig.NoNewPrivileges = spec.Process.NoNewPrivileges\n \t\t// umask\n\t\tconfig.Umask = spec.Process.User.Umask\n\t\t// selinux\n\t\tif spec.Process.SelinuxLabel != \"\" {\n\t\t\tconfig.ProcessLabel = spec.Process.SelinuxLabel\n\t\t}\n\t\t// 赋予容器部分root的能力\n\t\tif spec.Process.Capabilities != nil {\n\t\t\tconfig.Capabilities = \u0026configs.Capabilities{\n\t\t\t\tBounding:    spec.Process.Capabilities.Bounding,\n\t\t\t\tEffective:   spec.Process.Capabilities.Effective,\n\t\t\t\tPermitted:   spec.Process.Capabilities.Permitted,\n\t\t\t\tInheritable: spec.Process.Capabilities.Inheritable,\n\t\t\t\tAmbient:     spec.Process.Capabilities.Ambient,\n\t\t\t}\n\t\t}\n\t}\n\t// 容器生命周期钩子\n\t/*\n\tpreStart : 在启动init 进程前的hook，根据注释该hook已经被废弃\n\tCreateRuntime : 该hook的执行期是，在环境变量执行后，及pivot_root执行前，需要等init进程通知 create 进程；\n\tCreateContainer : CreateRuntime执行完毕后，就执行当前hook\n    Poststart :init 进程启动后, 即容器环境准备完毕, 用户进程执行前；\n\tStartContainer : init 进程启动后, 即容器环境准备完毕，但用户进程还没启动； created状态的时候\n\t  * 上面 Poststart， StartContainer 两个看起来比较相似，大部分同学可能认识poststart；\n        \tpoststart 是在 create进程收到 init 进程已经初始化完成了后执行的；\n        \tstartContainer 是 init进程收到 start 进程的信息后执行的，这个执行也是在启动用户进程前；\n\tPoststop \n\t*/\n\tcreateHooks(spec, config)\n\tconfig.Version = specs.Version\n\treturn config, nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-okjvrjf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-okjvrjf",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/utils_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "startContainer (2)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-b2bwu6a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-b2bwu6a",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "回到之前startContainer, 分析剩下的代码"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-49lktpf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-49lktpf",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func startContainer(context *cli.Context, spec *specs.Spec, action CtAct, criuOpts *libcontainer.CriuOpts) (int, error) {\n\t...\n\t// 刚刚是从createContainer进入的， 现在从该函数开始\n\tcontainer, err := createContainer(context, id, spec)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\t...\n\n\n\t// 这是一个extraFiles 文件描述符队列，主要用于给 init 进程读取参数使用\n\t// 一个程序拥有 0 1 2 三个标准文件描述符，标准输入，标准输出，标准错误；在此之外接收的文件描述符称为额外文件描述符即 extraFiles\n\t// 后面到了init 进程组装的时候也会在此次提起；\n\tlistenFDs := []*os.File{}\n\tif os.Getenv(\"LISTEN_FDS\") != \"\" {\n\t\tlistenFDs = activation.Files(false)\n\t}\n\n\t...\n    // runner 是装载 init 进程的核心，在此前的工作都是以组装配置和校对配置为主，现在正式把配置内容装载后运行init进程;\n\tr := \u0026runner{\n\t\t// 是否指定当前进程不收集僵尸进程，托孤行为\n\t\tenableSubreaper: !context.Bool(\"no-subreaper\"),\n\t\tshouldDestroy:   true,\n\t\tcontainer:       container,\n\t\tlistenFDs:       listenFDs,\n\t\tnotifySocket:    notifySocket,\n\t\tconsoleSocket:   context.String(\"console-socket\"),\n\t\tdetach:          context.Bool(\"detach\"),\n\t\tpidFile:         context.String(\"pid-file\"),\n\t\tpreserveFDs:     context.Int(\"preserve-fds\"),\n\t\taction:          action,\n\t\t// 热迁移工具的参数，在create 命令下该参数是空的\n\t\tcriuOpts:        criuOpts,\n\t\t// 是否需要初始化\n\t\tinit:            true,\n\t\tlogLevel:        logLevel,\n\t}\n    // [进入 r.run]\n\treturn r.run(spec.Process)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-y4k68g9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-y4k68g9",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入看看 runner.run 是如何装载配置"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-zqypr7u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-zqypr7u",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/utils_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "runner.run"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-zldbxf0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-zldbxf0",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (r *runner) run(config *specs.Process) (int, error) {\n\tvar err error\n\tdefer func() {\n\t\tif err != nil {\n\t\t\t// 运行完毕后会进行container的销毁,\n\t\t\t// 最终会导向 runc/libcontainer/state_linux.go 下的状态机进行destroy\n\t\t\tr.destroy()\n\t\t}\n\t}()\n\tif err = r.checkTerminal(config); err != nil {\n\t\treturn -1, err\n\t}\n\t// 创建一个libcontainer 的 process 结构体对象, 该对象是一个容器进程的抽象结构，主要统一配置应用\n\tprocess, err := newProcess(*config, r.init, r.logLevel)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\t// 这里就是前面提到ExtraFiles, 设定的fd 从3开始加\n\tif len(r.listenFDs) \u003e 0 {\n\t\tprocess.Env = append(process.Env, \"LISTEN_FDS=\"+strconv.Itoa(len(r.listenFDs)), \"LISTEN_PID=1\")\n\t\tprocess.ExtraFiles = append(process.ExtraFiles, r.listenFDs...)\n\t}\n\tbaseFd := 3 + len(process.ExtraFiles)\n\t...\n\t}\n\t...\n\tvar (\n\t\tdetach = r.detach || (r.action == CT_ACT_CREATE)\n\t)\n\t// started.\n\t// signalhandler 如果启动 subreaper 就会设置 1 号进程为孤儿进程的托管者\n\thandler := newSignalHandler(r.enableSubreaper, r.notifySocket)\n\t// 设置进程的IO\n\t// 当config.Terminal == true 把IO文件符先设定好(使用了epoll io 监听stdin), 为了后面容器启动后可以得到一个可读写的tty，这里涉及到 socketpair 知识；\n\t// 当 config.Terminal == false 和 detach == false 会直接把容器IO copy 到当前终端stdout, stderr\n\t// 设置过程有点复杂，有兴趣的可以查看源码\n\ttty, err := setupIO(process, rootuid, rootgid, config.Terminal, detach, r.consoleSocket)\n\tif err != nil {\n\t\treturn -1, err\n\t}\n\tdefer tty.Close()\n\n\tswitch r.action {\n\tcase CT_ACT_CREATE:\n \t\t// 其实这几个action 最终实现的动作都差不多，后面还会有新的文章进行详解；\n\t\t// 本次主要讲的是 create 动作\n\t\t// 【进入 container.Start】\n\t\terr = r.container.Start(process)\n\tcase CT_ACT_RESTORE:\n\t\terr = r.container.Restore(process, r.criuOpts)\n\tcase CT_ACT_RUN:\n\t\terr = r.container.Run(process)\n\tdefault:\n\t\tpanic(\"Unknown action\")\n\t}\n\t...\n\t// 创建当前进程文件\n\tif r.pidFile != \"\" {\n\t\tif err = createPidFile(r.pidFile, process); err != nil {\n\t\t\tr.terminate(process)\n\t\t\treturn -1, err\n\t\t}\n\t}\n\t....\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-8yqha59",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-8yqha59",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入 container.Start"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-5azy446",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-5azy446",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libccontainer/container_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "linuxContaienr.Start"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-sfeflts",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-sfeflts",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) Start(process *Process) error {\n\tc.m.Lock()\n\tdefer c.m.Unlock()\n\tif c.config.Cgroups.Resources.SkipDevices {\n\t\treturn newGenericError(errors.New(\"can't start container with SkipDevices set\"), ConfigInvalid)\n\t}\n\t// 需要初始化，创建为了后面调用exec 的通信管道文件 (这个创建通信管道在这里显得很突兀，只有看到后面才发现这是一个挺巧妙的设计)\n\tif process.Init {\n\t\tif err := c.createExecFifo(); err != nil {\n\t\t\treturn err\n\t\t}\n\t}\n\t// 【进入 c.start】\n\tif err := c.start(process); err != nil {\n\t\tif process.Init {\n        \t// start 进程(runc start) 执行完毕后，删除exec.fifo文件，看到这句应该大概猜到上面exec.fifo 文件可能和 start 进程的执行有关系\n\t\t\tc.deleteExecFifo()\n\t\t}\n\t\treturn err\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-27yhwd5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-27yhwd5",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "c.start"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 即 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "linuxContainer.start"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-d1oi9r4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-d1oi9r4",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libccontainer/container_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "linuxContaienr.start(1)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-69i4zk4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-69i4zk4",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-yxwfw6k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-yxwfw6k",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-usmpxm9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-usmpxm9",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "该方法有两个方法需要深究"
+								}
+							]
+						},
+						{
+							"ID": "20230613110810-9php1d6",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20230613110810-9php1d6",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"ID": "20230613110810-8ts3c0h",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-8ts3c0h",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-4v5eh5w",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-4v5eh5w",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "em",
+													"TextMarkTextContent": "linuxContainer.newParentProcess"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20230613110810-3wr1o5v",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20230613110810-3wr1o5v",
+										"updated": "20230613110810"
+									},
+									"Children": [
+										{
+											"ID": "20230613110810-7sxd2am",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20230613110810-7sxd2am",
+												"updated": "20230613110810"
+											},
+											"Children": [
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "em",
+													"TextMarkTextContent": "parent.start"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-rkufd44",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-rkufd44",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) start(process *Process) error {\n\t// 创建父进程，父进程指的是当前create进程，而子进程指的是init进程，\n\t// [进入 c.newParentProcess]\n\tparent, err := c.newParentProcess(process)\n\tif err != nil {\n\t\treturn newSystemErrorWithCause(err, \"creating new parent process\")\n\t}\n\t// 读取child日志文件管道\n\tparent.forwardChildLogs()\n\t// [进入 parent.start]\n\tif err := parent.start(); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"starting container process\")\n\t}\n\t...\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-cqk51o3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-cqk51o3",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面我们先进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "linuxContainer.newParentProcess"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-3wz8e1h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-3wz8e1h",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libccontainer/container_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "linuxContaienr.newParentProcess"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-74xbnuc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-74xbnuc",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) newParentProcess(p *Process) (parentProcess, error) {\n\t// 创建init父子进程的通信管道；因为准备要从当前进程创建容器\n    // init-p, init-c\n\tparentInitPipe, childInitPipe, err := utils.NewSockPair(\"init\")\n\tif err != nil {\n\t\treturn nil, newSystemErrorWithCause(err, \"creating new init pipe\")\n\t}\n\t// 这些写法都是为了创建管道文件进行进程间通信\n\tmessageSockPair := filePair{parentInitPipe, childInitPipe}\n\n\tparentLogPipe, childLogPipe, err := os.Pipe()\n\tif err != nil {\n\t\treturn nil, fmt.Errorf(\"Unable to create the log pipe:  %s\", err)\n\t}\n\tlogFilePair := filePair{parentLogPipe, childLogPipe}\n\t// 组装command 模版，生成init 命令，设置大量以 _xxx 这样格式的环境变量，即大量的extraFiles 文件\n\tcmd := c.commandTemplate(p, childInitPipe, childLogPipe)\n\t// 当不需要init\n\tif !p.Init {\n\t\t// 设置进程到对应的namespace, 这个做法是对应到 exec，\n\t\treturn c.newSetnsProcess(p, cmd, messageSockPair, logFilePair)\n\t}\n\t// 将exec.fifo 也加入到extraFiles\n\tif err := c.includeExecFifo(cmd); err != nil {\n\t\treturn nil, newSystemErrorWithCause(err, \"including execfifo in cmd.Exec setup\")\n\t}\n\t// 生成initProcess 对象， 设置 _LIBCONTAINER_INITTYPE 为standard\n\t// 并生成了 bootstrapData，主要是namespace 和 oom score\n\t// 装载了 cgroupManager, 后面分析 resume/pause 时会提到部分cgroupManager\n\t// init-p, init-c 通信管道设置\n\treturn c.newInitProcess(p, cmd, messageSockPair, logFilePair)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-e56yxy7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-e56yxy7",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面回到 runc/libccontainer/container_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "linuxContaienr.start"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-ibgvdyd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-ibgvdyd",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libccontainer/container_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "linuxContaienr.start(2)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-wb1iozl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-wb1iozl",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) start(process *Process) error {\n\t...\n\tparent, err := c.newParentProcess(process)\n\tif err != nil {\n\t\treturn newSystemErrorWithCause(err, \"creating new parent process\")\n\t}\n\t// -- 从这开始 --\n\t// 读取child日志文件管道\n\tparent.forwardChildLogs()\n\t// [进入 parent.start]\n\tif err := parent.start(); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"starting container process\")\n\t}\n\tif process.Init {\n\t\tif c.config.Hooks != nil {\n\t\t\ts, err := c.currentOCIState()\n\t\t\tif err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\t\t\t// 执行poststart hook (容器创建成功后，运行前的任务)\n\t\t\tif err := c.config.Hooks[configs.Poststart].RunHooks(s); err != nil {\n\t\t\t\tif err := ignoreTerminateErrors(parent.terminate()); err != nil {\n\t\t\t\t\tlogrus.Warn(errorsf.Wrapf(err, \"Running Poststart hook\"))\n\t\t\t\t}\n\t\t\t\treturn err\n\t\t\t}\n\t\t}\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-6fpd0i0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-6fpd0i0",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "parent.start"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 即 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "initProcess.start"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 准备启动init 进程了；"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-s4jdvx4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-s4jdvx4",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libcontainer/process_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "initProcess.start"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-xzbxn2k",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-xzbxn2k",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-gv7b3cw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-gv7b3cw",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-vupphp2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-vupphp2",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "create 的最终目的就是启动init 进程，让init 进程创建容器环境"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-35cl878",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-35cl878",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (p *initProcess) start() (retErr error) {\n\tdefer p.messageSockPair.parent.Close()\n\t// 调用 runc init\n\terr := p.cmd.Start()\n\t...\n\tif err != nil {\n\t\tp.process.ops = nil\n\t\treturn newSystemErrorWithCause(err, \"starting init process command\")\n\t}\n\t...\n\t// 限定子进程的cgroups，避免有进程逃离cgroup限定\n\tif err := p.manager.Apply(p.pid()); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"applying cgroup configuration for process\")\n\t}\n\tif p.intelRdtManager != nil {\n\t\tif err := p.intelRdtManager.Apply(p.pid()); err != nil {\n\t\t\treturn newSystemErrorWithCause(err, \"applying Intel RDT configuration for process\")\n\t\t}\n\t}\n\t// //将bootstrapData写入init通道,runc init进程接收到会设置自身运行的namespaces等\n\tif _, err := io.Copy(p.messageSockPair.parent, p.bootstrapData); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"copying bootstrap data to pipe\")\n\t}\n\t//通过init pipe获取子进程的pid\n\tchildPid, err := p.getChildPid()\n\tif err != nil {\n\t\treturn newSystemErrorWithCause(err, \"getting the final child's pid from pipe\")\n\t}\n\n\t// 获取子进程的文件描述符路径\n\tfds, err := getPipeFds(childPid)\n\tif err != nil {\n\t\treturn newSystemErrorWithCausef(err, \"getting pipe fds for pid %d\", childPid)\n\t}\n\t// 记录子进程的的额外文件描述符路径，以免后面找不到\n\tp.setExternalDescriptors(fds)\n\n\t// 通知init 进程，设置新的cgroup namespace\n\tif p.config.Config.Namespaces.Contains(configs.NEWCGROUP) \u0026\u0026 p.config.Config.Namespaces.PathOf(configs.NEWCGROUP) == \"\" {\n\t\tif _, err := p.messageSockPair.parent.Write([]byte{createCgroupns}); err != nil {\n\t\t\treturn newSystemErrorWithCause(err, \"sending synchronization value to init process\")\n\t\t}\n\t}\n\n\t// 等待nsexec进程执行，这部分因为go语言对于namespace支持缺陷，\n\t// 导致这部分实现没有使用go语言，采用C语言实现，通过init-c 这个管道获取 pid信息，\n\t// 然后接收上一步中的bootstrapData，设置进程的namspace，最后runc init go语言实现部分逻辑。\n\tif err := p.waitForChildExit(childPid); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"waiting for our first child to exit\")\n\t}\n\n\t...\n\t// 发送init配置给 init 进程\n \tif err := p.sendConfig(); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"sending config to init process\")\n\t}\n\tvar (\n\t\tsentRun    bool\n\t\tsentResume bool\n\t)\n\n\t// 和初始化进程的进行状态同步\n\t// parseSync 是会循环到socket 关闭\n\tierr := parseSync(p.messageSockPair.parent, func(sync *syncT) error {\n\t\tswitch sync.Type {\n\t\t// 当init进程ready 了\n\t\tcase procReady:\n\t\t\t// rlimits 文件数量\n\t\t\tif err := setupRlimits(p.config.Rlimits, p.pid()); err != nil {\n\t\t\t\treturn newSystemErrorWithCause(err, \"setting rlimits for ready process\")\n\t\t\t}\n\t\t\t// 只有不存在 mount namespacce 的时候才可以执行hooks， 一般情况都是需要mount namespace的\n\t\t\tif !p.config.Config.Namespaces.Contains(configs.NEWNS) {\n\t\t\t\t// Setup cgroup before the hook, so that the prestart and CreateRuntime hook could apply cgroup permissions.\n\t\t\t\tif err := p.manager.Set(p.config.Config); err != nil {\n\t\t\t\t\treturn newSystemErrorWithCause(err, \"setting cgroup config for ready process\")\n\t\t\t\t}\n\t\t\t\t...\n\t\t\t\tif p.config.Config.Hooks != nil {\n\t\t\t\t\ts, err := p.container.currentOCIState()\n\t\t\t\t\tif err != nil {\n\t\t\t\t\t\treturn err\n\t\t\t\t\t}\n\t\t\t\t\t// 设置子进程pid\n\t\t\t\t\ts.Pid = p.cmd.Process.Pid\n \t\t\t\t\t// createing 状态\n\t\t\t\t\ts.Status = specs.StateCreating\n\t\t\t\t\thooks := p.config.Config.Hooks\n\t\t\t\t\n\t\t\t\t\tif err := hooks[configs.Prestart].RunHooks(s); err != nil {\n\t\t\t\t\t\treturn err\n\t\t\t\t\t}\n\t\t\t\t\tif err := hooks[configs.CreateRuntime].RunHooks(s); err != nil {\n\t\t\t\t\t\treturn err\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\n\t\t\t// generate a timestamp indicating when the container was started\n\t\t\tp.container.created = time.Now().UTC()\n\t\t\tp.container.state = \u0026createdState{\n\t\t\t\tc: p.container,\n\t\t\t}\n\n\t\t\tstate, uerr := p.container.updateState(p)\n\t\t\tif uerr != nil {\n\t\t\t\treturn newSystemErrorWithCause(err, \"store init state\")\n\t\t\t}\n\t\t\tp.container.initProcessStartTime = state.InitProcessStartTime\n\n\t\t\t// 状态同步是子进程，子进程继续操作\n\t\t\tif err := writeSync(p.messageSockPair.parent, procRun); err != nil {\n\t\t\t\treturn newSystemErrorWithCause(err, \"writing syncT 'run'\")\n\t\t\t}\n\t\t\tsentRun = true\n\t\t// 收到 init 进程过来的hook信号，pivot_root 即将执行\n\t\tcase procHooks:\n\t\t\t// 设置进程的 cgroup\n\t\t\tif err := p.manager.Set(p.config.Config); err != nil {\n\t\t\t\treturn newSystemErrorWithCause(err, \"setting cgroup config for procHooks process\")\n\t\t\t}\n\t\t\t// 设置 intel 芯片配置\n\t\t\tif p.intelRdtManager != nil {\n\t\t\t\tif err := p.intelRdtManager.Set(p.config.Config); err != nil {\n\t\t\t\t\treturn newSystemErrorWithCause(err, \"setting Intel RDT config for procHooks process\")\n\t\t\t\t}\n\t\t\t}\n\t\t\t// 执行hook\n\t\t\tif p.config.Config.Hooks != nil {\n\t\t\t\ts, err := p.container.currentOCIState()\n\t\t\t\tif err != nil {\n\t\t\t\t\treturn err\n\t\t\t\t}\n\t\t\t\ts.Pid = p.cmd.Process.Pid\n\t\t\t\ts.Status = specs.StateCreating\n\t\t\t\thooks := p.config.Config.Hooks\n\n\t\t\t\tif err := hooks[configs.Prestart].RunHooks(s); err != nil {\n\t\t\t\t\treturn err\n\t\t\t\t}\n\t\t\t\tif err := hooks[configs.CreateRuntime].RunHooks(s); err != nil {\n\t\t\t\t\treturn err\n\t\t\t\t}\n\t\t\t}\n\t\t\t// 通知init 进程恢复，继续执行pivot_root\n\t\t\tif err := writeSync(p.messageSockPair.parent, procResume); err != nil {\n\t\t\t\treturn newSystemErrorWithCause(err, \"writing syncT 'resume'\")\n\t\t\t}\n\t\t\tsentResume = true\n\t\t}\n\n\t\treturn nil\n\t})\n\t// 等待init 回调, 如果回调成功便完成剩余的设置即生命周期的HOOK调用\n\tif !sentRun {\n\t\treturn newSystemErrorWithCause(ierr, \"container init\")\n\t}\n\t// 等待Hook 回调成功\n\tif p.config.Config.Namespaces.Contains(configs.NEWNS) \u0026\u0026 !sentResume {\n\t\treturn newSystemError(errors.New(\"could not synchronise after executing prestart and CreateRuntime hooks with container process\"))\n\t}\n\t// 关闭与init 的通信管道\n\tif err := unix.Shutdown(int(p.messageSockPair.parent.Fd()), unix.SHUT_WR); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"shutting down init pipe\")\n\t}\n\n\t// Must be done after Shutdown so the child will exit and we can wait for it.\n\tif ierr != nil {\n\t\tp.wait()\n\t\treturn ierr\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-9o0oxst",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230613110810-9o0oxst",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230613110810-bik6ib7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230613110810-bik6ib7",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "至此 create 进程分析完毕了，可以看到 create 进程在等待 init 进程的初始化完成的通知，下面开始分析init 进程，看看 init做了些什么动作, 再坚持一下Fighting @_@;"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-ehro1uc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613110810-ehro1uc",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3、runc init"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-hp85mbe",
+			"Type": "NodeHeading",
+			"HeadingLevel": 5,
+			"Properties": {
+				"id": "20230613110810-hp85mbe",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runc/init.go"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-cciddsd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-cciddsd",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n\t...\n    // 在这里有一个点是和上面init进程启动时的等待 nsexec 的执行，等就是这个nsenter的执行，这部分呢代码由C语言实现, 它当包被引入的时候就立刻执行，所以无须额外调用； \n\t_ \"github.com/opencontainers/runc/libcontainer/nsenter\"\n\t...\n)\n...\n...\nvar initCommand = cli.Command{\n\tName:  \"init\",\n\tUsage: `initialize the namespaces and launch the process (do not call it outside of runc)`,\n\tAction: func(context *cli.Context) error {\n\t\tfactory, _ := libcontainer.New(\"\")\n\t\t// 【进入 StartInitialization】\n\t\tif err := factory.StartInitialization(); err != nil {\n\t\t\tos.Exit(1)\n\t\t}\n\t\tpanic(\"libcontainer: container init failed to exec\")\n\t},\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-fwncd8r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-fwncd8r",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "factory.StartInitialization"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-1rkg705",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-1rkg705",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libcontainer/factory_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "LinuxFactory.StartInitialization"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-p3qffen",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-p3qffen",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (l *LinuxFactory) StartInitialization() (err error) {\n\t// Get the INITPIPE.\n    // 获取 init pipe， 这里是之前提到 init-c 这个文件描述fd\n\tenvInitPipe := os.Getenv(\"_LIBCONTAINER_INITPIPE\")\n\tpipefd, err := strconv.Atoi(envInitPipe)\n\tif err != nil {\n\t\treturn fmt.Errorf(\"unable to convert _LIBCONTAINER_INITPIPE=%s to int: %s\", envInitPipe, err)\n\t}\n\t// 通过fd 建立pipe 与父进程通信\n\tpipe := os.NewFile(uintptr(pipefd), \"pipe\")\n\tdefer pipe.Close()\n\n\t// runc create设置子进程模块时使用的环境变量，初始化类型 stander 以及 exec.fifo管道\n\tfifofd := -1\n\tenvInitType := os.Getenv(\"_LIBCONTAINER_INITTYPE\")\n\tit := initType(envInitType)\n\tif it == initStandard {\n\t\tenvFifoFd := os.Getenv(\"_LIBCONTAINER_FIFOFD\")\n\t\tif fifofd, err = strconv.Atoi(envFifoFd); err != nil {\n\t\t\treturn fmt.Errorf(\"unable to convert _LIBCONTAINER_FIFOFD=%s to int: %s\", envFifoFd, err)\n\t\t}\n\t}\n\n\t// 清除继承的 process's environment\n\tos.Clearenv()\n\t...\n\t// 返回一个 starndar 的 linuxStandardInit, 如果我们是执行exec的话, 则返回linuxSetnsInit\n\ti, err := newContainerInit(it, pipe, consoleSocket, fifofd)\n\tif err != nil {\n\t\treturn err\n\t}\n    // [最后进入 Init]\n\treturn i.Init()\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-gok61r1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-gok61r1",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "linuxStandardInit.Init"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-thnnagm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-thnnagm",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libcontainer/standar_init_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "linuxStandardInit.Init"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-l93gamt",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-l93gamt",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-it84ogr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-it84ogr",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-qniw03d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-qniw03d",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "篇幅比较长，主要是为了尽可能完整展示，以及回过头看能很好的回想起来；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-xwql3b0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-xwql3b0",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (l *linuxStandardInit) Init() error {\n\t// 把goroutine 锁定在某个线程上，它保证将在同一线程中完成对C库的多次连续调用。\n\truntime.LockOSThread()\n\tdefer runtime.UnlockOSThread()\n\n\t// 用于保留或缓存安全数据、身份验证密钥、加密密钥及其他内核数据 (能力有限不太懂怎么玩的)\n\tif !l.config.Config.NoNewKeyring {\n\t\t....\n\t}\n\t// 设置网络，默认为lo网卡，然后设置路由规则\n\tif err := setupNetwork(l.config); err != nil {\n\t\treturn err\n\t}\n\t// 设置路由\n\tif err := setupRoute(l.config.Config); err != nil {\n\t\treturn err\n\t}\n\n\t// initialises the labeling system\n\tselinux.GetEnabled()\n\t// 准备rootfs，主要是根目录挂载，外部卷挂载，创建设备\n\t// 通知runc create进行pre start的hook调用，pivot_root 或 change_root，限定进程使用根目录。\n\t// 需要注意一点，容器的pre start的hook调用发生在限定容器的根目录之前。\n\tif err := prepareRootfs(l.pipe, l.config); err != nil {\n\t\treturn err\n\t}\n\t...\n\n\t// 完成最终的rootfs ，主要是把需要挂载的mount point 挂上去\n\tif l.config.Config.Namespaces.Contains(configs.NEWNS) {\n\t\tif err := finalizeRootfs(l.config.Config); err != nil {\n\t\t\treturn err\n\t\t}\n\t}\n\t// 设置hostname\n\tif hostname := l.config.Config.Hostname; hostname != \"\" {\n\t\tif err := unix.Sethostname([]byte(hostname)); err != nil {\n\t\t\treturn errors.Wrap(err, \"sethostname\")\n\t\t}\n\t}\n\t// 设置app 文件设备访问控制\n\tif err := apparmor.ApplyProfile(l.config.AppArmorProfile); err != nil {\n\t\treturn errors.Wrap(err, \"apply apparmor profile\")\n\t}\n\n\t// 写系统属性 For e.g. net.ipv4.ip_forward translated to /proc/sys/net/ipv4/ip_forward\n\tfor key, value := range l.config.Config.Sysctl {\n\t\tif err := writeSystemProperty(key, value); err != nil {\n\t\t\treturn errors.Wrapf(err, \"write sysctl key %s\", key)\n\t\t}\n\t}\n\t...\n\t...\n\tif err != nil {\n\t\treturn errors.Wrap(err, \"get pdeath signal\")\n\t}\n\t// 设置 privileges\n\tif l.config.NoNewPrivileges {\n\t\tif err := unix.Prctl(unix.PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0); err != nil {\n\t\t\treturn errors.Wrap(err, \"set nonewprivileges\")\n\t\t}\n\t}\n\n\t// 通知runc create已经完成基础的初始化内容，我们准备好执行 exec\n\tif err := syncParentReady(l.pipe); err != nil {\n\t\treturn errors.Wrap(err, \"sync ready\")\n\t}\n\t...\n\t...\n\t// 设置程序可用的系统调用\n\tif l.config.Config.Seccomp != nil \u0026\u0026 !l.config.NoNewPrivileges {\n\t\tif err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {\n\t\t\treturn err\n\t\t}\n\t}\n\t// 配置正确的capability，用户和工作目录\n\tif err := finalizeNamespace(l.config); err != nil {\n\t\treturn err\n\t}\n\t...\n    // 如果处于某些什么原因 parentid 变换了，就会kill掉自己\n\tif unix.Getppid() != l.parentPid {\n\t\treturn unix.Kill(unix.Getpid(), unix.SIGKILL)\n\t}\n\t// 查看可执行文件在容器内是否存在, 因为已经此时容器的上下文环境，rootfs等已全部准备就绪\n\t// 在当前的根文件系统，应该是能找到一个可执行的runc文件\n\tname, err := exec.LookPath(l.config.Args[0])\n\tif err != nil {\n\t\treturn err\n\t}\n\t// 关闭 stander pipe (init-c) 通信通道\n\tl.pipe.Close()\n\t// 在执行容器启动命令前，等待exec.fifo管道在另一端被打开\n\t// /proc/self/fd/ 下可以看到一个 fd -\u003e /run/runc/\u003ccontainerID\u003e/\n\tfd, err := unix.Open(\"/proc/self/fd/\"+strconv.Itoa(l.fifoFd), unix.O_WRONLY|unix.O_CLOEXEC, 0)\n\tif err != nil {\n\t\treturn newSystemErrorWithCause(err, \"open exec fifo\")\n\t}\n\t//向exec.fifo管道写入数据，然后init进程阻塞，等待runc start调用，打开exec.fifo管道读取内容，然后执行容器启动命令。\n\t// 读取完管道内容，管道通信就会结束，不会继续阻塞，这里涉及 socketpair 的知识点；\n\tif _, err := unix.Write(fd, []byte(\"0\")); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"write 0 exec fifo\")\n\t}\n\t//关闭exec.fifo\n\tunix.Close(l.fifoFd)\n\t// 因为之前为了容器的上下文创建需要较多的系统调用，所以现在重新回收后一部分系统调用\n\tif l.config.Config.Seccomp != nil \u0026\u0026 l.config.NoNewPrivileges {\n\t\tif err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {\n\t\t\treturn newSystemErrorWithCause(err, \"init seccomp\")\n\t\t}\n\t}\n\n\ts := l.config.SpecState\n\ts.Pid = unix.Getpid()\n\t// 设置为created 状态\n\ts.Status = specs.StateCreated\n\tif err := l.config.Config.Hooks[configs.StartContainer].RunHooks(s); err != nil {\n\t\treturn err\n\t}\n\t// 执行容器的启动命令\n\t// 在之前的文章提到过 exec 这个系统调用会让子程序替代掉父进程的上下文空间， 也就是替代init 的进程空间；\n\tif err := unix.Exec(name, l.config.Args[0:], os.Environ()); err != nil {\n\t\treturn newSystemErrorWithCause(err, \"exec user process\")\n\t}\n\treturn nil\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-xht2es7",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230613110810-xht2es7",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230613110810-ahf6giw",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230613110810-ahf6giw",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "至此为止，已经看完create 和 init 的联动了，下面应该是 runc start 登场了；都到这里了，再坚持一下吧，runc start 的代码重点比较少，Fighting！！"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-r771aep",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230613110810-r771aep",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4、runc start"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-lgia8c6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-lgia8c6",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-k3sjsb4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-k3sjsb4",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-fxxg28j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-fxxg28j",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "快速开始, 老套路看入口"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-mbsk4fp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20230613110810-mbsk4fp",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "runc/start.go"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-61f93qo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-61f93qo",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "...\n\t}\n\t\t// 获取container 的方式，是通过之前文章提到libcontainer.Factory 容器工厂类加载containerID 及配置\n\t\tcontainer, err := getContainer(context)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t...\n\t\tswitch status {\n\t\t// start 前对应的状态就是容器环境已经创建好了，在等待start, 然后切换至running\n\t\tcase libcontainer.Created:\n\t\t\t...\n\t\t\t// 执行exec 容器进程替代init\n            // [进入 container.Exec]\n\t\t\tif err := container.Exec(); err != nil {\n\t\t\t\treturn err\n\t\t\t}\n\t\t\tif notifySocket != nil {\n\t\t\t\treturn notifySocket.waitForContainer(container)\n\t\t\t}\n\t\t\treturn nil\n\t\tcase libcontainer.Stopped:\n\t\t\treturn errors.New(\"cannot start a container that has stopped\")\n\t\tcase libcontainer.Running:\n\t\t\treturn errors.New(\"cannot start an already running container\")\n\t\tdefault:\n\t\t\treturn fmt.Errorf(\n...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-lvfhked",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-lvfhked",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面进入 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "container.Exec"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-ves82da",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230613110810-ves82da",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "runc/libcontainer/container_linux.go "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "linuxContainer.exec"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-sc5n76k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230613110810-sc5n76k",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Z28="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "func (c *linuxContainer) exec() error {\n\tpath := filepath.Join(c.root, execFifoFilename)\n\tpid := c.initProcess.pid()\n\t// 读取 /run/runc/\u003ccontainerID\u003e/exec.fifo 管道，由于socketpair管道特性，父进程(init进程)被读取信息后便不会阻塞，继续往下执行，关闭socket\n\t// 参考 runc/libcontainer/containner_linux.go Init 206行\n\tblockingFifoOpenCh := awaitFifoOpen(path)\n\t// 获取exec.fifo文件中内容，或者等待进程变为僵尸进程\n\tfor {\n\t\tselect {\n\t\tcase result := \u003c-blockingFifoOpenCh:\n\t\t\t// handleFifoResult 最后读完内容后会删除掉 exec.fifo\n\t\t\treturn handleFifoResult(result)\n\n\t\tcase \u003c-time.After(time.Millisecond * 100):\n\t\t\tstat, err := system.Stat(pid)\n\t\t\tif err != nil || stat.State == system.Zombie {\n\t\t\t\tif err := handleFifoResult(fifoOpen(path, false)); err != nil {\n\t\t\t\t\treturn errors.New(\"container process is already dead\")\n\t\t\t\t}\n\t\t\t\treturn nil\n\t\t\t}\n\t\t}\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-sw3qqe8",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230613110810-sw3qqe8",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230613110810-t5vxatg",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230613110810-t5vxatg",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "start 进程到这也结束了，它主要是读取一下阻塞init进程的socket，让init 进程往下执行启动容器最终的执行命令；exec.fifo 就是它们的一个切割，割裂成两个控制命令；"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-iug0iso",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613110810-iug0iso",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、总结"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-t4izkbi",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-t4izkbi",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-2ljgio0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-2ljgio0",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-88fq6zb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-88fq6zb",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "第一次写源码分析，今天总算是完成了之前的一个Flag，本应该上周就要完成；但为了力求真实反映容器启动过程，反复的阅读代码和查阅，才把这篇分析肝完；下周继续进行runc 其他子模块的源码分析；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-lguku8a",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230613110810-lguku8a",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4、参考"
+				}
+			]
+		},
+		{
+			"ID": "20230613110810-7zk51l4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230613110810-7zk51l4",
+				"updated": "20230613110810"
+			},
+			"Children": [
+				{
+					"ID": "20230613110810-gz80y98",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230613110810-gz80y98",
+						"updated": "20230613110810"
+					},
+					"Children": [
+						{
+							"ID": "20230613110810-dhmm0p0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230613110810-dhmm0p0",
+								"updated": "20230613110810"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fopencontainers%2Frunc%2F",
+									"TextMarkATitle": "https://github.com/opencontainers/runc/",
+									"TextMarkTextContent": "github.com/opencontain…"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
