@@ -1,0 +1,2091 @@
+{
+	"ID": "20230904090711-u78f2ja",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230904090711-u78f2ja",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230904090724-bm45a79\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230906002844-1e7x630\u0026quot;,\u0026quot;scrollTop\u0026quot;:3052,\u0026quot;focusId\u0026quot;:\u0026quot;20230906003107-45p4jyu\u0026quot;,\u0026quot;focusStart\u0026quot;:21,\u0026quot;focusEnd\u0026quot;:21}",
+		"title": "4.1 网络性能调优",
+		"updated": "20230906003207"
+	},
+	"Children": [
+		{
+			"ID": "20230904090724-bm45a79",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230904090724-bm45a79",
+				"updated": "20230905090518"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文整理在 K8S 环境中的网络性能调优实践。一些涉及到内核参数的调整，关于如何调整 Pod 内核参数的方法请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/trick/deploy/set-sysctl.html",
+					"TextMarkTextContent": "为 Pod 设置内核参数"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230904090711-1kmelx2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230904090711-1kmelx2",
+				"updated": "20230905090539"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF",
+					"TextMarkTextContent": "高并发场景"
+				}
+			]
+		},
+		{
+			"ID": "20230905090600-kkvq1si",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230905090600-kkvq1si",
+				"updated": "20230905090603"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#time_wait-%E8%BF%9E%E6%8E%A5%E5%A4%8D%E7%94%A8",
+					"TextMarkTextContent": "TIME_WAIT 连接复用"
+				}
+			]
+		},
+		{
+			"ID": "20230905090627-bf7kypl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905090627-bf7kypl",
+				"updated": "20230905090627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果短连接并发量较高，它所在 netns 中 TIME_WAIT 状态的连接就比较多，而 TIME_WAIT 连接默认要等 2MSL 时长才释放，长时间占用源端口，当这种状态连接数量累积到超过一定量之后可能会导致无法新建连接。"
+				}
+			]
+		},
+		{
+			"ID": "20230905090627-2etn4nu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905090627-2etn4nu",
+				"updated": "20230905090627"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以建议开启 TIME_WAIT 复用，即允许将 TIME_WAIT 连接重新用于新的 TCP 连接:"
+				}
+			]
+		},
+		{
+			"ID": "20230905090636-5kuvywc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905090636-5kuvywc",
+				"updated": "20230905090643"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "net.ipv4.tcp_tw_reuse=1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905090627-gfyyz2m",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230905090627-gfyyz2m",
+				"updated": "20230905090627"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230905090627-60fx83q",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230905090627-60fx83q",
+						"updated": "20230905090627"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "在高版本内核中，"
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "net.ipv4.tcp_tw_reuse"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "​ 默认值为 2，表示仅为回环地址开启复用，基本可以粗略的认为没开启复用。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230905090657-atrswrx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230905090657-atrswrx",
+				"updated": "20230905090706"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#%E6%89%A9%E5%A4%A7%E6%BA%90%E7%AB%AF%E5%8F%A3%E8%8C%83%E5%9B%B4",
+					"TextMarkTextContent": "扩大源端口范围"
+				}
+			]
+		},
+		{
+			"ID": "20230905090657-j5m3dk5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905090657-j5m3dk5",
+				"updated": "20230905090657"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "高并发场景，对于 client 来说会使用大量源端口，源端口范围从 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "net.ipv4.ip_local_port_range"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 这个内核参数中定义的区间随机选取，在高并发环境下，端口范围小容易导致源端口耗尽，使得部分连接异常。通常 Pod 源端口范围默认是 32768-60999，建议将其扩大，调整为 1024-65535: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "sysctl -w net.ipv4.ip_local_port_range=\u0026quot;1024 65535\u0026quot;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20230905090719-i5r55wk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230905090719-i5r55wk",
+				"updated": "20230905090726"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#%E8%B0%83%E5%A4%A7%E6%9C%80%E5%A4%A7%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%E6%95%B0",
+					"TextMarkTextContent": "调大最大文件句柄数"
+				}
+			]
+		},
+		{
+			"ID": "20230905090719-c8v7603",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905090719-c8v7603",
+				"updated": "20230905090719"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 linux 中，每个连接都会占用一个文件句柄，所以句柄数量限制同样也会限制最大连接数， 对于像 Nginx 这样的反向代理，对于每个请求，它会与 client 和 upstream server 分别建立一个连接，即占据两个文件句柄，所以理论上来说 Nginx 能同时处理的连接数最多是系统最大文件句柄数限制的一半。"
+				}
+			]
+		},
+		{
+			"ID": "20230905090719-v7w5vkf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905090719-v7w5vkf",
+				"updated": "20230905090719"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "系统最大文件句柄数由 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "fs.file-max"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 这个内核参数来控制，一些环境默认值可能为 838860，建议调大:"
+				}
+			]
+		},
+		{
+			"ID": "20230905090732-i6hgksm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905090732-i6hgksm",
+				"updated": "20230905090737"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "fs.file-max=1048576\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905091007-c4r8ffc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230905091007-c4r8ffc",
+				"updated": "20230905091018"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.4  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#%E8%B0%83%E5%A4%A7%E5%85%A8%E8%BF%9E%E6%8E%A5%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E7%9A%84%E5%A4%A7%E5%B0%8F",
+					"TextMarkTextContent": "调大全连接连接队列的大小"
+				}
+			]
+		},
+		{
+			"ID": "20230905091032-12z8u9f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091032-12z8u9f",
+				"updated": "20230905091032"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "TCP 全连接队列的长度如果过小，在高并发环境可能导致队列溢出，使得部分连接无法建立。"
+				}
+			]
+		},
+		{
+			"ID": "20230905091032-ysyac6d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091032-ysyac6d",
+				"updated": "20230905091032"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果因全连接队列溢出导致了丢包，从统计的计数上是可以看出来的"
+				}
+			]
+		},
+		{
+			"ID": "20230905091046-pisillo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905091046-pisillo",
+				"updated": "20230905091049"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 用 netstat 查看统计\n$ netstat -s | grep -E 'overflow|drop'\n    12178939 times the listen queue of a socket overflowed\n    12247395 SYNs to LISTEN sockets dropped\n  \n# 也可以用 nstat 查看计数器\n$ nstat -az | grep -E 'TcpExtListenOverflows|TcpExtListenDrops'\nTcpExtListenOverflows           12178939              0.0\nTcpExtListenDrops               12247395              0.0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905091059-8durzlv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091059-8durzlv",
+				"updated": "20230905091059"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "全连接队列的大小取决于 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "net.core.somaxconn"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 内核参数以及业务进程调用 listen 时传入的 backlog 参数，取两者中的较小值("
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "min(backlog,somaxconn)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​)，一些编程语言通常是默认取 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "net.core.somaxconn"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 参数的值作为 backlog 参数传入 listen 系统调用（比如Go语言）。"
+				}
+			]
+		},
+		{
+			"ID": "20230905091059-bxiip6g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091059-bxiip6g",
+				"updated": "20230905091059"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "高并发环境可以考虑将其改到 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "65535"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​:"
+				}
+			]
+		},
+		{
+			"ID": "20230905091111-kjkc2nw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905091111-kjkc2nw",
+				"updated": "20230905091111"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sysctl -w net.core.somaxconn=65535\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905091116-8eada7t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091116-8eada7t",
+				"updated": "20230905091116"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如何查看队列大小来验证是否成功调整队列大小？可以执行 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ss -lntp"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 看 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "Send-Q"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的值。"
+				}
+			]
+		},
+		{
+			"ID": "20230905091129-5x7cxb9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905091129-5x7cxb9",
+				"updated": "20230905091129"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ ss -lntp\nState        Recv-Q       Send-Q             Local Address:Port             Peer Address:Port      Process\nLISTEN       0            65535                    0.0.0.0:80                    0.0.0.0:*          users:((\"nginx\",pid=347916,fd=6),(\"nginx\",pid=347915,fd=6),(\"nginx\",pid=347887,fd=6))\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905091129-yowrh3i",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230905091129-yowrh3i",
+				"updated": "20230905091138"
+			},
+			"Children": [
+				{
+					"ID": "20230905091138-qjl04lp",
+					"Type": "NodeBlockquote",
+					"Properties": {
+						"id": "20230905091138-qjl04lp",
+						"updated": "20230905091138"
+					},
+					"Children": [
+						{
+							"Type": "NodeBlockquoteMarker",
+							"Data": "\u003e"
+						},
+						{
+							"ID": "20230905091138-sfv4fvi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230905091138-sfv4fvi",
+								"updated": "20230905091138"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ss 用 -l 查看 LISTEN 状态连接时，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Recv-Q"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 表示的当前已建连但还未被服务端调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "accept()"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 取走的连接数量，即全连接队列中的连接数；"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Send-Q"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 表示的则是最大的 listen backlog 数值，即全连接队列大小。如果 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Recv-Q"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 大小接近 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Send-Q"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 的大小时，说明连接队列可能溢出。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				}
+			]
+		},
+		{
+			"ID": "20230905091143-rb2t9kx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091143-rb2t9kx",
+				"updated": "20230905091144"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要注意的是，Nginx 在 listen 时并没有读取 somaxconn 作为 backlog 参数传入，而是在 nginx 配置文件中有自己单独的参数配置:"
+				}
+			]
+		},
+		{
+			"ID": "20230905091155-fqx3cq3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905091155-fqx3cq3",
+				"updated": "20230905091157"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "server {\n    listen  80  backlog=1024;\n    ...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905091201-tszfu1c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091201-tszfu1c",
+				"updated": "20230905091201"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果不设置，backlog 在 linux 上默认为 511:"
+				}
+			]
+		},
+		{
+			"ID": "20230905091212-6qm1ncw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905091212-6qm1ncw",
+				"updated": "20230905091214"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "backlog=number\n   sets the backlog parameter in the listen() call that limits the maximum length for the queue of pending connections. By default, backlog is set to -1 on FreeBSD, DragonFly BSD, and macOS, and to 511 on other platforms.\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905091224-v7iy07s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091224-v7iy07s",
+				"updated": "20230905091224"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "也就是说，即便你的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "somaxconn"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配的很高，nginx 所监听端口的连接队列最大却也只有 511，高并发场景下还是可能导致连接队列溢出，所以建议配置下 nginx 的 backlog 参数。"
+				}
+			]
+		},
+		{
+			"ID": "20230905091224-il64ls8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905091224-il64ls8",
+				"updated": "20230905091224"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不过如果用的是 Nginx Ingress ，情况又不太一样，因为 Nginx Ingress Controller 会自动读取 somaxconn 的值作为 backlog 参数写到生成的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "nginx.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 中，参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/kubernetes/ingress-nginx/blob/controller-v0.34.1/internal/ingress/controller/nginx.go#L592",
+					"TextMarkTextContent": "源码"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230905143831-r1as3qy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230905143831-r1as3qy",
+				"updated": "20230905144044"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 高吞吐场景"
+				}
+			]
+		},
+		{
+			"ID": "20230905144045-4fvi656",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230905144045-4fvi656",
+				"updated": "20230905144121"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 调大UDP缓冲区"
+				}
+			]
+		},
+		{
+			"ID": "20230906002910-5sje0f8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906002910-5sje0f8",
+				"updated": "20230906002914"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "UDP socket 的发送和接收缓冲区是有上限的，如果缓冲区较小，高并发环境可能导致缓冲区满而丢包，从网络计数可以看出来:"
+				}
+			]
+		},
+		{
+			"ID": "20230906002916-hbv5fhw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906002916-hbv5fhw",
+				"updated": "20230906002926"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 使用 netstat 查看统计\n$ netstat -s | grep \"buffer errors\"\n    429469 receive buffer errors\n    23568 send buffer errors\n \n# 也可以用 nstat 查看计数器\n$ nstat -az | grep -E 'UdpRcvbufErrors|UdpSndbufErrors'\nUdpRcvbufErrors                 429469                 0.0\nUdpSndbufErrors                 23568                  0.0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906003030-0z2h96h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906003030-0z2h96h",
+				"updated": "20230906003035"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "还可以使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ss -nump"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 查看当前缓冲区的情况:"
+				}
+			]
+		},
+		{
+			"ID": "20230906003037-4whtcw9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906003037-4whtcw9",
+				"updated": "20230906003048"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ ss -nump\nRecv-Q    Send-Q          Local Address:Port         Peer Address:Port    Process\n0         0             10.10.4.26%eth0:68              10.10.4.1:67       users:((\"NetworkManager\",pid=960,fd=22))\n     skmem:(r0,rb212992,t0,tb212992,f0,w0,o640,bl0,d0)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906003050-r74y7dc",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230906003050-r74y7dc",
+				"updated": "20230906003103"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230906003103-pvj81ao",
+					"Type": "NodeList",
+					"ListData": {
+						"Typ": 1
+					},
+					"Properties": {
+						"id": "20230906003103-pvj81ao",
+						"updated": "20230906003103"
+					},
+					"Children": [
+						{
+							"ID": "20230906003103-stagxlz",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "MS4=",
+								"Num": 1
+							},
+							"Properties": {
+								"id": "20230906003103-stagxlz",
+								"updated": "20230906003103"
+							},
+							"Children": [
+								{
+									"ID": "20230906003103-tnfwf86",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906003103-tnfwf86",
+										"updated": "20230906003103"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "​"
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "rb212992"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 表示 UDP 接收缓冲区大小是 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "212992"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 字节，"
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "tb212992"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 表示 UDP 发送缓存区大小是 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "212992"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 字节。"
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230906003103-6wii5a3",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "Mi4=",
+								"Num": 2
+							},
+							"Properties": {
+								"id": "20230906003103-6wii5a3",
+								"updated": "20230906003103"
+							},
+							"Children": [
+								{
+									"ID": "20230906003103-m1ketns",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906003103-m1ketns",
+										"updated": "20230906003103"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "​"
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "Recv-Q"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 和 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "Send-Q"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 分别表示当前接收和发送缓冲区中的数据包字节数。"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906003115-qajccff",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906003115-qajccff",
+				"updated": "20230906003115"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "UDP 发送缓冲区大小取决于:"
+				}
+			]
+		},
+		{
+			"ID": "20230906003115-5cp7fav",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906003115-5cp7fav",
+				"updated": "20230906003115"
+			},
+			"Children": [
+				{
+					"ID": "20230906003115-62kcyrp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230906003115-62kcyrp",
+						"updated": "20230906003115"
+					},
+					"Children": [
+						{
+							"ID": "20230906003115-oq2r9om",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906003115-oq2r9om",
+								"updated": "20230906003115"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.wmem_default"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.wmem_max"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 这两个内核参数，分别表示缓冲区的默认大小和最大上限。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906003115-ygwzluj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230906003115-ygwzluj",
+						"updated": "20230906003115"
+					},
+					"Children": [
+						{
+							"ID": "20230906003115-fuv5bxy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906003115-fuv5bxy",
+								"updated": "20230906003115"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果程序自己调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "setsockopt"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​设置"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SO_SNDBUF"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​来自定义缓冲区大小，最终取值不会超过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.wmem_max"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​；如果程序没设置，则会使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.wmem_default"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 作为缓冲区的大小。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906003115-rl28qmg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906003115-rl28qmg",
+				"updated": "20230906003115"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同理，UDP 接收缓冲区大小取决于:"
+				}
+			]
+		},
+		{
+			"ID": "20230906003115-smqnwe4",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906003115-smqnwe4",
+				"updated": "20230906003115"
+			},
+			"Children": [
+				{
+					"ID": "20230906003115-vjf39ju",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230906003115-vjf39ju",
+						"updated": "20230906003115"
+					},
+					"Children": [
+						{
+							"ID": "20230906003115-rbrt6x2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906003115-rbrt6x2",
+								"updated": "20230906003115"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.rmem_default"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.rmem_max"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 这两个内核参数，分别表示缓冲区的默认大小和最大上限。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906003115-l9u21dt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230906003115-l9u21dt",
+						"updated": "20230906003115"
+					},
+					"Children": [
+						{
+							"ID": "20230906003115-b4ymrbq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906003115-b4ymrbq",
+								"updated": "20230906003115"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果程序自己调用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "setsockopt"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​设置"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SO_RCVBUF"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​来自定义缓冲区大小，最终取值不会超过 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.rmem_max"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​；如果程序没设置，则会使用 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "net.core.rmem_default"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 作为缓冲区的大小。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906003107-45p4jyu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906003107-45p4jyu",
+				"updated": "20230906003139"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要注意的是，这些内核参数在容器网络命名空间中是无法设置的，是 Node 级别的参数，需要在节点上修改，建议修改值:"
+				}
+			]
+		},
+		{
+			"ID": "20230906003107-50jtpz4",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230906003107-50jtpz4",
+				"updated": "20230906003154"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230906003153-zeuhgwg",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230906003153-zeuhgwg",
+						"updated": "20230906003154"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "net.core.rmem_default=26214400 # socket receive buffer 默认值 (25M)，如果程序没用 setsockopt 更改 buffer 长度的话，默认用这个值。 net.core.wmem_default=26214400 # socket send buffer 默认值 (25M)，如果程序没用 setsockopt 更改 buffer 长度的话，默认用这个值。 net.core.rmem_max=26214400 # socket receive buffer 上限 (25M)，如果程序使用 setsockopt 更改 buffer 长度，最大不能超过此限制。 net.core.wmem_max=26214400 # socket send buffer 上限 (25M)，如果程序使用 setsockopt 更改 buffer 长度，最大不能超过此限制。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906003206-7drbytb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906003206-7drbytb",
+				"updated": "20230906003207"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果程序自己有调用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "setsockopt"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 去设置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SO_SNDBUF"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 或 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SO_RCVBUF"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，建议设置到跟前面内核参数对应的最大上限值。"
+				}
+			]
+		},
+		{
+			"ID": "20230906002204-1h3rcmj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"fold": "1",
+				"id": "20230906002204-1h3rcmj",
+				"updated": "20230906002213"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#%E8%B0%83%E5%A4%A7-tcp-%E7%BC%93%E5%86%B2%E5%8C%BA",
+					"TextMarkTextContent": "调大 TCP 缓冲区"
+				}
+			]
+		},
+		{
+			"ID": "20230906002223-a1ea3qa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002223-a1ea3qa",
+				"updated": "20230906002223"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "TCP socket 的发送和接收缓冲区也是有上限的，不过对于发送缓冲区，即便满了也是不会丢包的，只是会让程序发送数据包时卡住，等待缓冲区有足够空间释放出来，所以一般不需要优化发送缓冲区。"
+				}
+			]
+		},
+		{
+			"ID": "20230906002223-itwicvl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002223-itwicvl",
+				"updated": "20230906002223"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于接收缓冲区，在高并发环境如果较小，可能导致缓冲区满而丢包，从网络计数可以看出来:"
+				}
+			]
+		},
+		{
+			"ID": "20230906002235-haxc8mp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002235-haxc8mp",
+				"updated": "20230906002235"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ nstat -az | grep TcpExtTCPRcvQDrop\nTcpExtTCPRcvQDrop               264324                  0.0\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905144121-e561v0p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230905144121-e561v0p",
+				"updated": "20230906002253"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "还可以使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ss -ntmp"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 查看当前缓冲区情况:"
+				}
+			]
+		},
+		{
+			"ID": "20230906002257-xbrktzw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002257-xbrktzw",
+				"updated": "20230906002303"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ ss -ntmp\nESTAB        0             0                    [::ffff:109.244.190.163]:9988                       [::ffff:10.10.4.26]:54440         users:((\"xray\",pid=3603,fd=20))\n     skmem:(r0,rb12582912,t0,tb12582912,f0,w0,o0,bl0,d0)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906002343-ina3xoa",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002343-ina3xoa",
+				"updated": "20230906002413"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230906002413-wk80paa",
+					"Type": "NodeList",
+					"ListData": {
+						"Typ": 1
+					},
+					"Properties": {
+						"id": "20230906002413-wk80paa",
+						"updated": "20230906002413"
+					},
+					"Children": [
+						{
+							"ID": "20230906002413-dtwqrsu",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "MS4=",
+								"Num": 1
+							},
+							"Properties": {
+								"id": "20230906002413-dtwqrsu",
+								"updated": "20230906002413"
+							},
+							"Children": [
+								{
+									"ID": "20230906002413-ebth8l3",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906002413-ebth8l3",
+										"updated": "20230906002413"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "​"
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "rb12582912"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 表示 TCP 接收缓冲区大小是 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "12582912"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 字节，"
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "tb12582912"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 表示 UDP 发送缓存区大小是 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "12582912"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 字节。"
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230906002413-8hczki8",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "Mi4=",
+								"Num": 2
+							},
+							"Properties": {
+								"id": "20230906002413-8hczki8",
+								"updated": "20230906002413"
+							},
+							"Children": [
+								{
+									"ID": "20230906002413-n017pbf",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906002413-n017pbf",
+										"updated": "20230906002413"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "​"
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "Recv-Q"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 和 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "Send-Q"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​ 分别表示当前接收和发送缓冲区中的数据包字节数。"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906002434-3u0005o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002434-3u0005o",
+				"updated": "20230906002435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果存在 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "net.ipv4.tcp_rmem"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 这个参数，对于 TCP 而言，会覆盖 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "net.core.rmem_default"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "net.core.rmem_max"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的值。这个参数网络命名空间隔离的，而在容器网络命名空间中，一般默认是有配置的，所以如果要调整 TCP 接收缓冲区，需要显式在 Pod 级别配置下内核参数:"
+				}
+			]
+		},
+		{
+			"ID": "20230906002435-6u0qqcj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002435-6u0qqcj",
+				"updated": "20230906002510"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "net.ipv4.tcp_rmem=\"4096 26214400 26214400\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906002515-disy327",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20230906002515-disy327",
+				"updated": "20230906002533"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230906002533-7727gmz",
+					"Type": "NodeList",
+					"ListData": {
+						"Typ": 1
+					},
+					"Properties": {
+						"id": "20230906002533-7727gmz",
+						"updated": "20230906002533"
+					},
+					"Children": [
+						{
+							"ID": "20230906002533-bis0nuk",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "MS4=",
+								"Num": 1
+							},
+							"Properties": {
+								"id": "20230906002533-bis0nuk",
+								"updated": "20230906002533"
+							},
+							"Children": [
+								{
+									"ID": "20230906002533-2w28xzq",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906002533-2w28xzq",
+										"updated": "20230906002533"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "单位是字节，分别是 min, default, max。"
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230906002533-o9s2dq4",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "Mi4=",
+								"Num": 2
+							},
+							"Properties": {
+								"id": "20230906002533-o9s2dq4",
+								"updated": "20230906002533"
+							},
+							"Children": [
+								{
+									"ID": "20230906002533-sgbcaad",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906002533-sgbcaad",
+										"updated": "20230906002533"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "如果程序没用 setsockopt 更改 buffer 长度，就会使用 default 作为初始 buffer 长度(覆盖 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "net.core.rmem_default"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​)，然后根据内存压力在 min 和 max 之间自动调整。"
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20230906002533-u7n1hrq",
+							"Type": "NodeListItem",
+							"ListData": {
+								"Typ": 1,
+								"Delimiter": 46,
+								"Marker": "My4=",
+								"Num": 3
+							},
+							"Properties": {
+								"id": "20230906002533-u7n1hrq",
+								"updated": "20230906002533"
+							},
+							"Children": [
+								{
+									"ID": "20230906002533-9zwmfmh",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20230906002533-9zwmfmh",
+										"updated": "20230906002533"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "如果程序使用了 setsockopt 更改 buffer 长度，则使用传入的长度 (仍然受限于 "
+										},
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "code",
+											"TextMarkTextContent": "net.core.rmem_max"
+										},
+										{
+											"Type": "NodeText",
+											"Data": "​)。"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906002529-r2pq1ip",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230906002529-r2pq1ip",
+				"updated": "20230906002556"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/performance-optimization/network.html#%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B",
+					"TextMarkTextContent": "内核参数调优配置示例"
+				}
+			]
+		},
+		{
+			"ID": "20230906002614-rdx6b3a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906002614-rdx6b3a",
+				"updated": "20230906002614"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调整 Pod 内核参数:"
+				}
+			]
+		},
+		{
+			"ID": "20230906002627-sehc1aq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906002627-sehc1aq",
+				"updated": "20230906002629"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " initContainers:\n      - name: setsysctl\n        image: busybox\n        securityContext:\n          privileged: true\n        command:\n        - sh\n        - -c\n        - |\n          sysctl -w net.core.somaxconn=65535\n          sysctl -w net.ipv4.ip_local_port_range=\"1024 65535\"\n          sysctl -w net.ipv4.tcp_tw_reuse=1\n          sysctl -w fs.file-max=1048576\n          sysctl -w net.ipv4.tcp_rmem=\"4096 26214400 26214400\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906002636-m7v0ip2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906002636-m7v0ip2",
+				"updated": "20230906002636"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调整节点内核参数(修改 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/sysctl.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 并执行 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "sysctl -p"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​):"
+				}
+			]
+		},
+		{
+			"ID": "20230906002643-kh08w8u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906002643-kh08w8u",
+				"updated": "20230906002655"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "net.core.rmem_default=26214400\nnet.core.wmem_default=26214400\nnet.core.rmem_max=26214400\nnet.core.wmem_max=26214400\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906002711-kuz3s00",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906002711-kuz3s00",
+				"updated": "20230906002712"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果使用的是 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://console.cloud.tencent.com/tke2/ecluster",
+					"TextMarkTextContent": "腾讯云弹性集群 EKS"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 这种没有节点的 Serverless 类型 K8S(每个 Pod 都是独占虚拟机)，可以在 Pod 级别加如下注解来修改 Pod 对应虚拟机中的内核参数:"
+				}
+			]
+		},
+		{
+			"ID": "20230906002713-osoys42",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906002713-osoys42",
+				"updated": "20230906002720"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "eks.tke.cloud.tencent.com/host-sysctls: '[{\"name\": \"net.core.rmem_max\",\"value\": \"26214400\"},{\"name\": \"net.core.wmem_max\",\"value\": \"26214400\"},{\"name\": \"net.core.rmem_default\",\"value\": \"26214400\"},{\"name\": \"net.core.wmem_default\",\"value\": \"26214400\"}]'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906002721-utdrjlj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230906002721-utdrjlj",
+				"updated": "20230906002837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 参考资料"
+				}
+			]
+		},
+		{
+			"ID": "20230906002844-1e7x630",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230906002844-1e7x630",
+				"updated": "20230906002844"
+			},
+			"Children": [
+				{
+					"ID": "20230906002844-xttz32c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906002844-xttz32c",
+						"updated": "20230906002844"
+					},
+					"Children": [
+						{
+							"ID": "20230906002844-9wgrns6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906002844-9wgrns6",
+								"updated": "20230906002844"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://cloud.tencent.com/document/product/213/57336",
+									"TextMarkTextContent": "云服务器网络访问丢包"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

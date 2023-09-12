@@ -1,0 +1,145 @@
+{
+	"ID": "20230903112935-ug53qym",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230903112935-ug53qym",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230903113032-x8f4zns\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230903113137-njzxmh4\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230903113412-qzyhnsd\u0026quot;,\u0026quot;focusStart\u0026quot;:65,\u0026quot;focusEnd\u0026quot;:65}",
+		"title": "1.4 合理使用PreStop",
+		"updated": "20230903113413"
+	},
+	"Children": [
+		{
+			"ID": "20230903113032-x8f4zns",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903113032-x8f4zns",
+				"updated": "20230903113032"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若你的业务代码中没有处理 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SIGTERM"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 信号，或者你无法控制使用的第三方库或系统来增加优雅终止的逻辑，也可以尝试为 Pod 配置下 preStop，在这里面实现优雅终止的逻辑，示例:"
+				}
+			]
+		},
+		{
+			"ID": "20230903113108-zwgabaq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230903113108-zwgabaq",
+				"updated": "20230903113111"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "        lifecycle:\n          preStop:\n            exec:\n              command:\n              - /clean.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230903112935-sb15yfh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903112935-sb15yfh",
+				"updated": "20230903113126"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1",
+					"TextMarkTextContent": "Kubernetes API 文档"
+				}
+			]
+		},
+		{
+			"ID": "20230903113132-xwemjbs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903113132-xwemjbs",
+				"updated": "20230903113132"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在某些极端情况下，Pod 被删除的一小段时间内，仍然可能有新连接被转发过来，因为 kubelet 与 kube-proxy 同时 watch 到 pod 被删除，kubelet 有可能在 kube-proxy 同步完规则前就已经停止容器了，这时可能导致一些新的连接被转发到正在删除的 Pod，而通常情况下，当应用受到 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SIGTERM"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 后都不再接受新连接，只保持存量连接继续处理，所以就可能导致 Pod 删除的瞬间部分请求失败。"
+				}
+			]
+		},
+		{
+			"ID": "20230903113412-qzyhnsd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903113412-qzyhnsd",
+				"updated": "20230903113413"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这种情况下，我们也可以利用 preStop 先 sleep 一小下，等待 kube-proxy 完成规则同步再开始停止容器内进程:"
+				}
+			]
+		},
+		{
+			"ID": "20230903113137-njzxmh4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230903113137-njzxmh4",
+				"updated": "20230903113143"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "        lifecycle:\n          preStop:\n            exec:\n              command:\n              - sleep\n              - 5s\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

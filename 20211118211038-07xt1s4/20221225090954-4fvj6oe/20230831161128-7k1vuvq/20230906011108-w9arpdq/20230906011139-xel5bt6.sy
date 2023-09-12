@@ -1,0 +1,1133 @@
+{
+	"ID": "20230906011139-xel5bt6",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230906011139-xel5bt6",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230906011526-a9imxrj\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230906012010-6m8nk3e\u0026quot;,\u0026quot;scrollTop\u0026quot;:2708,\u0026quot;focusId\u0026quot;:\u0026quot;20230906012010-tntgeio\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "6.2 CoreDNS性能优化",
+		"updated": "20230906012010"
+	},
+	"Children": [
+		{
+			"ID": "20230906011526-a9imxrj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011526-a9imxrj",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CoreDNS 作为 Kubernetes 集群的域名解析组件，如果性能不够可能会影响业务，本文介绍几种 CoreDNS 的性能优化手段。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-0exsg2o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906011526-0exsg2o",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/dns/optimize-coredns-performance.html#%E5%90%88%E7%90%86%E6%8E%A7%E5%88%B6-coredns-%E5%89%AF%E6%9C%AC%E6%95%B0",
+					"TextMarkTextContent": "合理控制 CoreDNS 副本数"
+				}
+			]
+		},
+		{
+			"ID": "20230906011540-6zmc811",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011540-6zmc811"
+			}
+		},
+		{
+			"ID": "20230906011526-dmhjj8a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011526-dmhjj8a",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "考虑以下几种方式:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-hgeqqwk",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906011526-hgeqqwk",
+				"updated": "20230906011601"
+			},
+			"Children": [
+				{
+					"ID": "20230906011526-efgskfn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230906011526-efgskfn",
+						"updated": "20230906011601"
+					},
+					"Children": [
+						{
+							"ID": "20230906011526-29cbfb6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011526-29cbfb6",
+								"updated": "20230906011526"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "根据集群规模预估 coredns 需要的副本数，直接调整 coredns deployment 的副本数:"
+								}
+							]
+						},
+						{
+							"ID": "20230906011558-2r2z7ag",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20230906011558-2r2z7ag",
+								"updated": "20230906011601"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "kubectl -n kube-system scale --replicas=10 deployment/coredns\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-p49faco",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906011526-p49faco",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"ID": "20230906011526-m5ppyac",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230906011526-m5ppyac",
+						"updated": "20230906011526"
+					},
+					"Children": [
+						{
+							"ID": "20230906011526-prte44r",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011526-prte44r",
+								"updated": "20230906011526"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为 coredns 定义 HPA 自动扩缩容。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906011526-hy4dn4h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230906011526-hy4dn4h",
+						"updated": "20230906011526"
+					},
+					"Children": [
+						{
+							"ID": "20230906011526-p9r14jl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011526-p9r14jl",
+								"updated": "20230906011526"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/kubernetes-sigs/cluster-proportional-autoscaler",
+									"TextMarkTextContent": "cluster-proportional-autoscaler"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " 以实现更精确的扩缩容(推荐)。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-ctlp0pz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906011526-ctlp0pz",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/dns/optimize-coredns-performance.html#%E7%A6%81%E7%94%A8-ipv6",
+					"TextMarkTextContent": "禁用 ipv6"
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-xh51kdr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011526-xh51kdr",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果 K8S 节点没有禁用 IPV6 的话，容器内进程请求 coredns 时的默认行为是同时发起 IPV4 和 IPV6 解析，而通常我们只需要用到 IPV4，当容器请求某个域名时，coredns 解析不到 IPV6 记录，就会 forward 到 upstream 去解析，如果到 upstream 需要经过较长时间(比如跨公网，跨机房专线)，就会拖慢整个解析流程的速度，业务层面就会感知 DNS 解析慢。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-5xxo9ef",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011526-5xxo9ef",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CoreDNS 有一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://coredns.io/plugins/template/",
+					"TextMarkTextContent": "template"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 的插件，可以用它来禁用 IPV6 的解析，只需要给 CoreDNS 加上如下的配置:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011526-g4ba00s",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-txt hljs plaintext\"\u003etemplate ANY AAAA {\n    rcode NXDOMAIN\n}\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906011526-g4ba00s",
+				"updated": "20230906011526"
+			}
+		},
+		{
+			"ID": "20230906011526-u5jj7ka",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230906011526-u5jj7ka",
+				"updated": "20230906011526"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230906011526-ytsu9rj",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230906011526-ytsu9rj",
+						"updated": "20230906011526"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "这个配置的含义是：给所有 IPV6 的解析请求都响应空记录，即无此域名的 IPV6 记录。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906011644-4ze3f3h",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906011644-4ze3f3h",
+				"updated": "20230906011644"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/dns/optimize-coredns-performance.html#%E4%BC%98%E5%8C%96-ndots",
+					"TextMarkTextContent": "优化 ndots"
+				}
+			]
+		},
+		{
+			"ID": "20230906011644-mz3vedk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011644-mz3vedk",
+				"updated": "20230906011644"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认情况下，Kubernetes 集群中的域名解析往往需要经过多次请求才能解析到。查看 pod 内 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "/etc/resolv.conf"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 可以知道 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ndots"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 选项默认为 5:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011648-h2cnm5r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011648-h2cnm5r",
+				"updated": "20230906011649"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230906011649-s2j90qs.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230906011701-9hwh2s7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011701-9hwh2s7",
+				"updated": "20230906011701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "意思是: 如果域名中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "."
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的数量小于 5，就依次遍历 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "search"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 中的后缀并拼接上进行 DNS 查询。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011701-msubbr9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011701-msubbr9",
+				"updated": "20230906011701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "举个例子，在 debug 命名空间查询 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "kubernetes.default.svc.cluster.local"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 这个 service:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011701-7xgg3r6",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906011701-7xgg3r6",
+				"updated": "20230906011701"
+			},
+			"Children": [
+				{
+					"ID": "20230906011701-gfgc7x8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230906011701-gfgc7x8",
+						"updated": "20230906011701"
+					},
+					"Children": [
+						{
+							"ID": "20230906011701-5tfhlc6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011701-5tfhlc6",
+								"updated": "20230906011701"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "域名中有 4 个 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "."
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，小于 5，尝试拼接上第一个 search 进行查询，即 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubernetes.default.svc.cluster.local.debug.svc.cluster.local"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，查不到该域名。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906011701-01qlg4u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230906011701-01qlg4u",
+						"updated": "20230906011701"
+					},
+					"Children": [
+						{
+							"ID": "20230906011701-3palqt9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011701-3palqt9",
+								"updated": "20230906011701"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "继续尝试 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubernetes.default.svc.cluster.local.svc.cluster.local"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，查不到该域名。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906011701-3yszdq5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230906011701-3yszdq5",
+						"updated": "20230906011701"
+					},
+					"Children": [
+						{
+							"ID": "20230906011701-vdsvh06",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011701-vdsvh06",
+								"updated": "20230906011701"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "继续尝试 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubernetes.default.svc.cluster.local.cluster.local"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，仍然查不到该域名。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906011701-53a9kjk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20230906011701-53a9kjk",
+						"updated": "20230906011701"
+					},
+					"Children": [
+						{
+							"ID": "20230906011701-8xewtwu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011701-8xewtwu",
+								"updated": "20230906011701"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "尝试不加后缀，即 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kubernetes.default.svc.cluster.local"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，查询成功，返回响应的 ClusterIP。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906011701-pm686ml",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011701-pm686ml",
+				"updated": "20230906011701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以看到一个简单的 service 域名解析需要经过 4 轮解析才能成功，集群中充斥着大量无用的 DNS 请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011701-9ql56ti",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011701-9ql56ti",
+				"updated": "20230906011701"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "怎么办呢？我们可以设置较小的 ndots，在 Pod 的 dnsConfig 中可以设置:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011754-omzflf3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011754-omzflf3",
+				"updated": "20230906011756"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230906011756-xvh2iho.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230906011802-duud33z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011802-duud33z",
+				"updated": "20230906011802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后业务发请求时尽量将 service 域名拼完整，这样就不会经过 search 拼接造成大量多余的 DNS 请求。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011802-dqa1f1l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011802-dqa1f1l",
+				"updated": "20230906011802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不过这样会比较麻烦，有没有更好的办法呢？有的！请看下面的 autopath 方式。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011810-kz8e1xp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906011810-kz8e1xp",
+				"updated": "20230906011810"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/dns/optimize-coredns-performance.html#%E5%90%AF%E7%94%A8-autopath",
+					"TextMarkTextContent": "启用 autopath"
+				}
+			]
+		},
+		{
+			"ID": "20230906011810-1gln7ns",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011810-1gln7ns",
+				"updated": "20230906011810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "启用 CoreDNS 的 autopath 插件可以避免每次域名解析经过多次请求才能解析到，原理是 CoreDNS 智能识别拼接过 search 的 DNS 解析，直接响应 CNAME 并附上相应的 ClusterIP，一步到位，可以极大减少集群内 DNS 请求数量。"
+				}
+			]
+		},
+		{
+			"ID": "20230906011810-3vt3nya",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011810-3vt3nya",
+				"updated": "20230906011810"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "启用方法是修改 CoreDNS 配置:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011815-e3pndvm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906011815-e3pndvm",
+				"updated": "20230906011817"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n kube-system edit configmap coredns\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906011821-jzst6xf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011821-jzst6xf",
+				"updated": "20230906011822"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改红框中圈出来的配置:"
+				}
+			]
+		},
+		{
+			"ID": "20230906011826-5lwdtt7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011826-5lwdtt7",
+				"updated": "20230906011826"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230906011826-jrmqmqu.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230906011841-dfgb4wh",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230906011841-dfgb4wh",
+				"updated": "20230906011841"
+			},
+			"Children": [
+				{
+					"ID": "20230906011841-buazjq0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906011841-buazjq0",
+						"updated": "20230906011841"
+					},
+					"Children": [
+						{
+							"ID": "20230906011841-i2mfery",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011841-i2mfery",
+								"updated": "20230906011841"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "加上 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "autopath @kubernetes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906011841-gssjnb0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906011841-gssjnb0",
+						"updated": "20230906011841"
+					},
+					"Children": [
+						{
+							"ID": "20230906011841-9h5ysjb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906011841-9h5ysjb",
+								"updated": "20230906011841"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "默认的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "pods insecure"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 改成 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "pods verified"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906011841-2aodhst",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906011841-2aodhst",
+				"updated": "20230906011841"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需要注意的是，启用 autopath 后，由于 coredns 需要 watch 所有的 pod，会增加 coredns 的内存消耗，根据情况适当调节 coredns 的 memory request 和 limit。"
+				}
+			]
+		},
+		{
+			"ID": "20230906012000-set14li",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906012000-set14li",
+				"updated": "20230906012000"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/dns/optimize-coredns-performance.html#%E9%83%A8%E7%BD%B2-nodelocal-dnscache",
+					"TextMarkTextContent": "部署 NodeLocal DNSCache"
+				}
+			]
+		},
+		{
+			"ID": "20230906012000-crqkr2q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012000-crqkr2q",
+				"updated": "20230906012000"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考 k8s 官方文档 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/",
+					"TextMarkTextContent": "Using NodeLocal DNSCache in Kubernetes clusters"
+				}
+			]
+		},
+		{
+			"ID": "20230906012000-vyijzir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012000-vyijzir",
+				"updated": "20230906012000"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果是使用 TKE 并且 kube-proxy 转发模式为 iptables，可以直接在扩展组件中安装此扩展组件，扩展组件说明请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/document/product/457/49423",
+					"TextMarkTextContent": "TKE 官方文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "；如果使用的 ipvs 模式，可以参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/tencent/networking/install-localdns-with-ipvs.html",
+					"TextMarkTextContent": "TKE IPVS 模式安装 localdns"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230906012009-ww6stvy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012009-ww6stvy"
+			}
+		},
+		{
+			"ID": "20230906012010-tntgeio",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906012010-tntgeio",
+				"updated": "20230906012010"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/dns/optimize-coredns-performance.html#%E4%BD%BF%E7%94%A8-dnsautoscaler",
+					"TextMarkTextContent": "使用 DNSAutoscaler"
+				}
+			]
+		},
+		{
+			"ID": "20230906012010-f48tnuo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012010-f48tnuo",
+				"updated": "20230906012010"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "社区有开源的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/kubernetes-sigs/cluster-proportional-autoscaler",
+					"TextMarkTextContent": "cluster-proportional-autoscaler"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " ，可以根据集群规模自动扩缩容，支持比较灵活的扩缩容算法。"
+				}
+			]
+		},
+		{
+			"ID": "20230906012010-6m8nk3e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012010-6m8nk3e",
+				"updated": "20230906012010"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果使用的是 TKE，已经将其产品化成 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "DNSAutoscaler 扩展组件"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，在扩展组件中直接安装即可，组件说明请参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://cloud.tencent.com/document/product/457/49305",
+					"TextMarkTextContent": "TKE 官方文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		}
+	]
+}

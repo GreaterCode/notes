@@ -1,0 +1,126 @@
+{
+	"ID": "20230912095421-jqtyeb2",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230912095421-jqtyeb2",
+		"title": "Linux得到一个进程以及其所有递归子进程使用的内存总量",
+		"updated": "20230912095708"
+	},
+	"Children": [
+		{
+			"ID": "20230912095421-cppq72y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230912095421-cppq72y",
+				"updated": "20230912095631"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "## 查看进程的所有直接子进程的pid（不递归，不包括顶级进程本身的pid）\npgrep -P 2152892\n\n## 查看所有子进程和孙进程的pid（递归，包括顶级进程本身的pid，-T不显示线程）\npstree -T -p 2152892 | grep -o '([0-9]\\+)' | grep -o '[0-9]\\+'\n\n## 把所有进程pid放到文本中\npstree -T -p 2152892 | grep -o '([0-9]\\+)' | grep -o '[0-9]\\+' \u003e 1.txt\n\n## 按照Pss计算所有进程使用的总内存\nfor pid in $(cat 1.txt); do cat /proc/$pid/smaps; done | awk '/Pss/ {mem += $2} END {print mem, \"kB\"}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230912095636-3wm2ne7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230912095636-3wm2ne7",
+				"updated": "20230912095636"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "写成脚本方式，如下："
+				}
+			]
+		},
+		{
+			"ID": "20230912095638-ihe419y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230912095638-ihe419y",
+				"updated": "20230912095650"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n\nif [ $# != 1 ]\nthen\n    echo \"USAGE: $0 \u003cpid\u003e\"\n    echo \" e.g.: $0 1101\"\n    exit 1\nfi\n\npid_top=$1\n\nif ! ps -p $pid_top \u003e /dev/null\nthen\n    echo \"PID: $pid_top not exist!\"\n    exit 1\nfi\n\nfor pid in $(pstree -T -p $pid_top  | grep -o '([0-9]\\+)' | grep -o '[0-9]\\+'); do cat /proc/$pid/smaps; done | awk '/Pss/ {mem += $2} END {print mem, \"kB\"}'\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230912095708-ie0as3b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230912095708-ie0as3b",
+				"updated": "20230912095708"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考资料：\n《如何得到一个进程以及它所有子进程使用的内存总量》\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://stackoverflow.com/questions/34600860/how-to-calculate-total-physical-memory-used-by-processes-forked-from-same-parent",
+					"TextMarkTextContent": "https://stackoverflow.com/questions/34600860/how-to-calculate-total-physical-memory-used-by-processes-forked-from-same-parent"
+				}
+			]
+		},
+		{
+			"ID": "20230912095708-2nfsui6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230912095708-2nfsui6",
+				"updated": "20230912095708"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "备注：\n如果1.txt里的每一行前后可能有空格或者\\t，要得到用“,”连接起来的每一行，并且是不带空格或者\\t的，\n可以用：\ntr -d '\\t ' \u003c 1.txt \u003e 2.txt\npaste -sd \",\" 2.txt"
+				}
+			]
+		},
+		{
+			"ID": "20230912095708-lozx9f6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230912095708-lozx9f6",
+				"updated": "20230912095708"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "连起来：\ntr -d '\\t ' \u003c 1.txt | paste -sd \",\""
+				}
+			]
+		}
+	]
+}

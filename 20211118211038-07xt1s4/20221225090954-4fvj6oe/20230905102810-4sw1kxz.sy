@@ -1,0 +1,73 @@
+{
+	"ID": "20230905102810-4sw1kxz",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230905102810-4sw1kxz",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230905102828-0nksju5\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230905102844-o8ya0kp\u0026quot;,\u0026quot;scrollTop\u0026quot;:89.5,\u0026quot;focusId\u0026quot;:\u0026quot;20230905102828-0nksju5\u0026quot;,\u0026quot;focusStart\u0026quot;:87,\u0026quot;focusEnd\u0026quot;:362}",
+		"title": "k8s审计日志处理格式化",
+		"updated": "20230905103047"
+	},
+	"Children": [
+		{
+			"ID": "20230905102828-0nksju5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905102828-0nksju5",
+				"updated": "20230905102836"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n \n# 替换成实际的审计日志文件路径\naudit_log_file=\"/var/log/kube-apiserver/audit.log\"\n \n# 输出日志总数\ntotal_logs=$(wc -l \u003c \"$audit_log_file\")\necho \"Total audit logs: $total_logs\"\n \n# 提取所有 user agent 并计数，然后按次数排序并取前10个\nuser_agents=$(jq -r '.userAgent' \"$audit_log_file\" | sort | uniq -c | sort -rn | head -n 50)\n \necho \"Top 10 user agents by log count:\"\necho \"$user_agents\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230905102810-x0jqso1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230905102810-x0jqso1",
+				"updated": "20230905102810"
+			}
+		},
+		{
+			"ID": "20230905102844-o8ya0kp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230905102844-o8ya0kp",
+				"updated": "20230905102846"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n \n# 替换成实际的审计日志文件路径\naudit_log_file=\"/var/log/kube-apiserver/audit.log\"\n \n# 输出日志总数\ntotal_logs=$(wc -l \u003c \"$audit_log_file\")\necho \"Total audit logs: $total_logs\"\n \n# 提取所有用户名并计数，然后按次数排序并取前10个\nusernames=$(jq -r '.user.username' \"$audit_log_file\" | sort | uniq -c | sort -rn | head -n 50)\n \necho \"Top 10 users by log count:\"\necho \"$usernames\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,133 @@
+{
+	"ID": "20230728095109-9ly0kjr",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230728095109-9ly0kjr",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230728095109-twvx1rq\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230728095340-kdw65c7\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230728095340-kdw65c7\u0026quot;,\u0026quot;focusStart\u0026quot;:4,\u0026quot;focusEnd\u0026quot;:4}",
+		"title": "二进制打包成rpm包",
+		"updated": "20230728095343"
+	},
+	"Children": [
+		{
+			"ID": "20230728095109-twvx1rq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230728095109-twvx1rq",
+				"updated": "20230728095120"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " yum install rpm-build rpmdevtools vim\n \n# 默认会在根目录下创建 rpmbuild\nrpmdev-setuptree\n \ncd /root/rpmbuild\n \nvim /root/rpmbuild/SPECS/temp.spec\n \n####################################\nName: runc\nVersion: 1.1.0\nRelease: 2.el9\nSummary: This is a special package\n \nGroup: Devlopment/Tools\nLicense: Special Proprietary\nBuildArch: x86_64\n# BuildArch: noarch\n%description\n%prep\n%build\n%pre\n%post\n%preun\n%postun\n%files\n/opt/demo/runc\n/opt/demo/doc/test.txt\n%changelog\n####################################\n \n \n# 放入资源的时候需要根据编写的spec文件来放置，在BUILDROOT目录要先创建一个目录runc-1.1.0-2.el9.x86_64，该目录是根据spec文件中配置拼接而成：Name-Version-Release.arch\nmkdir -p /root/rpmbuild/BUILDROOT/runc-1.1.0-2.el9.x86_64/opt/demo\nmkdir -p /root/rpmbuild/BUILDROOT/runc-1.1.0-2.el9.x86_64/opt/demo/doc\n \n# 将二进制放入打包目录\ncp /usr/bin/runc /root/rpmbuild/BUILDROOT/runc-1.1.0-2.el9.x86_64/opt/demo\n \n# 将待安装的测试文件放入对应打包目录\ntouch /root/rpmbuild/BUILDROOT/runc-1.1.0-2.el9.x86_64/opt/demo/doc/test.txt\n \n \n# 以/root/rpmbuild/BUILDROOT/runc-1.1.0-2.el9.x86_64 为 BUILDROOT, 最后打出来的 rpm 包，安装的时候,runc 将会安装在/opt/demo 目录,  test.txt 将会安装在 /opt/demo/doc/ 目录。\nrpmbuild -bb /root/rpmbuild/SPECS/temp.spec\n \n# 制作的 rpm 包在这里\ncd /root/rpmbuild/RPMS/x86_64\n \n# 使用 yum 安装，安装之前先卸载已有 runc \nrpm -qa |grep runc\nrpm -e --nodeps xxxx\n \nyum localinstall runc-1.1.0-2.el9.x86_64.rpm\n \n# 或者直接安装\nrpm -ivh runc-1.1.0-2.el9.x86_64.rpm\n \n# 卸载安装的包\nyum remove --allowerasing runc\n \n# 或使用\nrpm -e --nodeps  runc-1.1.0-2.el9.x86_64\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230728095331-1be21qf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230728095331-1be21qf",
+				"updated": "20230728095333"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230728095333-6db2u38.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230728095340-kdw65c7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230728095340-kdw65c7",
+				"updated": "20230728095343"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230728095343-38xmen4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		}
+	]
+}

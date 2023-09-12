@@ -1,0 +1,1797 @@
+{
+	"ID": "20230906012339-shjjql5",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230906012339-shjjql5",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230906012401-tuj1y8t\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230906091010-pvnudkl\u0026quot;,\u0026quot;scrollTop\u0026quot;:7163,\u0026quot;focusId\u0026quot;:\u0026quot;20230906090934-tkvvvo3\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:129}",
+		"title": "7.1 灵活调节 HPA 扩缩容速率",
+		"updated": "20230906091010"
+	},
+	"Children": [
+		{
+			"ID": "20230906012401-tuj1y8t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906012401-tuj1y8t",
+				"updated": "20230906012401"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#hpa-v2beta2-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E6%94%AF%E6%8C%81%E8%B0%83%E8%8A%82%E6%89%A9%E7%BC%A9%E5%AE%B9%E9%80%9F%E7%8E%87",
+					"TextMarkTextContent": "HPA v2beta2 版本开始支持调节扩缩容速率"
+				}
+			]
+		},
+		{
+			"ID": "20230906012401-0nx6avj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012401-0nx6avj",
+				"updated": "20230906012401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 K8S 1.18 之前，HPA 扩容是无法调整灵敏度的："
+				}
+			]
+		},
+		{
+			"ID": "20230906012401-q0r6izd",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906012401-q0r6izd",
+				"updated": "20230906012401"
+			},
+			"Children": [
+				{
+					"ID": "20230906012401-f4cn2mo",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230906012401-f4cn2mo",
+						"updated": "20230906012401"
+					},
+					"Children": [
+						{
+							"ID": "20230906012401-nkjimmb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906012401-nkjimmb",
+								"updated": "20230906012401"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于缩容，由 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-controller-manager"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--horizontal-pod-autoscaler-downscale-stabilization-window"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 参数控制缩容时间窗口，默认 5 分钟，即负载减小后至少需要等 5 分钟才会缩容。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906012401-5don385",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230906012401-5don385",
+						"updated": "20230906012401"
+					},
+					"Children": [
+						{
+							"ID": "20230906012401-u4zvqbz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906012401-u4zvqbz",
+								"updated": "20230906012401"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于扩容，由 hpa controller 固定的算法、硬编码的常量因子来控制扩容速度，无法自定义。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906012401-o0d33n1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012401-o0d33n1",
+				"updated": "20230906012401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样的设计逻辑导致用户无法自定义 HPA 的扩缩容速率，而不同的业务场景对于扩容容灵敏度要求可能是不一样的，比如："
+				}
+			]
+		},
+		{
+			"ID": "20230906012401-g375369",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230906012401-g375369",
+				"updated": "20230906012401"
+			},
+			"Children": [
+				{
+					"ID": "20230906012401-ejbjsiv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230906012401-ejbjsiv",
+						"updated": "20230906012401"
+					},
+					"Children": [
+						{
+							"ID": "20230906012401-83zzogm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906012401-83zzogm",
+								"updated": "20230906012401"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对于有流量突发的关键业务，在需要的时候应该快速扩容 (即便可能不需要，以防万一)，但缩容要慢 (防止另一个流量高峰)。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906012401-mgal4lv",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230906012401-mgal4lv",
+						"updated": "20230906012401"
+					},
+					"Children": [
+						{
+							"ID": "20230906012401-x3sydcn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906012401-x3sydcn",
+								"updated": "20230906012401"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "处理关键数据的应用，数据量飙升时它们应该尽快扩容以减少数据处理时间，数据量降低时应尽快缩小规模以降低成本，数据量的短暂抖动导致不必要的频繁扩缩是可以接受的。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906012401-xhv6m2i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230906012401-xhv6m2i",
+						"updated": "20230906012401"
+					},
+					"Children": [
+						{
+							"ID": "20230906012401-2nks8c8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906012401-2nks8c8",
+								"updated": "20230906012401"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "处理常规数据/网络流量的业务，不是很重要，它们可能会以一般的方式扩大和缩小规模，以减少抖动。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906012401-7ybzlv7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012401-7ybzlv7",
+				"updated": "20230906012401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "HPA 在 K8S 1.18 迎来了一次更新，在之前 v2beta2 版本上新增了扩缩容灵敏度的控制，不过版本号依然保持 v2beta2 不变。"
+				}
+			]
+		},
+		{
+			"ID": "20230906012442-cfn5nhr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906012442-cfn5nhr",
+				"updated": "20230906012442"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%8E%9F%E7%90%86%E4%B8%8E%E8%AF%AF%E5%8C%BA",
+					"TextMarkTextContent": "原理与误区"
+				}
+			]
+		},
+		{
+			"ID": "20230906012442-q9ck7an",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012442-q9ck7an",
+				"updated": "20230906012442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "HPA 在进行扩缩容时，先是由固定的算法计算出期望副本数:"
+				}
+			]
+		},
+		{
+			"ID": "20230906012442-bqefki8",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-txt hljs plaintext\"\u003e期望副本数 = ceil[当前副本数 * (当前指标 / 期望指标)]\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906012442-bqefki8",
+				"updated": "20230906012442"
+			}
+		},
+		{
+			"ID": "20230906012442-gqnjuol",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012442-gqnjuol",
+				"updated": "20230906012442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "当前指标 / 期望指标"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的比例如果接近 1 (在容忍度范围内，默认为 0.1，即比例在 0.9~1.1 之间)，则不进行伸缩，避免抖动导致频繁扩缩容。"
+				}
+			]
+		},
+		{
+			"ID": "20230906012442-ovo0jov",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230906012442-ovo0jov",
+				"updated": "20230906012442"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230906012442-ydwdssn",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230906012442-ydwdssn",
+						"updated": "20230906012442"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "容忍度是由 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "kube-controller-manager"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "​ 参数 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "--horizontal-pod-autoscaler-tolerance"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "​ 决定，默认是 0.1，即 10%。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906012442-95b65d5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906012442-95b65d5",
+				"updated": "20230906012442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文要介绍的扩缩容速率调节，不是指要调整期望副本数的算法，它并不会加大或缩小扩缩容比例或数量，仅仅是控制扩缩容的速率，实现的效果是: 控制 HPA 在 XX 时间内最大允许扩容/缩容 XX 比例/数量的 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090327-a4q9yp8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906090327-a4q9yp8",
+				"updated": "20230906090327"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8",
+					"TextMarkTextContent": "如何使用"
+				}
+			]
+		},
+		{
+			"ID": "20230906090327-ufz6t4v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090327-ufz6t4v",
+				"updated": "20230906090327"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这次更新实际就是在 HPA Spec 下新增了一个 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "behavior"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 字段，下面有 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "scaleUp"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "scaleDown"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 两个字段分别控制扩容和缩容的行为，具体可参考 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#hpascalingrules-v2beta2-autoscaling",
+					"TextMarkTextContent": "官方 API 文档"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090327-drhjkys",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090327-drhjkys",
+				"updated": "20230906090327"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用示例:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090328-vo6mjvq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906090328-vo6mjvq",
+				"updated": "20230906090341"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: autoscaling/v2beta2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: web\nspec:\n  minReplicas: 1\n  maxReplicas: 1000\n  metrics:\n  - pods:\n      metric:\n        name: k8s_pod_rate_cpu_core_used_limit\n      target:\n        averageValue: \"80\"\n        type: AverageValue\n    type: Pods\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: web\n  behavior: # 这里是重点\n    scaleDown:\n      stabilizationWindowSeconds: 300 # 需要缩容时，先观察 5 分钟，如果一直持续需要缩容才执行缩容\n      policies:\n      - type: Percent\n        value: 100 # 允许全部缩掉\n        periodSeconds: 15\n    scaleUp:\n      stabilizationWindowSeconds: 0 # 需要扩容时，立即扩容\n      policies:\n      - type: Percent\n        value: 100\n        periodSeconds: 15 # 每 15s 最大允许扩容当前 1 倍数量的 Pod\n      - type: Pods\n        value: 4\n        periodSeconds: 15 # 每 15s 最大允许扩容 4 个 Pod\n      selectPolicy: Max # 使用以上两种扩容策略中算出来扩容 Pod 数量最大的\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906090443-n6lpm2k",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230906090443-n6lpm2k",
+				"updated": "20230906090443"
+			},
+			"Children": [
+				{
+					"ID": "20230906090443-5haql6g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090443-5haql6g",
+						"updated": "20230906090443"
+					},
+					"Children": [
+						{
+							"ID": "20230906090443-oni1jj4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090443-oni1jj4",
+								"updated": "20230906090443"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "以上 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "behavior"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 配置是默认的，即如果不配置，会默认加上。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906090443-9s51kom",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090443-9s51kom",
+						"updated": "20230906090443"
+					},
+					"Children": [
+						{
+							"ID": "20230906090443-14b4r3c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090443-14b4r3c",
+								"updated": "20230906090443"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "scaleUp"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 和 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "scaleDown"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 都可以配置1个或多个策略，最终扩缩时用哪个策略，取决于 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "selectPolicy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906090443-h416k95",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090443-h416k95",
+						"updated": "20230906090443"
+					},
+					"Children": [
+						{
+							"ID": "20230906090443-uzu7hjb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090443-uzu7hjb",
+								"updated": "20230906090443"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "selectPolicy"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 默认是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Max"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，即扩缩时，评估多个策略算出来的结果，最终选取扩缩 Pod 数量最多的那个策略的结果。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906090443-ugp63mr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090443-ugp63mr",
+						"updated": "20230906090443"
+					},
+					"Children": [
+						{
+							"ID": "20230906090443-4h3afyu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090443-4h3afyu",
+								"updated": "20230906090443"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "stabilizationWindowSeconds"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 是稳定窗口时长，即需要指标高于或低于阈值，并持续这个窗口的时长才会真正执行扩缩，以防止抖动导致频繁扩缩容。扩容时，稳定窗口默认为0，即立即扩容；缩容时，稳定窗口默认为5分钟。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906090443-zc1yvnn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090443-zc1yvnn",
+						"updated": "20230906090443"
+					},
+					"Children": [
+						{
+							"ID": "20230906090443-1mfn9aj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090443-1mfn9aj",
+								"updated": "20230906090443"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "policies"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 中定义扩容或缩容策略，"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "type"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 的值可以是 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Pods"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 或 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Percent"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​，表示每 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "periodSeconds"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 时间范围内，允许扩缩容的最大副本数或比例。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-xqbjr6b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906090533-xqbjr6b",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%9C%BA%E6%99%AF%E4%B8%8E%E7%A4%BA%E4%BE%8B",
+					"TextMarkTextContent": "场景与示例"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-v2e2s54",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-v2e2s54",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面给出一些使用场景的示例。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-cndfpu3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090533-cndfpu3",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%BF%AB%E9%80%9F%E6%89%A9%E5%AE%B9",
+					"TextMarkTextContent": "快速扩容"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-417xs20",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-417xs20",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当你的应用需要快速扩容时，可以使用类似如下的 HPA 配置:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-ke8mr92",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-yaml hljs\"\u003ebehavior:\n  scaleUp:\n    policies:\n    - type: Percent\n      value: 900\n      periodSeconds: 15 # 每 15s 最多允许扩容 9 倍于当前副本数\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-ke8mr92",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-rcq8xy1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-rcq8xy1",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的配置表示扩容时最大一次性新增当前 9 倍数量的副本数，当然也不能超过 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "maxReplicas"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的限制。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-fjn0xf3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-fjn0xf3",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "假如一开始只有 1 个 Pod，如果遭遇流量突发，且指标持续超阈值 9 倍以上，它将以飞快的速度进行扩容，扩容时 Pod 数量变化趋势如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-b5fh0jp",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-txt hljs plaintext\"\u003e1 -\u003e 10 -\u003e 100 -\u003e 1000\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-b5fh0jp",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-529i3wp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-529i3wp",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "没有配置缩容策略，将等待全局默认的缩容时间窗口 (默认5分钟) 后开始缩容。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-jw5ymy4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090533-jw5ymy4",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%BF%AB%E9%80%9F%E6%89%A9%E5%AE%B9%E7%BC%93%E6%85%A2%E7%BC%A9%E5%AE%B9",
+					"TextMarkTextContent": "快速扩容，缓慢缩容"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-ynrgh6t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-ynrgh6t",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果流量高峰过了，并发量骤降，如果用默认的缩容策略，等几分钟后 Pod 数量也会随之骤降，如果 Pod 缩容后突然又来一个流量高峰，虽然可以快速扩容，但扩容的过程毕竟还是需要一定时间的，如果流量高峰足够高，在这段时间内还是可能造成后端处理能力跟不上，导致部分请求失败。这时候我们可以为 HPA 加上缩容策略，HPA "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "behavior"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配置示例如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-8md755t",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-yaml hljs\"\u003ebehavior:\n  scaleUp:\n    policies:\n    - type: Percent\n      value: 900\n      periodSeconds: 15 # 每 15s 最多允许扩容 9 倍于当前副本数\n  scaleDown:\n    policies:\n    - type: Pods\n      value: 1\n      periodSeconds: 600 # 每 10 分钟最多只允许缩掉 1 个 Pod\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-8md755t",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-nrbah8m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-nrbah8m",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面示例中增加了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "scaleDown"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 的配置，指定缩容时每 10 分钟才缩掉 1 个 Pod，大大降低了缩容速度，缩容时的 Pod 数量变化趋势如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-m02f6rx",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-txt hljs plaintext\"\u003e1000 -\u003e … (10 min later) -\u003e 999\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-m02f6rx",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-brvmqy7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-brvmqy7",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个可以让关键业务在可能有流量突发的情况下保持处理能力，避免流量高峰导致部分请求失败。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-vq8rvvt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090533-vq8rvvt",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E7%BC%93%E6%85%A2%E6%89%A9%E5%AE%B9",
+					"TextMarkTextContent": "缓慢扩容"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-9ahddo8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-9ahddo8",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果想要你的应用不太关键，希望扩容时不要太敏感，可以让它扩容平稳缓慢一点，为 HPA 加入下面的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "behavior"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-t5k12dm",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-yaml hljs\"\u003ebehavior:\n  scaleUp:\n    policies:\n    - type: Pods\n      value: 1 \n      periodSeconds: 300 # 每 5 分钟最多只允许扩容 1 个 Pod\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-t5k12dm",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-z2wy7h6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-z2wy7h6",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "假如一开始只有 1 个 Pod，指标一直持续超阈值，扩容时它的 Pod 数量变化趋势如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-xa4z65k",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-txt hljs plaintext\"\u003e1 -\u003e 2 -\u003e 3 -\u003e 4\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-xa4z65k",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-7v2chwv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090533-7v2chwv",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E7%A6%81%E6%AD%A2%E8%87%AA%E5%8A%A8%E7%BC%A9%E5%AE%B9",
+					"TextMarkTextContent": "禁止自动缩容"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-asf2f8y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-asf2f8y",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果应用非常关键，希望扩容后不自动缩容，需要人工干预或其它自己开发的 controller 来判断缩容条件，可以使用类型如下的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "behavior"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配置来禁止自动缩容:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-ji74usf",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-yaml hljs\"\u003ebehavior:\n  scaleDown:\n    selectPolicy: Disabled\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-ji74usf",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-pla4o5y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090533-pla4o5y",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%BB%B6%E9%95%BF%E7%BC%A9%E5%AE%B9%E6%97%B6%E9%97%B4%E7%AA%97%E5%8F%A3",
+					"TextMarkTextContent": "延长缩容时间窗口"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-9wsyxwc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-9wsyxwc",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "缩容默认时间窗口是 5 分钟，如果我们需要延长时间窗口以避免一些流量毛刺造成的异常，可以指定下缩容的时间窗口，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "behavior"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配置示例如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-12wll4p",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-yaml hljs\"\u003ebehavior:\n  scaleDown:\n    stabilizationWindowSeconds: 600 # 等待 10 分钟再开始缩容\n    policies:\n    - type: Pods\n      value: 5 \n      periodSeconds: 600 # 每 10 分钟最多只允许缩掉 5 个 Pod\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-12wll4p",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-2bwz63o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-2bwz63o",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的示例表示当负载降下来时，会等待 600s (10 分钟) 再缩容，每 10 分钟最多只允许缩掉 5 个 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-nem64wn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090533-nem64wn",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%BB%B6%E9%95%BF%E6%89%A9%E5%AE%B9%E6%97%B6%E9%97%B4%E7%AA%97%E5%8F%A3",
+					"TextMarkTextContent": "延长扩容时间窗口"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-2p4lbbn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-2p4lbbn",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "有些应用经常会有数据毛刺导致频繁扩容，而扩容出来的 Pod 其实没太大必要，反而浪费资源。比如数据处理管道的场景，需要的副本数取决于队列中的事件数量，当队列中堆积了大量事件时，我们希望可以快速扩容，但又不希望太灵敏，因为可能只是短时间内的事件堆积，即使不扩容也可以很快处理掉。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-01yybby",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-01yybby",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "默认的扩容算法会在较短的时间内扩容，针对这种场景我们可以给扩容增加一个时间窗口以避免毛刺导致扩容带来的资源浪费，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "behavior"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 配置示例如下:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090533-xtgxexq",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cdiv class=\"buttons\"\u003e\u003cbutton class=\"fa fa-copy clip-button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\"\u003e\u003ci class=\"tooltiptext\"\u003e\u003c/i\u003e\u003c/button\u003e\u003c/div\u003e\u003ccode class=\"language-yaml hljs\"\u003ebehavior:\n  scaleUp:\n    stabilizationWindowSeconds: 300 # 扩容前等待 5 分钟的时间窗口\n    policies:\n    - type: Pods\n      value: 20 \n      periodSeconds: 60 # 每分钟最多只允许扩容 20 个 Pod\n\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20230906090533-xtgxexq",
+				"updated": "20230906090533"
+			}
+		},
+		{
+			"ID": "20230906090533-d30no33",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090533-d30no33",
+				"updated": "20230906090533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的示例表示扩容时，需要先等待 5 分钟的时间窗口，如果在这段时间内指标又降下来了就不再扩容，如果一直持续超过阈值才扩容，并且每分钟最多只允许扩容 20 个 Pod。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090722-xs9lkst",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090722-xs9lkst",
+				"updated": "20230906090722"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E7%94%A8-v2beta2-%E5%88%9B%E5%BB%BA%E7%9A%84-hpa%E5%88%9B%E5%BB%BA%E5%90%8E%E8%8E%B7%E5%8F%96%E5%88%B0%E7%9A%84-yaml-%E7%89%88%E6%9C%AC%E6%98%AF-v1-%E6%88%96-v2beta1",
+					"TextMarkTextContent": "为什么我用 v2beta2 创建的 HPA，创建后获取到的 yaml 版本是 v1 或 v2beta1?"
+				}
+			]
+		},
+		{
+			"ID": "20230906090726-aq8iey7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090726-aq8iey7",
+				"updated": "20230906090726"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230906090726-0u16w9t.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230906090751-kmtdvha",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090751-kmtdvha",
+				"updated": "20230906090751"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这是因为 HPA 有多个 apiVersion 版本:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090758-22eb2lz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906090758-22eb2lz",
+				"updated": "20230906090801"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl api-versions | grep autoscaling\nautoscaling/v1\nautoscaling/v2beta1\nautoscaling/v2beta2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906090809-irmve9c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090809-irmve9c",
+				"updated": "20230906090809"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以任意一种版本创建，都可以以任意版本获取(自动转换)。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090809-e3cwrfn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090809-e3cwrfn",
+				"updated": "20230906090809"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果是用 kubectl 获取，kubectl 在进行 API discovery 时，会缓存 apiserver 返回的各种资源与版本信息，有些资源存在多个版本，在 get 时如果不指定版本，会使用默认版本获取，对于 HPA，默认是 v1。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090809-4996wma",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090809-4996wma",
+				"updated": "20230906090809"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果是通过一些平台的界面获取，取决于平台的实现方式，比如腾讯云容器服务控制台，默认用 v2beta1 版本展示:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090822-jv45os6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090822-jv45os6",
+				"updated": "20230906090824"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230906090824-3cpv9vl.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230906090844-wr3gqq4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090844-wr3gqq4",
+				"updated": "20230906090845"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如何使用 v2beta2 版本获取或编辑？指定包含版本信息的完整资源名即可:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090850-zc3ug0b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906090850-zc3ug0b",
+				"updated": "20230906090854"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl get horizontalpodautoscaler.v2beta2.autoscaling php-apache -o yaml\n# kubectl edit horizontalpodautoscaler.v2beta2.autoscaling php-apache\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906090903-czy7k1c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230906090903-czy7k1c",
+				"updated": "20230906090903"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E9%85%8D%E7%BD%AE%E5%BF%AB%E9%80%9F%E6%89%A9%E5%AE%B9%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%E4%B8%8D%E8%B5%B7%E6%9D%A5",
+					"TextMarkTextContent": "配置快速扩容，为什么快不起来?"
+				}
+			]
+		},
+		{
+			"ID": "20230906090912-wg7so0k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090912-wg7so0k",
+				"updated": "20230906090913"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如这个配置:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090918-yk1kv8r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230906090918-yk1kv8r",
+				"updated": "20230906090920"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "behavior:\n  scaleUp:\n    policies:\n    - type: Percent\n      value: 900\n      periodSeconds: 10\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230906090934-yvunrdb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090934-yvunrdb",
+				"updated": "20230906090934"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "含义是允许每 10 秒最大允许扩出 9 倍于当前数量的 Pod，实测中可能发现压力已经很大了，但扩容却并不快。"
+				}
+			]
+		},
+		{
+			"ID": "20230906090934-6prxyob",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090934-6prxyob",
+				"updated": "20230906090934"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通常原因是计算周期与指标延时:"
+				}
+			]
+		},
+		{
+			"ID": "20230906090934-jy2oxrz",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230906090934-jy2oxrz",
+				"updated": "20230906090934"
+			},
+			"Children": [
+				{
+					"ID": "20230906090934-0dmbd4p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090934-0dmbd4p",
+						"updated": "20230906090934"
+					},
+					"Children": [
+						{
+							"ID": "20230906090934-cb0l5b1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090934-cb0l5b1",
+								"updated": "20230906090934"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "期望副本数的计算有个计算周期，默认是 15 秒 (由 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kube-controller-manager"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--horizontal-pod-autoscaler-sync-period"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 参数决定)。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906090934-0exbyy0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906090934-0exbyy0",
+						"updated": "20230906090934"
+					},
+					"Children": [
+						{
+							"ID": "20230906090934-s9hm5x2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906090934-s9hm5x2",
+								"updated": "20230906090934"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "每次计算时，都会通过相应的 metrics API 去获取当前监控指标的值，这个返回的值通常不是实时的，对于腾讯云容器服务而言，监控数据是每分钟上报一次；对于自建的 prometheus + prometheus-adapter 而言，监控数据的更新取决于监控数据抓取间隔，prometheus-adapter 的 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "--metrics-relist-interval"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 参数决定监控指标刷新周期(从 prometheus 中查询)，这两部分时长之和为监控数据更新的最长时间。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230906090934-tkvvvo3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906090934-tkvvvo3",
+				"updated": "20230906090934"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通常都不需要 HPA 极度的灵敏，有一定的延时一般都是可以接受的。如果实在有对灵敏度特别敏感的场景，可以考虑使用 prometheus，缩小监控指标抓取间隔和 prometheus-adapter 的 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "--metrics-relist-interval"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20230906091010-38klsuc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906091010-38klsuc",
+				"updated": "20230906091010"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%B0%8F%E7%BB%93",
+					"TextMarkTextContent": "小结"
+				}
+			]
+		},
+		{
+			"ID": "20230906091010-fuk3rdw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230906091010-fuk3rdw",
+				"updated": "20230906091010"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文介绍了如何利用 HPA 的新特性来控制扩缩容的速率，以更好的满足各种不同场景对扩容速度的需求，也提供了常见的几种场景与配置示例，可自行根据自己需求对号入座。"
+				}
+			]
+		},
+		{
+			"ID": "20230906091010-yeo94k1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230906091010-yeo94k1",
+				"updated": "20230906091010"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://imroc.cc/kubernetes/best-practices/autoscaling/hpa-velocity.html#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99",
+					"TextMarkTextContent": "参考资料"
+				}
+			]
+		},
+		{
+			"ID": "20230906091010-pvnudkl",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230906091010-pvnudkl",
+				"updated": "20230906091010"
+			},
+			"Children": [
+				{
+					"ID": "20230906091010-9n7xdx3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906091010-9n7xdx3",
+						"updated": "20230906091010"
+					},
+					"Children": [
+						{
+							"ID": "20230906091010-ppun1jz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906091010-ppun1jz",
+								"updated": "20230906091010"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://kubernetes.io/zh-cn/docs/tasks/run-application/horizontal-pod-autoscale/",
+									"TextMarkTextContent": "HPA 官方介绍文档"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230906091010-0vdc0a6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230906091010-0vdc0a6",
+						"updated": "20230906091010"
+					},
+					"Children": [
+						{
+							"ID": "20230906091010-t1snrfd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230906091010-t1snrfd",
+								"updated": "20230906091010"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://github.com/kubernetes/enhancements/tree/master/keps/sig-autoscaling/853-configurable-hpa-scale-velocity",
+									"TextMarkTextContent": "控制 HPA 扩容速度的提案"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

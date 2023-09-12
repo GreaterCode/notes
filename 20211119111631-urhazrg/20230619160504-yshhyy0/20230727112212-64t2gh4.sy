@@ -1,0 +1,143 @@
+{
+	"ID": "20230727112212-64t2gh4",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230727112212-64t2gh4",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230727112342-h2qagqc\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230727112359-ctt2kss\u0026quot;,\u0026quot;scrollTop\u0026quot;:227,\u0026quot;focusId\u0026quot;:\u0026quot;20230727112212-0ay0ad3\u0026quot;,\u0026quot;focusStart\u0026quot;:824,\u0026quot;focusEnd\u0026quot;:824}",
+		"title": "磁盘性能",
+		"updated": "20230727112409"
+	},
+	"Children": [
+		{
+			"ID": "20230727112342-h2qagqc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230727112342-h2qagqc",
+				"updated": "20230727112409"
+			},
+			"Children": [
+				{
+					"ID": "20230727112409-4obh9md",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230727112409-4obh9md",
+						"updated": "20230727112409"
+					},
+					"Children": [
+						{
+							"ID": "20230727112409-82w9xnm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230727112409-82w9xnm",
+								"updated": "20230727112409"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "测试磁盘性能"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230727112212-0ay0ad3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230727112212-0ay0ad3",
+				"updated": "20230727112301"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n  \nset -e\n  \n# Create etcd write dir if it doesn't exist\nmkdir -p /var/lib/etcd\n  \n# Run fio\necho \"---------------------------------------------------------------- Running fio ---------------------------------------------------------------------------\"\nfio --rw=write --ioengine=sync --fdatasync=1 --directory=/var/lib/etcd --size=22m --bs=2300 --name=etcd_perf --output-format=json | tee /tmp/fio.out\necho \"--------------------------------------------------------------------------------------------------------------------------------------------------------\"\n  \n# Scrape the fio output for p99 of fsync in ns\nfsync=$(cat /tmp/fio.out | jq '.jobs[0].sync.lat_ns.percentile[\"99.000000\"]')\necho \"99th percentile of fsync is $fsync ns\"\n  \n# Compare against the recommended value\nif [[ $fsync -ge 10000000 ]]; then\necho \"99th percentile of the fsync is greater than the recommended value which is 10 ms, faster disks are recommended to host etcd for better performance\"\nelse\necho \"99th percentile of the fsync is within the recommended threshold - 10 ms, the disk can be used to host etcd\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230727112351-73ti6i0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230727112351-73ti6i0",
+				"updated": "20230727112405"
+			},
+			"Children": [
+				{
+					"ID": "20230727112405-p8br33c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230727112405-p8br33c",
+						"updated": "20230727112405"
+					},
+					"Children": [
+						{
+							"ID": "20230727112405-59f2vyg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230727112405-59f2vyg",
+								"updated": "20230727112405"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "获取etcd metrics"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230727112359-ctt2kss",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230727112359-ctt2kss",
+				"updated": "20230727112402"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# master节点执行\nalias etcd_metrics='curl -s --cacert /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt --key /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).key --cert /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).crt https://127.0.0.1:2379/metrics'\n \netcd_metrics | egrep \"backend_commit_d|wal_fsync_d|leader_changes|quota|etcd_mvcc_db_total_size\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

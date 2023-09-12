@@ -4,9 +4,9 @@
 	"Type": "NodeDocument",
 	"Properties": {
 		"id": "20220816174409-m10yrva",
-		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230616180946-odhisse\u0026quot;,\u0026quot;scrollTop\u0026quot;:8000,\u0026quot;focusId\u0026quot;:\u0026quot;20230616180946-odhisse\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230829141533-x7w7xeg\u0026quot;,\u0026quot;scrollTop\u0026quot;:5794,\u0026quot;focusId\u0026quot;:\u0026quot;20220816184436-qi66y96\u0026quot;,\u0026quot;focusStart\u0026quot;:731,\u0026quot;focusEnd\u0026quot;:731}",
 		"title": "便捷操作",
-		"updated": "20230619162504"
+		"updated": "20230829141533"
 	},
 	"Children": [
 		{
@@ -631,11 +631,6 @@
 			"ID": "20220816184436-qi66y96",
 			"Type": "NodeCodeBlock",
 			"IsFencedCodeBlock": true,
-			"CodeBlockFenceChar": 96,
-			"CodeBlockFenceLen": 3,
-			"CodeBlockOpenFence": "YGBg",
-			"CodeBlockInfo": "c2hlbGw=",
-			"CodeBlockCloseFence": "YGBg",
 			"Properties": {
 				"id": "20220816184436-qi66y96",
 				"updated": "20220905095049"
@@ -643,33 +638,19 @@
 			"Children": [
 				{
 					"Type": "NodeCodeBlockFenceOpenMarker",
-					"Data": "```",
-					"CodeBlockFenceLen": 3,
-					"Properties": {
-						"id": ""
-					}
+					"Data": "```"
 				},
 				{
 					"Type": "NodeCodeBlockFenceInfoMarker",
-					"CodeBlockInfo": "c2hlbGw=",
-					"Properties": {
-						"id": ""
-					}
+					"CodeBlockInfo": "c2hlbGw="
 				},
 				{
 					"Type": "NodeCodeBlockCode",
-					"Data": "function e() {\n    set -eu\n    ns=${2-\"default\"}\n    pod=`kubectl -n $ns describe pod $1 | grep -A10 \"^Containers:\" | grep -Eo 'docker://.*$' | head -n 1 | sed 's/docker:\\/\\/\\(.*\\)$/\\1/'`\n    pid=`docker inspect -f {{.State.Pid}} $pod`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd068\n    $cmd\n}\n\n\n# pod2pid\n# 入参： podName NS\nfunction e(){\n    set -eu\n    ns=${2-\"default\"}\n    podID=`kubectl get   pods -n  $ns  $1  -o json |jq  .status.containerStatuses[0].containerID | awk -F '/' '{print $NF}'| awk -F '\"' '{print $1}'`\n    pid=`crictl  inspect $podID | jq .info.pid`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd\n    $cmd\n}\n\n\n# 入参：pid\nfunction pid2pod {\n  local pid=$1\n  if [ -f /proc/${pid}/cgroup ]; then\n    local cid=$(cat /proc/${pid}/cgroup | grep \":memory:\" | awk -F '/' '{print $NF}' | awk -F '-'  '{print $3}'| awk -F '.' '{print $1}')\n    if [ \"${cid}\" != \"\" ]; then\n      ctr -n k8s.io c info ${cid} 2\u003e/dev/null | jq -r '.Labels[\"io.kubernetes.pod.namespace\"]+\" \"+.Labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null\n    fi\n  fi\n}\n",
-					"Properties": {
-						"id": ""
-					}
+					"Data": "function e() {\n    set -eu\n    ns=${2-\"default\"}\n    pod=`kubectl -n $ns describe pod $1 | grep -A10 \"^Containers:\" | grep -Eo 'docker://.*$' | head -n 1 | sed 's/docker:\\/\\/\\(.*\\)$/\\1/'`\n    pid=`docker inspect -f {{.State.Pid}} $pod`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd068\n    $cmd\n}\n\n\n# pod2pid\n# 入参： podName NS\nfunction e(){\n    set -eu\n    ns=${2-\"default\"}\n    podID=`kubectl get   pods -n  $ns  $1  -o json |jq  .status.containerStatuses[0].containerID | awk -F '/' '{print $NF}'| awk -F '\"' '{print $1}'`\n    pid=`crictl  inspect $podID | jq .info.pid`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd\n    $cmd\n}\n\n\n# 入参：pid\nfunction pid2pod {\n  local pid=$1\n  if [ -f /proc/${pid}/cgroup ]; then\n    local cid=$(cat /proc/${pid}/cgroup | grep \":memory:\" | awk -F '/' '{print $NF}' | awk -F '-'  '{print $3}'| awk -F '.' '{print $1}')\n    if [ \"${cid}\" != \"\" ]; then\n      ctr -n k8s.io c info ${cid} 2\u003e/dev/null | jq -r '.Labels[\"io.kubernetes.pod.namespace\"]+\" \"+.Labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null\n    fi\n  fi\n}\n"
 				},
 				{
 					"Type": "NodeCodeBlockFenceCloseMarker",
-					"Data": "```",
-					"CodeBlockFenceLen": 3,
-					"Properties": {
-						"id": ""
-					}
+					"Data": "```"
 				}
 			]
 		},
@@ -1461,7 +1442,94 @@
 			"ID": "20230619162504-vwd23yu",
 			"Type": "NodeParagraph",
 			"Properties": {
-				"id": "20230619162504-vwd23yu"
+				"id": "20230619162504-vwd23yu",
+				"updated": "20230810162443"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ps -e -o stat,pid,comm,cmd,wchan,lstart  | grep ^[D]"
+				}
+			]
+		},
+		{
+			"ID": "20230810162508-tb244wb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230810162508-tb244wb",
+				"updated": "20230810162509"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "/opt/bin/raid/storcli64 /c1 show termlog \u003e Termlog"
+				}
+			]
+		},
+		{
+			"ID": "20230810162532-l8035zz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230810162532-l8035zz",
+				"updated": "20230810162532"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "storcli64 /c0 show alilog"
+				}
+			]
+		},
+		{
+			"ID": "20230810230852-gf15czq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230810230852-gf15czq",
+				"updated": "20230810235523"
+			}
+		},
+		{
+			"ID": "20230829140650-cnoqwzb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230829140650-cnoqwzb"
+			}
+		},
+		{
+			"ID": "20230829140650-emk4oi5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230829140650-emk4oi5"
+			}
+		},
+		{
+			"ID": "20230829140650-qdey5z5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230829140650-qdey5z5",
+				"updated": "20230829140651"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kubectl get pods -o wide -A| grep Evict| awk '{print \"kubectl delete pods -n\","
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "inline-math",
+					"TextMarkInlineMathContent": "1,"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "2}' | bash -x"
+				}
+			]
+		},
+		{
+			"ID": "20230829141533-x7w7xeg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230829141533-x7w7xeg"
 			}
 		}
 	]

@@ -1,0 +1,239 @@
+{
+	"ID": "20230903111344-txbc30a",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230903111344-txbc30a",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230903111359-c2p1r8u\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230903111344-t5sm03p\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20230903111359-c2p1r8u\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "1.1 pod销毁流程",
+		"updated": "20230903111505"
+	},
+	"Children": [
+		{
+			"ID": "20230903111359-c2p1r8u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903111359-c2p1r8u",
+				"updated": "20230903111407"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们先了解下容器在 Kubernetes 环境中的终止流程:"
+				}
+			]
+		},
+		{
+			"ID": "20230903111416-fc944jb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903111416-fc944jb",
+				"updated": "20230903111424"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230903111424-s5oov8x.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230903111434-7txl7dt",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20230903111434-7txl7dt",
+				"updated": "20230903111434"
+			},
+			"Children": [
+				{
+					"ID": "20230903111434-gergv42",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20230903111434-gergv42",
+						"updated": "20230903111434"
+					},
+					"Children": [
+						{
+							"ID": "20230903111434-7eev19e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230903111434-7eev19e",
+								"updated": "20230903111434"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Pod 被删除，状态变为 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "Terminating"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​。从 API 层面看就是 Pod metadata 中的 deletionTimestamp 字段会被标记上删除时间。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230903111434-hnbhx4a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20230903111434-hnbhx4a",
+						"updated": "20230903111434"
+					},
+					"Children": [
+						{
+							"ID": "20230903111434-pqkhlxm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230903111434-pqkhlxm",
+								"updated": "20230903111434"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kube-proxy watch 到了就开始更新转发规则，将 Pod 从 service 的 endpoint 列表中摘除掉，新的流量不再转发到该 Pod。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230903111434-ueo7cmt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20230903111434-ueo7cmt",
+						"updated": "20230903111434"
+					},
+					"Children": [
+						{
+							"ID": "20230903111434-p3djkpb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230903111434-p3djkpb",
+								"updated": "20230903111434"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kubelet watch 到了就开始销毁 Pod。\n3.1. 如果 Pod 中有 container 配置了 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/",
+									"TextMarkTextContent": "preStop Hook"
+								},
+								{
+									"Type": "NodeText",
+									"Data": " ，将会执行。\n3.2. 发送 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SIGTERM"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 信号给容器内主进程以通知容器进程开始优雅停止。\n3.3. 等待 container 中的主进程完全停止，如果在 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "terminationGracePeriodSeconds"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 内 (默认 30s) 还未完全停止，就发送 "
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SIGKILL"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ 信号将其强制杀死。\n3.4. 所有容器进程终止，清理 Pod 资源。\n3.5. 通知 APIServer Pod 销毁完成，完成 Pod 删除。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230903111416-y9o3zfi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903111416-y9o3zfi",
+				"updated": "20230903111419"
+			}
+		},
+		{
+			"ID": "20230903111344-t5sm03p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230903111344-t5sm03p",
+				"updated": "20230903111344"
+			}
+		}
+	]
+}

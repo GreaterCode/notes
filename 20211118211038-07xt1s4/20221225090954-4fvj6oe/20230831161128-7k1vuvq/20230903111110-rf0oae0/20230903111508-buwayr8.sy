@@ -1,0 +1,95 @@
+{
+	"ID": "20230903111508-buwayr8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230903111508-buwayr8",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230903111508-lyy1em6\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230903111918-7x1ofse\u0026quot;,\u0026quot;scrollTop\u0026quot;:1375,\u0026quot;focusId\u0026quot;:\u0026quot;20230903111918-7x1ofse\u0026quot;,\u0026quot;focusStart\u0026quot;:507,\u0026quot;focusEnd\u0026quot;:507}",
+		"title": "1.2 业务代码处理 SIGTERM 信号",
+		"updated": "20230903111929"
+	},
+	"Children": [
+		{
+			"ID": "20230903111508-lyy1em6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230903111508-lyy1em6",
+				"updated": "20230903111824"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "shell:"
+				}
+			]
+		},
+		{
+			"ID": "20230903111824-7ubtx66",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230903111824-7ubtx66",
+				"updated": "20230903111840"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/sh\n\n## Redirecting Filehanders\nln -sf /proc/$$/fd/1 /log/stdout.log\nln -sf /proc/$$/fd/2 /log/stderr.log\n\n## Pre execution handler\npre_execution_handler() {\n  ## Pre Execution\n  # TODO: put your pre execution steps here\n  : # delete this nop\n}\n\n## Post execution handler\npost_execution_handler() {\n  ## Post Execution\n  # TODO: put your post execution steps here\n  : # delete this nop\n}\n\n## Sigterm Handler\nsigterm_handler() { \n  if [ $pid -ne 0 ]; then\n    # the above if statement is important because it ensures \n    # that the application has already started. without it you\n    # could attempt cleanup steps if the application failed to\n    # start, causing errors.\n    kill -15 \"$pid\"\n    wait \"$pid\"\n    post_execution_handler\n  fi\n  exit 143; # 128 + 15 -- SIGTERM\n}\n\n## Setup signal trap\n# on callback execute the specified handler\ntrap 'sigterm_handler' SIGTERM\n\n## Initialization\npre_execution_handler\n\n## Start Process\n# run process in background and record PID\n\u003e/log/stdout.log 2\u003e/log/stderr.log \"$@\" \u0026\npid=\"$!\"\n# Application can log to stdout/stderr, /log/stdout.log or /log/stderr.log\n\n## Wait forever until app dies\nwait \"$pid\"\nreturn_code=\"$?\"\n\n## Cleanup\npost_execution_handler\n# echo the return code of the application\nexit $return_code\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230903111849-0l0u49h",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230903111849-0l0u49h",
+				"updated": "20230903111918"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Go:"
+				}
+			]
+		},
+		{
+			"ID": "20230903111918-7x1ofse",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230903111918-7x1ofse",
+				"updated": "20230903111929"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n    \"fmt\"\n    \"os\"\n    \"os/signal\"\n    \"syscall\"\n)\n\nfunc main() {\n\n    sigs := make(chan os.Signal, 1)\n    done := make(chan bool, 1)\n    //registers the channel\n    signal.Notify(sigs, syscall.SIGTERM)\n\n    go func() {\n        sig := \u003c-sigs\n        fmt.Println(\"Caught SIGTERM, shutting down\")\n        // Finish any outstanding requests, then...\n        done \u003c- true\n    }()\n\n    fmt.Println(\"Starting application\")\n    // Main logic goes here\n    \u003c-done\n    fmt.Println(\"exiting\")\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

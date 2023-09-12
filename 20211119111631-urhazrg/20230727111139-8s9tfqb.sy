@@ -1,0 +1,213 @@
+{
+	"ID": "20230727111139-8s9tfqb",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230727111139-8s9tfqb",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230727111213-zeu4nwr\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230802110922-pkd11wa\u0026quot;,\u0026quot;scrollTop\u0026quot;:879,\u0026quot;focusId\u0026quot;:\u0026quot;20230727111410-eq9uq28\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": " 常用操作",
+		"updated": "20230831152748"
+	},
+	"Children": [
+		{
+			"ID": "20230727111213-zeu4nwr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230727111213-zeu4nwr",
+				"updated": "20230727111406"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. ipmitool常用操作"
+				}
+			]
+		},
+		{
+			"ID": "20230727111410-eq9uq28",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230727111410-eq9uq28",
+				"updated": "20230727111414"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 设置uefi引导\nipmitool -I lanplus -H 1.1.1.1 -U root -P %cisbmc@ceclouD99% chassis bootdev pxe\nipmitool -I lanplus -H 1.1.1.1 -U root -P %cisbmc@ceclouD99% raw 0x00 0x08 0x05 0xa0 0x04 0x00 0x00 0x00\nipmitool -I lanplus -H 1.1.1.1 -U root -P %cisbmc@ceclouD99% chassis bootparam get 5 \nipmitool -I lanplus -H 1.1.1.1 -U root -P %cisbmc@ceclouD99% power reset\n \n# 重启bmc\nipmitool -H 10.1.1.1 -I lanplus -U admin -P admin  bmc reset cold  #硬重启BMC，冷启动\nipmitool -H 10.1.1.1 -I lanplus -U admin -P admin  bmc reset warmBMC  #软重启BMC，热启动\n \n# 打开服务器串口\nipmitool -H 10.1.1.1 -I lanplus -U admin -P admin sol activate   # 打开sol 功能\nipmitool -H 10.1.1.1 -I lanplus -U admin -P admin sol deactivate   #关闭deactivate\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230727111417-h556bik",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230727111417-h556bik",
+				"updated": "20230727111420"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. vbmc常用操作"
+				}
+			]
+		},
+		{
+			"ID": "20230727111433-echhm08",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230727111433-echhm08",
+				"updated": "20230727111436"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 查看虚机映射端口及状态\npodman exec -ti virtualbmc vsbmc list\n# 导出vbmc日志\npodman logs virtualbmc \u003evbmc.log 2\u003e\u00261\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230727111439-kr257zx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230727111439-kr257zx",
+				"updated": "20230727111446"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 查看IPA日志"
+				}
+			]
+		},
+		{
+			"ID": "20230727111456-lc5jws9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230727111456-lc5jws9",
+				"updated": "20230831152748"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1. 登陆主机bmc界面查看获取到的IP\n2. chmod 600 id_rsa\n3. ssh core@IP -i id_rsa  #使用指定的用户core和密钥文件 登陆小系统\n4. sudo -i\n5. journalctl -u ironic-agent.service #可以查看IPA日志\n\n# dhcp抓包\ntcpdump -i baremetal udp  dst port 67 -s 65536 -c 100000\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230727111504-0a8r9rf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230727111504-0a8r9rf",
+				"updated": "20230727111508"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 虚拟化服务"
+				}
+			]
+		},
+		{
+			"ID": "20230727111519-vk83muv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230727111519-vk83muv",
+				"updated": "20230727111521"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl restart virtqemud\nsystemctl restart libvirtd\nsystemctl restart libvirtd.socket\nsystemctl restart virtqemud.socket\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230802110920-ihfh9pn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230802110920-ihfh9pn",
+				"updated": "20230802110921"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ipmitool sel list"
+				}
+			]
+		},
+		{
+			"ID": "20230831152731-ia6xkya",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230831152731-ia6xkya"
+			}
+		},
+		{
+			"ID": "20230831152731-d9e6xgr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230831152731-d9e6xgr",
+				"style": "text-align: center;"
+			}
+		},
+		{
+			"ID": "20230802110922-pkd11wa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230802110922-pkd11wa"
+			}
+		}
+	]
+}
