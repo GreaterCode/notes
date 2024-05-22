@@ -1,0 +1,64 @@
+{
+	"ID": "20230926110123-0y7px8k",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230926110123-0y7px8k",
+		"title": "bird2常用查询命令行",
+		"updated": "20230926110216"
+	},
+	"Children": [
+		{
+			"ID": "20230926110123-6vinck2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926110123-6vinck2",
+				"updated": "20230926110155"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#查看bird的运行日志\njournalctl -f -u bird.service\n\n#在linux终端下执行的\nbirdc configure             重载配置，不用重启bird2\nbirdc show protocol         查看BGP邻居（保护v4与v6）\nbirdc                       进入bird的vty虚拟终端\n\n#在bird的vty虚拟终端下执行的\nshow status                 显示路由器状态，即BIRD版本，正常运行时间和上次重新配置的时间。\nshow interfaces             显示接口列表。对于每个接口，打印其类型，状态，MTU和分配的地址。\nshow interfaces summary     显示接口列表。及其接口IP，类似华为的dis ip int bir\nshow bfd sessions [name]                    显示有关BFD会话的信息。\n\nshow protocols      显示协议会话及状态，类似华为 dis bgp peer等命令\nshow protocols all  显示所有协议实例的列表以及它们连接到的表以及协议状态，如果all指定，则可能提供详细信息。\nshow protocols all SGP_4242422601   显示指定的SGP_4242422601邻居相关信息\n\nshow route          查看所有路由表\nshow route count    查看路由条目数量统计信息\nshow route all      查看所有路由表（能看到community等相关属性）\n\nshow route protocol LA_FNK  查看指定的路由表（这里的名字是show protocols所看到的name列）\nshow route protocol LA_FNK 172.23.222.64/27 all     在LA_FNK里面查看 172.23.222.64/27 这个段儿的具体信息\n\nshow route for 172.20.158.81            查看到172.20.158.81 有几条路由，什么是优选的\nshow route for 172.20.158.81 all        查看所有关于172.20.158.81 的路由详细信息\nshow route where 172.20.158.81 ~ net        看去往 172.20.158.81有几条路径，优选的是那条\nshow route where 172.20.158.81 ~ net all    查看去往 172.20.158.81的所有详细信息，包括bgp community等\n\nshow route export HK_FNK                查看对某个对等体name发送了哪些路由\nshow route export ASB_4242421588 172.20.58.192/27 all   查看向指定对等体发布的指定网段详细信息，包括发布时打上了什么community等\n\nshow static [name]                          显示有关静态路由的详细信息。\nshow ospf interface         查看哪些接口运行了OSPF协议\nshow ospf neighbors         查看OSPF有哪些邻居，及其邻居状态\nshow ospf topology all      根据链接状态数据库的内容显示OSPF区域的拓扑。它只是“ show ospf state”的简化版本。\nshow ospf lsadb             显示OSPF的lsdb数据库\nshow ospf lsadb [global | area id | link] [type num] [lsid id] [self | router id] [name]    显示OSPF LSA数据库的内容。选项可用于过滤条目。\nshow ospf state             查看OSPF状态\nshow ospf state [all] [name]    待定\n                                            它显示了网络拓扑，存根网络，聚合网络以及其他区域的路由器和外部路由。\n                                            该命令显示有关可到达的网络节点的信息，使用选项 all显示有关链接状态数据库中所有网络节点的信息。\n\ndebug 'rack0-tor1' all  调试\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926110213-sg96ikf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926110213-sg96ikf",
+				"updated": "20230926110216"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "bird\u003e show route filter bgp_out\n192.175.48.0/24 dev dummy0 [direct1 Apr1] (240)\n\nbird\u003e show route filter {if 127.0.0.5 ~ net then accept;}\n0.0.0.0/0 via 195.47.235.1 on eth0 [static1 Apr1](200)\n127.0.0.0/8 dev lo [direct1 Apr1] (240)\n=========================\n\nshow symbols [table|filter|function|protocol|template|roa|symbol]                           显示在配置中定义的符号列表（协议名称，路由表等）。\nmrt dump table name|\"pattern\" to \"filename\" [filter f|where c]      将路由表的内容以MRT表转储格式转储到指定文件中。有关详细信息，请参见 MRT协议。\nconfigure [soft] [\"config file\"] [timeout [num]]                  \nconfigure confirm                           停用配置撤消计时器，然后确认当前配置。\nconfigure undo                              撤消上一次配置更改，然后平稳地切换回上一个（存储的）配置。\nconfigure check [\"config file\"]             读取并解析给定的配置文件，但不要使用它。用于检查配置文件的语法和某些语义有效性。\nenable|disable|restart name|\"pattern\"|all   启用，禁用或重新启动与pattern或all实例匹配的给定协议实例。\nreload [in|out] name|\"pattern\"|all          新加载给定的协议实例，这意味着从协议实例重新导入路由，并将首选路由重新导出到该实例。\ndebug protocol|pattern|all all|off|{ states|routes|filters|events|packets [, ...] }     控制协议调试。\ndump resources|sockets|interfaces|neighbors|attributes|routes|protocols                 将内部数据结构的内容转储到调试输出。\necho all|off|{ list of log classes } [ buffer-size ]                                    控制日志消息到命令行输出的回显。请参阅 日志选项以获取日志类别的列表。\neval expr                                   评估给定的表达式。\n\nshow ip route bgp -- show route [table XXX] protocol \u003cprotocol_name\u003e (show route proto ospf2 )\nshow ip bgp neighbors 1.2.3.4 -- show protocols all \u003cprotocol_name\u003e (show protocols all ospf2)\nshow ip bgp neighbors 1.2.3.4 advertised-routes -- show route export \u003cprotocol_name\u003e\nclear ip bgp 1.2.3.4 -- reload \u003cprotocol_name\u003e [in/out]\nshow ip route summary -- show route [table XXX] count\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

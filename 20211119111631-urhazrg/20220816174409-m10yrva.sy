@@ -4,9 +4,9 @@
 	"Type": "NodeDocument",
 	"Properties": {
 		"id": "20220816174409-m10yrva",
-		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230829141533-x7w7xeg\u0026quot;,\u0026quot;scrollTop\u0026quot;:5794,\u0026quot;focusId\u0026quot;:\u0026quot;20220816184436-qi66y96\u0026quot;,\u0026quot;focusStart\u0026quot;:731,\u0026quot;focusEnd\u0026quot;:731}",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240129171656-my3mgjg\u0026quot;,\u0026quot;scrollTop\u0026quot;:11599,\u0026quot;focusId\u0026quot;:\u0026quot;20230810230852-gf15czq\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
 		"title": "便捷操作",
-		"updated": "20230829141533"
+		"updated": "20240517143643"
 	},
 	"Children": [
 		{
@@ -1439,6 +1439,200 @@
 			]
 		},
 		{
+			"ID": "20240110144238-5x12w93",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240110144238-5x12w93",
+				"updated": "20240110144306"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "18.  crio 根据pid查看pod"
+				}
+			]
+		},
+		{
+			"ID": "20240110144307-yodz1rb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240110144307-yodz1rb",
+				"updated": "20240313213632"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "function pid2pod {\n  local pid=$1\n  if [ -f /proc/${pid}/cgroup ]; then\n    local cid=$(cat /proc/${pid}/cgroup | grep \":memory:\" | awk -F '/' '{print $NF}' | awk -F ':' '{print $NF}' | sed 's/^cri-containerd-//g' | sed 's/.scope$//g' | grep -v \"^crio-\")\n    if [ \"${cid}\" = \"\" ]; then\n      # Try cri-o\n      cid=$(cat /proc/${pid}/cgroup | grep -m1 \"/crio-\" | awk -F '/' '{print $NF}' | sed 's/^crio-//g' | sed 's/^conmon-//g' | sed 's/.scope$//g')\n      if [ \"${cid}\" != \"\" ]; then\n        result=$(sudo crictl inspect ${cid} 2\u003e/dev/null | jq -r '.status.labels[\"io.kubernetes.pod.namespace\"]+\" \"+.status.labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null)\n        if [ \"${result}\" != \"\" ]; then\n          echo \"${result}\"\n        else\n          sudo crictl inspectp ${cid} 2\u003e/dev/null | jq -r '.status.labels[\"io.kubernetes.pod.namespace\"]+\" \"+.status.labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null\n        fi\n      fi\n    else\n      result=$(ctr -n k8s.io c info ${cid} 2\u003e/dev/null | jq -r '.Labels[\"io.kubernetes.pod.namespace\"]+\" \"+.Labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null)\n      if [ \"${result}\" != \"\" ]; then\n        echo \"${result}\"\n      else\n        ctr c ls 2\u003e/dev/null | grep ${cid} 2\u003e/dev/null | awk '{print $2}' 2\u003e/dev/null\n      fi\n    fi\n  fi\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240110144235-qgce9qw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240110144235-qgce9qw",
+				"updated": "20240116094547"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "19.  podman推送双架构脚本"
+				}
+			]
+		},
+		{
+			"ID": "20240116094547-zkwjxf8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240116094547-zkwjxf8",
+				"updated": "20240429143136"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "IMAGETAG=image.xxx.cn/xxx/console-plugin-vpc-om:1648940400184000514-410\nPrefix=image.xxx.io/xxx-ceake/\nMVersion=v10.20\n\n\n\npodman pull --tls-verify=false ${IMAGETAG} --arch=amd64\npodman tag ${IMAGETAG} ${Prefix}${IMAGETAG##*/}-x86\n\npodman pull --tls-verify=false ${IMAGETAG} --arch=arm64\npodman tag ${IMAGETAG} ${Prefix}${IMAGETAG##*/}-arm\n\npodman push ${Prefix}${IMAGETAG##*/}-x86\npodman push ${Prefix}${IMAGETAG##*/}-arm\n\npodman manifest create --all mylist:${MVersion} ${Prefix}${IMAGETAG##*/}-x86 ${Prefix}${IMAGETAG##*/}-arm\npodman manifest inspect mylist:${MVersion}\n\npodman manifest push mylist:${MVersion} ${Prefix}${IMAGETAG##*/}\necho ${Prefix}${IMAGETAG##*/}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240429143131-36xzjjg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240429143131-36xzjjg",
+				"updated": "20240429143151"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "20. 清理日志"
+				}
+			]
+		},
+		{
+			"ID": "20240429143132-5ju799r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240429143132-5ju799r",
+				"updated": "20240429143327"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "df -h\nsudo du -h --max-depth=1 /var\nsudo find /var/subdirectory -type f -size +1G\nsudo find /var/log -type f -name \"*.log\" -exec rm -f {\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240515150110-83qaum8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240515150110-83qaum8",
+				"updated": "20240517143635"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "21. 查看监控指标"
+				}
+			]
+		},
+		{
+			"ID": "20240515150123-sq1gzca",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240515150123-sq1gzca",
+				"updated": "20240515150127"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo curl -s --cacert /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt --key /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).key --cert /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).crt https://127.0.0.1:2379/metrics | egrep \"backend_commit_d|wal_fsync_d|leader_changes|quota|etcd_mvcc_db_total_size|etcd_network_peer_round_trip_time|sent_failures\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240515150110-qechmdv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240515150110-qechmdv",
+				"updated": "20240517143643"
+			}
+		},
+		{
+			"ID": "20240430141531-zv3p59d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240430141531-zv3p59d",
+				"updated": "20240430141710"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "crictl rmi --prune"
+				}
+			]
+		},
+		{
+			"ID": "20240430141531-z6t23vr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240430141531-z6t23vr"
+			}
+		},
+		{
 			"ID": "20230619162504-vwd23yu",
 			"Type": "NodeParagraph",
 			"Properties": {
@@ -1492,8 +1686,15 @@
 			"ID": "20230829140650-cnoqwzb",
 			"Type": "NodeParagraph",
 			"Properties": {
-				"id": "20230829140650-cnoqwzb"
-			}
+				"id": "20230829140650-cnoqwzb",
+				"updated": "20231101095802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ipmitool -I lanplus -U ADMIN -P ADMIN -H  X.X.X.X   chassis bootdev bios options=efiboot\nipmitool -I lanplus -U ADMIN -P ADMIN -H  X.X.X.X   chassis bootdev pxe options=efiboot"
+				}
+			]
 		},
 		{
 			"ID": "20230829140650-emk4oi5",
@@ -1530,6 +1731,39 @@
 			"Type": "NodeParagraph",
 			"Properties": {
 				"id": "20230829141533-x7w7xeg"
+			}
+		},
+		{
+			"ID": "20240129171656-my3mgjg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240129171656-my3mgjg",
+				"updated": "20240129171701"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nipmitool -I lanplus -H 10.253.3.61 -U root -P 0penBmc chassis bootdev bios\nipmitool -I lanplus -H 10.253.3.61 -U root -P 0penBmc chassis bootdev pxe\nipmitool -I lanplus -H 10.253.3.61 -U root -P 0penBmc chassis bootparam get 5\nipmitool -I lanplus -H 10.253.3.61 -U root -P 0penBmc raw 0x00 0x08 0x05 0xa0 0x04 0x00 0x00 0x00\nipmitool -I lanplus -H 10.253.3.61 -U root -P 0penBmc power off\nipmitool -I lanplus -H 10.253.3.61 -U root -P 0penBmc power on\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240515150103-jesae6b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240515150103-jesae6b"
 			}
 		}
 	]

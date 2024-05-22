@@ -6,7 +6,7 @@
 		"id": "20230406170939-dshinj4",
 		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230406170939-rqwfbt4\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230406172831-uj9q0gg\u0026quot;,\u0026quot;scrollTop\u0026quot;:300,\u0026quot;focusId\u0026quot;:\u0026quot;20230406170939-rqwfbt4\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
 		"title": "etcd对disk和network的规格要求 ",
-		"updated": "20230406172831"
+		"updated": "20240522141540"
 	},
 	"Children": [
 		{
@@ -236,6 +236,445 @@
 			]
 		},
 		{
+			"ID": "20240516210931-6ir5f4m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240516210931-6ir5f4m",
+				"updated": "20240516210931"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "部署后查询etcd指标"
+				}
+			]
+		},
+		{
+			"ID": "20240516210938-66y2u35",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240516210938-66y2u35",
+				"updated": "20240516210938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "获取etcd指标"
+				}
+			]
+		},
+		{
+			"ID": "20240516210947-pi7v7ek",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240516210947-pi7v7ek",
+				"updated": "20240516211005"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在每个master节点上执行如下命令："
+				}
+			]
+		},
+		{
+			"ID": "20240516211005-o5ocdnf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240516211005-o5ocdnf",
+				"updated": "20240516211018"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo curl -s --cacert /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt --key /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).key --cert /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).crt https://127.0.0.1:2379/metrics | egrep \"backend_commit_d|wal_fsync_d|leader_changes|quota|etcd_mvcc_db_total_size|etcd_network_peer_round_trip_time|sent_failures\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240515172710-ur6xqgc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"fold": "1",
+				"id": "20240515172710-ur6xqgc",
+				"updated": "20240515172710"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "读懂etcd指标"
+				}
+			]
+		},
+		{
+			"ID": "20240515172658-pkx0kvm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172658-pkx0kvm",
+				"updated": "20240515172702"
+			}
+		},
+		{
+			"ID": "20240515172719-eipz6bp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172719-eipz6bp",
+				"updated": "20240515172720"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcd要稳定的运行强烈依赖disk的io性能。\n具体指标来讲：\nwal_fsync_duration_seconds 的p99 要小于10ms（"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://etcd.io/docs/v3.5/faq/#:~:text=monitor%20wal_fsync_duration_seconds%20(p99%20duration%20should%20be%20less%20than%2010ms)",
+					"TextMarkTextContent": "p99 duration should be less than 10ms"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "）："
+				}
+			]
+		},
+		{
+			"ID": "20240515172730-noelwb6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172730-noelwb6",
+				"updated": "20240515172731"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240515172731-pxlbygp.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240515172741-ac695fp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172741-ac695fp",
+				"updated": "20240515172802"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "backend_commit_duration_seconds 的p99 要小于25ms "
+				}
+			]
+		},
+		{
+			"ID": "20240515172742-e4bo33s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172742-e4bo33s",
+				"updated": "20240515172809"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240515172809-oowzuww.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240515172742-kmserbb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172742-kmserbb",
+				"updated": "20240515172816"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里以某master节点上etcd指标为例为例："
+				}
+			]
+		},
+		{
+			"ID": "20240515172822-oymwhbq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515172822-oymwhbq",
+				"updated": "20240515172822"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240515172822-mbskecf.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240515173002-dbj8sc7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173002-dbj8sc7",
+				"updated": "20240515173002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中 backend_commit_duration_seconds 统计总数 24,555,782次（2.4555782e+07），其99%（p99），即24,555,782 x 0.99=24,310,224，对应le=\"0.128\"的桶，即99%概率小于等于128ms。"
+				}
+			]
+		},
+		{
+			"ID": "20240515173002-tuxjmlc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173002-tuxjmlc",
+				"updated": "20240515173002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同理，wal_fsync_duration_seconds的p99在64ms。"
+				}
+			]
+		},
+		{
+			"ID": "20240515173002-oo7ptlh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173002-oo7ptlh",
+				"updated": "20240515173002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "整体上，不符合etcd对io性能要求。"
+				}
+			]
+		},
+		{
+			"ID": "20240515173000-acwuqfr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173000-acwuqfr",
+				"updated": "20240515173016"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "作为对比，一个性能良好的环境，其指标如下："
+				}
+			]
+		},
+		{
+			"ID": "20240515173000-j962nqd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173000-j962nqd",
+				"updated": "20240515173021"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240515173021-ndesbav.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240515173051-ntwpr7e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173051-ntwpr7e",
+				"updated": "20240515173052"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "backend_commit_duration_seconds 的p99是8ms，而wal_fsync_duration_seconds的p99更是小于1ms。"
+				}
+			]
+		},
+		{
+			"ID": "20240515173051-hpx7qjz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"fold": "1",
+				"heading-fold": "1",
+				"id": "20240515173051-hpx7qjz"
+			}
+		},
+		{
 			"ID": "20230406170939-ix8cbgo",
 			"Type": "NodeHeading",
 			"HeadingLevel": 2,
@@ -341,12 +780,45 @@
 			]
 		},
 		{
-			"ID": "20230406172831-uj9q0gg",
+			"ID": "20240515173125-mgl5lyx",
 			"Type": "NodeParagraph",
 			"Properties": {
-				"id": "20230406172831-uj9q0gg",
-				"updated": "20230406172831"
-			}
+				"id": "20240515173125-mgl5lyx",
+				"updated": "20240515173135"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Note:"
+				}
+			]
+		},
+		{
+			"ID": "20240515173140-uzym84d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240515173140-uzym84d",
+				"updated": "20240515173148"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\netcd对仲裁节点的要求：\n\n1. ssd盘，用于给etcd的存储空间15GB+\n2. CPU 2C+\n3. 内存 8GB+\n4. 网络，1000Mbps，rtt不超过50ms\n\n参见：\n[https://etcd.io/docs/v3.5/op-guide/hardware/](https://etcd.io/docs/v3.5/op-guide/hardware/)\n[https://etcd.io/docs/v3.5/tuning/](https://etcd.io/docs/v3.5/tuning/)"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
 		}
 	]
 }

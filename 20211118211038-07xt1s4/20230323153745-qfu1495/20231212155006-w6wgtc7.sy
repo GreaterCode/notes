@@ -1,0 +1,136 @@
+{
+	"ID": "20231212155006-w6wgtc7",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20231212155006-w6wgtc7",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20231212155126-o2m2rox\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20231212155006-22ca7bj\u0026quot;,\u0026quot;scrollTop\u0026quot;:368.5,\u0026quot;focusId\u0026quot;:\u0026quot;20231212155141-9y8yffo\u0026quot;,\u0026quot;focusStart\u0026quot;:327,\u0026quot;focusEnd\u0026quot;:327}",
+		"title": "systemd问题定位手段",
+		"updated": "20231212161507"
+	},
+	"Children": [
+		{
+			"ID": "20231212155126-o2m2rox",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231212155126-o2m2rox",
+				"updated": "20231212155130"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 诊断开机问题"
+				}
+			]
+		},
+		{
+			"ID": "20231212155141-9y8yffo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231212155141-9y8yffo",
+				"updated": "20231212161507"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1. 串口控制台：启动阶段按‘e’，编辑linux启动命令行，添加以下内容，可让systemd记录大量有效的调试信息\n    systemd.log_level=debug systemd.log_target=console console=ttyS0,38400\n\n2. 进入救援模式或紧急模式\n    systemd.unit=rescue.target 或 1添加到内核命令行。若无法进入，尝试下面步骤：\n    systemd.unit=emergency.target 或 emergency 添加到内核命令行。在此模式下，需要重新以可读写的方式挂载根文件系统在你编辑任何文件前：\n    mount -o remount,rw /\n    如果紧急模式也无法进入，直接在内核命令行添加 init=/bin/sh来进入shell，这一般适用于systemd本身或其依赖的一些库被损坏，或许需要重新安装受影响的包。\n\n3. 在内核命令行添加以下：\nsystemd.log_level=debug systemd.log_target=kmsg log_buf_len=1M printk.devkmsg=on\n使用journalctl -b 查看日志\n使用systemctl list-jobs命令查看当前服务进行问题排查\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231212155141-fq20vq2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231212155141-fq20vq2",
+				"updated": "20231212155246"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 诊断关机问题"
+				}
+			]
+		},
+		{
+			"ID": "20231212155246-5qt1279",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231212155246-5qt1279",
+				"updated": "20231212161456"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1. 使用reboot -f 或 poweroff -f命令看内核是否会重启，若都不奏效，说明是内核bug，不是systemd的bug\n2. 如果reboot或者poweroff奏效，但是时间过长，十分可以，可以采取以下措施：\n在grub中内核参数中添加以下调试项：\nsystemd.log_level=debug systemd.log_target=kmsg log_buf_len=1M printk.devkmsg=on enforcing=0\n\n注意，也可以在开机的时候按e键编辑\n然后执行命令：grub2-mkconfig -o /boot/grub2/grub.cfg，生成新的grub配置。（对于uefi系统上的指令是grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg）\n编辑以下内容到/usr/lib/systemd/system-shutdown/debug.sh\n\n#!/bin/sh\nmount -o remount,rw /\ndmesg \u003e /shutdown-log.txt\nmount -o remount,ro /\n\n赋予执行权限chmod a+x /usr/lib/systemd/system-shutdown/debug.sh\nreboot\n查看/shutdown-log.txt，进行问题排查\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231212155317-uh0j5kw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231212155317-uh0j5kw",
+				"updated": "20231212155326"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.  关键信息"
+				}
+			]
+		},
+		{
+			"ID": "20231212155006-22ca7bj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231212155006-22ca7bj",
+				"updated": "20231212155455"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "内核命令行信息：\n    从bootloader的配置文件（/boot/grub2/grub.cfg）查看或从/proc/cmdline查看\n\n日志信息\n    journalctl -b \u003e journal.txt的输出，最好在开机前在grub内核命令行中添加了systemd.log_level=debug systemd.log_target=kmsg log_buf_len=1M printk.devkmsg=on\n    systemd-analyze dump \u003e systemd-dump.txt，记录各种服务状态的信息\n    /usr/bin/systemd --test --system --log-level=debug \u003e systemd-test.txt 2\u003e\u00261\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

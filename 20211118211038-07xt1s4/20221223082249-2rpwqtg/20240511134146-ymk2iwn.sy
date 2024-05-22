@@ -1,0 +1,470 @@
+{
+	"ID": "20240511134146-ymk2iwn",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240511134146-ymk2iwn",
+		"title": "服务器硬件命令查看",
+		"updated": "20240511135722"
+	},
+	"Children": [
+		{
+			"ID": "20240511134146-puiaor8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134146-puiaor8",
+				"updated": "20240511134211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 主板"
+				}
+			]
+		},
+		{
+			"ID": "20240511134230-0c645ui",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134230-0c645ui",
+				"updated": "20240511134234"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo  dmidecode -t baseboard\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134214-aedrggb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134214-aedrggb",
+				"updated": "20240511134217"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. CPU"
+				}
+			]
+		},
+		{
+			"ID": "20240511134235-geawmy4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134235-geawmy4",
+				"updated": "20240511135324"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# CPU型号（product→ version）、CPU名称（id 约定一个名称  cpu cpu:0、cpu:1）、厂商(vendor)、主频(size  HZ)、核数、架构（缺失  product）（configuration.cores）、线程数(configuration.threads)、1级缓存、2级缓存、3级缓存\nlshw -c cpu -json\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134218-y9o4kp6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134218-y9o4kp6",
+				"updated": "20240511134301"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.风扇"
+				}
+			]
+		},
+		{
+			"ID": "20240511134301-jvyau45",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134301-jvyau45",
+				"updated": "20240511134304"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " ipmitool sdr type fan |grep Speed | awk '{print$1}'\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134307-jam16th",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134307-jam16th",
+				"updated": "20240511134315"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. GPU"
+				}
+			]
+		},
+		{
+			"ID": "20240511134331-k7p2kp7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134331-k7p2kp7",
+				"updated": "20240511134333"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "lshw -c display  -json      除VGA以外都为GPU\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134337-7z3j7bo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134337-7z3j7bo",
+				"updated": "20240511134344"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. HBA卡"
+				}
+			]
+		},
+		{
+			"ID": "20240511134344-1df5j8w",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134344-1df5j8w",
+				"updated": "20240511134359"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "lshw -c bus -json | grep fiber     id包含  fiber\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134433-oiwcrsd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134433-oiwcrsd",
+				"updated": "20240511134442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. PCIE卡"
+				}
+			]
+		},
+		{
+			"ID": "20240511134442-ckk5ila",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134442-ckk5ila",
+				"updated": "20240511135409"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "lshw   -json 中 businfo 包含 pci@ 除去网卡、GPU、RAID以外都是pcie\nlshw -c bridge -json\n\n\nlspci | awk '{print $1}'\n\n\nlspci -n | grep -i XXX | awk '{print $3}'\n\n\nlspci -n -d XXX -vvv | grep -m2  Width\n\n前面一个取得值，替换掉下面命令的XXX\n\nLnkCap代表的是卡片本身支持的最高速度，它表示PCIe设备的链路能力。\n\nLnkSta则代表实际跑的速度，如果正常应该要和LnkCap一样，才能获得最大的带宽。如果发现LnkSta的速度比LnkCap小，那就要检查一下是不是插槽本身的速度就有限制。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134518-pc0mnqb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134518-pc0mnqb",
+				"updated": "20240511134533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 物理磁盘"
+				}
+			]
+		},
+		{
+			"ID": "20240511134544-p1t2h9j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134544-p1t2h9j",
+				"updated": "20240511135227"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n①smartctl --scan -j\n\nsmartctl -a XXX名称 -d XXXType -j;\n\n②lsscsi -g\n\nsmartctl -a XXX名称 -d cciss,0 -j\n\n# 硬盘名称（logicalname）、硬盘ID（serial）、总容量（size）、厂商（vendor）、类型（product）、最近发现时间\nlshw -c disk -json\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134810-neznvof",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134810-neznvof",
+				"updated": "20240511134818"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8. 服务器相关信息"
+				}
+			]
+		},
+		{
+			"ID": "20240511134818-6upj663",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134818-6upj663",
+				"updated": "20240511135208"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#  物理服务器字段  数据中心、机房、机柜 \nlshw -c system -json\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511134837-ysi4hr4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511134837-ysi4hr4",
+				"updated": "20240511134853"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9. 网卡"
+				}
+			]
+		},
+		{
+			"ID": "20240511134904-b4yi16j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511134904-b4yi16j",
+				"updated": "20240511134914"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "lshw -c network -json\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511135542-c2twhla",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511135542-c2twhla",
+				"updated": "20240511135618"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "10. raid卡"
+				}
+			]
+		},
+		{
+			"ID": "20240511135546-jx9fz6s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511135546-jx9fz6s",
+				"updated": "20240511135625"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# Raid卡名称（physid 假设）、序列号、PCI ID （businfo）挂载硬盘个数（lshw 不准确）\nlshw -c storage -json    id=\"raid\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511135623-2u6act0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240511135623-2u6act0",
+				"updated": "20240511135631"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "11. 内存"
+				}
+			]
+		},
+		{
+			"ID": "20240511135633-yhzuwyh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240511135633-yhzuwyh",
+				"updated": "20240511135722"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n# 内存名称(id) 、内存型号(product-\u003edescription)、厂商(vendor)、主频率(description) 总容量(size)、插槽（slot）、\n\n\nlshw -c memory -json"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240511135720-s2mo13x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240511135720-s2mo13x"
+			}
+		}
+	]
+}

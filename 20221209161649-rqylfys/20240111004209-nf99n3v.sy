@@ -1,0 +1,495 @@
+{
+	"ID": "20240111004209-nf99n3v",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240111004209-nf99n3v",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240111004209-fc3wqq4\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240130161105-p4jgqck\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20240130161105-trw8v7a\u0026quot;,\u0026quot;focusStart\u0026quot;:11,\u0026quot;focusEnd\u0026quot;:11}",
+		"title": "故障列表",
+		"updated": "20240130161149"
+	},
+	"Children": [
+		{
+			"ID": "20240111004209-fc3wqq4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240111004209-fc3wqq4",
+				"updated": "20240130160528"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 内存故障"
+				}
+			]
+		},
+		{
+			"ID": "20240130160528-24hdfrb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240130160528-24hdfrb",
+				"updated": "20240130160707"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Event Num  | Event Time                     | Entity Name          | Sensor Name          | Alarm level  | Event Desc\n1          | 2017-09-14 Thursday 19:59:33   | DIMM100              | DIMM100              | Critical     | DIMM100: Uncorrectable memory error, dimm is 1/0/0\n2          | 2017-09-14 Thursday 19:59:33   | MainBoard            | System Error         | Critical     | System Error: System error. Please check the SEL for root cause\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240130160655-u0l0225",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240130160655-u0l0225",
+				"updated": "20240130160805"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[Hardware Error Log]:NO.296095\ncollect:bmc    time: 2017-09-14 19:59:31 GMT+08:00    Validate(0x00)\nCPU:1 (socket:CPU2)    core:Uncore    LogType:MCA BANK7    (HA0)    MCA mode:CDC\nError type:Uncorrected Errors-UCNA\nMCACODE:0x0090 (Data Read Error: {Memory-read-error}_CHANNEL{0}_ERR)\nMSCODE:0x0001 (Memory Read Error)\nFirst IERR source: Core 5\nSecond IERR source: Core 3\nFirst MCERR source: CORE OR Cbo 0\nSecond MCERR source: CORE OR Cbo 0\nAddress Mode:Physical (system) Address    Address: 0x202066d140[DIMM100]\nError Count:0(No Tracking)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240130160925-c7f4ml3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240130160925-c7f4ml3",
+				"updated": "20240130160935"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. CPU QPI故障"
+				}
+			]
+		},
+		{
+			"ID": "20240130161111-g3km8ud",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240130161111-g3km8ud",
+				"updated": "20240130161119"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 原理简介"
+				}
+			]
+		},
+		{
+			"ID": "20240130161025-ylu02e7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240130161025-ylu02e7",
+				"updated": "20240130161026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "“QPI link Incorrect cable connected/Incorrect interconnection” 告警：表示上电自检检测到QPI Degrade Failure（该错误由BIOS RAS 命令上报）或者运行中检测到QPI故障（BMC检测到FDM QPI UCE 错误）。"
+				}
+			]
+		},
+		{
+			"ID": "20240130161034-qq41dij",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240130161034-qq41dij",
+				"updated": "20240130161034"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "QPI链路是双向的，如"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://info.support.huawei.com/compute/docs/zh-cn/kunpeng-knowledge/typical-scenarios-1/zh-cn_topic_0145902640.html#ZH-CN_TOPIC_0145902640__fig0769113175111",
+					"TextMarkTextContent": "图1"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "所示，两端完全对等，链路断了两端都可以检测到，所以该报错是成对存在的。该错误可以通过BMC一键日志中的BIOS启动串口打印信息确认。"
+				}
+			]
+		},
+		{
+			"ID": "20240130161043-ghqdfke",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240130161043-ghqdfke",
+				"updated": "20240130161044"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240130161044-vyrannu.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240130161136-1upu3id",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240130161136-1upu3id",
+				"updated": "20240130161149"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 故障现象"
+				}
+			]
+		},
+		{
+			"ID": "20240130160935-pwvfkm3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240130160935-pwvfkm3",
+				"updated": "20240130161018"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Event Num  | Event Time                     | Entity Name          | Sensor Name          | Alarm level  | Event Desc\n1          | 2017-09-11 Monday 14:07:09     | CPU2                 | CPU2 QPI Link        | Major        | CPU2 QPI Link: Incorrect cable connected/Incorrect interconnection\n2          | 2017-09-11 Monday 14:07:09     | CPU1                 | CPU1 QPI Link        | Major        | CPU1 QPI Link: Incorrect cable connected/Incorrect interconnection\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-vt3su5r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240130161105-vt3su5r",
+				"updated": "20240130161135"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "问题影响"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-erd6csd",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20240130161105-erd6csd",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"ID": "20240130161105-i47bh4a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20240130161105-i47bh4a",
+						"updated": "20240130161105"
+					},
+					"Children": [
+						{
+							"ID": "20240130161105-zxlrvpr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240130161105-zxlrvpr",
+								"updated": "20240130161105"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "系统宕机。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240130161105-6jzuizg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20240130161105-6jzuizg",
+						"updated": "20240130161105"
+					},
+					"Children": [
+						{
+							"ID": "20240130161105-trw8v7a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240130161105-trw8v7a",
+								"updated": "20240130161105"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "服务器无法进入操作系统。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-tn3yhpc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20240130161105-tn3yhpc",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可能原因"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-4tl9lbz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240130161105-4tl9lbz",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "原因1：BIOS问题。"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-kezpa99",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240130161105-kezpa99",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "原因2：CPU的QPI链路故障。"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-eere28d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240130161105-eere28d",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "原因3：OS问题。"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-e07h1tp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20240130161105-e07h1tp",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "定位思路"
+				}
+			]
+		},
+		{
+			"ID": "20240130161105-p4jgqck",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20240130161105-p4jgqck",
+				"updated": "20240130161105"
+			},
+			"Children": [
+				{
+					"ID": "20240130161105-k6bv7oj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20240130161105-k6bv7oj",
+						"updated": "20240130161105"
+					},
+					"Children": [
+						{
+							"ID": "20240130161105-tw75cm1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240130161105-tw75cm1",
+								"updated": "20240130161105"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认是否为BIOS问题。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240130161105-25ndea8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20240130161105-25ndea8",
+						"updated": "20240130161105"
+					},
+					"Children": [
+						{
+							"ID": "20240130161105-fgfbpw1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240130161105-fgfbpw1",
+								"updated": "20240130161105"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "检查是否为CPU QPI链路问题。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240130161105-uesng0s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20240130161105-uesng0s",
+						"updated": "20240130161105"
+					},
+					"Children": [
+						{
+							"ID": "20240130161105-r7aldud",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240130161105-r7aldud",
+								"updated": "20240130161105"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "确认是否为OS问题。"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

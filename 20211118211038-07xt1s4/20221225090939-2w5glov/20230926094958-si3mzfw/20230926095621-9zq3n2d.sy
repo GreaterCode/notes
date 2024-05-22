@@ -1,0 +1,3466 @@
+{
+	"ID": "20230926095621-9zq3n2d",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20230926095621-9zq3n2d",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20230926095621-l6m5jon\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20230926105730-h423jmy\u0026quot;,\u0026quot;scrollTop\u0026quot;:15267,\u0026quot;focusId\u0026quot;:\u0026quot;20230926105710-uusq7el\u0026quot;,\u0026quot;focusStart\u0026quot;:5,\u0026quot;focusEnd\u0026quot;:5}",
+		"title": "01-入门",
+		"updated": "20230926105716"
+	},
+	"Children": [
+		{
+			"ID": "20230926095621-l6m5jon",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230926095621-l6m5jon",
+				"updated": "20230926095641"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230926095640-q9lv2b0",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230926095640-q9lv2b0",
+						"updated": "20230926095641"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "https://www.zhihu.com/question/522937208/answer/2708485065"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926095700-xkh1bhl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230926095700-xkh1bhl",
+				"updated": "20230926095705"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. Calico 简单介绍"
+				}
+			]
+		},
+		{
+			"ID": "20230926095700-juva6x4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095700-juva6x4",
+				"updated": "20230926095700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文主要可能会涉及到的术语有：Calico、ipip、BGP、bird、RR、felix 等。相较于上次实现的那个 ebpf/vxlan 版本要好理解得多~"
+				}
+			]
+		},
+		{
+			"ID": "20230926095716-nj3klhn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926095716-nj3klhn",
+				"updated": "20230926095722"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 Calico"
+				}
+			]
+		},
+		{
+			"ID": "20230926095716-awrn60r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095716-awrn60r",
+				"updated": "20230926095716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico 是 tigera 公司开源的一个 k8s 网络的一整套解决方案。其主要提供了 k8s 集群间的网络通信、网络的安全策略和 ip 地址管理、命令行工具等功能。"
+				}
+			]
+		},
+		{
+			"ID": "20230926095716-38db36p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095716-38db36p",
+				"updated": "20230926095716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico 和 flannel 或者我们之前在《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/450514389",
+					"TextMarkTextContent": "A7kaou：K8s 网络之 从 0 实现一个 CNI 网络插件"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》这篇文章中基于 bridge 这种二层设备实现的网络通信不一样在于，calico 对于网络间的通信主要是基于三层路由完成的，这个我们在后面实现时就能感受到。"
+				}
+			]
+		},
+		{
+			"ID": "20230926095716-29zscy2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095716-29zscy2",
+				"updated": "20230926095716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico 现在越来越生猛，受后来的 cilium 的影响，calico 现在也已经支持了 ebpf 模式，我个人还没有试过，不过据说性能杠杠的。"
+				}
+			]
+		},
+		{
+			"ID": "20230926095716-2nmwx6u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095716-2nmwx6u",
+				"updated": "20230926095716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "calico 的主要网络模式有两种，一种是 tunnel 模式，一种是路由模式。其中 tunnel 模式又同时支持 vxlan 和 ipip。本文我们主要就以 ipip 为主来实现一个类似 calico 的 tunnel 网络。"
+				}
+			]
+		},
+		{
+			"ID": "20230926095716-0u7ry2e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926095716-0u7ry2e",
+				"updated": "20230926095945"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 IPIP"
+				}
+			]
+		},
+		{
+			"ID": "20230926095935-f9j9o9l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095935-f9j9o9l",
+				"updated": "20230926095935"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ipip 是一种用于网络之间通信的隧道技术。在上篇《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/565254116",
+					"TextMarkTextContent": "A7kaou：基于 ebpf 和 vxlan 实现一个 k8s 网络插件（一）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》文章中我们介绍了另外一种隧道技术 vxlan，如果大家看过的话，应该知道隧道是一种什么样的技术。就是一种 “overlay” 技术，overlay 翻译过来是 “覆盖，包裹” 的意思，简单点来说，就是在原始的数据包外头再包上一层新的数据包。"
+				}
+			]
+		},
+		{
+			"ID": "20230926095935-x832j0c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926095935-x832j0c",
+				"updated": "20230926100017"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " vxlan 是怎么 overlay 的"
+				}
+			]
+		},
+		{
+			"ID": "20230926100015-19vpjai",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100015-19vpjai",
+				"updated": "20230926100020"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926100020-rvsf7d4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926100032-b8kkk6e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100032-b8kkk6e",
+				"updated": "20230926100032"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "简单来说，vxlan 的 overlay 就是在原来的数据包外头包一层 UDP。ip tunnel 其实也是类似地把一些额外的信息给 overlay 到了原始的数据包外。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100111-pyd304o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100111-pyd304o",
+				"updated": "20230926100112"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们再来看 ip in ip 是怎么个玩法："
+				}
+			]
+		},
+		{
+			"ID": "20230926100114-gs8zt58",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926100114-gs8zt58",
+				"updated": "20230926100133"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# host1\n# 创建一个 ipip tunnel 设备, remote 和 local ip 改成自己对外网卡的 ip\nip tunnel add tun1 mode ipip remote 192.168.64.14 local 192.168.64.16\n# 创建两个 point to point 的端点, 这里的俩 ip 可以随便写, 是个虚 ip\nip addr add 10.0.1.1 peer 10.0.2.1 dev tun1\n# 启动这个设备\nip link set tun1 up\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926100146-voomyn0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926100146-voomyn0",
+				"updated": "20230926100155"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# host2\n# 这里的俩 ip 和上边 host1 的反过来\nip tunnel add tun1 mode ipip remote 192.168.64.16 local 192.168.64.14\n# 这里的虚 ip 也相比 host1 反过来\nip addr add 10.0.2.1 peer 10.0.1.1 dev tun1\n# 启动这个设备\nip link set tun1 up\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926100216-wmoae8a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926100216-wmoae8a",
+				"updated": "20230926100216"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# host1\nping 10.0.2.1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926100216-6i742ih",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926100216-6i742ih",
+				"updated": "20230926100216"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# host1\ntcpdump -nep  -i enp0s1 -w ipip.cap\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926100234-xnhz26o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100234-xnhz26o",
+				"updated": "20230926100234"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926100234-ov20sqc.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926100246-osqmyu3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100246-osqmyu3",
+				"updated": "20230926100246"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "看图片中的抓包结果，可以明显看到这个报文中有两层的 ip header。这个报文最下面是 ping 程序的 icmp 报文，再往上一层的 ip header 是原始的 ip 报头，再再上的一层是在创建 ipip tunnel 设备时指定的一层 ip header，再再再往上的就是封装在外层的 mac 地址了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100246-jg7zylx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100246-jg7zylx",
+				"updated": "20230926100246"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里的抓包结果是对外网网卡抓包的，如果直接对 tunl 设备抓包的话就会得到如下结果："
+				}
+			]
+		},
+		{
+			"ID": "20230926100251-6zdvvy5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100251-6zdvvy5",
+				"updated": "20230926100254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926100254-momlgup.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926100319-5uawcnv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100319-5uawcnv",
+				"updated": "20230926100319"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以注意到此时 ipip 的 tunnel 设备拿到的数据报文里就只有一层 ip header 了以及那个 ping 程序的 icmp 报文了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100319-59n07lg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100319-59n07lg",
+				"updated": "20230926100319"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "目前这个小 demo 我们是手动添加的，后面我们会通过 BGP 协议让这些 ip 地址自动添加进路由表。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104203-45ffoqz",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230926104203-45ffoqz"
+			}
+		},
+		{
+			"ID": "20230926100336-qng9xrr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230926100336-qng9xrr",
+				"updated": "20230926100414"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. BGP"
+				}
+			]
+		},
+		{
+			"ID": "20230926100336-4o02t0u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100336-4o02t0u",
+				"updated": "20230926100336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BGP 全称叫 border gateway protocol 边界网关协议。主要是用来做 ip 地址宣告的。所谓宣告，简单理解其实就是把自己这台节点上的 ip 通知其他节点。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100336-iwotw68",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100336-iwotw68",
+				"updated": "20230926100336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在之前的文章中我们实现过 host-gw 模式的插件以及 ebpf 的模式，其中 host-gw 模式是每次启动一个 pod 时都去 etcd 中拉一下其他节点的 nodeip 以及 podip 的对应信息，然后 ebpf 是通过 watch etcd，当有 pod 被创建时 etcd 自动同步给每个节点。其实这个 BGP 协议就有点类似于 watch etcd 的那种方式，本质上都是在每个节点上启动一条进程，这条进程会监听本机的路由表以及网络设备变化，同时还能将这些变化发送给在同一个 “自治系统” 中的其他 BGP 客户端。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100336-wfsw6rw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100336-wfsw6rw",
+				"updated": "20230926100336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里简单解释一下 “自治系统” 是啥。其实很好理解，比如一家公司的内网、一个集群、运营商下管理的网络、一个国家的网络等等，其实都可以算是可大可小的自治系统。对应到 BGP 协议这里，在运行 BGP 的客户端进程之前，需要指定一个 AS 号，就是一个数字，这个 AS 号一共有 2^32 次方个，上面说了像类似一个国家的网络或者一家公司的网络都可以算是一个自治网络，而这些自治网络的 AS 号需要由一个叫 IANA 的国际组织来颁发的。说到这儿你可能会想，那我自己想搞个集群自治系统玩一玩也要申请这个 AS 么？放心，这个玩意儿就像是内网 ip 地址一样，也是有私有的，从 64512 到 65534 中间的一千多个 AS 号是可以给自己玩着用的。其中 64512 这个号码就是 calico 默认的 BGP 网络的 AS 号。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100336-dwitii6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100336-dwitii6",
+				"updated": "20230926100613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外 BGP 协议中有两种角色，一种叫 iBGP，一种叫 eBGP。简单来说，用来给同一个自治系统中的其他节点宣告消息的就是 iBGP，而可以给其他不同自治系统宣告消息的就是 eBGP。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100834-x7tktgx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926100834-x7tktgx",
+				"updated": "20230926100905"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 BIRD "
+				}
+			]
+		},
+		{
+			"ID": "20230926100858-cw7aw57",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100858-cw7aw57",
+				"updated": "20230926100858"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "刚刚上面介绍了 BGP 协议，我们说了需要在每个节点上跑一条进程用来宣告本机的路由，那这条进程是谁呢？最常用的就是 BIRD 这个东西。下面我们来简单介绍一下 BIRD。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100858-gn6imjs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100858-gn6imjs",
+				"updated": "20230926100858"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BIRD 是一个实现了多种动态路由协议（比如 BGP、OSPF 等），可以运行在 Linux/Unix 操作系统的程序。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100858-h454fld",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100858-h454fld",
+				"updated": "20230926100858"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BIRD 在内存中维护了一个自己的路由表，这张路由表和 Linux 中的路由表（FIB 表）不一样。BIRD 的这张表中的内容包含 BIRD 自己从 Linux 的 FIB 路由表中收集到的本机的路由信息，以及从其他 BIRD 客户端接收到的其他节点的路由信息。BIRD 会根据一些策略算法，把其他节点发过来的路由信息，写入到 Linux 本机的路由表，也就是 FIB 表中，以此来让当前节点感知到其他节点上的 ip 变化。"
+				}
+			]
+		},
+		{
+			"ID": "20230926100858-7mn9tkb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926100858-7mn9tkb",
+				"updated": "20230926100858"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BIRD 这个程序非常生猛，它的配置文件有自己的一套类似编程语言的语法，包括什么 “函数”，“过滤器”，“变量” 等等各种语法。使用的人就可以通过这些语法去写配置文件，然后 BIRD 程序会读取这些配置，以此来决定 “哪些本机的路由可以发给其他节点”，“本机可以接收哪些路由信息”，“本机可以和哪些节点形成自治系统” 等等。举个例子："
+				}
+			]
+		},
+		{
+			"ID": "20230926101106-ctcab8x",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926101106-ctcab8x",
+				"updated": "20230926101115"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "function calico_aggr () {\n      # Block 10.244.211.128/26 is confirmed\n      if ( net = 10.244.211.128/26 ) then { accept; }\n      if ( net ~ 10.244.211.128/26 ) then { reject; }\n}\n\nprotocol bgp Mesh_192_168_64_4 from bgp_template {\n  neighbor 192.168.64.4 as 64512;\n  source address 192.168.64.6;  # The local address we use for the TCP connection\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926101401-hvhk2i0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101401-hvhk2i0",
+				"updated": "20230926101401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的代码就是 Calico 自带的 BIRD 程序配置文件中的一小段，内容简单来讲就是有个 “calico_aggr” 函数，函数的作用是如果 ip 地址是 10.244.211.128/26 的话就 accept，如果 net 是 10.244.211.128 之上的 ip 地址比如如果是个 10.244.211.129 的话就 reject。然后下边的 protocol bpg Mesh_xxxxxx 是表示当前节点要和哪些节点形成自治系统。"
+				}
+			]
+		},
+		{
+			"ID": "20230926101401-cw6t9li",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101401-cw6t9li",
+				"updated": "20230926101401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "类似这样的语法还挺多的，具体的大家可以自己在 BIRD 的官网去学习。后面我们动手实践的时候会参考 Calico 的配置文件内容，到时候有需要的我再给大家解释。"
+				}
+			]
+		},
+		{
+			"ID": "20230926101401-8cvpio2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926101401-8cvpio2",
+				"updated": "20230926101450"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 RR"
+				}
+			]
+		},
+		{
+			"ID": "20230926101502-yunmqed",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101502-yunmqed",
+				"updated": "20230926101502"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RR 全称是 Router Reflector，也就是路由反射器。这个东西的作用是啥呢。我们上边介绍 BGP 时候说每个节点要和其他节点形成自治系统，相当于是每台节点都要和其他节点成为 “邻居” 的感觉，那么假设有 3 台节点，每个节点都和其他两台节点互相变成邻居的话，就要建立 3"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": "2 条隧道，如果是 n 台就要建立 n * (n - 1) 条隧道。如果在集群规模非常庞大的场景下，BIRD 进程就得累死了。所以当自治系统规模特别大的时候，就单独抽出来一个或几个节点作为路由反射器，其他的所有普通节点都之和这些反射器建立连接，把自己的宣告给反射器，然后反射器再告诉其他节点，这样相当于把原来 n"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "(n - 1) 的数据平面给拍平了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926101502-3p0xw40",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101502-3p0xw40",
+				"updated": "20230926101722"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "calico 的话是 50 台 node 以上就建议使用这种 RR 模式"
+				}
+			]
+		},
+		{
+			"ID": "20230926101722-ntwpi05",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926101722-ntwpi05",
+				"updated": "20230926101733"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 Feilx"
+				}
+			]
+		},
+		{
+			"ID": "20230926101836-vuvblaa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101836-vuvblaa",
+				"updated": "20230926101836"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Feilx 是 Calico 中和 BIRD 程序同步运行的另外一条进程，主要作用就是监听 etcd，当节点上要创建 pod 时，ipam 会分配 ip，然后这个 ip 会写入到 etcd，此时这个 Feilx 就能通过监听 etcd 来感知到被分配了哪些 ip，然后把这些 ip 写入到本机的路由表中，此时 BIRD 进程就能监听到路由表发生了变化，然后把新的路由规则根据配置给宣告出去。"
+				}
+			]
+		},
+		{
+			"ID": "20230926101836-fcsv9rl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101836-fcsv9rl",
+				"updated": "20230926101836"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外 Feilx 进程除了创建路由表的条目之外，还会创建很多 iptables 规则，通过这些 iptables 规则的一些策略来让 Calico 的网络变得更健壮。"
+				}
+			]
+		},
+		{
+			"ID": "20230926101836-6han9uk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926101836-6han9uk",
+				"updated": "20230926101836"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于我们只是想实现网络通信，暂时不需要什么安全策略之类的，所以对于我们来说，Feilx 程序就只有往本机路由表写路由条目这么一个作用，同时这个创建路由条目比较简单，所以本次我们的实现就不把 Feilx 单独抽成一条进程了，直接在 kubelet 调用 cni 时就完成路由条目写入的动作。这里和大家先提前知会一下。"
+				}
+			]
+		},
+		{
+			"ID": "20230926101500-ef5mtwo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230926101500-ef5mtwo",
+				"updated": "20230926102027"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. Calico 配置介绍"
+				}
+			]
+		},
+		{
+			"ID": "20230926102058-ufyjeqr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102058-ufyjeqr",
+				"updated": "20230926102058"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来我们看一下 Calico 是怎么做的 BGP。"
+				}
+			]
+		},
+		{
+			"ID": "20230926102113-xvlcqsv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926102113-xvlcqsv",
+				"updated": "20230926103656"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 Calico-Node"
+				}
+			]
+		},
+		{
+			"ID": "20230926102113-17xzs2x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102113-17xzs2x",
+				"updated": "20230926102113"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你运行过 calico 集群的话，就会发现 calico 会通过 deamonset 在每台节点上都运行一个 “calico-node”。"
+				}
+			]
+		},
+		{
+			"ID": "20230926102113-je0fb2o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102113-je0fb2o",
+				"updated": "20230926102113"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们通过 crictl 工具来看一下容器的 ip。我这里因为 kubelet 使用的是 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.zhihu.com/search?q=containerd\u0026search_source=Entity\u0026hybrid_search_source=Entity\u0026hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2708485065%7D",
+					"TextMarkTextContent": "containerd"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，所以只能用 crictl 或者 ctr 命令行工具，如果你的是 docker 的话用 docker ps 也行："
+				}
+			]
+		},
+		{
+			"ID": "20230926102113-reisw7g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102113-reisw7g",
+				"updated": "20230926102452"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926102452-xl8n11n.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926102454-t7qutva",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102454-t7qutva",
+				"updated": "20230926102500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926102500-3kfijnn.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926102805-1qvmkgg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102805-1qvmkgg",
+				"updated": "20230926102805"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当我们使用 pstree 查看这个容器进程干了啥之后，可以发现首先启动了 pause 进程，然后就是通过 “bird6” 以及 “bird” 命令启动了 BIRD 进程，同时还运行了 felix 进程，这些都和我们上面介绍时说的一样。至于后面那些监控和上报状态相关的不是我们关心的重点，我们暂且先不论。"
+				}
+			]
+		},
+		{
+			"ID": "20230926102805-yeyrkc5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102805-yeyrkc5",
+				"updated": "20230926102811"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后我们通过 “k get ds/calico-node -n kube-system -oyaml” 查看一下 calico-node 的 yaml 配置： "
+				}
+			]
+		},
+		{
+			"ID": "20230926102812-fv37re5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102812-fv37re5",
+				"updated": "20230926102817"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926102817-a0qhapf.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926102829-rec7n7i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102829-rec7n7i",
+				"updated": "20230926102833"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 首先它是一个 hostNetworkd 类型的网络，也就是说它容器里操作网络就相当于操作宿主机的网络。这也是容器中的 BIRD 和 Feilx 进程能修改 host 路由信息的缘故。"
+				}
+			]
+		},
+		{
+			"ID": "20230926102829-8eo20bh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102829-8eo20bh",
+				"updated": "20230926102829"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外我们来看上边 pstree 中显示的 “bird -R -s /var/run/calico/bird.ctl -d -c /etc/calico/confd/config/bird.cfg” 就是 BIRD 程序执行的命令，其中的 “/var/run/calico/bird.ctl” 是 BIRD 程序的命令行工具和其提供主要 server 的代码通讯用的本地 unix.socket："
+				}
+			]
+		},
+		{
+			"ID": "20230926102900-hoq73r1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102900-hoq73r1",
+				"updated": "20230926102901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926102901-p31aszi.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926102908-swqninp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102908-swqninp",
+				"updated": "20230926102908"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以在 yaml 中看到这个 unix.socket 文件被 volume mount 到了 host 的 /var/run/calico："
+				}
+			]
+		},
+		{
+			"ID": "20230926102908-ppfpmk0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926102908-ppfpmk0",
+				"updated": "20230926102917"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926102917-q9g42of.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926103001-ot9u243",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103001-ot9u243",
+				"updated": "20230926103001"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这意味着你可以在容器外头通过操作这个 unix.socket 来让容器内的 BIRD 程序做一些事情。不过我们不太需要，这里大家简单了解就好。"
+				}
+			]
+		},
+		{
+			"ID": "20230926103001-iusrahw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103001-iusrahw",
+				"updated": "20230926103001"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里主要看后边的 “/etc/calico/confd/config/bird.cfg”，这个就是 Calico 运行 BIRD 最主要的配置文件，这个文件是真的在容器里了，我们得进去看："
+				}
+			]
+		},
+		{
+			"ID": "20230926103001-sdza3i9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103001-sdza3i9",
+				"updated": "20230926103022"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926103022-sqb0xln.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926103032-78bbrg9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103032-78bbrg9",
+				"updated": "20230926103032"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这个配置中的最上边又引入了两个其他配置文件。这里由于配置文件比较分散，所以我把主要内容做个简单的聚合直接展示给大家："
+				}
+			]
+		},
+		{
+			"ID": "20230926103044-rj5h9u1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926103044-rj5h9u1",
+				"updated": "20230926103057"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n# 表示当前节点的 ip\nrouter id 192.168.64.14;\n\n# 创建一条黑洞路由, 和 ip route add blackhole 效果一样\n# 走这条路由规则的数据包都会被丢弃（其实可以通过抓包 lo 网卡看到）\n# 这里的 10.244.2.0/24 可以理解为这个节点的网段\n# 同一台节点上的 pod ip 就从这个网段里分配\n# Calico 中需要这条黑洞是为了当同一台节点中的 pod 互相访问的时候\n# 不让数据流出到其他节点\nprotocol static {\n  route 10.244.2.0/24 blackhole;\n}\n\n# 这个函数的作用就是当 net == 10.244.2.0/24 是 accept\n# 当时当 net 在 10.244.2.0/24 的范围内比如 10.244.2.1 就会被 reject\n# 这个函数在下面那个 filter 里用到了\n# 主要作用就是表明了本节点的网段是 10.244.2.0/24\n# 其他节点如果发生了什么意外导致其他节点也用 10.244.2.0 网段往本机宣告的话\n# 就直接干掉 \nfunction calico_aggr() {\n  if ( net = 10.244.2.0/24 ) then { accept; }\n  if ( net ~ 10.244.2.0/24 ) then { reject; }\n}\n\n# 过滤器, 主要就是用来描述\n# 当本机往往其他节点做宣告或者\n# 其他节点通知本节点时\n# 对应的 net 要不要 accept 或者 reject\nfilter calico_export_to_bgp_peers {\n  calico_aggr();\n  # 这里的意思就是如果发过来通知是属于这个网段的就接收\n  if ( net ~ 10.244.0.0/16 ) then {\n    accept;\n  }\n  reject;\n}\n\n# 这个 krt_tunnel 其实在原始的 BIRD 的 c 代码中是没有的\n# 这个变量是 Calico 自己加的, 表示设置路由表是的 iface 要走 tunl0\nfilter calico_kernel_programming {\n  if ( net ~ 10.244.0.0/16 ) then {\n    krt_tunnel = \"tunl0\";\n    accept;\n  }\n  accept;\n}\n\n# 表示主机自己路由表中的路由规则\nprotocol kernel {\n  learn;\n  persist;\n  scan time 2;\n  import all;\n  # export 表示往外宣告时要走哪个过滤器\n  export filter calico_kernel_programming;\n  graceful restart;\n}\n\n# 这个 protocol device 是必须写的, 可以写个 {} 也行\n# 不写的话 BIRD 就不会自动从内核获取网络信息\nprotocol device {\n  # debug all;\n  scan time 2;\n}\n\n# direct 协议用来从主机的内核中获取网络设备上的 ip 地址并写入到内存的路由表\nprotocol direct {\n  # debug all;\n  # 不包括 cali* 和 kube-ipvs*\n  interface -\"cali*\", -\"kube-ipvs*\", \"*\";\n}\n\n# 这是一个模板, 在创建 BIRD “邻居” 的时候可以继承这个模板\ntemplate bgp bgp_template {\n  # debug all;\n  description \"Connection to BGP peer\";\n  local as 64512;\n  multihop;\n  gateway recursive;\n  import all; \n  export filter calico_export_to_bgp_peers;\n  add paths on;\n  graceful restart;\n  connect delay time 2;\n  connect retry time 5;\n  error wait time 5,30;\n}\n\n# 创建自己的一条邻居\n# neighbor 是其他节点的 ip\n# source address 是自己的 ip\nprotocol bgp Mesh_192_168_64_16 from bgp_template {\n  neighbor 192.168.64.16 as 64512;\n  source address 192.168.64.14;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926103121-khqiruz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103121-khqiruz",
+				"updated": "20230926103123"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上就是 Calico 的三个配置文件中比较主要的部分，大部分我都按照自己的理解给标上注释了，大家如果哪里感觉不清晰的话，可以去 BIRD 的官网看，每个配置项都有详细的说明和 example。"
+				}
+			]
+		},
+		{
+			"ID": "20230926103635-au0yn1w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20230926103635-au0yn1w",
+				"updated": "20230926103702"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 Calico-BIRD"
+				}
+			]
+		},
+		{
+			"ID": "20230926103731-dg0ara9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103731-dg0ara9",
+				"updated": "20230926103731"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上边这份儿配置文件中有一个 “krt_tunnel” 的变量，不知道你有没有注意到。这个 krt_kunnel 其实不是 BIRD 自己的，而是 Calico 自己魔改的。"
+				}
+			]
+		},
+		{
+			"ID": "20230926103731-axcjca0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103731-axcjca0",
+				"updated": "20230926103731"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "是的你没看错，Calico 自己 fork 了一份儿 BIRD 的代码，改ba改ba，删ba删ba，给改成了一个只支持 IPIP 的轻量级 BIRD，具体的官方代码可以在 “"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.zhihu.com/?target=https%3A//github.com/projectcalico/bird",
+					"TextMarkTextContent": "https://"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a strong",
+					"TextMarkAHref": "https://link.zhihu.com/?target=https%3A//github.com/projectcalico/bird",
+					"TextMarkTextContent": "github.com/projectcalic"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://link.zhihu.com/?target=https%3A//github.com/projectcalico/bird",
+					"TextMarkTextContent": "o/bird"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "” 这里看到。"
+				}
+			]
+		},
+		{
+			"ID": "20230926103731-8i2i8xb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103731-8i2i8xb",
+				"updated": "20230926103731"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们本次自己实现 ipip 网络也要通过 calico 自己魔改完的这个 bird 来运行 BGP。"
+				}
+			]
+		},
+		{
+			"ID": "20230926103731-kzuho8j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926103731-kzuho8j",
+				"updated": "20230926103731"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Calico 的这个 bird 我们需要自己编译一下，不过还是挺容易的，只需要把代码从 gayhub 克隆下来，然后在根目录执行："
+				}
+			]
+		},
+		{
+			"ID": "20230926104108-5olu28f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926104108-5olu28f",
+				"updated": "20230926104108"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ARCH=\u003c你电脑的具体架构\u003e ./build.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926104114-2m003uk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104114-2m003uk",
+				"updated": "20230926104115"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编译完后会在同目录下有个 dist/，里头就是编译后的 bird 和 bird6。编译这个东西还是比较简单的，我就不贴图了，大家自己试一下就好。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104147-h813jfn",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20230926104147-h813jfn"
+			}
+		},
+		{
+			"ID": "20230926104154-5skszmx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20230926104154-5skszmx",
+				"updated": "20230926104220"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 自己动手实现 Calico 的 IPIP"
+				}
+			]
+		},
+		{
+			"ID": "20230926104245-httyfu2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104245-httyfu2",
+				"updated": "20230926104245"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们本次主要实现："
+				}
+			]
+		},
+		{
+			"ID": "20230926104245-lrr21gq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230926104245-lrr21gq",
+				"updated": "20230926104245"
+			},
+			"Children": [
+				{
+					"ID": "20230926104245-64pyths",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104245-64pyths",
+						"updated": "20230926104245"
+					},
+					"Children": [
+						{
+							"ID": "20230926104245-uma8de8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104245-uma8de8",
+								"updated": "20230926104245"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同节点通信"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926104245-7pr0gan",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104245-7pr0gan",
+						"updated": "20230926104245"
+					},
+					"Children": [
+						{
+							"ID": "20230926104245-kiorxr3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104245-kiorxr3",
+								"updated": "20230926104245"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "跨节点通信"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926104256-7znqyii",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230926104256-7znqyii",
+				"updated": "20230926104256"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "实验环境"
+				}
+			]
+		},
+		{
+			"ID": "20230926104256-2tho5tg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104256-2tho5tg",
+				"updated": "20230926104310"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104310-h3i5dhv.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926104318-0mc7hhf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104318-0mc7hhf",
+				"updated": "20230926104318"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我这里主要在 mac 上使用 multipass 这个虚拟机，有三台节点："
+				}
+			]
+		},
+		{
+			"ID": "20230926104318-tqwbl3e",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230926104318-tqwbl3e",
+				"updated": "20230926104318"
+			},
+			"Children": [
+				{
+					"ID": "20230926104318-soxh7jt",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104318-soxh7jt",
+						"updated": "20230926104318"
+					},
+					"Children": [
+						{
+							"ID": "20230926104318-4771i4s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104318-4771i4s",
+								"updated": "20230926104318"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni-test-master：192.168.64.19"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926104318-o0mseoh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104318-o0mseoh",
+						"updated": "20230926104318"
+					},
+					"Children": [
+						{
+							"ID": "20230926104318-gfk8hgo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104318-gfk8hgo",
+								"updated": "20230926104318"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni-test-1：192.168.64.17"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926104318-ipon34w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104318-ipon34w",
+						"updated": "20230926104318"
+					},
+					"Children": [
+						{
+							"ID": "20230926104318-o0rkzxi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104318-o0rkzxi",
+								"updated": "20230926104318"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "cni-test-2：192.168.64.18"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926104330-rnniavx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104330-rnniavx",
+				"updated": "20230926104330"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104330-i0e10xm.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926104335-nhpa0ql",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230926104335-nhpa0ql",
+				"updated": "20230926104335"
+			},
+			"Children": [
+				{
+					"ID": "20230926104335-2tbqoqd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104335-2tbqoqd",
+						"updated": "20230926104335"
+					},
+					"Children": [
+						{
+							"ID": "20230926104335-sf3a6qd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104335-sf3a6qd",
+								"updated": "20230926104335"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "go version：1.19 ​"
+								},
+								{
+									"Type": "NodeImage",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeBang"
+										},
+										{
+											"Type": "NodeOpenBracket"
+										},
+										{
+											"Type": "NodeLinkText",
+											"Data": "image"
+										},
+										{
+											"Type": "NodeCloseBracket"
+										},
+										{
+											"Type": "NodeOpenParen"
+										},
+										{
+											"Type": "NodeLinkDest",
+											"Data": "assets/image-20230926104342-pdedii9.png"
+										},
+										{
+											"Type": "NodeCloseParen"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926104354-syabyxn",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230926104354-syabyxn",
+				"updated": "20230926104354"
+			},
+			"Children": [
+				{
+					"ID": "20230926104354-3mvdl5j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926104354-3mvdl5j",
+						"updated": "20230926104354"
+					},
+					"Children": [
+						{
+							"ID": "20230926104354-9s2grjm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926104354-9s2grjm",
+								"updated": "20230926104354"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Linux Kernal: Ubuntu 5.15"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926104354-gr96qip",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104354-gr96qip",
+				"updated": "20230926104354"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "版本也可以不用这么高，反正也不像上次的 ebpf 似的需要贼高的内核版本，这里可以随意一点。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104405-f9hsym4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230926104405-f9hsym4",
+				"updated": "20230926104405"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码结构以及 CNI 架构"
+				}
+			]
+		},
+		{
+			"ID": "20230926104405-2zgpwk7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104405-2zgpwk7",
+				"updated": "20230926104432"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于代码整体结构和 CNI 插件的实现方式，我们在之前的文章《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/450140876",
+					"TextMarkTextContent": "A7kaou：K8s 网络之深入理解 CNI"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》、《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/450514389",
+					"TextMarkTextContent": "A7kaou：K8s 网络之 从 0 实现一个 CNI 网络插件"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》、《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/565254116",
+					"TextMarkTextContent": "A7kaou：基于 ebpf 和 vxlan 实现一个 k8s 网络插件（一）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》、《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/565420113",
+					"TextMarkTextContent": "A7kaou：基于 ebpf 和 vxlan 实现一个 k8s 网络插件（二）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》我们已经反复说过好几次了，所以这次就直接跳过这个步骤了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104442-oifv98t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230926104442-oifv98t",
+				"updated": "20230926104442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同节点通信"
+				}
+			]
+		},
+		{
+			"ID": "20230926104442-ri73s28",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104442-ri73s28",
+				"updated": "20230926104442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下来我来说一下我实现 IPIP 模式的思路。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104442-2uijiah",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104442-2uijiah",
+				"updated": "20230926104442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先第一步肯定是要让同节点上的 pod 能互相通信。那么先来看同节点的 pod 通信。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104442-rfu3uqr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104442-rfu3uqr",
+				"updated": "20230926104442"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先我们先随便进到一个 Calico 集群的某个 pod 中，看一下它的路由表和 arp 表："
+				}
+			]
+		},
+		{
+			"ID": "20230926104442-mbjbbae",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104442-mbjbbae",
+				"updated": "20230926104539"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104539-2r5yf8v.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926104405-qb9inwk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104405-qb9inwk",
+				"updated": "20230926104412"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 可以看到路由表中有个 169.254.1.1 然后 arp 表中其对应的 mac 地址是 ee:ee:ee:ee:ee:ee。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104717-ddli6tg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104717-ddli6tg",
+				"updated": "20230926104717"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "看上去可能会感觉很奇怪，而且你可以尝试翻遍整个集群的所有节点，你会发现一定都找不到一个 ip 是 169.254.1.1 的网络设备。那这个 ip 是干啥的呢？"
+				}
+			]
+		},
+		{
+			"ID": "20230926104717-ltbn0kk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104717-ltbn0kk",
+				"updated": "20230926104745"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 其实对于这个 ip 网关地址，我们在这篇《"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://zhuanlan.zhihu.com/p/565420113",
+					"TextMarkTextContent": "A7kaou：基于 ebpf 和 vxlan 实现一个 k8s 网络插件（二）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "》已经介绍过了，大概在如图的这个位置："
+				}
+			]
+		},
+		{
+			"ID": "20230926104428-d8s50dt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104428-d8s50dt",
+				"updated": "20230926104752"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104752-h93sj27.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926104834-s1n6c8t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104834-s1n6c8t",
+				"updated": "20230926104835"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里其实是一个 “交换路由” 的技巧，就是你先随便创建一条路由规则，让这条规则目的是 0.0.0.0，也就是不需要走网关，然后再把这条路由的目的地址作为网关，创建一条默认路由。这条路由你真的可以随便写，写啥都行，它就是个假的~ 大概如下图所示："
+				}
+			]
+		},
+		{
+			"ID": "20230926104842-itsi09e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104842-itsi09e",
+				"updated": "20230926104842"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104842-ev5can2.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926104852-kvrgjqn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104852-kvrgjqn",
+				"updated": "20230926104852"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外如果你看过上一篇文章的话，应该能想到，现在 pod 中已经有了路由表了，但是此时直接 ping 外部的 ip 一定是不会 ping 通的，因为此时 pod 的 netns 的协议栈一定会先发送 arp 去问 “who has 169.254.1.1 tell xxxx”，但是并没有人是 169.254.1.1，所以就卡死在这儿了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104852-818y2f5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104852-818y2f5",
+				"updated": "20230926104852"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们上一篇实现 ebpf/vxlan 模式时的方式是手动把 pod 留在 host 上那半拉 veth 的 mac 地址给通过 arp -S 命令强行添加到 pod 的 arp 表中了，其实我们这里也可以这么干，只不过 Calico 更聪明一点，它不需要手动去配置，而是给 pod 留在 host 上的那半拉 veth 开启了 “proxy arp” 功能： ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104926-9ti6bor.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926104941-flr3ojg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104941-flr3ojg",
+				"updated": "20230926104941"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个 proxy_arp 是干啥的呢，顾名思义，其实就是当有人给我发 arp 请求的时候，如果我不是目标 ip 但同时开启了 proxy arp 的话，我就可以把我自己的 mac 地址返回给你。"
+				}
+			]
+		},
+		{
+			"ID": "20230926104941-vb78r5y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104941-vb78r5y",
+				"updated": "20230926104941"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以这也是为什么在 calico 的 pod 中看 arp 表发现所有的 ip 对应的都是 “ee:ee:ee:ee:ee:ee”："
+				}
+			]
+		},
+		{
+			"ID": "20230926104941-utjnv66",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926104941-utjnv66",
+				"updated": "20230926105005"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926104539-2r5yf8v.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105004-gobxikz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105004-gobxikz",
+				"updated": "20230926105027"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926105027-atfj6d1.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105034-aq2a9dh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105034-aq2a9dh",
+				"updated": "20230926105034"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为 calico 的所有 pod 留在 host 上的那半拉 veth 的 mac 地址都是 ee:ee:ee:ee:ee:ee，相当于在容器内部每次 ping 什么东西的时候，都会走 169.254.1.1 这个网关，然后 pod 的协议栈发送 arp 给 veth pair，之后 host 上的 veth 收到 arp 后发现自己开了 proxy arp，就把自己的 ee 返回过去，如此这般，pod 中的流量就能走到 host 上的 veth 设备了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926105034-p50qomf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105034-p50qomf",
+				"updated": "20230926105034"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那此时这个流量，应该如何走到本主机上的其他 pod 呢？我们来看 host 上的路由表："
+				}
+			]
+		},
+		{
+			"ID": "20230926105034-d9o2ztm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105034-d9o2ztm",
+				"updated": "20230926105041"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926105041-mvvv2m4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105048-mjbkb43",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105048-mjbkb43",
+				"updated": "20230926105048"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以看到，calico 给每台主机上的每个 pod ip 都配置了路由条目，以指示当有对应的目标 ip 流到主机上时，应该让这个流量走哪个 interface。"
+				}
+			]
+		},
+		{
+			"ID": "20230926105048-kw0ufbv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105048-kw0ufbv",
+				"updated": "20230926105048"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "简单来讲，就是如果在 calixxx1 的 pod 中访问 calixxx2 的 ip 的话，那么主机的 route 就会有 “calixxx2.ip gw 0.0.0.0 dev calixxx2”，同样也会有 “calixxx1.ip gw 0.0.0.0 dev calixxx1”。这样同一个节点上的两个 netns 就能互相通信了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926105048-5c1c9od",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105048-5c1c9od",
+				"updated": "20230926105048"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我这里提供了一个简单的手动 bash 命令的代码，大家可以自己尝试玩一玩，当执行完这些命令之后，同一个节点上的俩 pod 就能互相通信了："
+				}
+			]
+		},
+		{
+			"ID": "20230926105048-y5vq6yi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926105048-y5vq6yi",
+				"updated": "20230926105144"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建两个 ns\nip netns add ns1\nip netns add ns2\n\n# 创建两个 veth peer 对儿\nip link add veth1 type veth peer veth2\nip link add veth3 type veth peer veth4\n\n# 启动 host 上的 veth\nifconfig veth1 up\nifconfig veth3 up\n\n# 修改 host 上的俩 veth 的 mac 地址\nifconfig veth1 hw ether ee:ee:ee:ee:ee:ee\nifconfig veth3 hw ether ee:ee:ee:ee:ee:ee\n\n# 把另外两个半拉分别移动到 netns 中\nip link set veth2 netns ns1\nip link set veth4 netns ns2\n\n# 启动 netns 中的俩\nip netns exec ns1 ifconfig veth2 up\nip netns exec ns2 ifconfig veth4 up\n\n# 进入到 ns1\nip netns exec ns1 bash\n\n# 给 veth 添加一个 ip\nip addr add 10.0.1.1/32 dev veth2\n\n# 给 ns1 创建交换路由, 其中网关地址是个假 ip\nroute add -net 169.254.1.1 netmask 255.255.255.255 dev veth2\nroute add default gw 169.254.1.1 dev veth2\nexit\n\n# 进入到 ns2\nip netns exec ns2 bash\n\n# 给 veth 添加一个 ip\nip addr add 10.0.1.2/32 dev veth4\n\n# 给 ns2 创建交换路由, 其中网关地址是个假 ip\nroute add -net 169.254.1.1 netmask 255.255.255.255 dev veth4\nroute add default gw 169.254.1.1 dev veth4\nexit\n\n# 给主机添加两条路由规则, 分别是两个 netns 的 ip 地址以及对应的 veth\nroute add -net 10.0.1.1 netmask 255.255.255.255 dev veth1\nroute add -net 10.0.1.2 netmask 255.255.255.255 dev veth3\n\n# 必须同时打开 forwarding 和 proxy_arp\necho 1 \u003e /proc/sys/net/ipv4/conf/veth1/proxy_arp\necho 1 \u003e /proc/sys/net/ipv4/conf/veth1/forwarding\n\n# 必须同时打开 forwarding 和 proxy_arp\necho 1 \u003e /proc/sys/net/ipv4/conf/veth3/proxy_arp\necho 1 \u003e /proc/sys/net/ipv4/conf/veth3/forwarding\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926105328-cdqzmi2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230926105328-cdqzmi2",
+				"updated": "20230926105328"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "跨节点通信"
+				}
+			]
+		},
+		{
+			"ID": "20230926105339-51dymdc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105339-51dymdc",
+				"updated": "20230926105339"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说完了同节点通信，该来跨节点通信了。上次那个 ebpf 版本的跨节点通信过程十分复杂，不过放心，calico 的 ipip 模式非常容易，甚至都不用你自己干啥。"
+				}
+			]
+		},
+		{
+			"ID": "20230926105339-7vxbjx5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105339-7vxbjx5",
+				"updated": "20230926105339"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为我们上面说过了，calico 自己实现了一个 bird，这个 bird 可以在每台主机上开启 BGP 协议的客户端进程，用来做路由宣告。所以其实我们只要在每台节点上写好配置文件，并运行一个 BIRD 客户端就万事大吉了，其他事情交给 BIRD 来搞。"
+				}
+			]
+		},
+		{
+			"ID": "20230926105339-tvnzopk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105339-tvnzopk",
+				"updated": "20230926105339"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们再来看一下上面说过的 calico 的配置文件："
+				}
+			]
+		},
+		{
+			"ID": "20230926105339-07cvpgv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926105339-07cvpgv",
+				"updated": "20230926105408"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " \nrouter id 192.168.64.16;\n\nprotocol static {\n  route 10.244.1.0/24 blackhole;\n}\n\nfunction calico_aggr() {\n  if ( net = 10.244.1.0/24 ) then { accept; }\n  if ( net ~ 10.244.1.0/24 ) then { reject; }\n}\n\nfilter calico_export_to_bgp_peers {\n  calico_aggr();\n  if ( net ~ 10.244.0.0/16 ) then {\n    accept;\n  }\n  reject;\n}\n\nfilter calico_kernel_programming {\n  if ( net ~ 10.244.0.0/16 ) then {\n    krt_tunnel = \"tunl0\";\n    accept;\n  }\n  accept;\n}\n\nprotocol kernel {\n  learn;\n  persist;\n  scan time 2;\n  import all;\n  export filter calico_kernel_programming;\n  graceful restart;\n}\n\nprotocol device {\n  debug all;\n  scan time 2;\n}\n\nprotocol direct {\n  debug all;\n  # 不包括 cali* 和 kube-ipvs*\n  interface -\"cali*\", -\"kube-ipvs*\", \"*\";\n}\n\ntemplate bgp bgp_template {\n  debug all;\n  description \"Connection to BGP peer\";\n  local as 64512;\n  multihop;\n  gateway recursive;\n  import all; \n  export filter calico_export_to_bgp_peers;\n  add paths on;\n  graceful restart;\n  connect delay time 2;\n  connect retry time 5;\n  error wait time 5,30;\n}\n\nprotocol bgp Mesh_192_168_64_14 from bgp_template {\n  neighbor 192.168.64.14 as 64512;\n  source address 192.168.64.16;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926105428-oxqwpy2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105428-oxqwpy2",
+				"updated": "20230926105428"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "你可以找两台节点，把上面的配置中的网段地址、邻居地址、自己这个节点的地址都替换成你自己环境中的，然后俩节点都配置好后，把 calico bird 那个项目 clone 下来，然后 ./build.sh 编译之后会产生一个 bird 二进制文件，之后执行："
+				}
+			]
+		},
+		{
+			"ID": "20230926105441-tlcqstf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926105441-tlcqstf",
+				"updated": "20230926105441"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "YmFzaA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "bird -R -s /var/run/bird.ctl -d -c /etc/bird-cfg/bird.cfg\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926105445-oidg6xg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105445-oidg6xg",
+				"updated": "20230926105446"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每台节点都执行完之后，如果你的配置文件没写错，启动命令也没写错的话，那大概率你的 Linux 路由表已经被配置了新的路由规则了，就像 calico 这样，会有一些出口 iface 是 tunl0 设备的规则："
+				}
+			]
+		},
+		{
+			"ID": "20230926105453-pu6cso1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105453-pu6cso1",
+				"updated": "20230926105454"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926105454-6qxa3gk.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105500-d5jd3dy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105500-d5jd3dy",
+				"updated": "20230926105500"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时你跨节点的 netns 就已经可以互相通信了。"
+				}
+			]
+		},
+		{
+			"ID": "20230926105508-41mfqo0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230926105508-41mfqo0",
+				"updated": "20230926105508"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "代码实现"
+				}
+			]
+		},
+		{
+			"ID": "20230926105518-cpmc9vw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105518-cpmc9vw",
+				"updated": "20230926105518"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面说了这么多，大家应该已经知道个中原理了，接下来只需要把上面 hard code 实现成动态的代码就好了。我们快速过一下："
+				}
+			]
+		},
+		{
+			"ID": "20230926105518-sv6egrv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105518-sv6egrv",
+				"updated": "20230926105525"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926105525-1xdaeiy.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105524-5dh4dqc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105524-5dh4dqc",
+				"updated": "20230926105533"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先还是复用之前几个版本的代码，只需要在 plugin 目录下创建一个带有 Bootstrap、Umount、Check、GetMode 等方法的结构体，然后注册给 CNIManager 就行了："
+				}
+			]
+		},
+		{
+			"ID": "20230926105540-a13jql7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105540-a13jql7",
+				"updated": "20230926105541"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926105541-g9whygz.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105549-dt9lwhf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105549-dt9lwhf",
+				"updated": "20230926105549"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后主要创建的逻辑都在 Bootstrap 中，这里我把主要逻辑贴出来："
+				}
+			]
+		},
+		{
+			"ID": "20230926105604-7vlstfi",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20230926105604-7vlstfi",
+				"updated": "20230926105620"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " \n// 初始化 ipam\n  ipamClient, err := initEveryClient(args, pluginConfig)\n  if err != nil {\n    return nil, err\n  }\n\n  // 从 ipam 中拿到一个未使用的 ip 地址\n  podIP, err := ipamClient.Get().UnusedIP()\n  if err != nil {\n\n    return nil, err\n  }\n\n  // calico 内部的 pod 的 ip 都是 32 掩码的\n  podIP = podIP + \"/\" + \"32\"\n\n  // 获取 netns\n  netns, err := ns.GetNS(args.Netns)\n  if err != nil {\n    return nil, err\n  }\n\n  // 设置 pod 中的网络让其中的流量能走到 host 上\n  _, hostVeth, err := setPodNetwork(netns, args.IfName, podIP)\n  if err != nil {\n    return nil, err\n  }\n\n  // 获取默认网络命名空间\n  hostNs, err := ns.GetCurrentNS()\n  if err != nil {\n    return nil, err\n  }\n\n  // 设置 host 上的 pod 网络, 主要是开启 proxy arp 以及设置路由表\n  err = setHostNetwork(hostNs, hostVeth, podIP)\n  if err != nil {\n    return nil, err\n  }\n\n  // 走到这儿基本上 pod 内部就配置完了\n  // 接下来要创建 ipip tunnel 设备\n  iptunl, err := nettools.CreateIPIPDeviceAndUp(\"tunl0\")\n  if err != nil {\n    return nil, err\n  }\n\n  // 设置 ipip tunnel 的 forwarding 为 1\n  err = nettools.SetUpDeviceForwarding(iptunl)\n  if err != nil {\n    return nil, err\n  }\n\n  // 给 tunnel 设备设置 ip\n  tunlCIDR, err := setIpForIpip(ipamClient, iptunl)\n  if err != nil {\n    return nil, err\n  }\n\n  // 创建 bgp 协议需要的 bird config\n  err = bird.GenConfigFile(ipamClient)\n  if err != nil {\n    return nil, err\n  }\n\n  // 启动 bird\n  _, err = bird.StartBirdDaemon(consts.KUBE_TEST_CNI_DEFAULT_BIRD_CONFIG_PATH)\n  if err != nil {\n    return nil, err\n  }\n\n  // 获取网关地址和 podIP 准备返回给外边\n  tunlIP := strings.Split(tunlCIDR, \"/\")[0]\n  _gw := net.ParseIP(tunlIP)\n  _, _podIP, _ := net.ParseCIDR(podIP)\n  result := \u0026types.Result{\n    CNIVersion: pluginConfig.CNIVersion,\n    IPs: []*types.IPConfig{\n      {\n        Address: *_podIP,\n        Gateway: _gw,\n      },\n    },\n  }\n  return result, nil\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20230926105631-l4580ux",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105631-l4580ux",
+				"updated": "20230926105631"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "整体流程上，其实就是做了大概如下几件事儿："
+				}
+			]
+		},
+		{
+			"ID": "20230926105631-m98yfqk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20230926105631-m98yfqk",
+				"updated": "20230926105631"
+			},
+			"Children": [
+				{
+					"ID": "20230926105631-f9tm0vd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-f9tm0vd",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-dx3crgk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-dx3crgk",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "从 IPAM 中获取一个还没有使用的 ip 地址作为本 pod 的 ip"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-wzh7jr9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-wzh7jr9",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-s8on13p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-s8on13p",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建一对儿 veth pair，一边放在 pod 的 netns 中，一边留在 host 上"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-bkg7phd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-bkg7phd",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-km33gk5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-km33gk5",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "给 pod 的 netns 设置交换路由"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-f56gj2j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-f56gj2j",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-4r7nb8v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-4r7nb8v",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "并把 pod 留在 host 的那半拉 veth 开启 proxy_arp 以及 forwarding"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-pwzwuir",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-pwzwuir",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-mor4gee",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-mor4gee",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "然后创建 ipip tunnel 设备"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-f0doed9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-f0doed9",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-3qbl311",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-3qbl311",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "给这个 ipip tunnel 设备一个 ip 地址"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-3qhept4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-3qhept4",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-q81ci4n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-q81ci4n",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "开启 ipip tunnel 设备的 forwarding"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-d3sq4c5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-d3sq4c5",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-kcwkqmk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-kcwkqmk",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "创建 BIRD 配置文件。注意这里因为每个节点的 ip 之类的配置信息都不一样，所以这里需要通过 template 的方式动态生成模板的字符串"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-faf6oaw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-faf6oaw",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-58xhi6d",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-58xhi6d",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动从 calico bird 那编译好的 bird 程序，注意这个程序你得想办法让它以独立子进程的方式执行哦"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20230926105631-ij08dm3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20230926105631-ij08dm3",
+						"updated": "20230926105631"
+					},
+					"Children": [
+						{
+							"ID": "20230926105631-fhsjgfz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20230926105631-fhsjgfz",
+								"updated": "20230926105631"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "把 pod ip 返回给外边，也就是返回给 kubelet"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926105631-zclsp30",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105631-zclsp30",
+				"updated": "20230926105631"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总体上看流程还是比较简单的，如果大家对代码中的哪块儿有疑问或者想仔细看的话可以去 repo 里看："
+				}
+			]
+		},
+		{
+			"ID": "20230926105631-acx94wp",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20230926105631-acx94wp",
+				"updated": "20230926105701"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20230926105637-lldww2a",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20230926105637-lldww2a",
+						"updated": "20230926105701"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "https://link.zhihu.com/?target=https%3A//github.com/y805939188/simple-k8s-cni"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20230926105710-prm7y6h",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20230926105710-prm7y6h",
+				"updated": "20230926105710"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "跑一波"
+				}
+			]
+		},
+		{
+			"ID": "20230926105710-uusq7el",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105710-uusq7el",
+				"updated": "20230926105716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " ​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20230926105716-warhoud.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105730-ei5m10d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105730-ei5m10d",
+				"updated": "20230926105730"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我这有个 busybox，里头跑仨副本。我们执行 “k apply -f busybox.yaml” 看下效果："
+				}
+			]
+		},
+		{
+			"ID": "20230926105730-pttnxco",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105730-pttnxco",
+				"updated": "20230926105730"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://picx.zhimg.com/80/v2-f372ddb74ffd3d3cc1f8f5fbb810873e_720w.webp?source=1940ef5c"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20230926105730-h423jmy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20230926105730-h423jmy",
+				"updated": "20230926105730"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以三个 busybox 已经都跑起来了。随后进入到其中一个 pod，尝试去 ping 其他节点上跨网段的 pod ip，ok！再尝试去 ping 自己的 ip，ok！最后尝试去 ping 同节点上其他 pod 的 ip，ok"
+				}
+			]
+		}
+	]
+}

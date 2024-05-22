@@ -1,0 +1,599 @@
+{
+	"ID": "20231114103128-6rwezuw",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20231114103128-6rwezuw",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20231114103145-z3xf49n\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20231114104618-t54z3o1\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20231114103214-imgbix8\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "CRIO问题定位",
+		"updated": "20231114104618"
+	},
+	"Children": [
+		{
+			"ID": "20231114103145-z3xf49n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114103145-z3xf49n",
+				"updated": "20231114103150"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 调整CRIO日志级别"
+				}
+			]
+		},
+		{
+			"ID": "20231114103224-xtjj0up",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20231114103224-xtjj0up",
+				"updated": "20231114103224"
+			},
+			"Children": [
+				{
+					"ID": "20231114103224-l92zcp4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20231114103224-l92zcp4",
+						"updated": "20231114103224"
+					},
+					"Children": [
+						{
+							"ID": "20231114103224-p3o9w0o",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20231114103224-p3o9w0o",
+								"updated": "20231114103224"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "正规方式（这个操作CRIO只是自动reload不会重启）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20231114103214-imgbix8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231114103214-imgbix8",
+				"updated": "20231114103428"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\napiVersion: machineconfiguration.ccos.io/v1\nkind: ContainerRuntimeConfig\nmetadata:\n name: log-level\nspec:\n machineConfigPoolSelector:\n   matchLabels:\n     pools.operator.machineconfiguration.openshift.io/master: '' #根据实际节点角色调整\n containerRuntimeConfig:\n   logLevel: debug\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231114103233-bbygs09",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20231114103233-bbygs09",
+				"updated": "20231114103233"
+			},
+			"Children": [
+				{
+					"ID": "20231114103233-kx2ys20",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20231114103233-kx2ys20",
+						"updated": "20231114103233"
+					},
+					"Children": [
+						{
+							"ID": "20231114103233-xkj6tc3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20231114103233-xkj6tc3",
+								"updated": "20231114103233"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "更加快速的方式 （"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "这个操作会造成MCO降级，定位完务必恢复配置文件"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20231114103233-5mma6ri",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114103233-5mma6ri",
+				"updated": "20231114103233"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改/etc/crio/crio.conf.d/00-default 里面的 log_level 字段为 debug， 然后systemctl reload crio"
+				}
+			]
+		},
+		{
+			"ID": "20231114103235-31rwhyp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114103235-31rwhyp",
+				"updated": "20231114103248"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 查看CRIO pprof"
+				}
+			]
+		},
+		{
+			"ID": "20231114103442-do5ow81",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231114103442-do5ow81",
+				"updated": "20231114103459"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo curl --unix-socket /var/run/crio/crio.sock http://localhost/debug/pprof/goroutine?debug=4\nsudo curl --unix-socket /var/run/crio/crio.sock http://localhost/debug/pprof/heap \u003e mem.profile\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231114104131-6rghlk5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114104131-6rghlk5",
+				"updated": "20231114104134"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. CRIO pprof不响应的情况下拿goroutine堆栈"
+				}
+			]
+		},
+		{
+			"ID": "20231114104145-7c7icw7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231114104145-7c7icw7",
+				"updated": "20231114104150"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl kill -s USR1 crio.service\n\ngoroutine堆栈会打到  /tmp/crio-goroutine-stacks-$timestamp.log\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231114104158-01qtvsz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114104158-01qtvsz",
+				"updated": "20231114104200"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 查看runc容器状态"
+				}
+			]
+		},
+		{
+			"ID": "20231114104214-kmrzwzq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231114104214-kmrzwzq",
+				"updated": "20231114104219"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1. 如果CRIO还能响应，运行  crictl inspect \u003c容器ID 13位短号\u003e | jq .status\n\n2. 如果CRIO都不响应了，包括CRIO socket出问题的情况下，  runc state \u003c容器ID 64位长号\u003e\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231114104233-mcawxfg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114104233-mcawxfg",
+				"updated": "20231114104238"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 怀疑容器状态在runc、conmon、CRIO、kubelet之间不一致？"
+				}
+			]
+		},
+		{
+			"ID": "20231114104254-2v0m27b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114104254-2v0m27b",
+				"updated": "20231114104255"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://insujang.github.io/2019-11-18/interactions-between-crio-and-conmon/#how-information-container-terminated-is-passed-to-cri-o",
+					"TextMarkTextContent": "Interactions between cri-o and conmon in Kubernetes · Better Tomorrow with Computer Science (insujang.github.io)"
+				}
+			]
+		},
+		{
+			"ID": "20231114104303-mcre3vw",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20231114104303-mcre3vw",
+				"updated": "20231114104303"
+			},
+			"Children": [
+				{
+					"ID": "20231114104303-11lz1jd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20231114104303-11lz1jd",
+						"updated": "20231114104303"
+					},
+					"Children": [
+						{
+							"ID": "20231114104303-ksm21tp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20231114104303-ksm21tp",
+								"updated": "20231114104303"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先通过runc state \u003c容器ID 64位长号\u003e 命令判断这个容器的实际状态，并且在 /var/log/pods/ 目录下检查其容器日志"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20231114104303-c5d8x47",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20231114104303-c5d8x47",
+						"updated": "20231114104303"
+					},
+					"Children": [
+						{
+							"ID": "20231114104303-n1l1n8j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20231114104303-n1l1n8j",
+								"updated": "20231114104303"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果runc 容器退出了，那么正常情况下，它的conmon进程一定会在/var/run/crio/exits目录下生成一个文件，这个文件的名字就是容器ID，文件的内容包括exit code和exit message。"
+								}
+							]
+						},
+						{
+							"ID": "20231114104303-mb3gyb9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20231114104303-mb3gyb9",
+								"updated": "20231114104303"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CRIO会通过fsnotify感知到文件，然后刷新CRIO自己维护的容器状态到Exited，正常情况下CRIO debug日志也会有相关显示。通过这种方式，容器的状态能在runc、conmon、CRIO之间保持一致。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20231114104610-7czrpll",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114104610-7czrpll",
+				"updated": "20231114104610"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20231114104610-mcmumbe.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20231114104618-t54z3o1",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20231114104618-t54z3o1",
+				"updated": "20231114104618"
+			},
+			"Children": [
+				{
+					"ID": "20231114104618-t25zr52",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20231114104618-t25zr52",
+						"updated": "20231114104618"
+					},
+					"Children": [
+						{
+							"ID": "20231114104618-8ev2n02",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20231114104618-8ev2n02",
+								"updated": "20231114104618"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果runc 容器退出了，但是CRIO debug日志没有相关显示，CRIO内的容器状态也不是Exited"
+								}
+							]
+						},
+						{
+							"ID": "20231114104618-c0pp19c",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20231114104618-c0pp19c",
+								"updated": "20231114104618"
+							},
+							"Children": [
+								{
+									"ID": "20231114104618-vm9hx6g",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20231114104618-vm9hx6g",
+										"updated": "20231114104618"
+									},
+									"Children": [
+										{
+											"ID": "20231114104618-m8muevf",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20231114104618-m8muevf",
+												"updated": "20231114104618"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "先检查conmon进程有没有问题。可以通过  /run/containers/storage/overlay-containers/\u003c容器ID 64位长号\u003e/userdata/conmon-pidfile 找到conmon进程的pid，然后 cat /proc/\u003ccommon 进程pid\u003e/stack 查看其C语言堆栈"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20231114104618-gk4wu8i",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20231114104618-gk4wu8i",
+										"updated": "20231114104618"
+									},
+									"Children": [
+										{
+											"ID": "20231114104618-11k8dge",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20231114104618-11k8dge",
+												"updated": "20231114104618"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "如果conmon进程不存在了。那么查看CRIO pprof goroutine看看CRIO是否有异常"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20231114104618-4k1uz8f",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20231114104618-4k1uz8f",
+										"updated": "20231114104618"
+									},
+									"Children": [
+										{
+											"ID": "20231114104618-0w8gejf",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20231114104618-0w8gejf",
+												"updated": "20231114104618"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "如果CRIO没问题。那么还需要查下kubelet 的generic PLEG打印，是否kubelet PLEG通过轮询查到了对应的容器状态 （1.27之后K8S可以通过CRI event来感知容器状态变化就不用轮询了"
+												},
+												{
+													"Type": "NodeTextMark",
+													"TextMarkType": "a",
+													"TextMarkAHref": "https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/switch-to-evented-pleg/",
+													"TextMarkTextContent": "从轮询切换为基于 CRI 事件的更新来获取容器状态 | Kubernetes"
+												},
+												{
+													"Type": "NodeText",
+													"Data": "）"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

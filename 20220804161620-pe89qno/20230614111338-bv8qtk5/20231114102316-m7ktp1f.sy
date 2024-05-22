@@ -1,0 +1,243 @@
+{
+	"ID": "20231114102316-m7ktp1f",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20231114102316-m7ktp1f",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20231114102338-awmbj52\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20231114102602-yyt238e\u0026quot;,\u0026quot;scrollTop\u0026quot;:1393,\u0026quot;focusId\u0026quot;:\u0026quot;20231114102316-z82hc69\u0026quot;,\u0026quot;focusStart\u0026quot;:448,\u0026quot;focusEnd\u0026quot;:448}",
+		"title": "crio服务在节点上的各主要目录用途",
+		"updated": "20231114102611"
+	},
+	"Children": [
+		{
+			"ID": "20231114102338-awmbj52",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114102338-awmbj52",
+				"updated": "20231114102551"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 目录结构"
+				}
+			]
+		},
+		{
+			"ID": "20231114102316-z82hc69",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231114102316-z82hc69",
+				"updated": "20231114102342"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n/var/lib/containers/storage     所有容器和镜像缓存的持久化目录，占用系统盘空间 \n-- overlay   \n\n    -- {uuid}                               容器(包括sandbox！因为从crio看来sandbox、init、sidecar等没有太大区别)的读写层文件，如果业务朝它的读写层写大文件，这里就会变得很大。所以这里是常见的 disk space 问题爆点\n\n-- overlay-containers   \n\n    -- {uuid}                       \n\n        -- userdata\n\n            -- state.json(optional)  容器的运行状态\n\n            -- config.json                容器的启动参数及配置（挂载卷、网络命名空间等）\n\n            -- exit(optional)            容器的退出码记录文件\n\n    -- containers.json                 所有容器的ID和它的读写层的ID，这里很容易找到读写层\u003c-\u003e容器\u003c-\u003ePOD的关联关系，很重要\n\n-- overlay-images\n\n     -- {uuid}                               镜像层的元数据，比如manifest，一般不要去动它，让kubelet自己判断什么时候来清理这些文件\n\n-- overlay-layers\n\n     -- {uuid}.tar-split.gz             镜像层缓存文件，一般不要去动它，让kubelet自己判断什么时候来清理这些文件\n\n\n\n/run/containers/storage/         所有容器的临时存储目录，内存化的，一般情况下不在意。它里面的内容最终会被持久化到 /var/lib/containers/storage \n\n/var/run/crio                            内存化的，一般情况下不用在意\n\n -- {uuid}                                  里面存放指向/run/containers/storage/overlay-containers/* 的软链接\n\n -- exits                                    conmon与crio交流容器退出状态的目录，由crio启动时创建。当runc容器退出时，conmon会将容器的退出码等信息封装成以容器ID命名的文件，写入该目录，crio通过fsnotify感知到目录下文件的创建也就感知到runc容器的退出\n\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231114102351-zi8s8fa",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114102351-zi8s8fa",
+				"updated": "20231114102558"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2."
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "如何评估 /var/lib/containers/storage/overlay 下的子目录总数是否合理？"
+				}
+			]
+		},
+		{
+			"ID": "20231114102351-athsf1f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114102351-athsf1f",
+				"updated": "20231114102351"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/cri-o/cri-o/issues/6981#issuecomment-1608606437",
+					"TextMarkTextContent": "https://github.com/cri-o/cri-o/issues/6981#issuecomment-1608606437"
+				}
+			]
+		},
+		{
+			"ID": "20231114102354-ecslptc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114102354-ecslptc",
+				"updated": "20231114102355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20231114102355-7ckgb8y.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20231114102607-m2misxg",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231114102607-m2misxg",
+				"updated": "20231114102611"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "如何快速找到大的容器目录？"
+				}
+			]
+		},
+		{
+			"ID": "20231114102401-f4kjajk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114102401-f4kjajk",
+				"updated": "20231114102401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "du -sh *"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​只能统计当前目录，不能统计子目录。为了更快定位目录，使用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "du -h -d 10"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​命令列出10层子目录内的信息，子目录层数可以根据情况调整。"
+				}
+			]
+		},
+		{
+			"ID": "20231114102401-hrdjvrz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114102401-hrdjvrz",
+				"updated": "20231114102401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "完整命令    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "du -h -d 10 /var/lib/containers/storage| sort -hr | head -50"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20231114102401-gdv7kja",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114102401-gdv7kja",
+				"updated": "20231114102401"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "来自耀总：看top 30的容器可读可写层用量：\nsudo crictl stats -a -o json | jq '.stats[] | .writableLayer.usedBytes.value + \" \" + .attributes.labels[\"io.kubernetes.pod.namespace\"] + \" \" + .attributes.labels[\""
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "http://io.kubernetes.pod.name/",
+					"TextMarkTextContent": "io.kubernetes.pod.name"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"]' -r | sort -rn | head -n 30"
+				}
+			]
+		},
+		{
+			"ID": "20231114102602-yyt238e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231114102602-yyt238e"
+			}
+		}
+	]
+}

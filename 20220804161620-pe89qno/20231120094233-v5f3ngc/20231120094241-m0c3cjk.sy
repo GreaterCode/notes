@@ -1,0 +1,344 @@
+{
+	"ID": "20231120094241-m0c3cjk",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20231120094241-m0c3cjk",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20231120094241-nu08597\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20231120094846-6j6szkd\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20231120094846-6j6szkd\u0026quot;,\u0026quot;focusStart\u0026quot;:515,\u0026quot;focusEnd\u0026quot;:515}",
+		"title": "一键获取Harbor中镜像信息，快捷查询镜像",
+		"updated": "20231120094850"
+	},
+	"Children": [
+		{
+			"ID": "20231120094241-nu08597",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231120094241-nu08597",
+				"updated": "20231120094312"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 命令行获取Harbor镜像清单"
+				}
+			]
+		},
+		{
+			"ID": "20231120094351-1ogpu20",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231120094351-1ogpu20"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Harbor服务主机上，可通过如下命令在 registry 存储目录下获取镜像列表："
+				}
+			]
+		},
+		{
+			"ID": "20231120094319-b8um78o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231120094319-b8um78o",
+				"updated": "20231120094320"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ grep data_volume  /app/harbor/harbor.yml    #根据配置文件查找数据存储目录\ndata_volume: /data\n\n$ cd /data/registry    #进入到Harbor的数据目录下\n$ find  docker  -type  d  -name \"current\"  | sed  's|docker/registry/v2/repositories/||g;s|/_manifests/tags/|:|g;s|/current||g'  \u003e  images.list\n$ cat images.list\nlidabai/busybox:1.28\nlibrary/prepare:v2.5.1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231120094340-rjhm55m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231120094340-rjhm55m",
+				"updated": "20231120094423"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.  Shell脚本获取Harbor中所有的镜像列表"
+				}
+			]
+		},
+		{
+			"ID": "20231120094346-iydb5bb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231120094346-iydb5bb",
+				"updated": "20231120094606"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前面在harbor服务主机命令行实现了harbor镜像清单列表的获取。\n那么，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "如果不是在Harbor服务主机上又该如何获取呢？"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20231120094615-w5ju8he",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231120094615-w5ju8he",
+				"updated": "20231120094616"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过调用Harbor API，先获取所有项目（Projects）,然后循环获取每个项目下的镜像名称，再循环获取某个镜像的所有tag版本，最后以指定的格式输出到一个镜像清单文件中。而Harbor的API有两个版本（v1、v2）， "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "每个版本的API调用方法都不一样。"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20231120094620-xhnxaej",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20231120094620-xhnxaej",
+				"updated": "20231120094640"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 查看API版本"
+				}
+			]
+		},
+		{
+			"ID": "20231120094620-mlno71g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231120094620-mlno71g",
+				"updated": "20231120094620"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ curl https://192.168.2.250:443/api/version  -k\n{\"version\":\"v2.0\"}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231120094632-9y6bxmt",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20231120094632-9y6bxmt",
+				"updated": "20231120094643"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 Harbor V1 API的shell脚本"
+				}
+			]
+		},
+		{
+			"ID": "20231120094644-tr9u1k7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231120094644-tr9u1k7",
+				"updated": "20231120094655"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat Harbor-image-list.sh\n#!/bin/bash\n\n#镜像清单文件，将获取到的镜像信息存到该文件中\nFile=harbor-images-`date '+%Y-%m-%d'`.txt\n## 定义Harbor连接地址,这里需要改为你们自己的Harbor地址\nAddress=http://192.168.2.250:443\n## 定义连接Harbor的用户名和密码（因为是获取全部的镜像，只有admin用户才有该权限）\nHamin=admin:Harbor12345\n## 获取Harbor中有哪些项目（Project）\nProject_List=$(curl -u \"$Hamin\"  -X GET  $Address/api/projects  -H \"Content-Type: application/json\"   | grep name | awk '/\"name\": /' | awk -F '\"' '{print $4}')\n\nfor Project in $Project_List;do\n  # 循环获取每个项目下所有的镜像\n Image_Names=$(curl -u \"$Hamin\"  -X GET $Address/api/search?q=$Project -H \"Content-Type: application/json\" | grep \"repository_name\" | awk -F \"\\\"\" '{print $4}')\n    for Image in $Image_Names;do\n    # 循环获取每个镜像所有的标签（版本）\n    Image_Tags=$(curl -u \"$Hamin\"  -X GET  $Address/api/repositories/$Image/tags -H \"Content-Type: application/json\" | awk '/\"name\": /' | awk -F '\"' '{print $4}')\n        for Tag in $Image_Tags;do\n        # 将获取到的镜像完整路径存档到镜像清单文件\n        echo \"$Address/$Image:$Tag\" | grep -v Base | grep -v Image | grep -v CentOS \u003e\u003e  $File\n        done\n    done\ndone\n$ chmod +x   Harbor-image-listk.sh       #给脚本可执行权限\n$ sh Harbor-image-listk.sh    #执行脚本\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231120094700-bba2tna",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231120094700-bba2tna",
+				"updated": "20231120094700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然后可以打开$File中的文件查看镜像清单了！"
+				}
+			]
+		},
+		{
+			"ID": "20231120094723-nscisqs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20231120094723-nscisqs",
+				"updated": "20231120094732"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 Harbor API v2版本的Shell脚本实现"
+				}
+			]
+		},
+		{
+			"ID": "20231120094741-lqdz3vl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231120094741-lqdz3vl",
+				"updated": "20231120094742"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat  Harbor-image-listk-v2.sh\n#!/bin/bash\nHarbor_Address=192.168.2.250:443       #Harbor主机地址\nHarbor_User=admin                      #登录Harbor的用户\nHarbor_Passwd=Harbor12345              #登录Harbor的用户密码\nImages_File=harbor-images-`date '+%Y-%m-%d'`.txt   # 镜像清单文件\nTar_File=/backup/Harbor-backup/                 #镜像tar包存放路径\nset -x\n# 获取Harbor中所有的项目（Projects）\nProject_List=$(curl -u admin:Harbor12345  -H \"Content-Type: application/json\" -X GET  https://192.168.2.250:443/api/v2.0/projects  -k  | python -m json.tool | grep name | awk '/\"name\": /' | awk -F '\"' '{print $4}')\n\nfor Project in $Project_List;do\n   # 循环获取项目下所有的镜像\n    Image_Names=$(curl -u admin:Harbor12345 -H \"Content-Type: application/json\" -X GET https://192.168.2.250:443/api/v2.0/projects/$Project/repositories -k | python -m json.tool | grep name | awk '/\"name\": /' | awk -F '\"' '{print $4}')\n    for Image in $Image_Names;do\n        # 循环获取镜像的版本（tag)\n        Image_Tags=$(curl -u admin:Harbor12345  -H \"Content-Type: application/json\"   -X GET  https://192.168.2.250:443/v2/$Image/tags/list  -k |  awk -F '\"'  '{print $8,$10,$12}')\n        for Tag in $Image_Tags;do\n            # 格式化输出镜像信息\n            echo \"$Harbor_Address/$Image:$Tag\"   \u003e\u003e harbor-images-`date '+%Y-%m-%d'`.txt\n        done\n    done\ndone\n$ chmod +x Harbor-image-listk-v2.sh\n$ sh Harbor-image-listk-v2.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231120094758-jwfkg73",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20231120094758-jwfkg73",
+				"updated": "20231120094814"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 基于镜像清单将Harbor中的镜像制作成tar包"
+				}
+			]
+		},
+		{
+			"ID": "20231120094816-a5qrez5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231120094816-a5qrez5",
+				"updated": "20231120094823"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "前面通过shell脚本获取harbor中的镜像列表，并以\n​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "harbor地址:服务端口/项目名称/镜像名称:tag"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​的格式输出到文件中。\n接下来可根据该文件批量pull镜像到本地，然后制作成tar包。"
+				}
+			]
+		},
+		{
+			"ID": "20231120094829-qkx9qvb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20231120094829-qkx9qvb",
+				"updated": "20231120094836"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 编写shell脚本"
+				}
+			]
+		},
+		{
+			"ID": "20231120094846-6j6szkd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231120094846-6j6szkd",
+				"updated": "20231120094850"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ cat image-pull.sh\n#!/bin/bash\n###使用docker从镜像文件中下载镜像——将下载的镜像进行打包保存——删除下载到本地的镜像——将封装好的镜像包移动到备份目录\nImage_tags=$(uniq $Images_File)\nfor image_tag in $Image_tags;do\n    image_Name=$(echo $image_tag | awk -F/ '{print $3}' |  awk -F: '{print $1}')\n    image_Lable=$(echo $image_tag | awk -F/ '{print $3}' |  awk -F: '{print $2}')\n    docker pull $image_tag\n    docker save $image_tag  -o $image_Name-$image_Lable.tar\n    docker rmi  $image_tag\n    mv $image_Name-$image_Lable.tar  $Tar_File\ndone\n$ chmod +x  image-pull.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

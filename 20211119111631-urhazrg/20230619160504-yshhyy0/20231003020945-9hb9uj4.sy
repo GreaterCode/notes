@@ -1,0 +1,53 @@
+{
+	"ID": "20231003020945-9hb9uj4",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20231003020945-9hb9uj4",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20231003020945-bfbgwsa\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20231003021008-twagkqc\u0026quot;,\u0026quot;scrollTop\u0026quot;:89,\u0026quot;focusId\u0026quot;:\u0026quot;20231003020945-bfbgwsa\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "ansible使用",
+		"updated": "20231003021014"
+	},
+	"Children": [
+		{
+			"ID": "20231003020945-bfbgwsa",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20231003020945-bfbgwsa",
+				"updated": "20231003020952"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n#在根目录下创建address文件，一行一个ip地址，将所有需要免密的主机ip填入\nUser=root\npassWord=123\naddress=`cat /address`\nrpm -q sshpass \u0026\u003e/dev/null || yum -y install sshpass \u0026\u003e/dev/null\nif [ $? -gt 0 ];then\nyum -y install sshpass \u0026\u003e/dev/null || (echo \"sshpass build error！\" \u0026\u0026 exit)\nfi\n[ -d ~/.ssh ] || mkdir ~/.ssh;chmod 700 ~/.ssh\necho \"正在创建密钥对....\"\nrm -rf ~/.ssh/*\nssh-keygen -t rsa -f ~/.ssh/id_rsa -P \"\" \u0026\u003e/dev/null\ncat ~/.ssh/id_rsa.pub \u003e\u003e ~/.ssh/authorized_keys \u0026\u0026 chmod 600 ~/.ssh/authorized_keys\nfor ip in $address\ndo\nping $ip -c1 \u0026\u003e/dev/null\nif [ $? -gt 0 ];then\necho \"$ip无法ping通请检查网络\"\ncontinue\nfi\nsshpass -p \"$passWord\" ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=no ${User}@$ip \u0026\u003e/dev/null\necho \"$ip 密钥分发成功\"\ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20231003021008-twagkqc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20231003021008-twagkqc",
+				"updated": "20231003021008"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ansible all -m ping -e ansible_python_interpreter=/usr/bin/python3 -u ccops001"
+				}
+			]
+		}
+	]
+}
