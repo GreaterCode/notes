@@ -1,0 +1,45 @@
+{
+	"ID": "20241115171927-cyesy1o",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241115171927-cyesy1o",
+		"title": "从clickhouse 服务导出指定容器日志",
+		"updated": "20241116000117"
+	},
+	"Children": [
+		{
+			"ID": "20241115171927-335w93k",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241115171927-335w93k",
+				"updated": "20241115172056"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 直接通过 namespace 和容器名称导出\nkubectl exec -it -n clickhouse ck-logging-0-0-0 -- clickhouse-client  --history_file /var/lib/clickhouse/client-hisotry -u cls --password stackV5@l0gg1ng -q \"select pod,toDateTime(timestamp/1000000000) AS time,message from logs.system  where namespace='openshift-machine-api' and app='metal3-ramdisk-logs' and (toYYYYMMDDhhmmss(toDateTime(timestamp/1000000000)) \u003e= '20240723000001' and toYYYYMMDDhhmmss(toDateTime(timestamp/1000000000)) \u003c '20240725000001') order by timestamp FORMAT CSV\" --format_csv_delimiter='|' \u003e /home/xx/clxu/ramdisk.pods.csv\n \n# 直接通过 namespace 和容器名称导出\nkubectl exec -it -n clickhouse ck-logging-0-0-0 -- clickhouse-client  --history_file /var/lib/clickhouse/client-hisotry -u cls --password stackV5@l0gg1ng -q \"select pod,toDateTime(timestamp/1000000000) AS time,message from logs.system  where namespace='openshift-machine-api' and app='metal3-baremetal-operator' and (toYYYYMMDDhhmmss(toDateTime(timestamp/1000000000)) \u003e= '20240725000001' and toYYYYMMDDhhmmss(toDateTime(timestamp/1000000000)) \u003c '20240803000001') order by timestamp FORMAT CSV\" --format_csv_delimiter='|' \u003e /home/xxx/clxu/baremetal.pods.csv\n \n# 增加了对 pod 名称的模糊匹配\nkubectl exec -it -n clickhouse ck-logging-0-0-0 -- clickhouse-client  --history_file /var/lib/clickhouse/client-hisotry -u cls --password stackV5@l0gg1ng -q \"select pod,toDateTime(timestamp/1000000000) AS time,message from logs.system  where namespace='openshift-machine-api' and pod like 'machine-api-controllers%' and app='machine-controller' and (toYYYYMMDDhhmmss(toDateTime(timestamp/1000000000)) \u003e= '20240725000001' and toYYYYMMDDhhmmss(toDateTime(timestamp/1000000000)) \u003c '20240803000001') order by timestamp FORMAT CSV\" --format_csv_delimiter='|' \u003e /home/ccadmin/xx/machine-controller.pods.csv\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241116000117-puegts8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241116000117-puegts8"
+			}
+		}
+	]
+}

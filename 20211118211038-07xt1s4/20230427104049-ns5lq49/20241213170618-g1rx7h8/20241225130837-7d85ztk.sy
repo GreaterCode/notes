@@ -1,0 +1,2155 @@
+{
+	"ID": "20241225130837-7d85ztk",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241225130837-7d85ztk",
+		"title": "虚拟化技术之kvm管理工具virsh常用基础命令（二）",
+		"type": "doc",
+		"updated": "20241225130859"
+	},
+	"Children": [
+		{
+			"ID": "20241225130837-19mba4v",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20241225130837-19mba4v",
+				"updated": "20241225130837"
+			}
+		},
+		{
+			"ID": "20241225130837-nek4mdn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241225130837-nek4mdn",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/p/13510721.html",
+					"TextMarkATitle": "发布于 2020-08-16 23:58",
+					"TextMarkTextContent": "虚拟化技术之kvm管理工具virsh常用基础命令（二）"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-785znbm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-785znbm",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://images.cnblogs.com/cnblogs_com/qiuhom-1874/1655970/o_200314035758kvm.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "从上面的演示我们可以看到，当我们修改了网络配置文件中的网络名称，ip地址，网桥名称，mac，dhcp地址池然后保存，它就会在对应目录下生成一个我们之前修改后的网络配置文件，并把我们的配置立刻应用到系统（define操作，不需要我们手动去define，它自动会define一个非活跃的持久网络)；这里提示下define出来的网络默认是持久的，create出来的网络不是持久的，所谓持久就是是否在/etc/libvirt/qemu/network/目录下生成配置文件，有配置文件的网络我们称它为持久网络，没有配置文件的网络我们称它为临时网络；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-2mqz22h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-2mqz22h",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　上一篇博客我们主要聊了下virsh 管理kvm虚拟机的命令相关用法和说明，回顾请参考"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/p/13508231.html",
+					"TextMarkTextContent": "https://www.cnblogs.com/qiuhom-1874/p/13508231.html"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "；今天我们来继续说virsh 管理kvm虚拟机的话题；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-4m6a4t7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-4m6a4t7",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　1、virsh 监控kvm虚拟机相关命令"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-qj71r2u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-qj71r2u",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domblklist：列出指定虚拟机上的磁盘信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-4qzwt1m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-4qzwt1m",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domblklist\n  NAME\n    domblklist - 列出所有域块\n  SYNOPSIS\n    domblklist \u003cdomain\u003e [--inactive] [--details]\n  DESCRIPTION\n    获取域块设备小结\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --inactive       获取不活跃而不是运行的配置\n    --details        type 和 device 值的附加显示\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n 4     c2                             running\n 6     generic                        running\n[root@node1 ~]# virsh domblklist c2\n目标     源\n------------------------------------------------\nvda        /kvm/images/c2.qcow2\nhda        -\n[root@node1 ~]# virsh domblklist generic \n目标     源\n------------------------------------------------\nhda        /kvm/images/cirros-0.5.0-x86_64-disk.img\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-9d5ruu0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-9d5ruu0",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domiflist：列出指定虚拟机上的所有网卡"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-idlf3nm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-idlf3nm",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domiflist\n  NAME\n    domiflist - 列出所有域虚拟接口\n  SYNOPSIS\n    domiflist \u003cdomain\u003e [--inactive]\n  DESCRIPTION\n    获取域虚拟接口小结\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --inactive       获取不活跃而不是运行的配置\n[root@node1 ~]# virsh domiflist generic \n接口     类型     源        型号      MAC\n-------------------------------------------------------\nvnet2      network    default    rtl8139     52:54:00:3e:3f:71\n[root@node1 ~]# virsh domiflist centos7.0 \n接口     类型     源        型号      MAC\n-------------------------------------------------------\nvnet0      network    default    virtio      52:54:00:e3:8d:11\n[root@node1 ~]# ifconfig\nens33: flags=4163\u003cUP,BROADCAST,RUNNING,MULTICAST\u003e  mtu 1500\n        inet 192.168.0.41  netmask 255.255.255.0  broadcast 192.168.0.255\n        inet6 fe80::20c:29ff:fe9a:dbd6  prefixlen 64  scopeid 0x20\u003clink\u003e\n        ether 00:0c:29:9a:db:d6  txqueuelen 1000  (Ethernet)\n        RX packets 113557  bytes 34709850 (33.1 MiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 111108  bytes 27361452 (26.0 MiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\nlo: flags=73\u003cUP,LOOPBACK,RUNNING\u003e  mtu 65536\n        inet 127.0.0.1  netmask 255.0.0.0\n        inet6 ::1  prefixlen 128  scopeid 0x10\u003chost\u003e\n        loop  txqueuelen 1000  (Local Loopback)\n        RX packets 132700  bytes 348628216 (332.4 MiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 132700  bytes 348628216 (332.4 MiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\nvirbr0: flags=4163\u003cUP,BROADCAST,RUNNING,MULTICAST\u003e  mtu 1500\n        inet 192.168.122.1  netmask 255.255.255.0  broadcast 192.168.122.255\n        ether 52:54:00:45:06:15  txqueuelen 1000  (Ethernet)\n        RX packets 2042  bytes 130515 (127.4 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 1028  bytes 83137 (81.1 KiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\nvnet0: flags=4163\u003cUP,BROADCAST,RUNNING,MULTICAST\u003e  mtu 1500\n        inet6 fe80::fc54:ff:fee3:8d11  prefixlen 64  scopeid 0x20\u003clink\u003e\n        ether fe:54:00:e3:8d:11  txqueuelen 1000  (Ethernet)\n        RX packets 571  bytes 46596 (45.5 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 11055  bytes 593226 (579.3 KiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\nvnet1: flags=4163\u003cUP,BROADCAST,RUNNING,MULTICAST\u003e  mtu 1500\n        inet6 fe80::fc54:ff:fee3:8521  prefixlen 64  scopeid 0x20\u003clink\u003e\n        ether fe:54:00:e3:85:21  txqueuelen 1000  (Ethernet)\n        RX packets 314  bytes 24074 (23.5 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 6210  bytes 333740 (325.9 KiB)\n        TX errors 0  dropped 4072 overruns 0  carrier 0  collisions 0\nvnet2: flags=4163\u003cUP,BROADCAST,RUNNING,MULTICAST\u003e  mtu 1500\n        inet6 fe80::fc54:ff:fe3e:3f71  prefixlen 64  scopeid 0x20\u003clink\u003e\n        ether fe:54:00:3e:3f:71  txqueuelen 1000  (Ethernet)\n        RX packets 741  bytes 56211 (54.8 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 4711  bytes 248155 (242.3 KiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-jjzc8d4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-jjzc8d4",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：从上面的信息可以看到kvm虚拟机上的网卡都对应在宿主机上的一个虚拟网卡 ；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-6qc4u7a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-6qc4u7a",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domifaddr：获取指定虚拟机上的ip地址"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-2810l22",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-2810l22",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domifaddr\n  NAME\n    domifaddr - Get network interfaces' addresses for a running domain\n  SYNOPSIS\n    domifaddr \u003cdomain\u003e [--interface \u003cstring\u003e] [--full] [--source \u003cstring\u003e]\n  DESCRIPTION\n    Get network interfaces' addresses for a running domain\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --interface \u003cstring\u003e  network interface name\n    --full           always display names and MACs of interfaces\n    --source \u003cstring\u003e  address source: 'lease', 'agent', or 'arp'\n[root@node1 ~]# virsh domifaddr c2         \n 名称     MAC 地址           Protocol     Address\n-------------------------------------------------------------------------------\n vnet1      52:54:00:e3:85:21    ipv4         192.168.122.168/24\n[root@node1 ~]# virsh domifaddr centos7.0 \n 名称     MAC 地址           Protocol     Address\n-------------------------------------------------------------------------------\n vnet0      52:54:00:e3:8d:11    ipv4         192.168.122.222/24\n[root@node1 ~]# virsh domifaddr generic \n 名称     MAC 地址           Protocol     Address\n-------------------------------------------------------------------------------\n vnet2      52:54:00:3e:3f:71    ipv4         192.168.122.4/24\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-fjd65ql",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-fjd65ql",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domifstat：统计指定虚拟机上的指定网卡状态信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-sf9hwug",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-sf9hwug",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domifstat\n  NAME\n    domifstat - 获得域网络接口状态\n  SYNOPSIS\n    domifstat \u003cdomain\u003e \u003cinterface\u003e\n  DESCRIPTION\n    获得运行域的网络接口状态。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    [--interface] \u003cstring\u003e  interface device specified by name or MAC Address\n[root@node1 ~]# virsh domiflist c2\n接口     类型     源        型号      MAC\n-------------------------------------------------------\nvnet1      network    default    virtio      52:54:00:e3:85:21\n[root@node1 ~]# virsh  domifstat c2 vnet1 \nvnet1 rx_bytes 345156\nvnet1 rx_packets 6429\nvnet1 rx_errs 0\nvnet1 rx_drop 4072\nvnet1 tx_bytes 24206\nvnet1 tx_packets 316\nvnet1 tx_errs 0\nvnet1 tx_drop 0\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-88ijmir",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-88ijmir",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh dominfo：获取指定虚拟机的简要信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-snvt551",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-snvt551",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh  help dominfo\n  NAME\n    dominfo - 域信息\n  SYNOPSIS\n    dominfo \u003cdomain\u003e\n  DESCRIPTION\n    返回这个域的基本信息。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n[root@node1 ~]# virsh dominfo c2\nId:             4\n名称：       c2\nUUID:           10d61aa8-b0fa-4433-a733-00a8721bee01\nOS 类型：    hvm\n状态：       running\nCPU：          2\nCPU 时间：   188.1s\n最大内存： 2097152 KiB\n使用的内存： 2097152 KiB\n持久：       是\n自动启动： 禁用\n管理的保存： 否\n安全性模式： none\n安全性 DOI： 0\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-fhm7jk9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-fhm7jk9",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh dommemstat：获取指定虚拟机内存相关状态信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-6878emo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-6878emo",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help dommemstat\n  NAME\n    dommemstat - 获取域的内存统计\n  SYNOPSIS\n    dommemstat \u003cdomain\u003e [--period \u003cnumber\u003e] [--config] [--live] [--current]\n  DESCRIPTION\n    获取运行域的内存统计\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --period \u003cnumber\u003e  以秒为单位设定集合期限\n    --config         影响下一次引导\n    --live           影响运行的域\n    --current        影响当前域\n[root@node1 ~]# virsh  dommemstat c2 \nactual 2097152\nswap_in 0\nswap_out 0\nmajor_fault 201\nminor_fault 176924\nunused 1761832\navailable 1883456\nlast_update 1597490486\nrss 455384\n[root@node1 ~]# virsh  dommemstat centos7.0 \nactual 2097152\nswap_in 0\nswap_out 0\nmajor_fault 179\nminor_fault 169193\nunused 1761272\navailable 1883456\nlast_update 1597480749\nrss 560324\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-0ouvfy5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-0ouvfy5",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domstate：获取指定虚拟机的状态信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-1b46u0i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-1b46u0i",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domstate\n  NAME\n    domstate - 域状态\n  SYNOPSIS\n    domstate \u003cdomain\u003e [--reason]\n  DESCRIPTION\n    返回某个域的状态。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --reason         同时输出状态原因\n[root@node1 ~]# virsh  domstate centos7.0 \nrunning\n[root@node1 ~]# virsh  domstate centos7.0 --reason \nrunning (已引导)\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-pt2eccx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-pt2eccx",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domstats：显示指定虚拟机的详细状态信息，如果不指定虚拟机名称表示显示当前宿主机上的所有虚拟机的详细状态信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-agbyrsx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-agbyrsx",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domstats\n  NAME\n    domstats - get statistics about one or multiple domains\n  SYNOPSIS\n    domstats [--state] [--cpu-total] [--balloon] [--vcpu] [--interface] [--block] [--perf] [--list-active] [--list-inactive] [--list-persistent] [--list-transient] [--list-running] [--list-paused] [--list-shutoff] [--list-other] [--raw] [--enforce] [--backing] [--nowait] [\u003cdomain\u003e]...\n  DESCRIPTION\n    Gets statistics about one or more (or all) domains\n  OPTIONS\n    --state          report domain state\n    --cpu-total      report domain physical cpu usage\n    --balloon        report domain balloon statistics\n    --vcpu           report domain virtual cpu information\n    --interface      report domain network interface information\n    --block          report domain block device statistics\n    --perf           report domain perf event statistics\n    --list-active    list only active domains\n    --list-inactive  list only inactive domains\n    --list-persistent  list only persistent domains\n    --list-transient  list only transient domains\n    --list-running   list only running domains\n    --list-paused    list only paused domains\n    --list-shutoff   list only shutoff domains\n    --list-other     list only domains in other states\n    --raw            do not pretty-print the fields\n    --enforce        enforce requested stats parameters\n    --backing        add backing chain information to block stats\n    --nowait         report only stats that are accessible instantly\n    \u003cdomain\u003e         list of domains to get stats for\n[root@node1 ~]# virsh domstats centos7.0 \nDomain: 'centos7.0'\n  state.state=1\n  state.reason=1\n  cpu.time=108764965089\n  cpu.user=850000000\n  cpu.system=14010000000\n  balloon.current=2097152\n  balloon.maximum=2097152\n  balloon.swap_in=0\n  balloon.swap_out=0\n  balloon.major_fault=187\n  balloon.minor_fault=174029\n  balloon.unused=1758704\n  balloon.available=1883456\n  balloon.last-update=1597581679\n  balloon.rss=561212\n  vcpu.current=2\n  vcpu.maximum=2\n  vcpu.0.state=1\n  vcpu.0.time=39050000000\n  vcpu.0.wait=0\n  vcpu.1.state=1\n  vcpu.1.time=14570000000\n  vcpu.1.wait=0\n  net.count=1\n  net.0.name=vnet1\n  net.0.rx.bytes=142006\n  net.0.rx.pkts=2577\n  net.0.rx.errs=0\n  net.0.rx.drop=0\n  net.0.tx.bytes=17972\n  net.0.tx.pkts=222\n  net.0.tx.errs=0\n  net.0.tx.drop=0\n  block.count=2\n  block.0.name=vda\n  block.0.path=/var/lib/libvirt/images/centos7.0.qcow2\n  block.0.rd.reqs=6517\n  block.0.rd.bytes=150312448\n  block.0.rd.times=32776473520\n  block.0.wr.reqs=647\n  block.0.wr.bytes=13009920\n  block.0.wr.times=10069609744\n  block.0.fl.reqs=238\n  block.0.fl.times=938612582\n  block.0.allocation=16855924224\n  block.0.capacity=21474836480\n  block.0.physical=21478379520\n  block.1.name=hda\n  block.1.rd.reqs=3\n  block.1.rd.bytes=82\n  block.1.rd.times=227269\n  block.1.wr.reqs=0\n  block.1.wr.bytes=0\n  block.1.wr.times=0\n  block.1.fl.reqs=0\n  block.1.fl.times=0\n  block.1.allocation=0\n  block.1.physical=0\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-fer8kfh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-fer8kfh",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：如果想知获取某一对象的的详细信息可以在后面跟对应的选项来做过滤；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-wmmx0by",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-wmmx0by",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh domstats centos7.0 --interface  --balloon\nDomain: 'centos7.0'\n  balloon.current=2097152\n  balloon.maximum=2097152\n  balloon.swap_in=0\n  balloon.swap_out=0\n  balloon.major_fault=187\n  balloon.minor_fault=174029\n  balloon.unused=1758704\n  balloon.available=1883456\n  balloon.last-update=1597581679\n  balloon.rss=561468\n  net.count=1\n  net.0.name=vnet1\n  net.0.rx.bytes=148978\n  net.0.rx.pkts=2710\n  net.0.rx.errs=0\n  net.0.rx.drop=0\n  net.0.tx.bytes=18326\n  net.0.tx.pkts=227\n  net.0.tx.errs=0\n  net.0.tx.drop=0\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-6aei0bk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-6aei0bk",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：如果指定多个选项，它们之间是或关系，意思是仅显示指定选项的内容；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-lxvlcyj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-lxvlcyj",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domif-getlink：获取指定虚拟机的指定接口状态"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-tadwgsc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-tadwgsc",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domif-getlink\n  NAME\n    domif-getlink - 获取虚拟接口链接状态\n  SYNOPSIS\n    domif-getlink \u003cdomain\u003e \u003cinterface\u003e [--config]\n  DESCRIPTION\n    获取域虚拟接口链接状态\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    [--interface] \u003cstring\u003e  接口失败 (MAC 地址)\n    --config         获取持续接口状态\n[root@node1 ~]# virsh domif-getlink c2 vnet1 \nvnet1 up\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-4963lbt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-4963lbt",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domblkinfo：获取指定虚拟机的磁盘大小信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-v39mq7u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-v39mq7u",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh domblkinfo centos7.0 \n错误：command 'domblkinfo' requires \u003cdevice\u003e option\n[root@node1 ~]# \n[root@node1 ~]# virsh help domblkinfo    \n  NAME\n    domblkinfo - 域块设备大小信息\n  SYNOPSIS\n    domblkinfo \u003cdomain\u003e [--device \u003cstring\u003e] [--human] [--all]\n  DESCRIPTION\n    获取域块设备大小信息\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --device \u003cstring\u003e  阻止设备\n    --human          Human readable output\n    --all            display all block devices info\n[root@node1 ~]# virsh domblklist c2\n目标     源\n------------------------------------------------\nvda        /kvm/images/c2.qcow2\nhda        -\n[root@node1 ~]# virsh domblkinfo c2 vda\n容量：       21474836480\n分配：       21478375424\n物理：       21478375424\n[root@node1 ~]# virsh domblkinfo c2 vda --human \n容量：       20.000 GiB\n分配：       20.003 GiB\n物理：       20.003 GiB\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-c181tr0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-c181tr0",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domblkerror：列出指定虚拟机上的指定磁盘的错误信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-a6zz8vr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-a6zz8vr",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domblkerror\n  NAME\n    domblkerror - 在块设备中显示错误\n  SYNOPSIS\n    domblkerror \u003cdomain\u003e\n  DESCRIPTION\n    显示块设备错误\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n[root@node1 ~]# virsh  domblkerror c2 \n未找到错误\n[root@node1 ~]# virsh  domblkerror centos7.0 \n未找到错误\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-mx9y4h2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-mx9y4h2",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh domcontrol：获取指定虚拟机上的控制接口状态信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-hanrzlv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-hanrzlv",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help domcontrol\n  NAME\n    domcontrol - 域控制接口状态\n  SYNOPSIS\n    domcontrol \u003cdomain\u003e\n  DESCRIPTION\n    向域返回控制接口状态\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n[root@node1 ~]# virsh  domcontrol centos7.0 \n确定\n[root@node1 ~]# virsh  domcontrol generic \n确定\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-4vei1yv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-4vei1yv",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：我这里显示的是中文，正常情况就是ok状态；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-2aavxb3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-2aavxb3",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　以上命令主要是用于监控虚拟机上的各种状态相关的命令，我们可以基于上面的命令写成脚本，然后实现批量的获取多个虚拟机的状态信息；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-jaancly",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-jaancly",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　2、virsh管理网络相关命令"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-te1g8pd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-te1g8pd",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-list：列出网络"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-01iefuz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-01iefuz",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-list\n  NAME\n    net-list - 列出网络\n  SYNOPSIS\n    net-list [--inactive] [--all] [--persistent] [--transient] [--autostart] [--no-autostart] [--uuid] [--name] [--table]\n  DESCRIPTION\n    返回网络列表\n  OPTIONS\n    --inactive       列出不活跃的网络\n    --all            列出不活跃和活跃的网络\n    --persistent     列出持久网络\n    --transient      列出临时网络\n    --autostart      列出启用 autostart 的网络\n    --no-autostart   列出禁用 autostart 的网络\n    --uuid           只列出 uuid\n    --name           list network names only\n    --table          列出表格（默认）\n[root@node1 ~]# virsh net-list \n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-q3alfdv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-q3alfdv",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：默认是以表格的形式列出激活的网络，如果要指定列出某种状态的网络，后面可以跟选项；从上面的信息可以看到当前只有一个默认的网络，处于活跃状态并且是自动启动；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-qhbo1hf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-qhbo1hf",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-dumpxml：显示指定网络的配置文件内容到标准输出；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-1tgbpqh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-1tgbpqh",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh  help net-dumpxml\n  NAME\n    net-dumpxml - XML 中的网络信息\n  SYNOPSIS\n    net-dumpxml \u003cnetwork\u003e [--inactive]\n  DESCRIPTION\n    把网络信息作为一个 XML 输出到 stdout。\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名或 uuid\n    --inactive       显示不活跃定义的 XML\n[root@node1 ~]# virsh   net-dumpxml default\n\u003cnetwork connections='3'\u003e\n  \u003cname\u003edefault\u003c/name\u003e\n  \u003cuuid\u003e958c004e-7aa9-483e-a79e-c62884e88a08\u003c/uuid\u003e\n  \u003cforward mode='nat'\u003e\n    \u003cnat\u003e\n      \u003cport start='1024' end='65535'/\u003e\n    \u003c/nat\u003e\n  \u003c/forward\u003e\n  \u003cbridge name='virbr0' stp='on' delay='0'/\u003e\n  \u003cmac address='52:54:00:45:06:15'/\u003e\n  \u003cip address='192.168.122.1' netmask='255.255.255.0'\u003e\n    \u003cdhcp\u003e\n      \u003crange start='192.168.122.2' end='192.168.122.254'/\u003e\n    \u003c/dhcp\u003e\n  \u003c/ip\u003e\n\u003c/network\u003e\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-esa2dlg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-esa2dlg",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：通过上述命令我们可以把指定的某个网络导出，然后基于这个网络文件来当做模板文件，此后如果要创建一个网络，我们直接复制这个模板，然后修改私有的信息即可生成一个我们需要创建的网络的配置文件；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-y8wv5qg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-y8wv5qg",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-define：从指定xml配置文件定义一个网络或者基于指定xml来修改现有网络；类似virsh define命令的用法；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-gqimrec",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-gqimrec",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　示例：导出现有配置，修改ip地址，然后基于这个导出的配置来使用virsh net-define创建一个网络"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-0mhyfmc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-0mhyfmc",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh net-dumpxml default \u003edefault.xml \n[root@node1 ~]# cp default.xml test.xml\n[root@node1 ~]# diff default.xml test.xml \n2,3c2\n\u003c   \u003cname\u003edefault\u003c/name\u003e\n\u003c   \u003cuuid\u003e958c004e-7aa9-483e-a79e-c62884e88a08\u003c/uuid\u003e\n---\n\u003e   \u003cname\u003etest\u003c/name\u003e\n9,11c8,10\n\u003c   \u003cbridge name='virbr0' stp='on' delay='0'/\u003e\n\u003c   \u003cmac address='52:54:00:45:06:15'/\u003e\n\u003c   \u003cip address='192.168.122.1' netmask='255.255.255.0'\u003e\n---\n\u003e   \u003cbridge name='virbr1' stp='on' delay='0'/\u003e\n\u003e   \u003cmac address='52:54:00:45:06:16'/\u003e\n\u003e   \u003cip address='192.168.12.1' netmask='255.255.255.0'\u003e\n13c12\n\u003c       \u003crange start='192.168.122.2' end='192.168.122.254'/\u003e\n---\n\u003e       \u003crange start='192.168.12.2' end='192.168.12.254'/\u003e\n[root@node1 ~]# cat test.xml \n\u003cnetwork connections='3'\u003e\n  \u003cname\u003etest\u003c/name\u003e\n  \u003cforward mode='nat'\u003e\n    \u003cnat\u003e\n      \u003cport start='1024' end='65535'/\u003e\n    \u003c/nat\u003e\n  \u003c/forward\u003e\n  \u003cbridge name='virbr1' stp='on' delay='0'/\u003e\n  \u003cmac address='52:54:00:45:06:16'/\u003e\n  \u003cip address='192.168.12.1' netmask='255.255.255.0'\u003e\n    \u003cdhcp\u003e\n      \u003crange start='192.168.12.2' end='192.168.12.254'/\u003e\n    \u003c/dhcp\u003e\n  \u003c/ip\u003e\n\u003c/network\u003e\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-m55glsv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-m55glsv",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：通常我们需要修改网络的名称，删除uuid，让其创建时自动生成，指定ip地址，修改mac地址以及dhcp地址池，网桥名称以及网络的类型;"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-8abjvev",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-8abjvev",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-define                \n  NAME\n    net-define - define an inactive persistent virtual network or modify an existing persistent one from an XML file\n  SYNOPSIS\n    net-define \u003cfile\u003e\n  DESCRIPTION\n    Define or modify a persistent virtual network.\n  OPTIONS\n    [--file] \u003cstring\u003e  文件包括一个 XML网络描述\n[root@node1 ~]# virsh net-define test.xml                     \n从 test定义网络test.xml\n[root@node1 ~]# virsh net-list \n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n[root@node1 ~]# virsh net-list --all\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 不活跃  否           是\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-dfj1l3f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-dfj1l3f",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：默认情况用define定义一个网络它并不会激活；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-rvbqzks",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-rvbqzks",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-start：激活一个指定的非活跃网络"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-p6c33to",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-p6c33to",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-start\n  NAME\n    net-start - 开始一个(以前定义的)不活跃的网络\n  SYNOPSIS\n    net-start \u003cnetwork\u003e\n  DESCRIPTION\n    开始一个网络.\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名或 uuid\n[root@node1 ~]# virsh net-start test \n网络 test 已开始\n[root@node1 ~]# virsh net-list\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n[root@node1 ~]# ip a\n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n    inet6 ::1/128 scope host \n       valid_lft forever preferred_lft forever\n2: ens33: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc pfifo_fast state UP qlen 1000\n    link/ether 00:0c:29:9a:db:d6 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.0.41/24 brd 192.168.0.255 scope global noprefixroute ens33\n       valid_lft forever preferred_lft forever\n    inet6 fe80::20c:29ff:fe9a:dbd6/64 scope link \n       valid_lft forever preferred_lft forever\n3: virbr0: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc noqueue state UP qlen 1000\n    link/ether 52:54:00:45:06:15 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0\n       valid_lft forever preferred_lft forever\n4: virbr0-nic: \u003cBROADCAST,MULTICAST\u003e mtu 1500 qdisc pfifo_fast master virbr0 state DOWN qlen 1000\n    link/ether 52:54:00:45:06:15 brd ff:ff:ff:ff:ff:ff\n5: vnet0: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc pfifo_fast master virbr0 state UNKNOWN qlen 1000\n    link/ether fe:54:00:3e:3f:71 brd ff:ff:ff:ff:ff:ff\n    inet6 fe80::fc54:ff:fe3e:3f71/64 scope link \n       valid_lft forever preferred_lft forever\n6: vnet1: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc pfifo_fast master virbr0 state UNKNOWN qlen 1000\n    link/ether fe:54:00:e3:8d:11 brd ff:ff:ff:ff:ff:ff\n    inet6 fe80::fc54:ff:fee3:8d11/64 scope link \n       valid_lft forever preferred_lft forever\n7: vnet2: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc pfifo_fast master virbr0 state UNKNOWN qlen 1000\n    link/ether fe:54:00:e3:85:21 brd ff:ff:ff:ff:ff:ff\n    inet6 fe80::fc54:ff:fee3:8521/64 scope link \n       valid_lft forever preferred_lft forever\n8: virbr1: \u003cNO-CARRIER,BROADCAST,MULTICAST,UP\u003e mtu 1500 qdisc noqueue state DOWN qlen 1000\n    link/ether 52:54:00:45:06:16 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.12.1/24 brd 192.168.12.255 scope global virbr1\n       valid_lft forever preferred_lft forever\n9: virbr1-nic: \u003cBROADCAST,MULTICAST\u003e mtu 1500 qdisc pfifo_fast master virbr1 state DOWN qlen 1000\n    link/ether 52:54:00:45:06:16 brd ff:ff:ff:ff:ff:ff\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-c4v2e50",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-c4v2e50",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：可以看到指定test网络已经激活并且在宿主机上创建了一个virbr1的网桥和virbr1-nic的网卡，其实virbr1就是我们在配置文件中指定的网桥，在配置文件中指定的网桥必须未使用，如果指定网桥不存在则创建，而virbr1-nic这张网卡就是直接桥接到virbr1上；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-cklx9sy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-cklx9sy",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　测试：创建一个基于test网络的虚拟机，名为c3"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-6vmmlw6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-6vmmlw6",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# cd /etc/libvirt/qemu/\n[root@node1 qemu]# ls\nautostart  c2.xml  centos7.0.xml  generic.xml  networks\n[root@node1 qemu]# cp c2.xml c3.xml\n[root@node1 qemu]# cd /kvm/images/\n[root@node1 images]# ls\nc1.qcow2  c2.qcow2  cirros-0.5.0-x86_64-disk.img\n[root@node1 images]# cp c2.qcow2 c3.qcow2\n[root@node1 images]# diff /etc/libvirt/qemu/c2.xml /etc/libvirt/qemu/c3.xml \n9c9\n\u003c   \u003cname\u003ec2\u003c/name\u003e\n---\n\u003e   \u003cname\u003ec3\u003c/name\u003e\n40c40\n\u003c       \u003csource file='/kvm/images/c2.qcow2'/\u003e\n---\n\u003e       \u003csource file='/kvm/images/c3.qcow2'/\u003e\n73,74c73,74\n\u003c       \u003cmac address='52:54:00:e3:85:21'/\u003e\n\u003c       \u003csource network='default'/\u003e\n---\n\u003e       \u003cmac address='52:54:00:e3:86:e1'/\u003e\n\u003e       \u003csource network='test'/\u003e\n[root@node1 images]# virsh define /etc/libvirt/qemu/c3.xml\n定义域 c3（从 /etc/libvirt/qemu/c3.xml）\n[root@node1 images]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     generic                        running\n 2     centos7.0                      running\n 3     c2                             running\n -     c3                             关闭\n[root@node1 images]# virsh start c3\n域 c3 已开始\n[root@node1 images]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-5xej31c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-5xej31c",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　验证：连接至c3控制台，查看其ip地址是否是test网络？是否能够ping通virbr1？网关是否是virbr1?"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-area3ft",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-area3ft",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 images]# virsh domifaddr c3\n 名称     MAC 地址           Protocol     Address\n-------------------------------------------------------------------------------\n vnet3      52:54:00:e3:86:e1    ipv4         192.168.12.179/24\n[root@node1 images]# ssh 192.168.12.179\nThe authenticity of host '192.168.12.179 (192.168.12.179)' can't be established.\nECDSA key fingerprint is SHA256:heUVB8InZ+56B+vMgUz+B7Uus4EgklEU9DVeywf1Z7s.\nECDSA key fingerprint is MD5:0b:b1:75:a4:2b:ba:cf:f1:ac:51:cb:76:2a:74:89:42.\nAre you sure you want to continue connecting (yes/no)? yes\nWarning: Permanently added '192.168.12.179' (ECDSA) to the list of known hosts.\nroot@192.168.12.179's password: \nLast login: Sun Aug 16 09:46:30 2020\n[root@localhost ~]# ping 192.168.12.1\nPING 192.168.12.1 (192.168.12.1) 56(84) bytes of data.\n64 bytes from 192.168.12.1: icmp_seq=1 ttl=64 time=0.514 ms\n64 bytes from 192.168.12.1: icmp_seq=2 ttl=64 time=0.585 ms\n^C\n--- 192.168.12.1 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1002ms\nrtt min/avg/max/mdev = 0.514/0.549/0.585/0.042 ms\n[root@localhost ~]# route -n\nKernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\n0.0.0.0         192.168.12.1    0.0.0.0         UG    100    0        0 eth0\n192.168.12.0    0.0.0.0         255.255.255.0   U     100    0        0 eth0\n[root@localhost ~]# exit\n登出\nConnection to 192.168.12.179 closed.\n[root@node1 images]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-1rejr61",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-1rejr61",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：从上面的信息可以看到基于test网络创建的虚拟机，其内部获取的地址是我们在test网络配置文件中指定的dhcp地址池，网关地址是virbr1的地址；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-ihe6stn",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-ihe6stn",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# brctl show\nbridge name     bridge id               STP enabled     interfaces\nvirbr0          8000.525400450615       yes             virbr0-nic\n                                                        vnet0\n                                                        vnet1\n                                                        vnet2\nvirbr1          8000.525400450616       yes             virbr1-nic\n                                                        vnet3\n[root@node1 ~]# iptables -t nat -nvL\nChain PREROUTING (policy ACCEPT 239 packets, 21179 bytes)\n pkts bytes target     prot opt in     out     source               destination       \nChain INPUT (policy ACCEPT 68 packets, 8639 bytes)\n pkts bytes target     prot opt in     out     source               destination       \nChain OUTPUT (policy ACCEPT 86 packets, 6827 bytes)\n pkts bytes target     prot opt in     out     source               destination       \nChain POSTROUTING (policy ACCEPT 86 packets, 6827 bytes)\n pkts bytes target     prot opt in     out     source               destination       \n    2   180 RETURN     all  --  *      *       192.168.12.0/24      224.0.0.0/24     \n    1   328 RETURN     all  --  *      *       192.168.12.0/24      255.255.255.255   \n   29  1740 MASQUERADE  tcp  --  *      *       192.168.12.0/24     !192.168.12.0/24      masq ports: 1024-65535\n   94  7144 MASQUERADE  udp  --  *      *       192.168.12.0/24     !192.168.12.0/24      masq ports: 1024-65535\n    1    84 MASQUERADE  all  --  *      *       192.168.12.0/24     !192.168.12.0/24  \n    2   267 RETURN     all  --  *      *       192.168.122.0/24     224.0.0.0/24     \n    0     0 RETURN     all  --  *      *       192.168.122.0/24     255.255.255.255   \n   80  4800 MASQUERADE  tcp  --  *      *       192.168.122.0/24    !192.168.122.0/24     masq ports: 1024-65535\n  269 20444 MASQUERADE  udp  --  *      *       192.168.122.0/24    !192.168.122.0/24     masq ports: 1024-65535\n    0     0 MASQUERADE  all  --  *      *       192.168.122.0/24    !192.168.122.0/24   \n[root@node1 ~]# route -n\nKernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\n0.0.0.0         192.168.0.1     0.0.0.0         UG    100    0        0 ens33\n192.168.0.0     0.0.0.0         255.255.255.0   U     100    0        0 ens33\n192.168.12.0    0.0.0.0         255.255.255.0   U     0      0        0 virbr1\n192.168.122.0   0.0.0.0         255.255.255.0   U     0      0        0 virbr0\n[root@node1 ~]# ip a l vnet3\n10: vnet3: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc pfifo_fast master virbr1 state UNKNOWN qlen 1000\n    link/ether fe:54:00:e3:86:e1 brd ff:ff:ff:ff:ff:ff\n    inet6 fe80::fc54:ff:fee3:86e1/64 scope link \n       valid_lft forever preferred_lft forever\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-tpup0dw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-tpup0dw",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：如果我们在基于test网络创建虚拟机，它也会把虚拟机的虚拟网卡桥接到virbr1上，如果我们指定的网络类型是nat类型并开启了dhcp，它默认会把虚拟机的网关指向virbr1；并且在宿主机上的iptables的nat表中会添加SNAT规则，正因为这些iptables规则才使得虚拟机可以上外网；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-di10720",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-di10720",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-info：查看指定网络的简要信息"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-o1xatlo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-o1xatlo",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-info\n  NAME\n    net-info - 网络信息\n  SYNOPSIS\n    net-info \u003cnetwork\u003e\n  DESCRIPTION\n    返回关于这个网络的基本信息。\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名或 uuid\n[root@node1 ~]# virsh net-info test\n名称：       test\nUUID:           be2af58a-c8cd-4b73-8ee3-36cb3fe9566b\n活跃：       是\n持久：       是\n自动启动： 否\n桥接：       virbr1\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-ch1fedd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-ch1fedd",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-autostart：标记指定网络为自动启动"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-t4nwb6f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-t4nwb6f",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-autostart\n  NAME\n    net-autostart - 自动开始网络\n  SYNOPSIS\n    net-autostart \u003cnetwork\u003e [--disable]\n  DESCRIPTION\n    设置一个网络在启动时自动开始.\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名或 uuid\n    --disable        禁止自动启动\n[root@node1 ~]# virsh net-autostart test \n网络test标记为自动启动\n[root@node1 ~]# virsh net-info test    \n名称：       test\nUUID:           be2af58a-c8cd-4b73-8ee3-36cb3fe9566b\n活跃：       是\n持久：       是\n自动启动： 是\n桥接：       virbr1\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-2yxf9gx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-2yxf9gx",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-name：把指定uuid解析成名称"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-2y07jne",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-2y07jne",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh net-info test  \n名称：       test\nUUID:           be2af58a-c8cd-4b73-8ee3-36cb3fe9566b\n活跃：       是\n持久：       是\n自动启动： 是\n桥接：       virbr1\n[root@node1 ~]# virsh help net-name  \n  NAME\n    net-name - 把一个网络UUID 转换为网络名\n  SYNOPSIS\n    net-name \u003cnetwork\u003e\n  OPTIONS\n    [--network] \u003cstring\u003e  网络uuid\n[root@node1 ~]# virsh net-name be2af58a-c8cd-4b73-8ee3-36cb3fe9566b\ntest\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-kdstykn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-kdstykn",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-uuid：把指定网络名称解析成uuid"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-gp121vu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-gp121vu",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-uuid\n  NAME\n    net-uuid - 把一个网络名转换为网络UUID\n  SYNOPSIS\n    net-uuid \u003cnetwork\u003e\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名\n[root@node1 ~]# virsh net-uuid test \nbe2af58a-c8cd-4b73-8ee3-36cb3fe9566b\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-w9441b4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-w9441b4",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-dhcp-leases：显示指定网络的dhcp的租赁信息；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-g99vftd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-g99vftd",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-dhcp-leases\n  NAME\n    net-dhcp-leases - print lease info for a given network\n  SYNOPSIS\n    net-dhcp-leases \u003cnetwork\u003e [--mac \u003cstring\u003e]\n  DESCRIPTION\n    Print lease info for a given network\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名或 uuid\n    --mac \u003cstring\u003e   MAC 地址\n[root@node1 ~]# virsh  net-dhcp-leases test \n Expiry Time          MAC 地址         Protocol  IP address                Hostname        Client ID or DUID\n-------------------------------------------------------------------------------------------------------------------\n 2020-08-16 23:27:20  52:54:00:e3:86:e1  ipv4      192.168.12.179/24         -               -\n[root@node1 ~]# virsh  net-dhcp-leases default \n Expiry Time          MAC 地址         Protocol  IP address                Hostname        Client ID or DUID\n-------------------------------------------------------------------------------------------------------------------\n 2020-08-16 23:32:45  52:54:00:3e:3f:71  ipv4      192.168.122.4/24          cirros          01:52:54:00:3e:3f:71\n 2020-08-16 23:11:38  52:54:00:e3:85:21  ipv4      192.168.122.168/24        -               -\n 2020-08-16 23:14:35  52:54:00:e3:8d:11  ipv4      192.168.122.222/24        -               -\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-7qj0goz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-7qj0goz",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-edit：编辑指定虚拟机的配置文件；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-qqondp8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-qqondp8",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1503305/202008/1503305-20200816223757395-92334541.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-ap2mrvy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-ap2mrvy",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：使用virsh net-edit，它默认就会去打开指定网络的配置文件，我们可以编辑这个配置文件来创建一个网络，也可以更改对应网络的配置，然后重读配置文件使对应配置生效；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-fz5j6si",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-fz5j6si",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　编辑test网络配置文件的dhcp地址池地址和virbr1的地址；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-tnpvrsp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-tnpvrsp",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh net-edit test\n\u003cnetwork\u003e\n  \u003cname\u003etest\u003c/name\u003e\n  \u003cuuid\u003ef9452d96-55fa-4dbf-ad9c-b1ba99b7f2ad\u003c/uuid\u003e\n  \u003cforward mode='nat'\u003e\n    \u003cnat\u003e\n      \u003cport start='1024' end='65535'/\u003e\n    \u003c/nat\u003e\n  \u003c/forward\u003e\n  \u003cbridge name='virbr1' stp='on' delay='0'/\u003e\n  \u003cmac address='52:54:00:45:06:16'/\u003e\n  \u003cip address='192.168.11.1' netmask='255.255.255.0'\u003e\n    \u003cdhcp\u003e\n      \u003crange start='192.168.11.2' end='192.168.11.254'/\u003e\n    \u003c/dhcp\u003e\n  \u003c/ip\u003e\n\u003c/network\u003e\n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n\"/tmp/virshJaE8MT.xml\" 16L, 413C written\n已编辑网络 test XML 配置\n[root@node1 ~]# cat /etc/libvirt/qemu/networks/test.xml \n\u003c!--\nWARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE\nOVERWRITTEN AND LOST. Changes to this xml configuration should be made using:\n  virsh net-edit test\nor other application using the libvirt API.\n--\u003e\n\u003cnetwork\u003e\n  \u003cname\u003etest\u003c/name\u003e\n  \u003cuuid\u003ef9452d96-55fa-4dbf-ad9c-b1ba99b7f2ad\u003c/uuid\u003e\n  \u003cforward mode='nat'\u003e\n    \u003cnat\u003e\n      \u003cport start='1024' end='65535'/\u003e\n    \u003c/nat\u003e\n  \u003c/forward\u003e\n  \u003cbridge name='virbr1' stp='on' delay='0'/\u003e\n  \u003cmac address='52:54:00:45:06:16'/\u003e\n  \u003cip address='192.168.11.1' netmask='255.255.255.0'\u003e\n    \u003cdhcp\u003e\n      \u003crange start='192.168.11.2' end='192.168.11.254'/\u003e\n    \u003c/dhcp\u003e\n  \u003c/ip\u003e\n\u003c/network\u003e\n[root@node1 ~]# virsh net-info test\n名称：       test\nUUID:           f9452d96-55fa-4dbf-ad9c-b1ba99b7f2ad\n活跃：       是\n持久：       是\n自动启动： 否\n桥接：       virbr1\n[root@node1 ~]# ip a l virbr1\n13: virbr1: \u003cNO-CARRIER,BROADCAST,MULTICAST,UP\u003e mtu 1500 qdisc noqueue state DOWN qlen 1000\n    link/ether 52:54:00:45:06:16 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.12.1/24 brd 192.168.12.255 scope global virbr1\n       valid_lft forever preferred_lft forever\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-d5no2uw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-d5no2uw",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：默认修改了指定活跃网络的配置文件后是不会马上生效的；创建持久网络后，默认配置文件存放在/etc/libvirt/qemu/network/目录下和对应网络名称同名的xml格式文件；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-7huep1d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-7huep1d",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　让指定网络重读配置文件生效"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-jgta7ss",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-jgta7ss",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh net-list \n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n[root@node1 ~]# virsh net-destroy test \n网络 test 被删除\n[root@node1 ~]# virsh net-list       \n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n[root@node1 ~]# virsh net-list --all\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 不活跃  否           是\n[root@node1 ~]# virsh net-start test \n网络 test 已开始\n[root@node1 ~]# ip a l virbr1\n15: virbr1: \u003cNO-CARRIER,BROADCAST,MULTICAST,UP\u003e mtu 1500 qdisc noqueue state DOWN qlen 1000\n    link/ether 52:54:00:45:06:16 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.11.1/24 brd 192.168.11.255 scope global virbr1\n       valid_lft forever preferred_lft forever\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-asfth2j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-asfth2j",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：让其重读配置文件的方式我们只有重启网络，所以上面的操作上先停止对应网络，然后在启动对应网络；virsh net-destory命令是删除指定活跃状态的网络，就相当于停止操作；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-rzy5lyw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-rzy5lyw",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　验证：对应网络上的虚拟机地址会发生更新吗？"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-q4zzhii",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-q4zzhii",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh domifaddr c3\n 名称     MAC 地址           Protocol     Address\n-------------------------------------------------------------------------------\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     generic                        running\n 2     centos7.0                      running\n 3     c2                             running\n 4     c3                             running\n[root@node1 ~]# virsh destroy c3\n域 c3 被删除\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     generic                        running\n 2     centos7.0                      running\n 3     c2                             running\n -     c3                             关闭\n[root@node1 ~]# virsh start c3  \n域 c3 已开始\n[root@node1 ~]# virsh domifaddr c3\n 名称     MAC 地址           Protocol     Address\n-------------------------------------------------------------------------------\n vnet3      52:54:00:e3:86:e1    ipv4         192.168.11.179/24\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-9062dv2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-9062dv2",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：对应网络上的虚拟机如果不重启，它默认会获取不到地址；其实上述重启可以使用virsh reboot命令；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-5s5r4nj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-5s5r4nj",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　利用virsh edit来生成一个网络"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-v9uj9ml",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-v9uj9ml",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh net-list --all\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n[root@node1 ~]# virsh net-edit test \n  \u003cuuid\u003ef9452d96-55fa-4dbf-ad9c-b1ba99b7f2ad\u003c/uuid\u003e\n\u003cnetwork\u003e\n  \u003cname\u003etest1\u003c/name\u003e\n  \u003cforward mode='nat'\u003e\n    \u003cnat\u003e\n      \u003cport start='1024' end='65535'/\u003e\n    \u003c/nat\u003e\n  \u003c/forward\u003e\n  \u003cbridge name='virbr2' stp='on' delay='0'/\u003e\n  \u003cmac address='52:54:10:45:06:16'/\u003e\n  \u003cip address='192.168.10.1' netmask='255.255.255.0'\u003e\n    \u003cdhcp\u003e\n      \u003crange start='192.168.10.2' end='192.168.10.254'/\u003e\n    \u003c/dhcp\u003e\n  \u003c/ip\u003e\n\u003c/network\u003e\n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n~                                                                                                                              \n\"/tmp/virshWqhNS8.xml\" 15L, 362C written\n已编辑网络 test1 XML 配置\n[root@node1 ~]# ll /etc/libvirt/qemu/networks/\n总用量 12\ndrwx------ 2 root root  25 8月  16 22:59 autostart\n-rw------- 1 root root 576 8月  13 23:31 default.xml\n-rw------- 1 root root 641 8月  16 23:23 test1.xml\n-rw------- 1 root root 639 8月  16 23:09 test.xml\n[root@node1 ~]# diff /etc/libvirt/qemu/networks/test.xml /etc/libvirt/qemu/networks/test1.xml \n4c4\n\u003c   virsh net-edit test\n---\n\u003e   virsh net-edit test1\n9,10c9,10\n\u003c   \u003cname\u003etest\u003c/name\u003e\n\u003c   \u003cuuid\u003ef9452d96-55fa-4dbf-ad9c-b1ba99b7f2ad\u003c/uuid\u003e\n---\n\u003e   \u003cname\u003etest1\u003c/name\u003e\n\u003e   \u003cuuid\u003e8dbdad99-91c5-435b-95b7-02179597f39e\u003c/uuid\u003e\n16,18c16,18\n\u003c   \u003cbridge name='virbr1' stp='on' delay='0'/\u003e\n\u003c   \u003cmac address='52:54:00:45:06:16'/\u003e\n\u003c   \u003cip address='192.168.11.1' netmask='255.255.255.0'\u003e\n---\n\u003e   \u003cbridge name='virbr2' stp='on' delay='0'/\u003e\n\u003e   \u003cmac address='52:54:10:45:06:16'/\u003e\n\u003e   \u003cip address='192.168.10.1' netmask='255.255.255.0'\u003e\n20c20\n\u003c       \u003crange start='192.168.11.2' end='192.168.11.254'/\u003e\n---\n\u003e       \u003crange start='192.168.10.2' end='192.168.10.254'/\u003e\n[root@node1 ~]# virsh net-list --all\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n test1                不活跃  否           是\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-ayg7rhp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-ayg7rhp",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：从上面的演示我们可以看到，当我们修改了网络配置文件中的网络名称，ip地址，网桥名称，mac，dhcp地址池然后保存，它就会在对应目录下生成一个我们之前修改后的网络配置文件，并把我们的配置立刻应用到系统（define操作，不需要我们手动去define，它自动会define一个非活跃的持久网络)；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-wr0m34i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-wr0m34i",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-create：从指定xml文件创建一个非持久的临时网络，并激活；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-q1jb0dk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-q1jb0dk",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-create\n  NAME\n    net-create - 从一个 XML 文件创建一个网络\n  SYNOPSIS\n    net-create \u003cfile\u003e\n  DESCRIPTION\n    创建一个网络\n  OPTIONS\n    [--file] \u003cstring\u003e  文件包括一个 XML网络描述\n[root@node1 ~]# cat test.xml \n\u003cnetwork connections='3'\u003e\n  \u003cname\u003etest2\u003c/name\u003e\n  \u003cforward mode='nat'\u003e\n    \u003cnat\u003e\n      \u003cport start='1024' end='65535'/\u003e\n    \u003c/nat\u003e\n  \u003c/forward\u003e\n  \u003cbridge name='virbr3' stp='on' delay='0'/\u003e\n  \u003cmac address='52:54:00:45:06:17'/\u003e\n  \u003cip address='192.168.17.1' netmask='255.255.255.0'\u003e\n    \u003cdhcp\u003e\n      \u003crange start='192.168.17.2' end='192.168.17.254'/\u003e\n    \u003c/dhcp\u003e\n  \u003c/ip\u003e\n\u003c/network\u003e\n[root@node1 ~]# ll /etc/libvirt/qemu/networks/\n总用量 12\ndrwx------ 2 root root  25 8月  16 22:59 autostart\n-rw------- 1 root root 576 8月  13 23:31 default.xml\n-rw------- 1 root root 641 8月  16 23:23 test1.xml\n-rw------- 1 root root 639 8月  16 23:09 test.xml\n[root@node1 ~]# virsh net-create test.xml \n从test2创建网络test.xml \n[root@node1 ~]# virsh net-list --all\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n test1                不活跃  否           是\n test2                活动     否           否\n[root@node1 ~]# ll /etc/libvirt/qemu/networks/\n总用量 12\ndrwx------ 2 root root  25 8月  16 22:59 autostart\n-rw------- 1 root root 576 8月  13 23:31 default.xml\n-rw------- 1 root root 641 8月  16 23:23 test1.xml\n-rw------- 1 root root 639 8月  16 23:09 test.xml\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-izv5e98",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-izv5e98",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：这里提示下define出来的网络默认是持久的，create出来的网络不是持久的，所谓持久就是是否在/etc/libvirt/qemu/network/目录下生成配置文件，有配置文件的网络我们称它为持久网络，没有配置文件的网络我们称它为临时网络；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-7eag2gk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-7eag2gk",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　virsh net-undefine：将指定持久网络取消定义，所谓取消定义就是转为非持久网络；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-29t0wyw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241225130837-29t0wyw",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help net-undefine\n  NAME\n    net-undefine - undefine a persistent network\n  SYNOPSIS\n    net-undefine \u003cnetwork\u003e\n  DESCRIPTION\n    Undefine the configuration for a persistent network.\n  OPTIONS\n    [--network] \u003cstring\u003e  网络名或 uuid\n[root@node1 ~]# virsh net-list --all\n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n test1                不活跃  否           是\n test2                活动     否           否\n[root@node1 ~]# ll /etc/libvirt/qemu/networks/\n总用量 12\ndrwx------ 2 root root  25 8月  16 22:59 autostart\n-rw------- 1 root root 576 8月  13 23:31 default.xml\n-rw------- 1 root root 641 8月  16 23:23 test1.xml\n-rw------- 1 root root 639 8月  16 23:09 test.xml\n[root@node1 ~]# virsh net-undefine test1\n网络 test1 已经被取消定义\n[root@node1 ~]# virsh net-list --all        \n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           是\n test2                活动     否           否\n[root@node1 ~]# ll /etc/libvirt/qemu/networks/\n总用量 8\ndrwx------ 2 root root  25 8月  16 22:59 autostart\n-rw------- 1 root root 576 8月  13 23:31 default.xml\n-rw------- 1 root root 639 8月  16 23:09 test.xml\n[root@node1 ~]# virsh net-undefine test\n网络 test 已经被取消定义\n[root@node1 ~]# virsh net-list --all        \n 名称               状态     自动开始  持久\n----------------------------------------------------------\n default              活动     是           是\n test                 活动     否           否\n test2                活动     否           否\n[root@node1 ~]# ll /etc/libvirt/qemu/networks/\n总用量 4\ndrwx------ 2 root root  25 8月  16 22:59 autostart\n-rw------- 1 root root 576 8月  13 23:31 default.xml\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-f146x73",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-f146x73",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　提示：net-undefine会把活跃状态的持久网络修改成非持久，它的操作就是把对应配置文件删除，并不会删除活跃的网络实例；将非活跃的持久化网络，它会删除其配置文件和网络实例；"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-oupk7ys",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-oupk7ys",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "作者："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/",
+					"TextMarkTextContent": "Linux-1874"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-8pe5g2b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-8pe5g2b",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "出处："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/",
+					"TextMarkTextContent": "https://www.cnblogs.com/qiuhom-1874/"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-icw5jtv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-icw5jtv",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本文版权归作者和博客园共有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利."
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-ipvc4vs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-ipvc4vs",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "分类: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/category/1827783.html",
+					"TextMarkTextContent": "KVM"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-0tyivuw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-0tyivuw",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "标签: "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/tag/KVM/",
+					"TextMarkTextContent": "KVM"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ",             "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/tag/virsh/",
+					"TextMarkTextContent": "virsh"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ",             "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/",
+					"TextMarkTextContent": "虚拟化"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-w9e3ie4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-w9e3ie4",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "好文要顶 关注我 收藏该文 微信分享"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-tmnj4ix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-tmnj4ix",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://pic.cnblogs.com/face/1503305/20181003204442.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://home.cnblogs.com/u/qiuhom-1874/",
+					"TextMarkTextContent": "https://home.cnblogs.com/u/qiuhom-1874/Linux-1874"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://home.cnblogs.com/u/qiuhom-1874/followers/",
+					"TextMarkTextContent": "粉丝 - 261"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://home.cnblogs.com/u/qiuhom-1874/followees/",
+					"TextMarkTextContent": "关注 - 0"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-z899bpc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-z899bpc",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "+加关注"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-wdmy8ae",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-wdmy8ae",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "0"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-gro21qy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-gro21qy",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "0"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-fuwc6cy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-fuwc6cy",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/p/13508231.html",
+					"TextMarkTextContent": "« "
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 上一篇：    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/p/13508231.html",
+					"TextMarkATitle": "发布于 2020-08-15 18:36",
+					"TextMarkTextContent": "虚拟化技术之kvm管理工具virsh常用基础命令（一）"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/p/13520939.html",
+					"TextMarkTextContent": "» "
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 下一篇：    "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874/p/13520939.html",
+					"TextMarkATitle": "发布于 2020-08-18 19:20",
+					"TextMarkTextContent": "虚拟化技术之kvm虚拟机创建工具virt-install"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-tcqxike",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-tcqxike",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "posted @ 2020-08-16 23:58 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/qiuhom-1874",
+					"TextMarkTextContent": "Linux-1874"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  阅读(6166)  评论(0) "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://i.cnblogs.com/EditPosts.aspx?postid=13510721",
+					"TextMarkTextContent": "编辑"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "  收藏  举报"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-aoa4qfb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-aoa4qfb",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "点击右上角即可分享"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-oyciq91",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-oyciq91",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "微信分享提示"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2023.cnblogs.com/blog/35695/202309/35695-20230906145857937-1471873834.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-wrijyh1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-wrijyh1",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://www.cnblogs.com/cmt/p/18602119",
+					"TextMarkATitle": "Chat2DB联合会员",
+					"TextMarkTextContent": "联合会员"
+				}
+			]
+		},
+		{
+			"ID": "20241225130837-t4luw28",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241225130837-t4luw28",
+				"updated": "20241225130837"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "![](data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)"
+				}
+			]
+		}
+	]
+}

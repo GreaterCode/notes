@@ -1,0 +1,3955 @@
+{
+	"ID": "20241119095228-shc29mw",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241119095228-shc29mw",
+		"title": "一篇文章带你学会etcd运维",
+		"updated": "20241119101406"
+	},
+	"Children": [
+		{
+			"ID": "20241119095228-bx8138h",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20241119095228-bx8138h",
+				"updated": "20241119095228"
+			}
+		},
+		{
+			"ID": "20241119095228-5zsf4m1",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-5zsf4m1",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-mr2zvby",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-mr2zvby",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-pg3fj7u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-pg3fj7u",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s/5NUrhhAujzVqtrI3JtdfAA",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s/5NUrhhAujzVqtrI3JtdfAA - 微信公众平台"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-b1cque6",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20241119095228-b1cque6",
+				"updated": "20241119095228"
+			}
+		},
+		{
+			"ID": "20241119095228-0pa0b48",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-0pa0b48",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、etcd配置说明"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-3hjeqwg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-3hjeqwg",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd 是一个分布式键值存储系统，用于配置管理和服务发现。它通常用于为分布式系统提供关键数据的一致性和高可用性。Etcd 的配置文件通常是一个 YAML 格式的文件，包含了一系列的参数和设置，用于调整 Etcd 服务器的行为。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-mxk3wee",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-mxk3wee",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "k8s的etcd 走的https,使用了证书,证书位置如下配置中路径"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-9wsyoxq",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241119095228-9wsyoxq",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241119095228-f5ry6n5",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241119095228-f5ry6n5",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "etcd集群部署: https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/configure-upgrade-etcd/#multi-node-etcd-cluster"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-3bdc3t4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-3bdc3t4",
+				"updated": "20241119095702"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@ localhost]# cat /etc/systemd/system/etcd.service\n...\n[Service]\nType=notify    \nWorkingDirectory=/data/kube/etcd/\nExecStart=/data/kube/bin/etcd \\\n--name=etcd1 \\\n--cert-file=/etc/etcd/ssl/etcd.pem \\         # 证书\n--key-file=/etc/etcd/ssl/etcd-key.pem \\\n--peer-cert-file=/etc/etcd/ssl/etcd.pem \\\n--peer-key-file=/etc/etcd/ssl/etcd-key.pem \\\n--trusted-ca-file=/etc/kubernetes/cluster/ssl/ca.pem \\\n--peer-trusted-ca-file=/etc/kubernetes/cluster/ssl/ca.pem \\\n...\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-8l6tuf6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-8l6tuf6",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-mvu8x3q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-mvu8x3q",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-okk9yfj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-okk9yfj",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "参数说明"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-h81sfkv",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "|",
+				"id": "20241119095228-h81sfkv",
+				"updated": "20241119101017"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "strong",
+											"TextMarkTextContent": "参数名称"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeTextMark",
+											"TextMarkType": "strong",
+											"TextMarkTextContent": "使用说明"
+										},
+										{
+											"Type": "NodeBr",
+											"Data": "br"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "name"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 节点的名称"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "data-dir"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "指定 Etcd 存储数据的目录路径"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "wal-dir"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "指定 Etcd 的 Write-Ahead Logging(WAL) 日志文件存放的目录路径"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "snapshot-count"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了触发新的快照之前，可以进行多少次事务提交"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "heartbeat-interval"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 节点之间发送心跳的间隔时间"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "election-timeout"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 领导者选举的超时时间"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "listen-peer-urls"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 节点之间通信的 URL 列表"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "listen-client-urls"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 节点对外提供服务的 URL 列表"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "initial-advertise-peer-urls"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 节点在加入集群时，用于自我宣传的对等 URL"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "advertise-client-urls"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 节点对外宣传的客户端 URL"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "initial-cluster"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 集群的初始状态，包括集群中的所有节点及其名称"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "initial-cluster-token"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 集群的初始令牌，用于集群的初始化"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "initial-cluster-state"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了 Etcd 集群的状态，可以是 new（新集群）或 existing（现有集群）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "auto-compaction-retention=1"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在一个小时内为mvcc键值存储的自动压实保留。0表示禁用自动碎片整理"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "max-request-bytes=10485760"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "消息最大字节数,ETCD默认该值为1.5M，注意：etcd容器使用的版本如果小于3.2.10, 此参数不能加，低于这个版本的不支持此参数"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "max-snapshots"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了允许的最大快照数量"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "\\|max-wals"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "定义了允许的最大 WAL 文件数量"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-lj0rddy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-lj0rddy",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-bjnaaf9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-bjnaaf9",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-qq33fsl",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-qq33fsl",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "etcd端口信息"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-f10yd0t",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "|",
+				"id": "20241119095228-f10yd0t",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "端口"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "作用"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2380端口"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "伙伴通信，例如集群通信，交换选举等信息"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2379端口"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2379是http协议的RESTful接口，用于客户端连接"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-lqub95z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-lqub95z",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、etcd高可用说明"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-xwn6b26",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-xwn6b26",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 etcd 集群中，领导者选举是 Raft 协议的一部分，用于在当前领导者失败或无法与集群中的其他节点通信时选出新的领导者。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-h1y5n7w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-h1y5n7w",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241119095228-gqtsuzh"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-24ooxw3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-24ooxw3",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.节点失去领导者"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-t2becrr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-t2becrr",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"info\",\"ts\":\"2024-05-07T01:54:04.948Z\",\"logger\":\"raft\",\"caller\":\"etcdserver/zap_raft.go:77\",\"msg\":\"raft.node: 9afce9447872453 lost leader 5ee9c643fc08f96b at term 52\"}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-7u2or88",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-7u2or88",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这条日志表明节点 9afce9447872453 丢失了它的领者 5ee9c643fc08f96b，这通常发生在领导者无法响应其他节点的心跳或请求时。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-s1cowjc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-s1cowjc",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.开始新的选举"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-p18mbmh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-p18mbmh",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"info\",\"ts\":\"2024-05-07T01:54:04.948Z\",\"logger\":\"raft\",\"caller\":\"etcdserver/zap_raft.go:77\",\"msg\":\"9afce9447872453 is starting a new election at term 52\"} \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-cyqg727",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-cyqg727",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由于丢失了领导者，节点 9afce9447872453 开始了一个新的选举过程。在 Raft 协议中，选举过程包括预投票（PreVote）和投票（Vote）阶段。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-xrjzyye",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-xrjzyye",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.节点成为候选者"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-40nv3zm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-40nv3zm",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"info\",\"ts\":\"2024-05-07T01:54:04.948Z\",\"logger\":\"raft\",\"caller\":\"etcdserver/zap_raft.go:77\",\"msg\":\"9afce9447872453 became pre-candidate at term 52\"}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-9rnr2gm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-9rnr2gm",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "节点 9afce9447872453 成为了一个预候选者（pre-candidate），这是选举过程的第一步，节点会请求其他节点的预投票。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-q39pk7b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-q39pk7b",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4.发送预投票请求"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-5slccch",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-5slccch",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"info\",\"ts\":\"2024-05-07T01:54:04.948Z\",\"logger\":\"raft\",\"caller\":\"etcdserver/zap_raft.go:77\",\"msg\":\"9afce9447872453 [logterm: 52, index: 456617084] sent MsgPreVote request to 2fa50bf947c1df3a at term 52\"}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-z9k83w1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-z9k83w1",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "节点 9afce9447872453 向另一个节点 2fa50bf947c1df3a 发送了一个预投票请求。这是为了确认是否有其他节点已经在一个更高的任期（term）上。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-sveb3ue",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-sveb3ue",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.接收预投票响应"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ubqicaf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-ubqicaf",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"info\",\"ts\":\"2024-05-07T01:54:04.948Z\",\"logger\":\"raft\",\"caller\":\"etcdserver/zap_raft.go:77\",\"msg\":\"9afce9447872453 received MsgPreVoteResp from 9afce9447872453 at term 52\"}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-rkxvz8p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-rkxvz8p",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "节点 9afce9447872453 接收到了它自己的预投票响应，这是预投票过程的一部分。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ziqq7iq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-ziqq7iq",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "6.选举超时"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ij2be27",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-ij2be27",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"warn\",\"ts\":\"2024-05-07T01:54:17.333Z\",\"caller\":\"etcdserver/v3_server.go:852\",\"msg\":\"timed out waiting for read index response (local node might have slow network)\",\"timeout\":\"7s\"}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-o45nhx4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-o45nhx4",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个警告表明在尝试进行线性化读取时，节点在等待 ReadIndex 响应时超时了。这可能是由于网络问题导致的通信延迟，也可能是由于节点性能问题。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-8g511ik",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-8g511ik",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "7.健康检查失败"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-i276tr2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-i276tr2",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "{\"level\":\"warn\",\"ts\":\"2024-05-07T01:54:17.332Z\",\"caller\":\"etcdhttp/metrics.go:173\",\"msg\":\"serving /health false; no leader\"} \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-a1hqv10",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-a1hqv10",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这条日志表明 etcd 集群的健康状况检查失败，原因是没有领导者。这通常意味着集群无法处理请求，直到新的领导者被选举出来。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-hg4qosp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-hg4qosp",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在 Raft 协议中，如果一个节点在一段时间内没有收到领导者的消息，它就会认为自己是孤立的，并开始新的领导者选举过程。这个过程包括增加任期计数，并尝试通过预投票和投票阶段获得集群中大多数节点的支持。如果一个节点成功地获得了足够的投票，它就会成为新的领导者，并开始接受和处理请求。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-zoylyja",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-zoylyja",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "解决领导者选举问题通常需要确保 etcd 集群中的所有节点都可以相互通信，并且没有任何网络分区或其他通信障碍。此外，可能需要检查节点的配置和系统资源，以确保它们可以正常运行。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-rg0zy5s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-rg0zy5s",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241119095228-6kwfele"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ppug5ad",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-ppug5ad",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在etcd集群中，当发生选举过程时"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-e813spl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-e813spl",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "会导致写请求无法被处理。这是因为在选举期间，没有确定的leader节点来处理写请求。选举过程将导致系统暂时无法处理新的写操作，直到新的leader节点选举完成。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-nre1l1u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-nre1l1u",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "触发选举的条件是，leader节点每隔一定时间（如100ms）向所有follower节点发送心跳信号。如果有一个或多个follower节点在规定时间内未能接收到心跳信号，将触发选举过程。这确保了etcd集群中只要有一个follower节点无法与leader节点保持正常的心跳通信，就会启动选举以选择一个新的leader节点来维护集群的稳定性。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-m4jlqzs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-m4jlqzs",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、etcd常见运维命令"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-uf0ihli",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-uf0ihli",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-zm9btmk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-zm9btmk",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-9y1mvxk",
+							"Type": "NodeHeading",
+							"HeadingLevel": 3,
+							"Properties": {
+								"id": "20241119095228-9y1mvxk",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd 数据操作"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-wfthhce",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241119095228-wfthhce",
+				"updated": "20241119095228"
+			}
+		},
+		{
+			"ID": "20241119095228-b8lqnl0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-b8lqnl0",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建key\nroot [/var/lib/etcd ]# etcdctl put /zhang san\nOK# 查询key\nroot [/var/lib/etcd ]# etcdctl  get/zhang    \n/zhang\nsan# 查询所有key,只显示key\nroot [/var/lib/etcd ]# etcdctl get\"\"--prefix --keys-only\n/abc\n/zhang# 查询所有key,显示valueroot [ /var/lib/etcd ]# etcdctl get \"\" --prefix            /abca=1b=2/zhangsan\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-h8c7mib",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-h8c7mib",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-t00uuqp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-t00uuqp",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-f0q0cz5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-f0q0cz5",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "删除修改操作"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-hpiwkn4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-hpiwkn4",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 修改key操作，使用put，value前后使用单引号\nroot [/var/lib/etcd ]# etcdctl  put  /zhang '         \n\u003e a=1\n\u003e b=2\n\u003e '\nOK\nroot [/var/lib/etcd ]# etcdctl get/zhang  --prefix \n/zhanga=1\nb=2# 删除某个key\nroot [/var/lib/etcd ]# etcdctl del/zhang            1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-qof46av",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-qof46av",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-iu6s3g2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-iu6s3g2",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-hnq9vl7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-hnq9vl7",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd集群相关操作"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-5e4vbof",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-5e4vbof",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#查看集群成员列表,列出 etcd 集群中的所有成员及其状态。\netcdctl member list  #添加一个节点到集群\netcdctl member add \u003cname\u003e\u003cpeer-url\u003e#从集群中删除一个节点\netcdctl member remove \u003cmember-id\u003e#查看集群健康状态\netcdctl endpoint health \n检查每个 etcd 端点的健康状态。#查看集群存储空间,查看集群中每个节点的状态，包括存储大小、哈希等\netcdctl endpoint status --write-out=table#查看告警信息\netcdctl alarm list#清除告警：\netcdctl alarm disarm\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-u1pn1zq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-u1pn1zq",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-2cugjcb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-2cugjcb",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-kwjqfpm",
+							"Type": "NodeHeading",
+							"HeadingLevel": 3,
+							"Properties": {
+								"id": "20241119095228-kwjqfpm",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd数据备份恢复命令"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-t37hen2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-t37hen2",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建快照\netcdctl snapshot save /path/to/backup.db\n# 恢复快照\netcdctl snapshot restore /path/to/backup.db --data-dir /new/data/dir\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-72a8gh0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-72a8gh0",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-jjz2mdw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-jjz2mdw",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-4u0vgjd",
+							"Type": "NodeHeading",
+							"HeadingLevel": 2,
+							"Properties": {
+								"id": "20241119095228-4u0vgjd",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "检查集群状态"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-xia6hw4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-xia6hw4",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "etcdctl endpoint health\n[root@ly 17:19 ~]# etcdctl --endpoints=http://172.26.144.119:2379 endpoint health\nhttp://172.26.144.119:2379 is healthy: successfully committed proposal: took = 2.906218ms\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-c21o0ab",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-c21o0ab",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查成员信息"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-gvhopsp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-gvhopsp",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "root [ /var/lib/etcd ]# etcdctl member list\n51bca066d01d6698, started, etcd3, http://10.119.49.169:2380, http://10.226.49.169:2379, false\n7ef357413fd1c123, started, etcd2, http://10.119.49.168:2380, http://10.226.49.168:2379, false\nc863b58837d07726, started, etcd1, http://10.119.48.116:2380, http://10.226.48.116:2379, false\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-rtuzcj4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-rtuzcj4",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-6o4g6r9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-6o4g6r9",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-hodqd4a",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-hodqd4a",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ENDPOINT：etcd 实例的访问端点。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-cyft2wk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-cyft2wk",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-1wazltv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-1wazltv",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ID：etcd 实例的唯一标识符。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-8muoh22",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-8muoh22",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-scxgz49",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-scxgz49",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "VERSION：etcd 实例的版本号。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-89yw00v",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-89yw00v",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-gucsx4t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-gucsx4t",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "DB SIZE：etcd 数据库的大小。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-yk8k3f1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-yk8k3f1",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-7yj80ay",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-7yj80ay",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "IS LEADER：该实例是否是当前集群的领导者。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-g19rkv0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-g19rkv0",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-pg9yzc4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-pg9yzc4",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "RAFT TERM：当前的 Raft 任期。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-7uyt0pi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-7uyt0pi",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-5ujb51x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-5ujb51x",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "RAFT INDEX：当前的 Raft 日志索引。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-jsoa5ly",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-jsoa5ly",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-u46n301",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-u46n301",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "RAFT APPLIED INDEX：已经应用的 Raft 日志索引。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-um23z9i",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-um23z9i",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-dgxgjgb",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-dgxgjgb",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ERRORS：任何错误信息。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-dr82ija",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-dr82ija",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-7fan7p2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-7fan7p2",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看集群状态"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-gm7ipb1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-gm7ipb1",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "包含etcd空间占用大小，leader状态"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-v57jwuy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-v57jwuy",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\n# 查看集群主从状态\nroot [ /var/lib/etcd ]# etcdctl  endpoint status --cluster --write-out=table\n+---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n|         ENDPOINT          |        ID        | VERSION | DB SIZE | IS LEADER | IS LEARNER | RAFT TERM | RAFT INDEX | RAFT APPLIED INDEX | ERRORS |\n+---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n| http://10.119.49.169:2379 | 51bca066d01d6698 |  3.5.16 |   20 kB |      true |      false |         4 |         87 |                 87 |        |\n| http://10.119.49.168:2379 | 7ef357413fd1c123 |  3.5.16 |   20 kB |     false |      false |         4 |         87 |                 87 |        |\n| http://10.119.48.116:2379 | c863b58837d07726 |  3.5.16 |   20 kB |     false |      false |         4 |         87 |                 87 |        |\n+---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-l9a2cj4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-l9a2cj4",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、常见运维事件"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-v8e4c4f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-v8e4c4f",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实践一、etcd集群成员的添加/删除"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-iu8d6zg",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241119095228-iu8d6zg",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241119095228-11pcy3i",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241119095228-11pcy3i",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "如下场景： 用户服务异常，经排查发现etcd的服务日志中报\"request cluster ID mismatch\"类似信息，此时可知该节点想要加入的集群id与实际集群id已然不同，etcd集群状态已经异常"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-92wgqtt",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003cspan\u003e通过如下命令查看成员信息，可知etcd1节点状态异常，客户端地址收集失效\u003c/span\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241119095228-92wgqtt",
+				"updated": "20241119095228"
+			}
+		},
+		{
+			"ID": "20241119095228-vc574rd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-vc574rd",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "\nshell\u003e etcdctl --endpoints=http://172.26.238.109:2379 member list --write-out=table\n+------------------+---------+-------+---------------------------+-------------------------+------------+\n|        ID        | STATUS  | NAME  |        PEER ADDRS         |      CLIENT ADDRS       | IS LEARNER |\n+------------------+---------+-------+---------------------------+-------------------------+------------+\n| 3f46dd6c20547bdc | started | etcd3 | http://etcd3.default:2380 |  http://172.27.0.3:2379 |      false |\n| 5e33781cf341b138 | started | etcd2 | http://etcd2.default:2380 |  http://172.27.1.4:2379 |      false |\n| 7ddd2057b06daab9 | unstarted | etcd1 | http://etcd1.default:2380 |                       |      false |\n+------------------+---------+-------+---------------------------+-------------------------+------------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-6ny6xdl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-6ny6xdl",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重启etcd1服务、重装etcd集群，仍不能解决。只能尝试从cluster中移除该节点信息，之后重新添加的方式，去刷新故障节点的集群id信息。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-czgt3yy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-czgt3yy",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 0、设置环境变量\nshell\u003eexport ETCDCTL_API=3# 1、移除member etcd1节点shell\u003e  etcdctl --endpoints=http://172.26.238.109:2379 member remove 7ddd2057b06daab9Member7ddd2057b06daab9 removed from cluster  43b2b807c40ffe0# 2、停止etcd1服务,服务使用静态pod部署\nshell\u003e  sudo mv /etc/kubernetes/manifests/etcd.yaml /tmp/# 3、等待片刻后，清除etcd1节点的数据（之后加入集群会重新同步数据）\nshell\u003e  sudo rm -rf /data/docker/etcd-pod# 4、修改etcd.yaml文件中  \"--initial-cluster-state=new\"  改为  \"--initial-cluster-state=existing\"shell\u003e  sudo sed -i 's/new/existing/g' /tmp/etcd.yaml# 5、加入member etcd1节点\nshell\u003e  etcdctl --endpoints=http://172.26.238.109:2379 member add etcd1 --peer-urls=\"http://etcd1.default:2380\"\nMember64c0a38ce18ae4e1 added to cluster  43b2b807c40ffe0ETCD_NAME=\"etcd1\"\nETCD_INITIAL_CLUSTER=\"etcd3=http://etcd3.default:2380,etcd2=http://etcd2.default:2380,etcd1=http://etcd1.default:2380\"\nETCD_INITIAL_ADVERTISE_PEER_URLS=\"http://etcd1.default:2380\"ETCD_INITIAL_CLUSTER_STATE=\"existing\"# 6.启动etcd1节点mv /tmp/etcd.yaml  /etc/kubernetes/manifests/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-tuiy0bd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-tuiy0bd",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "再次查看重新加入etcd1节点后，集群的状态已经正常。"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-9oixa77",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-9oixa77",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubewps\u003e etcdctl --endpoints=http://172.26.238.109:2379 member list --write-out=table\n+------------------+---------+-------+---------------------------+-------------------------+------------+\n|        ID        | STATUS  | NAME  |        PEER ADDRS         |      CLIENT ADDRS       | IS LEARNER |\n+------------------+---------+-------+---------------------------+-------------------------+------------+\n| 3f46dd6c20547bdc | started | etcd3 | http://etcd3.default:2380 |  http://172.27.0.3:2379 |      false |\n| 5e33781cf341b138 | started | etcd2 | http://etcd2.default:2380 |  http://172.27.1.4:2379 |      false |\n| 64c0a38ce18ae4e1 | started | etcd1 | http://etcd1.default:2380 | http://172.27.2.20:2379 |      false |\n+------------------+---------+-------+---------------------------+-------------------------+------------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-lza33o2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241119095228-lza33o2",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实践二、etcd数据备份和恢复"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-21our03",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241119095228-21our03",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241119095228-0drv3n6",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241119095228-0drv3n6",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "官网资料https://etcd.io/docs/v3.6/op-guide/recovery/#restoring-a-cluster"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-w52d7sm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-w52d7sm",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于具有 n 个成员的集群，仲裁为 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "(n/2)+1,"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ETCD 集群高可用允许 (N-1)/2 的节点出现临时性故障，3台etcd集群允许宕机一台；超过(N-1)/2节点，那集群将暂时不可用，直到节点个数恢复到超过 (N-1)/2."
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-1rbvflv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-1rbvflv",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241119095228-8cbnb40"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-28z92o5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-28z92o5",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "报错recovering backend from snapshot error:database snapshot,可以看出是etcd数据丢失导致节点etcd无法正常启动,基本就可以确定是snap文件损坏,或者遗失了"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-7nue4t5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-7nue4t5",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查集群状态"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-cwqmc7x",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-cwqmc7x",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost ~]# kubectl get cs\nWarning: v1 ComponentStatusis deprecated in v1.19+\nNAME                 STATUS      MESSAGE                                                                                             ERROR\netcd-2UnhealthyGet\"https://10.119.48.169:2379/health\": dial tcp 10.119.48.169:2379: connect: connection refused\ncontroller-manager   Healthy     ok\nscheduler            Healthy     ok\netcd-0Healthy{\"health\":\"true\",\"reason\":\"\"}\netcd-1Healthy{\"health\":\"true\",\"reason\":\"\"}export ETCDCTL_API=3\nexport ETCDCTL_CACERT=/etc/kubernetes/cluster1/ssl/ca.pem\nexport ETCDCTL_CERT=/etc/etcd/ssl/etcd.pem\nexport ETCDCTL_KEY=/etc/etcd/ssl/etcd-key.pem\n[root@localhost ~]# ETCDCTL_API=3  etcdctl --endpoints=\"https://10.119.48.166:2379,https://10.119.48.168:2379,https://10.119.48.169:2379\"  endpoint status --write-out=table\n{\"level\":\"warn\",\"ts\":\"2023-07-18T11:18:44.220701+0800\",\"logger\":\"etcd-client\",\"caller\":\"v3@v3.5.8/retry_interceptor.go:62\",\"msg\":\"retrying of unary invoker failed\",\"target\":\"etcd-endpoints://0xc00002c000/10.119.48.166:2379\",\"attempt\":0,\"error\":\"rpc error: code = DeadlineExceeded desc = latest balancer error: last connection error: connection error: desc = \\\"transport: Error while dialing dial tcp 10.119.48.169:2379: connect: connection refused\\\"\"}\nFailed to get the status of endpoint https://10.119.48.169:2379 (context deadline exceeded)\n+----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n|          ENDPOINT          |        ID        | VERSION | DB SIZE | IS LEADER | IS LEARNER | RAFT TERM | RAFT INDEX | RAFT APPLIED INDEX | ERRORS |\n+----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n| https://10.119.48.166:2379 | 9b4462a24fce09fa |   3.5.8 |  4.0 MB |      true |      false |        10 |     970112 |             970112 |        |\n| https://10.119.48.168:2379 | d0844b5c962b1cf2 |   3.5.8 |  4.0 MB |     false |      false |        10 |     970112 |             970112 |        |\n+----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-eclo0yl",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-eclo0yl",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-93f1x1w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-93f1x1w",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-v559dx7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-v559dx7",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "导出etcd数据"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-2h1kq8y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-2h1kq8y",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从上面检查可以看出etcd2由于数据损坏导致无法启动，从leader节点备份数据作为恢复的源"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ekdyrtp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-ekdyrtp",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "export ETCDCTL_API=3\nexport ETCDCTL_CACERT=/etc/kubernetes/cluster1/ssl/ca.pem\nexport ETCDCTL_CERT=/etc/etcd/ssl/etcd.pem\nexport ETCDCTL_KEY=/etc/etcd/ssl/etcd-key.pem\n[root@localhost ~]# etcdctl --endpoints=\"https://10.119.48.166:2379\" snapshot save /data/snapshot$(date +%Y%m%d).db\n{\"level\":\"info\",\"ts\":\"2023-07-18T11:34:45.205311+0800\",\"caller\":\"snapshot/v3_snapshot.go:65\",\"msg\":\"created temporary db file\",\"path\":\"/data/snapshot20230718.db.part\"}\n{\"level\":\"info\",\"ts\":\"2023-07-18T11:34:45.214521+0800\",\"logger\":\"client\",\"caller\":\"v3@v3.5.8/maintenance.go:212\",\"msg\":\"opened snapshot stream; downloading\"}\n{\"level\":\"info\",\"ts\":\"2023-07-18T11:34:45.214686+0800\",\"caller\":\"snapshot/v3_snapshot.go:73\",\"msg\":\"fetching snapshot\",\"endpoint\":\"https://10.119.48.166:2379\"}\n{\"level\":\"info\",\"ts\":\"2023-07-18T11:34:45.374149+0800\",\"logger\":\"client\",\"caller\":\"v3@v3.5.8/maintenance.go:220\",\"msg\":\"completed snapshot read; closing\"}\n{\"level\":\"info\",\"ts\":\"2023-07-18T11:34:45.410687+0800\",\"caller\":\"snapshot/v3_snapshot.go:88\",\"msg\":\"fetched snapshot\",\"endpoint\":\"https://10.119.48.166:2379\",\"size\":\"4.0 MB\",\"took\":\"now\"}\n{\"level\":\"info\",\"ts\":\"2023-07-18T11:34:45.410837+0800\",\"caller\":\"snapshot/v3_snapshot.go:97\",\"msg\":\"saved\",\"path\":\"/data/snapshot20230718.db\"}\nSnapshot saved at /data/snapshot20230718.db\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-bcjz5zt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-bcjz5zt",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "已经成功生成了备份文件/data/snapshot20230718.db"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-qcvp9hb",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-qcvp9hb",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-292f4vr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-292f4vr",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-i75uj17",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-i75uj17",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "恢复前准备"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-1cgkfvc",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241119095228-1cgkfvc",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-tdy7bcw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20241119095228-tdy7bcw",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-5qb7prw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-5qb7prw",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先停止k8s集群中的etcd和kube-apiserver服务，防止备份过程中数据继续写入"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241119095228-8jn2pb8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20241119095228-8jn2pb8",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-506nzw4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-506nzw4",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "备份etcd原目录，防止恢复失败导致数据彻底丢失"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-vaylec3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-vaylec3",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-b0re7vf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-b0re7vf",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-uhzxw2u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-uhzxw2u",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "恢复数据"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ppuqc2k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-ppuqc2k",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将数据拷贝到3个etcd节点上"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-9c5xjp6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-9c5xjp6",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ansible -i etcd.conf etcd -m copy  -a  'src=/data/snapshot20230718.db dest=/tmp/snapshot20230718.db' -u  deploy \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-n8qrme9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-n8qrme9",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在3个节点上执行etcd恢复操作"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-mgw425u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-mgw425u",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo ETCDCTL_API=3 etcdctl snapshot restore /tmp/snapshot20230718.db   --data-dir=/data/kube/etcd --name=etcd1  --cacert=/etc/kubernetes/cluster1/ssl/ca.pem  --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem  --initial-cluster-token=etcd-cluster-0 --initial-cluster=etcd1=https://10.119.48.166:2380,etcd2=https://10.119.48.168:2380,etcd3=https://10.119.48.169:2380   --initial-advertise-peer-urls=https://10.119.48.166:2380    #etcd1上执行\nsudo ETCDCTL_API=3 etcdctl snapshot restore /tmp/snapshot20230718.db   --data-dir=/data/kube/etcd --name=etcd2  --cacert=/etc/kubernetes/cluster1/ssl/ca.pem  --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem  --initial-cluster-token=etcd-cluster-0 --initial-cluster=etcd1=https://10.119.48.166:2380,etcd2=https://10.119.48.168:2380,etcd3=https://10.119.48.169:2380   --initial-advertise-peer-urls=https://10.119.48.168:2380   #etcd2执行\nsudo ETCDCTL_API=3 etcdctl snapshot restore /tmp/snapshot20230718.db   --data-dir=/data/kube/etcd --name=etcd3  --cacert=/etc/kubernetes/cluster1/ssl/ca.pem  --cert=/etc/etcd/ssl/etcd.pem --key=/etc/etcd/ssl/etcd-key.pem  --initial-cluster-token=etcd-cluster-0 --initial-cluster=etcd1=https://10.119.48.166:2380,etcd2=https://10.119.48.168:2380,etcd3=https://10.119.48.169:2380   --initial-advertise-peer-urls=https://10.119.48.169:2380    #etcd3执行\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-jtusnvr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-jtusnvr",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后启动etcd和kube-apiserver服务，验证状态正常"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-7hrmcfs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-7hrmcfs",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost kube]# ETCDCTL_API=3  etcdctl --endpoints=\"https://10.119.48.166:2379,https://10.119.48.168:2379,https://10.119.48.169:2379\"  endpoint status --write-out=table\n+----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n|          ENDPOINT          |        ID        | VERSION | DB SIZE | IS LEADER | IS LEARNER | RAFT TERM | RAFT INDEX | RAFT APPLIED INDEX | ERRORS |\n+----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n| https://10.119.48.166:2379 | 9b4462a24fce09fa |   3.5.8 |  4.0 MB |      true |      false |         2 |        127 |                127 |        |\n| https://10.119.48.168:2379 | d0844b5c962b1cf2 |   3.5.8 |  4.0 MB |     false |      false |         2 |        127 |                127 |        |\n| https://10.119.48.169:2379 | 53ed13bd007bd8a0 |   3.5.8 |  4.0 MB |     false |      false |         2 |        127 |                127 |        |\n+----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-kxj9k5v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-kxj9k5v",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实践三、etcd空间满问题"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-vixg670",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-vixg670",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现象：业务报错“Etcdserver: mvcc: database space exceeded”"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-n7q140e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-n7q140e",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "原因：etcd默认存储空间限制为2G，最大支持8G。达到配额会触发告警，然后 Etcd 系统将进入操作受限的维护模式"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-w745j1q",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241119095228-w745j1q",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241119095228-gp8ohow",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241119095228-gp8ohow",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "The default storage size limit is 2GB, configurable with --quota-backend-bytes flag. 8GB is a suggested maximum size for normal environments and etcd warns at startup if the configured value exceeds it."
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-eibucg6",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241119095228-eibucg6",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241119095228-pnvrdt7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241119095228-pnvrdt7",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "官方文档：https://etcd.io/docs/v3.5/op-guide/maintenance/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-qzupn23",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-qzupn23",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看当前空间使用"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ntqf1ln",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-ntqf1ln",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#检查空间使用\n$ ETCDCTL_API=3 etcdctl --write-out=table endpoint status\n+----------------+------------------+-----------+---------+-----------+-----------+------------+\n|    ENDPOINT    |        ID        |  VERSION  | DB SIZE | IS LEADER | RAFT TERM | RAFT INDEX |\n+----------------+------------------+-----------+---------+-----------+-----------+------------+\n|127.0.0.1:2379| bf9071f4639c75cc |2.3.0+git|18 MB   |true|2|3332|\n+----------------+------------------+-----------+---------+-----------+-----------+------------+\n# 查看告警\n$ ETCDCTL_API=3 etcdctl alarm listmemberID:13803658152347727308 alarm:NOSPACE\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-106asr8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-106asr8",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "临时解决方案"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​：压缩并进行碎片清理，然后清除告警可以临时恢复使用"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-n7o1d6q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-n7o1d6q",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# get current revision\n$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=\"json\" | egrep -o '\"revision\":[0-9]*' | egrep -o '[0-9].*')\n# compact away all old revisions\n$ ETCDCTL_API=3 etcdctl compact $rev\ncompacted revision 1516\n# defragment away excessive space\n$ ETCDCTL_API=3 etcdctl defrag\nFinished defragmenting etcd member[127.0.0.1:2379]\n# disarm alarm\n$ ETCDCTL_API=3 etcdctl alarm disarm\nmemberID:13803658152347727308 alarm:NOSPACE\n# test puts are allowed again\n$ ETCDCTL_API=3 etcdctl put newkey 123\nOK\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-7qhg9bk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241119095228-7qhg9bk",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-3rzu19b",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241119095228-3rzu19b",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-w5k40ee",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-w5k40ee",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "彻底解决方案"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-gf42jeg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-gf42jeg",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "彻底解决方式为修改修改etcd配额解决"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-6st3rh9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-6st3rh9",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--auto-compaction-retention=1       在一个小时内为mvcc键值存储的自动压实保留。0表示禁用自动压缩\n--max-request-bytes=10485760        消息最大字节数,ETCD默认该值为1.5M,etcd版本小于3.2.10不支持此参数\n--quota-backend-bytes=4294967296    ETCDdb数据大小,默认是2g，扩容到4g，如果4g不够，可继续增加，最大可以调整到8g\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-6iv613m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-6iv613m",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体如下"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-hbetrd1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-hbetrd1",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241119095228-8qhokmo"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-t0tbqed",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-t0tbqed",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "重启etcd服务生效"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-7gr02h0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-7gr02h0",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实验四、etcd leader经常切换问题"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-gybk3uq",
+			"Type": "NodeHeading",
+			"HeadingLevel": 6,
+			"Properties": {
+				"id": "20241119095228-gybk3uq",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过查看etcd集群状态发现etcd在频繁更换leader，etcd有如下日志"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-2lex071",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-2lex071",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241119095228-vgtcpac"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-l4nrr07",
+			"Type": "NodeHeading",
+			"HeadingLevel": 6,
+			"Properties": {
+				"id": "20241119095228-l4nrr07",
+				"updated": "20241119095228"
+			}
+		},
+		{
+			"ID": "20241119095228-vdsbxf5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-vdsbxf5",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "类似异常日志"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-exvbgwd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-exvbgwd",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "异常日志1\nwaiting for ReadIndex response took too long\n异常日志2\n{\"level\":\"warn\",\"msg\":\"slow fdatasync\",\"took\":\"2.14025047s\",\"expected-duration\":\"1s\"}\n异常日志3\nraft.node: 255a2e4092d561fb changed leader from 255a2e4092d561fb to 1de1eaa8fb268f49 at term 3112\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ghq68zg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-ghq68zg",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以通过命令多次查看，leader节点是不是经常切换"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-8i2ohn9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-8i2ohn9",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "export ETCDCTL_API=3\netcdctl endpoints='https://10.119.52.70:2379,https://10.119.52.71:2379,https://10.119.52.72:2379 ‘endpoint status --cacert /etc/kubernetes/cluster1/ssl/ca.pem -w table\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-fe6i4y6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-fe6i4y6",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "常见原因:网络延迟和磁盘io导致"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-o11u48l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 6,
+			"Properties": {
+				"id": "20241119095228-o11u48l",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "解决方法"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-xcivc7g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-xcivc7g",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "临时解决可以通过修改参数扩大心跳检测时长避免leader频繁切换"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-grt1uro",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-grt1uro",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "--election-timeout=5000 (默认1000ms)\n--heartbeat-interval=500 (默认500ms)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ktxdw76",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-ktxdw76",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改/etc/systemd/system/etcd.service(同集群心跳和选举时间要保持一致)，添加以上参数"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-5q3h7bx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-5q3h7bx",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 重载配置\nsudo systemctl daemon-reload\n# 重启etcd\nsudo systemctl restart etcd.service\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-rokqozn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-rokqozn",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "彻底解决需要将etcd独立部署，或者检查网络和磁盘，将etcd部署到性能更好的环境上"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-qnhyjd5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-qnhyjd5",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "五、关于etcd常用的监控"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-0ys6ntf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-0ys6ntf",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过部署etcd-exporter+Prometheus，然后配置etcd相关告警可以及时发现etcd集群风险"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-4kyexx1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-4kyexx1",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "常见监控项目"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-ubm44bg",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241119095228-ubm44bg",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-omvkpye",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20241119095228-omvkpye",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-67qqjsa",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-67qqjsa",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd集群无leader"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-76aw62m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-76aw62m",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd cluster have no leader"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-4dm40dx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-4dm40dx",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  - alert:EtcdNoLeader\n    expr: etcd_server_has_leader ==0\nfor:0m\n    labels:\n      severity: critical\n    annotations:\n      summary:EtcdnoLeader(instance {{ $labels.instance }})\n      description: \"Etcd cluster have no leader\\n  VALUE = {{ $value }}\\n  LABELS = {{ $labels }}\"‍```\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-w79fs53",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241119095228-w79fs53",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-uw1lhh2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20241119095228-uw1lhh2",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-aufck7e",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-aufck7e",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd grpc请求慢"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-y5rz3ye",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-y5rz3ye",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "GRPC requests slowing down, 99th percentile is over 0.15s"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-pnfolki",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-pnfolki",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  - alert:EtcdGrpcRequestsSlow\n    expr: histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{grpc_type=\"unary\"}[1m]))by(grpc_service, grpc_method, le))\u003e0.15\nfor:2m\n    labels:\n      severity: warning\n    annotations:\n      summary:Etcd GRPC requests slow (instance {{ $labels.instance }})\n      description: \"GRPC requests slowing down, 99th percentile is over 0.15s\\n  VALUE = {{ $value }}\\n  LABELS = {{ $labels }}\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-d6hxms7",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241119095228-d6hxms7",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-09u6npk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20241119095228-09u6npk",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-zpqz1t1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-zpqz1t1",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "etcd http请求慢"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-3d3velp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-3d3velp",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "HTTP requests slowing down, 99th percentile is over 0.15s"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-bgf2jit",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-bgf2jit",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  - alert: EtcdHttpRequestsSlow\n    expr: histogram_quantile(0.99, rate(etcd_http_successful_duration_seconds_bucket[1m])) \u003e 0.15\n    for: 2m\n    labels:\n      severity: warning\n    annotations:\n      summary: Etcd HTTP requests slow (instance {{ $labels.instance }})\n      description: \"HTTP requests slowing down, 99th percentile is over 0.15s\\n  VALUE = {{ $value }}\\n  LABELS = {{ $labels }}\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-2uk60yk",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241119095228-2uk60yk",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-0x80nvb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20241119095228-0x80nvb",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-0gj3lsm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-0gj3lsm",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Etcd member communication slow"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-5g4gynk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-5g4gynk",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd member communication slowing down, 99th percentile is over 0.15s"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-xx2evgs",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-xx2evgs",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  - alert: EtcdMemberCommunicationSlow\n    expr: histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) \u003e 0.15\n    for: 2m\n    labels:\n      severity: warning\n    annotations:\n      summary: Etcd member communication slow (instance {{ $labels.instance }})\n      description: \"Etcd member communication slowing down, 99th percentile is over 0.15s\\n  VALUE = {{ $value }}\\n  LABELS = {{ $labels }}\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-la7w42g",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241119095228-la7w42g",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"ID": "20241119095228-kx0tyhh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20241119095228-kx0tyhh",
+						"updated": "20241119095228"
+					},
+					"Children": [
+						{
+							"ID": "20241119095228-5vp9ep1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241119095228-5vp9ep1",
+								"updated": "20241119095228"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Etcd high fsync durations"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-mlj0ajv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-mlj0ajv",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Etcd WAL fsync duration increasing, 99th percentile is over 0.5s"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-kivtby3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241119095228-kivtby3",
+				"updated": "20241119095228"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "  - alert: EtcdHighFsyncDurations\n    expr: histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) \u003e 0.5\n    for: 2m\n    labels:\n      severity: warning\n    annotations:\n      summary: Etcd high fsync durations (instance {{ $labels.instance }})\n      description: \"Etcd WAL fsync duration increasing, 99th percentile is over 0.5s\\n  VALUE = {{ $value }}\\n  LABELS = {{ $labels }}\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241119095228-vnm657w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241119095228-vnm657w",
+				"updated": "20241119101406"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		}
+	]
+}

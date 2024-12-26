@@ -1,0 +1,150 @@
+{
+	"ID": "20240819182157-fpp0epc",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240819182157-fpp0epc",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240819182202-32vm7c8\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240819182452-ey24rzg\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20240819182341-n7nsorc\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "etcd告警",
+		"updated": "20240819182500"
+	},
+	"Children": [
+		{
+			"ID": "20240819182202-32vm7c8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240819182202-32vm7c8",
+				"updated": "20240819182414"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 告警建议值："
+				}
+			]
+		},
+		{
+			"ID": "20240819182336-tdn0zkv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240819182336-tdn0zkv",
+				"updated": "20240819182336"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "【告警的建议值】检查etcd的监控指标grpc_server_handling_seconds_bucket，如下label中，有P99 大于等于 0.5秒时告警："
+				}
+			]
+		},
+		{
+			"ID": "20240819182341-n7nsorc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240819182341-n7nsorc",
+				"updated": "20240819182348"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "grpc_method=\"LeaseGrant\"\n\ngrpc_method=\"MemberList\"\n\ngrpc_method=\"Range\"\n\ngrpc_method=\"Txn\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240819182432-n00djes",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240819182432-n00djes",
+				"updated": "20240819182441"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 便捷操作"
+				}
+			]
+		},
+		{
+			"ID": "20240819182224-y8ruu45",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240819182224-y8ruu45",
+				"updated": "20240819182252"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# karmada top20\nsudo crictl exec $(sudo crictl ps | grep etcdctl | awk '{print $1}') etcdctl get /registry/karmada --prefix --keys-only | grep -v ^$ | cut -d/ -f3-5 | sort | uniq -c | sort -rn | head -n 20\n \n# k8s top20\nsudo crictl exec $(sudo crictl ps | grep etcdctl | awk '{print $1}') etcdctl get /kubernetes.io --prefix --keys-only | grep -v ^$ | cut -d/ -f1-3 | sort | uniq -c | sort -rn | head -n 20\n \n# 查看etcd指标\nsudo curl -s --cacert /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt --key /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).key --cert /etc/kubernetes/static-pod-resources/etcd-certs/secrets/etcd-all-certs/etcd-serving-$(hostname).crt https://127.0.0.1:2379/metrics | grep ^grpc_server_handling_seconds | grep -w \"Txn\\|Range\\|LeaseGrant\\|MemberList\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240819182350-udeszms",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240819182350-udeszms",
+				"updated": "20240819182448"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 告警指标"
+				}
+			]
+		},
+		{
+			"ID": "20240819182452-ey24rzg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240819182452-ey24rzg",
+				"updated": "20240819182500"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{grpc_method=~\"LeaseGrant|MemberList|Range|Txn\"}[1m])) by (le, pod, grpc_method))\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

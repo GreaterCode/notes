@@ -1,0 +1,38 @@
+{
+	"ID": "20240527011437-wjh3018",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240527011437-wjh3018",
+		"title": "ringbuffer调整变更",
+		"updated": "20240527011512"
+	},
+	"Children": [
+		{
+			"ID": "20240527011437-r4mjv4v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240527011437-r4mjv4v",
+				"updated": "20240527011512"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "一、内存增加：\n\n网卡接收队列内存是预分配的，每个元素是按页分配的(arm64环境页大小是64KB)， 每个端口为了实现RSS或者flow direct会支持多队列，所需内存为： 网口数 x  队列数 x 队列深度 x 64KB。\n4网口，64队列， 4K队列深度，需要内存为64GB；linux的x86版本页大小是4KB（5级页表），上述公式把64KB替换为4KB。 只有arm64是64KB页（3级页表）。\n\n二、两张网卡改的时候，增加间隔 5秒以上\n\n三、固化，/etc/rc.local\n\n四、改前后，扫一下各节点free memory，作对比，留记录。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

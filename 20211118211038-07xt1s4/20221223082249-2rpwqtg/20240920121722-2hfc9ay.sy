@@ -1,0 +1,279 @@
+{
+	"ID": "20240920121722-2hfc9ay",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240920121722-2hfc9ay",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240920121823-nlynsov\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241115161022-9l62p9b\u0026quot;,\u0026quot;scrollTop\u0026quot;:504,\u0026quot;focusId\u0026quot;:\u0026quot;20241115161022-9l62p9b\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "Linux 某进程 CPU 高问题用 Shell 脚本发现和处理",
+		"updated": "20241115161022"
+	},
+	"Children": [
+		{
+			"ID": "20240920121823-nlynsov",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240920121823-nlynsov",
+				"updated": "20240920122039"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "发现高CPU使用率进程"
+				}
+			]
+		},
+		{
+			"ID": "20240920121824-dae30l3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240920121824-dae30l3",
+				"updated": "20240920122054"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n\n# 设置 CPU 使用率的阈值,一般设置90；这里是demo，所以用30\nCPU_THRESHOLD=90\n\n# 获取占用 CPU 最高的进程 \nIDHIGH_CPU_PID=$(ps -eo pid,pcpu --sort=-pcpu | grep -v '^ PID' | sed -n 2p | awk '{print $1}')\n\n# 获取该进程的 CPU 使用率\nHIGH_CPU_USAGE=$(ps -p $HIGH_CPU_PID -o %cpu= | awk '{print int($1)}')\n\n# 检查 CPU 使用率是否超过阈值\nif [ \"$HIGH_CPU_USAGE\" -ge \"$CPU_THRESHOLD\" ]; then  \n    echo \"进程 ID $HIGH_CPU_PID 占用 CPU $HIGH_CPU_USAGE%，超过阈值 $CPU_THRESHOLD%\"  \n    echo \"终止进程 $HIGH_CPU_PID\"  \n    # kill -9 $HIGH_CPU_PID  #  生产环境要注意，不要直接kill进程，可以抛出告警或打到日志。\nelse  \n     echo \"所有进程的 CPU 使用率都在正常范围内。\"\nfi\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240920122026-43ci7o3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240920122026-43ci7o3",
+				"updated": "20240920122026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "生产环境"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "中，直接终止进程可能会导致数据丢失或其他问题，因此我们需要谨慎行事。"
+				}
+			]
+		},
+		{
+			"ID": "20240920122026-fi7no9m",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240920122026-fi7no9m",
+				"updated": "20240920122026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "处理策略"
+				}
+			]
+		},
+		{
+			"ID": "20240920122026-28mtyl5",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20240920122026-28mtyl5",
+				"updated": "20240920122026"
+			},
+			"Children": [
+				{
+					"ID": "20240920122026-v08byg5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20240920122026-v08byg5",
+						"updated": "20240920122026"
+					},
+					"Children": [
+						{
+							"ID": "20240920122026-llaze1u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240920122026-llaze1u",
+								"updated": "20240920122026"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "记录日志：在脚本中添加日志记录功能，记录高CPU使用率的进程信息，以供后续分析。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240920122026-wzs988k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20240920122026-wzs988k",
+						"updated": "20240920122026"
+					},
+					"Children": [
+						{
+							"ID": "20240920122026-5e773ro",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240920122026-5e773ro",
+								"updated": "20240920122026"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "发送告警：可以通过邮件、短信或其他方式发送告警，通知系统管理员。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240920122026-vsgvqmu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20240920122026-vsgvqmu",
+						"updated": "20240920122026"
+					},
+					"Children": [
+						{
+							"ID": "20240920122026-d5u4qqo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240920122026-d5u4qqo",
+								"updated": "20240920122026"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "分析原因：在采取任何行动之前，分析高CPU使用率的原因，可能是代码问题、资源争用或其他因素。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240920122026-u3om9rd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20240920122026-u3om9rd",
+						"updated": "20240920122026"
+					},
+					"Children": [
+						{
+							"ID": "20240920122026-2k6uy3y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240920122026-2k6uy3y",
+								"updated": "20240920122026"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优雅地终止进程：如果确定需要终止进程，应使用"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "kill"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​命令的优雅终止选项（如"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "SIGTERM"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​），给予进程清理资源的机会。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240920122026-a71wd00",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20240920122026-a71wd00",
+						"updated": "20240920122026"
+					},
+					"Children": [
+						{
+							"ID": "20240920122026-ru98d8w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240920122026-ru98d8w",
+								"updated": "20240920122026"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "优化和调整：根据分析结果，对系统或应用程序进行优化和调整，以避免类似问题的再次发生。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241115161022-9l62p9b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241115161022-9l62p9b"
+			}
+		}
+	]
+}

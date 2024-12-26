@@ -1,0 +1,1634 @@
+{
+	"ID": "20241213171254-uxmm0jv",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241213171254-uxmm0jv",
+		"title": "虚拟化技术之kvm管理工具virsh常用基础命令（一）",
+		"type": "doc",
+		"updated": "20241213171254"
+	},
+	"Children": [
+		{
+			"ID": "20241213171254-soe8d4o",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20241213171254-soe8d4o",
+				"updated": "20241213171254"
+			}
+		},
+		{
+			"ID": "20241213171254-hv8jwpe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-hv8jwpe",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、KVM工具栈"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-9r86c20",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-9r86c20",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1503305/202008/1503305-20200815113137363-2066795430.bmp"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-tobqt0l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-tobqt0l",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：上图主要描述了kvm的主要工具栈，从大的类别可以分为libvirt和qemu这两大类，其中libvirt中分virtual machine manager和virsh，virtual machine manager中的virt-manager是基于图形界面的管理，其他都是可以在命令行直接使用命令来管理虚拟机；virsh是基于终端命令行管理；两者都是通过libvirt连接至libvirtd进行管理；而对于qemu来说，它管理虚拟机上直接调用kvm内核中模块的API进行管理；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-moc8a83",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-moc8a83",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、virsh工具的使用说明"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-zdka97q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-zdka97q",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、查看virsh命令帮助信息"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-o76x118",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-o76x118",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help\n分组的命令：\n Domain Management (help keyword 'domain'):\n    attach-device                  从一个XML文件附加装置\n    attach-disk                    附加磁盘设备\n    attach-interface               获得网络界面\n    autostart                      自动开始一个域\n    blkdeviotune                   设定或者查询块设备 I/O 调节参数。\n    blkiotune                      获取或者数值 blkio 参数\n    blockcommit                    启动块提交操作。\n    blockcopy                      启动块复制操作。\n    blockjob                       管理活跃块操作\n    blockpull                      使用其后端映像填充磁盘。\n    blockresize                    创新定义域块设备大小\n    change-media                   更改 CD 介质或者软盘驱动器\n    console                        连接到客户会话\n    cpu-stats                      显示域 cpu 统计数据\n    create                         从一个 XML 文件创建一个域\n    define                         从一个 XML 文件定义（但不开始）一个域\n    desc                           显示或者设定域描述或者标题\n    destroy                        销毁（停止）域\n    detach-device                  从一个 XML 文件分离设备\n    detach-device-alias            detach device from an alias\n    detach-disk                    分离磁盘设备\n    detach-interface               分离网络界面\n    domdisplay                     域显示连接 URI\n    domfsfreeze                    Freeze domain's mounted filesystems.\n    domfsthaw                      Thaw domain's mounted filesystems.\n    domfsinfo                      Get information of domain's mounted filesystems.\n    domfstrim                      在域挂载的文件系统中调用 fstrim。\n    domhostname                    输出域主机名\n    domid                          把一个域名或 UUID 转换为域 id\n    domif-setlink                  设定虚拟接口的链接状态\n    domiftune                      获取/设定虚拟接口参数\n    domjobabort                    忽略活跃域任务\n    domjobinfo                     域任务信息\n    domname                        将域 id 或 UUID 转换为域名\n    domrename                      rename a domain\n    dompmsuspend                   使用电源管理功能挂起域\n    dompmwakeup                    从 pmsuspended 状态唤醒域\n    domuuid                        把一个域名或 id 转换为域 UUID\n    domxml-from-native             将原始配置转换为域 XML\n    domxml-to-native               将域 XML 转换为原始配置\n    dump                           把一个域的内核 dump 到一个文件中以方便分析\n    dumpxml                        XML 中的域信息\n    edit                           编辑某个域的 XML 配置\n    event                          Domain Events\n    inject-nmi                     在虚拟机中输入 NMI\n    iothreadinfo                   view domain IOThreads\n    iothreadpin                    control domain IOThread affinity\n    iothreadadd                    add an IOThread to the guest domain\n    iothreaddel                    delete an IOThread from the guest domain\n    send-key                       向虚拟机发送序列号\n    send-process-signal            向进程发送信号\n    lxc-enter-namespace            LXC 虚拟机进入名称空间\n    managedsave                    管理域状态的保存\n    managedsave-remove             删除域的管理保存\n    managedsave-edit               edit XML for a domain's managed save state file\n    managedsave-dumpxml            Domain information of managed save state file in XML\n    managedsave-define             redefine the XML for a domain's managed save state file\n    memtune                        获取或者数值内存参数\n    perf                           Get or set perf event\n    metadata                       show or set domain's custom XML metadata\n    migrate                        将域迁移到另一个主机中\n    migrate-setmaxdowntime         设定最大可耐受故障时间\n    migrate-getmaxdowntime         get maximum tolerable downtime\n    migrate-compcache              获取/设定压缩缓存大小\n    migrate-setspeed               设定迁移带宽的最大值\n    migrate-getspeed               获取最长迁移带宽\n    migrate-postcopy               Switch running migration from pre-copy to post-copy\n    numatune                       获取或者数值 numa 参数\n    qemu-attach                    QEMU 附加\n    qemu-monitor-command           QEMU 监控程序命令\n    qemu-monitor-event             QEMU Monitor Events\n    qemu-agent-command             QEMU 虚拟机代理命令\n    reboot                         重新启动一个域\n    reset                          重新设定域\n    restore                        从一个存在一个文件中的状态恢复一个域\n    resume                         重新恢复一个域\n    save                           把一个域的状态保存到一个文件\n    save-image-define              为域的保存状态文件重新定义 XML\n    save-image-dumpxml             在 XML 中保存状态域信息\n    save-image-edit                为域保存状态文件编辑 XML\n    schedinfo                      显示/设置日程安排变量\n    screenshot                     提取当前域控制台快照并保存到文件中\n    set-lifecycle-action           change lifecycle actions\n    set-user-password              set the user password inside the domain\n    setmaxmem                      改变最大内存限制值\n    setmem                         改变内存的分配\n    setvcpus                       改变虚拟 CPU 的号\n    shutdown                       关闭一个域\n    start                          开始一个（以前定义的）非活跃的域\n    suspend                        挂起一个域\n    ttyconsole                     tty 控制台\n    undefine                       取消定义一个域\n    update-device                  从 XML 文件中关系设备\n    vcpucount                      域 vcpu 计数\n    vcpuinfo                       详细的域 vcpu 信息\n    vcpupin                        控制或者查询域 vcpu 亲和性\n    emulatorpin                    控制火车查询域模拟器亲和性\n    vncdisplay                     vnc 显示\n    guestvcpus                     query or modify state of vcpu in the guest (via agent)\n    setvcpu                        attach/detach vcpu or groups of threads\n    domblkthreshold                set the threshold for block-threshold event for a given block device or it's backing chain element\n Domain Monitoring (help keyword 'monitor'):\n    domblkerror                    在块设备中显示错误\n    domblkinfo                     域块设备大小信息\n    domblklist                     列出所有域块\n    domblkstat                     获得域设备块状态\n    domcontrol                     域控制接口状态\n    domif-getlink                  获取虚拟接口链接状态\n    domifaddr                      Get network interfaces' addresses for a running domain\n    domiflist                      列出所有域虚拟接口\n    domifstat                      获得域网络接口状态\n    dominfo                        域信息\n    dommemstat                     获取域的内存统计\n    domstate                       域状态\n    domstats                       get statistics about one or multiple domains\n    domtime                        domain time\n    list                           列出域\n Host and Hypervisor (help keyword 'host'):\n    allocpages                     Manipulate pages pool size\n    capabilities                   性能\n    cpu-baseline                   计算基线 CPU\n    cpu-compare                    使用 XML 文件中描述的 CPU 与主机 CPU 进行对比\n    cpu-models                     CPU models\n    domcapabilities                domain capabilities\n    freecell                       NUMA可用内存\n    freepages                      NUMA free pages\n    hostname                       打印管理程序主机名\n    hypervisor-cpu-baseline        compute baseline CPU usable by a specific hypervisor\n    hypervisor-cpu-compare         compare a CPU with the CPU created by a hypervisor on the host\n    maxvcpus                       连接 vcpu 最大值\n    node-memory-tune               获取或者设定节点内存参数\n    nodecpumap                     节点 cpu 映射\n    nodecpustats                   输出节点的 cpu 状统计数据。\n    nodeinfo                       节点信息\n    nodememstats                   输出节点的内存状统计数据。\n    nodesuspend                    在给定时间段挂起主机节点\n    sysinfo                        输出 hypervisor sysinfo\n    uri                            打印管理程序典型的URI\n    version                        显示版本\n Interface (help keyword 'interface'):\n    iface-begin                    生成当前接口设置快照，可在今后用于提交 (iface-commit) 或者恢复 (iface-rollback)\n    iface-bridge                   生成桥接设备并为其附加一个现有网络设备\n    iface-commit                   提交 iface-begin 后的更改并释放恢复点\n    iface-define                   define an inactive persistent physical host interface or modify an existing persistent one from an XML file\n    iface-destroy                  删除物理主机接口（启用它请执行 \"if-down\"）\n    iface-dumpxml                  XML 中的接口信息\n    iface-edit                     为物理主机界面编辑 XML 配置\n    iface-list                     物理主机接口列表\n    iface-mac                      将接口名称转换为接口 MAC 地址\n    iface-name                     将接口 MAC 地址转换为接口名称\n    iface-rollback                 恢复到之前保存的使用 iface-begin 生成的更改\n    iface-start                    启动物理主机接口（启用它请执行 \"if-up\"）\n    iface-unbridge                 分离其辅助设备后取消定义桥接设备\n    iface-undefine                 取消定义物理主机接口（从配置中删除）\n Network Filter (help keyword 'filter'):\n    nwfilter-define                使用 XML 文件定义或者更新网络过滤器\n    nwfilter-dumpxml               XML 中的网络过滤器信息\n    nwfilter-edit                  为网络过滤器编辑 XML 配置\n    nwfilter-list                  列出网络过滤器\n    nwfilter-undefine              取消定义网络过滤器\n    nwfilter-binding-create        create a network filter binding from an XML file\n    nwfilter-binding-delete        delete a network filter binding\n    nwfilter-binding-dumpxml       XML 中的网络过滤器信息\n    nwfilter-binding-list          list network filter bindings\n Networking (help keyword 'network'):\n    net-autostart                  自动开始网络\n    net-create                     从一个 XML 文件创建一个网络\n    net-define                     define an inactive persistent virtual network or modify an existing persistent one from an XML file\n    net-destroy                    销毁（停止）网络\n    net-dhcp-leases                print lease info for a given network\n    net-dumpxml                    XML 中的网络信息\n    net-edit                       为网络编辑 XML 配置\n    net-event                      Network Events\n    net-info                       网络信息\n    net-list                       列出网络\n    net-name                       把一个网络UUID 转换为网络名\n    net-start                      开始一个(以前定义的)不活跃的网络\n    net-undefine                   undefine a persistent network\n    net-update                     更新现有网络配置的部分\n    net-uuid                       把一个网络名转换为网络UUID\n Node Device (help keyword 'nodedev'):\n    nodedev-create                 根据节点中的 XML 文件定义生成设备\n    nodedev-destroy                销毁（停止）节点中的设备\n    nodedev-detach                 将节点设备与其设备驱动程序分离\n    nodedev-dumpxml                XML 中的节点设备详情\n    nodedev-list                   这台主机中中的枚举设备\n    nodedev-reattach               重新将节点设备附加到他的设备驱动程序中\n    nodedev-reset                  重置节点设备\n    nodedev-event                  Node Device Events\n Secret (help keyword 'secret'):\n    secret-define                  定义或者修改 XML 中的 secret\n    secret-dumpxml                 XML 中的 secret 属性\n    secret-event                   Secret Events\n    secret-get-value               secret 值输出\n    secret-list                    列出 secret\n    secret-set-value               设定 secret 值\n    secret-undefine                取消定义 secret\n Snapshot (help keyword 'snapshot'):\n    snapshot-create                使用 XML 生成快照\n    snapshot-create-as             使用一组参数生成快照\n    snapshot-current               获取或者设定当前快照\n    snapshot-delete                删除域快照\n    snapshot-dumpxml               为域快照转储 XML\n    snapshot-edit                  编辑快照 XML\n    snapshot-info                  快照信息\n    snapshot-list                  为域列出快照\n    snapshot-parent                获取快照的上级快照名称\n    snapshot-revert                将域转换为快照\n Storage Pool (help keyword 'pool'):\n    find-storage-pool-sources-as   找到潜在存储池源\n    find-storage-pool-sources      发现潜在存储池源\n    pool-autostart                 自动启动某个池\n    pool-build                     建立池\n    pool-create-as                 从一组变量中创建一个池\n    pool-create                    从一个 XML 文件中创建一个池\n    pool-define-as                 在一组变量中定义池\n    pool-define                    define an inactive persistent storage pool or modify an existing persistent one from an XML file\n    pool-delete                    删除池\n    pool-destroy                   销毁（删除）池\n    pool-dumpxml                   XML 中的池信息\n    pool-edit                      为存储池编辑 XML 配置\n    pool-info                      存储池信息\n    pool-list                      列出池\n    pool-name                      将池 UUID 转换为池名称\n    pool-refresh                   刷新池\n    pool-start                     启动一个（以前定义的）非活跃的池\n    pool-undefine                  取消定义一个不活跃的池\n    pool-uuid                      把一个池名称转换为池 UUID\n    pool-event                     Storage Pool Events\n Storage Volume (help keyword 'volume'):\n    vol-clone                      克隆卷。\n    vol-create-as                  从一组变量中创建卷\n    vol-create                     从一个 XML 文件创建一个卷\n    vol-create-from                生成卷，使用另一个卷作为输入。\n    vol-delete                     删除卷\n    vol-download                   将卷内容下载到文件中\n    vol-dumpxml                    XML 中的卷信息\n    vol-info                       存储卷信息\n    vol-key                        为给定密钥或者路径返回卷密钥\n    vol-list                       列出卷\n    vol-name                       为给定密钥或者路径返回卷名\n    vol-path                       为给定密钥或者路径返回卷路径\n    vol-pool                       为给定密钥或者路径返回存储池\n    vol-resize                     创新定义卷大小\n    vol-upload                     将文件内容上传到卷中\n    vol-wipe                       擦除卷\n Virsh itself (help keyword 'virsh'):\n    cd                             更改当前目录\n    echo                           echo 参数\n    exit                           退出这个非交互式终端\n    help                           打印帮助\n    pwd                            输出当前目录\n    quit                           退出这个非交互式终端\n    connect                        连接（重新连接）到 hypervisor\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-o9s0jdr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-o9s0jdr",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：从上面的信息可以看到，virsh命令大概分了，Domain Management（域管理），Domain Monitoring（域监控）、 Host and Hypervisor（主机及虚拟化）、Interface（网卡接口）、Network Filter（网络防火墙）、Networking（网络）、Node Device（节点设备驱动）、Secret、Snapshot（快照）、Storage Pool（存储池或存储策略）、Storage Volume（存储卷）、Virsh itself（virsh shell自身相关）这些组，如果查看某一组帮助信息，我们可以使用virsh help +组名；比如查看storage volume组相关命令有哪些，可以使用virsh help volume;"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-x863a8m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-x863a8m",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help volume\n Storage Volume (help keyword 'volume'):\n    vol-clone                      克隆卷。\n    vol-create-as                  从一组变量中创建卷\n    vol-create                     从一个 XML 文件创建一个卷\n    vol-create-from                生成卷，使用另一个卷作为输入。\n    vol-delete                     删除卷\n    vol-download                   将卷内容下载到文件中\n    vol-dumpxml                    XML 中的卷信息\n    vol-info                       存储卷信息\n    vol-key                        为给定密钥或者路径返回卷密钥\n    vol-list                       列出卷\n    vol-name                       为给定密钥或者路径返回卷名\n    vol-path                       为给定密钥或者路径返回卷路径\n    vol-pool                       为给定密钥或者路径返回存储池\n    vol-resize                     创新定义卷大小\n    vol-upload                     将文件内容上传到卷中\n    vol-wipe                       擦除卷\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-63g07jm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-63g07jm",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果查看组里的某个命令的用法，可以使用virsh help +命令即可"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-2h6cie1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-2h6cie1",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help vol-clone\n  NAME\n    vol-clone - 克隆卷。\n  SYNOPSIS\n    vol-clone \u003cvol\u003e \u003cnewname\u003e [--pool \u003cstring\u003e] [--prealloc-metadata] [--reflink]\n  DESCRIPTION\n    Clone an existing volume within the parent pool.\n  OPTIONS\n    [--vol] \u003cstring\u003e  卷名称、密钥或者路径\n    [--newname] \u003cstring\u003e  克隆名称\n    --pool \u003cstring\u003e  池名或 uuid\n    --prealloc-metadata  预先分配的元数据（用于 qcow2 而不是整个分配）\n    --reflink        use btrfs COW lightweight copy\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-khzixm0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-khzixm0",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、virsh管理虚拟机相关命令"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-nja2yyd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-nja2yyd",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh list：列出当前宿主机上的虚拟机列表，默认不加任何选项表示列出当前处于运行状态的虚拟机列表（活跃的）"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-rb39192",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-rb39192",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help list  \n  NAME\n    list - 列出域\n  SYNOPSIS\n    list [--inactive] [--all] [--transient] [--persistent] [--with-snapshot] [--without-snapshot] [--state-running] [--state-paused] [--state-shutoff] [--state-other] [--autostart] [--no-autostart] [--with-managed-save] [--without-managed-save] [--uuid] [--name] [--table] [--managed-save] [--title]\n  DESCRIPTION\n    返回域列表\n  OPTIONS\n    --inactive       列出不活跃的域\n    --all            不活跃和活跃的域列表\n    --transient      列出临时域\n    --persistent     列出持久域\n    --with-snapshot  列出现有快照的域\n    --without-snapshot  列出没有快照的域\n    --state-running  运行状态的域列表\n    --state-paused   列出暂停状态的域\n    --state-shutoff  列出关闭状态的域\n    --state-other    列出其他状态的域\n    --autostart      列出启用 autostart 的域\n    --no-autostart   列出禁用 autostart 的域\n    --with-managed-save  列出有管理的保存状态的域\n    --without-managed-save  列出没有管理的保存状态的域\n    --uuid           只列出 uuid\n    --name           只列出域名\n    --table          列出表格（默认）\n    --managed-save   标记有管理的保存状态的域\n    --title          show domain title\n[root@node1 ~]# virsh list\n Id    名称                         状态\n----------------------------------------------------\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n -     centos7.0                      关闭\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-e586zw7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-e586zw7",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh create：从一个 XML 文件创建一个域（虚拟机）"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-0eknvyb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-0eknvyb",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help create\n  NAME\n    create - 从一个 XML 文件创建一个域\n  SYNOPSIS\n    create \u003cfile\u003e [--console] [--paused] [--autodestroy] [--pass-fds \u003cstring\u003e] [--validate]\n  DESCRIPTION\n    创建一个域\n  OPTIONS\n    [--file] \u003cstring\u003e  文件包括一个 XML 域描述\n    --console        创建后附加到控制台\n    --paused         生成后让虚拟机保持暂停状态\n    --autodestroy    virsh 断开连接时自动销毁虚拟机\n    --pass-fds \u003cstring\u003e  向虚拟机传递文件描述符 N、M......\n    --validate       validate the XML against the schema\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-tgb5wnl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-tgb5wnl",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh define：从指定配置文件中创建虚拟，但不运行,create是创建并运行；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-5epp8ju",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-5epp8ju",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help define \n  NAME\n    define - 从一个 XML 文件定义（但不开始）一个域\n  SYNOPSIS\n    define \u003cfile\u003e [--validate]\n  DESCRIPTION\n    定义一个域。\n  OPTIONS\n    [--file] \u003cstring\u003e  文件包括一个 XML 域描述\n    --validate       validate the XML against the schema\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-47dji6w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-47dji6w",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例：复制centos7的配置文件，修改里面的个别参数，用virsh create 创建一个虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-432xt8p",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-432xt8p",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# cd /etc/libvirt/qemu/\n[root@node1 qemu]# ls\nc1.xml  centos7.0.xml  networks  \n[root@node1 qemu]# diff centos7.0.xml c1.xml \n9,10c9\n\u003c   \u003cname\u003ecentos7.0\u003c/name\u003e\n\u003c   \u003cuuid\u003e56a1ecab-ef53-42f8-b7eb-6b4019ea3ee4\u003c/uuid\u003e\n---\n\u003e   \u003cname\u003ec1\u003c/name\u003e\n41c40\n\u003c       \u003csource file='/var/lib/libvirt/images/centos7.0.qcow2'/\u003e\n---\n\u003e       \u003csource file='/kvm/images/c1.qcow2'/\u003e\n74c73\n\u003c       \u003cmac address='52:54:00:e3:8d:11'/\u003e\n---\n\u003e       \u003cmac address='52:54:00:e3:8e:01'/\u003e\n[root@node1 qemu]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-n76cv6w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-n76cv6w",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：默认kvm上的虚拟机的配置文件都保存在/etc/libvirt/qemu/目录下，以虚拟机名称命名的配置文件；上面主要修改了一些比较私密的配置，比如虚拟机名称、磁盘镜像文件存放位置，mac地址；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-848e0hc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-848e0hc",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用virsh 基于c1.xml创建虚拟"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-qecm7ma",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-qecm7ma",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n -     centos7.0                      关闭\n[root@node1 qemu]# virsh create c1.xml \n错误：从 c1.xml 创建域失败\n错误：Cannot access storage file '/kvm/images/c1.qcow2' (as uid:107, gid:107): 没有那个文件或目录\n[root@node1 qemu]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-b7ka82y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-b7ka82y",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：上述错误说没有找到我们指定磁盘文件；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-i8z3w5y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-i8z3w5y",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建c1的磁盘文件"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-r0aipys",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-r0aipys",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# ll /kvm/images/\n总用量 0\n[root@node1 qemu]# qemu-img create -f qcow2 /kvm/images/c1.qcow2 20G              \nFormatting '/kvm/images/c1.qcow2', fmt=qcow2 size=21474836480 encryption=off cluster_size=65536 lazy_refcounts=off \n[root@node1 qemu]# ll -h /kvm/images/\n总用量 196K\n-rw-r--r-- 1 root root 193K 8月  15 13:23 c1.qcow2\n[root@node1 qemu]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-yojjkc5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-yojjkc5",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：qemu-img create 表示使用qemu创建一个磁盘文件，-f指定文件格式，常用的磁盘格式有raw,cow,qcow2；当然qemu-img支持创建很多格式的磁盘文件，这个命令的主要作用就是对磁盘文件的管理，比如创建磁盘，转换磁盘格式，检查磁盘，对磁盘做快照等等操作；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-c7wiu9u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-c7wiu9u",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查看新建磁盘信息"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-e0cvpfp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-e0cvpfp",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# qemu-img info /kvm/images/c1.qcow2 \nimage: /kvm/images/c1.qcow2\nfile format: qcow2\nvirtual size: 20G (21474836480 bytes)\ndisk size: 196K\ncluster_size: 65536\nFormat specific information:\n    compat: 1.1\n    lazy refcounts: false\n[root@node1 qemu]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-2bfm5i0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-2bfm5i0",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "再次使用virsh 来基于c1.xml文件来创建虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-sj97f9s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-sj97f9s",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n -     centos7.0                      关闭\n[root@node1 qemu]# virsh create c1.xml \n域 c1 被创建（从 c1.xml）\n[root@node1 qemu]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     c1                             running\n -     centos7.0                      关闭\n[root@node1 qemu]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-aypaa9s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-aypaa9s",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：可以看到基于c1.xml文件中描述的信息，我们把c1虚拟机创建并启动起来了；这里需要注意，我们在创建虚拟机时，在其配置文件中并没有指定镜像文件在哪里，所以我们现在只创建了一个类似没有安装系统的虚拟机；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-y1h19ng",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-y1h19ng",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "用virt-manager验证，看看c1虚拟机是否有系统运行？"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-cic4bav",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-cic4bav",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1503305/202008/1503305-20200815142524690-1878413226.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-oep6g20",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-oep6g20",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：可以看到我们创建的虚拟机上没有运行系统。通常我们使用virsh来快速创建虚拟机，在创建磁盘文件时，首先把系统装进我们磁盘里，这样基于xml配置文件就可以很快速的启动一台虚拟机；通常我们会把这个磁盘文件做成一个模板，启动虚拟机时，直接拷贝模板命名为虚拟机名称，拷贝配置文件修改私密信息，然后用virsh工具基于这个改好的配置文件创建虚拟机即可；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-4ghcca0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-4ghcca0",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "测试：拷贝centos7的磁盘文件，命名为c2，然后拷贝centos7.0.xml的配置文件命名为c2.xml，修改c2.xml中的私有配置，然后基于这个配置文件来创建虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-yc1ruvl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-yc1ruvl",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# cp /var/lib/libvirt/images/centos7.0.qcow2 /kvm/images/c2.qcow2\n[root@node1 qemu]# ls /kvm/images/\nc1.qcow2  c2.qcow2\n[root@node1 qemu]# ls\nc1.xml  c2.xml  centos7.0.xml  networks\n[root@node1 qemu]# diff centos7.0.xml c2.xml \n9,10c9\n\u003c   \u003cname\u003ecentos7.0\u003c/name\u003e\n\u003c   \u003cuuid\u003e56a1ecab-ef53-42f8-b7eb-6b4019ea3ee4\u003c/uuid\u003e\n---\n\u003e   \u003cname\u003ec2\u003c/name\u003e\n41c40\n\u003c       \u003csource file='/var/lib/libvirt/images/centos7.0.qcow2'/\u003e\n---\n\u003e       \u003csource file='/kvm/images/c2.qcow2'/\u003e\n74c73\n\u003c       \u003cmac address='52:54:00:e3:8d:11'/\u003e\n---\n\u003e       \u003cmac address='52:54:00:e3:85:21'/\u003e\n[root@node1 qemu]# virsh list  --all\n Id    名称                         状态\n----------------------------------------------------\n 1     c1                             running\n -     centos7.0                      关闭\n[root@node1 qemu]# virsh create c2.xml \n域 c2 被创建（从 c2.xml）\n[root@node1 qemu]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     c1                             running\n 2     c2                             running\n -     centos7.0                      关闭\n[root@node1 qemu]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-hyqnf7z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-hyqnf7z",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证：启动图形界面virt-manager，查看c2是否启动，并有系统在运行？"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-t7u36uh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-t7u36uh",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1503305/202008/1503305-20200815144107533-1362061978.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-y111zmc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-y111zmc",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：可以看到现在c2启动以后，就有系统运行着，并且和centos7.0一模一样；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-auoe8c7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-auoe8c7",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh console：从宿主机连接指定虚拟的串行控制台"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-0ug7yx5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-0ug7yx5",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# virsh help console \n  NAME\n    console - 连接到客户会话\n  SYNOPSIS\n    console \u003cdomain\u003e [--devname \u003cstring\u003e] [--force] [--safe]\n  DESCRIPTION\n    连接客户真实串行控制台\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --devname \u003cstring\u003e  字符设备名称\n    --force          强制控制台连接（断开已连接的会话）\n    --safe           只有在支持安全控制台处理时方可连接\n[root@node1 qemu]# virsh console c2\n连接到域 c2\n换码符为 ^]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-yc92ly5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-yc92ly5",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：用virsh console c2命令连接c2的控制台，一直处于卡死的状态，这是因为centos7上默认没有允许ttyS0;"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-xomh3ym",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-xomh3ym",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在宿主机用ssh连接至虚拟机（当然svn或者使用virt-manager也行），修改内核参数，然后重启虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-92mgh24",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-92mgh24",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# ssh 192.168.122.168\nThe authenticity of host '192.168.122.168 (192.168.122.168)' can't be established.\nECDSA key fingerprint is SHA256:heUVB8InZ+56B+vMgUz+B7Uus4EgklEU9DVeywf1Z7s.\nECDSA key fingerprint is MD5:0b:b1:75:a4:2b:ba:cf:f1:ac:51:cb:76:2a:74:89:42.\nAre you sure you want to continue connecting (yes/no)? yes\nWarning: Permanently added '192.168.122.168' (ECDSA) to the list of known hosts.\nroot@192.168.122.168's password: \nPermission denied, please try again.\nroot@192.168.122.168's password: \nLast failed login: Sat Aug 15 03:06:50 EDT 2020 from 192.168.122.1 on ssh:notty\nThere was 1 failed login attempt since the last successful login.\nLast login: Sat Aug 15 02:40:23 2020\n[root@localhost ~]# \n[root@localhost ~]# grep \"ttyS0\" /etc/securetty \nttyS0\n[root@localhost ~]# grubby --update-kernel=ALL --args=\"console=ttyS0\"\n[root@localhost ~]# reboot\nPolicyKit daemon disconnected from the bus.\nWe are no longer a registered authentication agent.\nConnection to 192.168.122.168 closed by remote host.\nConnection to 192.168.122.168 closed.\n[root@node1 qemu]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-a5bggml",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-a5bggml",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：连接虚拟机后，需要看看/etc/securetty这个文件中是否有ttyS0，如果没有就加上，再更改内核参数；如果客户机上centos6，也是一样的步骤，不过在centos6上除了要确定/etc/securetty这个文件是否有ttyS0，还需要确认/etc/inittab文件中是否有S0:12345:respawn:/sbin/agetty ttyS0 115200这项配置，修改内核参数需要修改/etc/grup2.cfg，在启动内核的参数最后加console"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "ttyS0 保存重启客户机即可；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-9vllfi3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-9vllfi3",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "验证：现在使用virsh console c2命令看看是否能够连接至c2的控制台？"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-8mqsoym",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-8mqsoym",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 qemu]# virsh console c2\n连接到域 c2\n换码符为 ^]\nCentOS Linux 7 (Core)\nKernel 3.10.0-693.el7.x86_64 on an x86_64\nlocalhost login: root\nPassword: \nLast failed login: Sat Aug 15 03:08:51 EDT 2020 on ttyS0\nThere was 1 failed login attempt since the last successful login.\nLast login: Sat Aug 15 03:06:53 from 192.168.122.1\n[root@localhost ~]# ip a\n1: lo: \u003cLOOPBACK,UP,LOWER_UP\u003e mtu 65536 qdisc noqueue state UNKNOWN qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n    inet6 ::1/128 scope host \n       valid_lft forever preferred_lft forever\n2: eth0: \u003cBROADCAST,MULTICAST,UP,LOWER_UP\u003e mtu 1500 qdisc pfifo_fast state UP qlen 1000\n    link/ether 52:54:00:e3:85:21 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.122.168/24 brd 192.168.122.255 scope global dynamic eth0\n       valid_lft 2883sec preferred_lft 2883sec\n    inet6 fe80::4c39:5a0f:9800:6314/64 scope link \n       valid_lft forever preferred_lft forever\n[root@localhost ~]# \n[root@node1 qemu]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-qhfchwx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-qhfchwx",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：可以看到在宿主机上我们可以直接使用virsh console命令来连接指定客户机的串行控制台；退出控制台回到宿主机需要使用Ctrl键+有中括号；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-f0xgtz3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-f0xgtz3",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh shutdown：关闭指定虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-3m5w7yd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-3m5w7yd",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help shutdown\n  NAME\n    shutdown - 关闭一个域\n  SYNOPSIS\n    shutdown \u003cdomain\u003e [--mode \u003cstring\u003e]\n  DESCRIPTION\n    在目标域中执行关闭行为。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --mode \u003cstring\u003e  shutdown mode: acpi|agent|initctl|signal|paravirt\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     c1                             running\n 2     c2                             running\n -     centos7.0                      关闭\n[root@node1 ~]# virsh shutdown c1\n域 c1 被关闭\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 1     c1                             running\n 2     c2                             running\n -     centos7.0                      关闭\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-q6wr8fz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-q6wr8fz",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：使用shutdown子命令，有时候会关不掉，我们需要使用destroy子命令来强制关机；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-xtg8en9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-xtg8en9",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "强制对c1进行关机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-8c2su7z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-8c2su7z",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh list  --all\n Id    名称                         状态\n----------------------------------------------------\n 1     c1                             running\n 2     c2                             running\n -     centos7.0                      关闭\n[root@node1 ~]# virsh destroy c1\n域 c1 被删除\n[root@node1 ~]# virsh list  --all\n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n -     c1                             关闭\n -     centos7.0                      关闭\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-t33fmyo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-t33fmyo",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：强制删除有点类似我们使用kill -9强制杀死一个进程一样，其实kvm上的虚拟在宿主机机上的表现形式就是一个进程，如下所示；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-kvg0jk2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-kvg0jk2",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://img2020.cnblogs.com/blog/1503305/202008/1503305-20200815161053044-1962915315.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-ccp46ss",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-ccp46ss",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：我们在宿主机上查看进程就可以知道当前宿主机上就运行了台虚拟机，从上面的信息我们也不难理解virsh其实也就是调用qemu来创建虚拟机的；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-tqlp8g6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-tqlp8g6",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh start：启动指定非活动虚拟机（开机）"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-adzkga5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-adzkga5",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help start\n  NAME\n    start - 开始一个（以前定义的）非活跃的域\n  SYNOPSIS\n    start \u003cdomain\u003e [--console] [--paused] [--autodestroy] [--bypass-cache] [--force-boot] [--pass-fds \u003cstring\u003e]\n  DESCRIPTION\n    启动域，可以从最后一个 managedsave\n  state，如果没有 managedsave state，\n    也可以从全新引导中启动。\n  OPTIONS\n    [--domain] \u003cstring\u003e  非活跃域的名称\n    --console        创建后附加到控制台\n    --paused         生成后让虚拟机保持暂停状态\n    --autodestroy    virsh 断开连接时自动销毁虚拟机\n    --bypass-cache   载入时避免文件系统缓存\n    --force-boot     采用忽略所有管理保存的方式强制刷新引导\n    --pass-fds \u003cstring\u003e  向虚拟机传递文件描述符 N、M......\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n -     c1                             关闭\n -     centos7.0                      关闭\n[root@node1 ~]# virsh start centos7.0 \n域 centos7.0 已开始\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n 3     centos7.0                      running\n -     c1                             关闭\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-o440wob",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-o440wob",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh suspend：挂起一个虚拟机"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-cjs8f9a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-cjs8f9a",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help suspend\n  NAME\n    suspend - 挂起一个域\n  SYNOPSIS\n    suspend \u003cdomain\u003e\n  DESCRIPTION\n    挂起一个运行的域。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n 3     centos7.0                      running\n -     c1                             关闭\n[root@node1 ~]# virsh suspend centos7.0 \n域 centos7.0 被挂起\n[root@node1 ~]# virsh list --all      \n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n 3     centos7.0                      暂停\n -     c1                             关闭\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-aeioev7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-aeioev7",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：suspend操作是把指定虚拟机挂起，所谓挂起就是把运行状态的虚拟机暂停，并把当前运行状态保存到内存，有点类似时间停止的感觉，外部客户端对它访问它也不会响应；如果此时宿主机掉电，那么之前保存在内存的运行状态数据也将随之丢失；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-6uq7o4s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-6uq7o4s",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh resume：恢复指定被挂起的虚拟机；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-ho77oc2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-ho77oc2",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help resume\n  NAME\n    resume - 重新恢复一个域\n  SYNOPSIS\n    resume \u003cdomain\u003e\n  DESCRIPTION\n    重新恢复一个以前被挂起的域。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n 3     centos7.0                      暂停\n -     c1                             关闭\n[root@node1 ~]# virsh resume centos7.0 \n域 centos7.0 被重新恢复\n[root@node1 ~]# virsh list --all     \n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n 3     centos7.0                      running\n -     c1                             关闭\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-h372u2i",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-h372u2i",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh save：把指定的虚拟机运行状态信息保存至指定文件，有点类似vmware 中的挂起操作，vmware的挂起操作是把运行状态保存到磁盘，宿主机掉电，它不会的丢失数据；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-bvvdsd8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-bvvdsd8",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help save\n  NAME\n    save - 把一个域的状态保存到一个文件\n  SYNOPSIS\n    save \u003cdomain\u003e \u003cfile\u003e [--bypass-cache] [--xml \u003cstring\u003e] [--running] [--paused] [--verbose]\n  DESCRIPTION\n    保存运行中的域 的 RAM 状态\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    [--file] \u003cstring\u003e  数据存到什么地方\n    --bypass-cache   保存时避免文件系统缓存\n    --xml \u003cstring\u003e   包含为目标更新的 XML 的文件名\n    --running        设定要在还原中运行的域\n    --paused         设定要在还原中暂停的域\n    --verbose        显示保存进程\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 2     c2                             running\n 3     centos7.0                      running\n -     c1                             关闭\n[root@node1 ~]# virsh save c2 ./c2.bin --paused     \n保存到 c2 的域 ./c2.bin \n[root@node1 ~]# ls\nc2.bin  redis-5.0.8.tar.gz\n[root@node1 ~]# virsh list --all              \n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n -     c1                             关闭\n -     c2                             关闭\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-dkscxrr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-dkscxrr",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh restore：从指定文件恢复虚拟机（该文件是使用save命令保存下来的虚拟机运行状态信息文件）"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-ikj2nz5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-ikj2nz5",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help restore \n  NAME\n    restore - 从一个存在一个文件中的状态恢复一个域\n  SYNOPSIS\n    restore \u003cfile\u003e [--bypass-cache] [--xml \u003cstring\u003e] [--running] [--paused]\n  DESCRIPTION\n    恢复一个域。\n  OPTIONS\n    [--file] \u003cstring\u003e  恢复的状态\n    --bypass-cache   恢复时避免文件系统缓存\n    --xml \u003cstring\u003e   包含为目标更新的 XML 的文件名\n    --running        将域恢复为运行状态\n    --paused         将域恢复为暂停状态\n[root@node1 ~]# virsh list --all   \n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n -     c1                             关闭\n -     c2                             关闭\n[root@node1 ~]# virsh restore ./c2.bin \n从 ./c2.bin 恢复域\n[root@node1 ~]# virsh list --all     \n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n 4     c2                             暂停\n -     c1                             关闭\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-djoet08",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-djoet08",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：恢复后端c2变成了暂停状态，这是因为我们在保存状态信息时，指定了恢复时的状态；当然我们在恢复时也可以使用选项来指定我们要把虚拟机恢复到什么状态；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-jw4byc2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-jw4byc2",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh reboot：重启指定虚拟机，如同在指定虚拟机上执行reboot命令一样；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-4o22ng5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-4o22ng5",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help reboot\n  NAME\n    reboot - 重新启动一个域\n  SYNOPSIS\n    reboot \u003cdomain\u003e [--mode \u003cstring\u003e]\n  DESCRIPTION\n    在目标域中执行重新启动命令。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --mode \u003cstring\u003e  shutdown mode: acpi|agent|initctl|signal|paravirt\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n 4     c2                             暂停\n -     c1                             关闭\n[root@node1 ~]# virsh reboot centos7.0 \n域 centos7.0 正在被重新启动\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-ne1k5us",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-ne1k5us",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh reset：对指定虚拟机执行强制重启，有点类似按机箱上的重置按钮；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-mipo8t0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-mipo8t0",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help reset\n  NAME\n    reset - 重新设定域\n  SYNOPSIS\n    reset \u003cdomain\u003e\n  DESCRIPTION\n    如同使用电源按钮重新设定目标域\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n 4     c2                             暂停\n -     c1                             关闭\n[root@node1 ~]# virsh  reset centos7.0 \n重新设定域 centos7.0\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-9j3tu64",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-9j3tu64",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh dumpxml：以xml格式输出指定虚拟机的详细配置（把对应虚拟机的配置文件内容输出到标准输出）；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-1aruk0l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-1aruk0l",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help dumpxml\n  NAME\n    dumpxml - XML 中的域信息\n  SYNOPSIS\n    dumpxml \u003cdomain\u003e [--inactive] [--security-info] [--update-cpu] [--migratable]\n  DESCRIPTION\n    把域信息作为一个 XML 输出到 stdout。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --inactive       显示不活跃定义的 XML\n    --security-info  包括 XML 转储中与安全性相关的信息\n    --update-cpu     根据主机 CPU 更新虚拟机 CPU\n    --migratable     为迁移提供 XML 可用性\n[root@node1 ~]# virsh dumpxml c1\n\u003cdomain type='kvm'\u003e\n  \u003cname\u003ec1\u003c/name\u003e\n  \u003cuuid\u003ec2bd061d-1628-4901-a459-e1cde62ed5b3\u003c/uuid\u003e\n  \u003cmemory unit='KiB'\u003e2097152\u003c/memory\u003e\n  \u003ccurrentMemory unit='KiB'\u003e2097152\u003c/currentMemory\u003e\n  \u003cvcpu placement='static'\u003e2\u003c/vcpu\u003e\n  \u003cos\u003e\n    \u003ctype arch='x86_64' machine='pc-i440fx-rhel7.0.0'\u003ehvm\u003c/type\u003e\n    \u003cboot dev='hd'/\u003e\n  \u003c/os\u003e\n  \u003cfeatures\u003e\n    \u003cacpi/\u003e\n    \u003capic/\u003e\n  \u003c/features\u003e\n  \u003ccpu mode='custom' match='exact' check='partial'\u003e\n    \u003cmodel fallback='allow'\u003eBroadwell\u003c/model\u003e\n  \u003c/cpu\u003e\n  \u003cclock offset='utc'\u003e\n    \u003ctimer name='rtc' tickpolicy='catchup'/\u003e\n    \u003ctimer name='pit' tickpolicy='delay'/\u003e\n    \u003ctimer name='hpet' present='no'/\u003e\n  \u003c/clock\u003e\n  \u003con_poweroff\u003edestroy\u003c/on_poweroff\u003e\n  \u003con_reboot\u003erestart\u003c/on_reboot\u003e\n  \u003con_crash\u003edestroy\u003c/on_crash\u003e\n  \u003cpm\u003e\n    \u003csuspend-to-mem enabled='no'/\u003e\n    \u003csuspend-to-disk enabled='no'/\u003e\n  \u003c/pm\u003e\n  \u003cdevices\u003e\n    \u003cemulator\u003e/usr/libexec/qemu-kvm\u003c/emulator\u003e\n    \u003cdisk type='file' device='disk'\u003e\n      \u003cdriver name='qemu' type='qcow2'/\u003e\n      \u003csource file='/kvm/images/c1.qcow2'/\u003e\n      \u003ctarget dev='vda' bus='virtio'/\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/\u003e\n    \u003c/disk\u003e\n    \u003cdisk type='file' device='cdrom'\u003e\n      \u003cdriver name='qemu' type='raw'/\u003e\n      \u003ctarget dev='hda' bus='ide'/\u003e\n      \u003creadonly/\u003e\n      \u003caddress type='drive' controller='0' bus='0' target='0' unit='0'/\u003e\n    \u003c/disk\u003e\n    \u003ccontroller type='usb' index='0' model='ich9-ehci1'\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x7'/\u003e\n    \u003c/controller\u003e\n    \u003ccontroller type='usb' index='0' model='ich9-uhci1'\u003e\n      \u003cmaster startport='0'/\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0' multifunction='on'/\u003e\n    \u003c/controller\u003e\n    \u003ccontroller type='usb' index='0' model='ich9-uhci2'\u003e\n      \u003cmaster startport='2'/\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x1'/\u003e\n    \u003c/controller\u003e\n    \u003ccontroller type='usb' index='0' model='ich9-uhci3'\u003e\n      \u003cmaster startport='4'/\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x2'/\u003e\n    \u003c/controller\u003e\n    \u003ccontroller type='pci' index='0' model='pci-root'/\u003e\n    \u003ccontroller type='ide' index='0'\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/\u003e\n    \u003c/controller\u003e\n    \u003ccontroller type='virtio-serial' index='0'\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/\u003e\n    \u003c/controller\u003e\n    \u003cinterface type='network'\u003e\n      \u003cmac address='52:54:00:e3:8e:01'/\u003e\n      \u003csource network='default'/\u003e\n      \u003cmodel type='virtio'/\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/\u003e\n    \u003c/interface\u003e\n    \u003cserial type='pty'\u003e\n      \u003ctarget type='isa-serial' port='0'\u003e\n        \u003cmodel name='isa-serial'/\u003e\n      \u003c/target\u003e\n    \u003c/serial\u003e\n    \u003cconsole type='pty'\u003e\n      \u003ctarget type='serial' port='0'/\u003e\n    \u003c/console\u003e\n    \u003cchannel type='unix'\u003e\n      \u003ctarget type='virtio' name='org.qemu.guest_agent.0'/\u003e\n      \u003caddress type='virtio-serial' controller='0' bus='0' port='1'/\u003e\n    \u003c/channel\u003e\n    \u003cchannel type='spicevmc'\u003e\n      \u003ctarget type='virtio' name='com.redhat.spice.0'/\u003e\n      \u003caddress type='virtio-serial' controller='0' bus='0' port='2'/\u003e\n    \u003c/channel\u003e\n    \u003cinput type='tablet' bus='usb'\u003e\n      \u003caddress type='usb' bus='0' port='1'/\u003e\n    \u003c/input\u003e\n    \u003cinput type='mouse' bus='ps2'/\u003e\n    \u003cinput type='keyboard' bus='ps2'/\u003e\n    \u003cgraphics type='spice' autoport='yes'\u003e\n      \u003clisten type='address'/\u003e\n      \u003cimage compression='off'/\u003e\n    \u003c/graphics\u003e\n    \u003csound model='ich6'\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/\u003e\n    \u003c/sound\u003e\n    \u003cvideo\u003e\n      \u003cmodel type='qxl' ram='65536' vram='65536' vgamem='16384' heads='1' primary='yes'/\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/\u003e\n    \u003c/video\u003e\n    \u003credirdev bus='usb' type='spicevmc'\u003e\n      \u003caddress type='usb' bus='0' port='2'/\u003e\n    \u003c/redirdev\u003e\n    \u003credirdev bus='usb' type='spicevmc'\u003e\n      \u003caddress type='usb' bus='0' port='3'/\u003e\n    \u003c/redirdev\u003e\n    \u003cmemballoon model='virtio'\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/\u003e\n    \u003c/memballoon\u003e\n    \u003crng model='virtio'\u003e\n      \u003cbackend model='random'\u003e/dev/urandom\u003c/backend\u003e\n      \u003caddress type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/\u003e\n    \u003c/rng\u003e\n  \u003c/devices\u003e\n\u003c/domain\u003e\n[root@node1 ~]# virsh dumpxml c1 \u003e c1.xml.bak\n[root@node1 ~]# diff c1.xml.bak /etc/libvirt/qemu/c1.xml \n0a1,7\n\u003e \u003c!--\n\u003e WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE\n\u003e OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:\n\u003e   virsh edit centos7.0\n\u003e or other application using the libvirt API.\n\u003e --\u003e\n\u003e \n3d9\n\u003c   \u003cuuid\u003ec2bd061d-1628-4901-a459-e1cde62ed5b3\u003c/uuid\u003e\n119d124\n\u003c \n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-ub10ixn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-ub10ixn",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：可以看到到处都配置文件和原有配置文件没有本质的不同，除了注释相差就只是uuid，如果我们在创建虚拟机时指定了uuid，导出的配置和原配置文件都是一样的；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-mg9m1ok",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-mg9m1ok",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh undefine：删除指定虚拟机（会连同配置文件一并删除）"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-x4zxidv",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-x4zxidv",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help undefine \n  NAME\n    undefine - 取消定义一个域\n  SYNOPSIS\n    undefine \u003cdomain\u003e [--managed-save] [--storage \u003cstring\u003e] [--remove-all-storage] [--delete-snapshots] [--wipe-storage] [--snapshots-metadata] [--nvram] [--keep-nvram]\n  DESCRIPTION\n    取消定义一个域或者将持久转换为临时。\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --managed-save   删除域管理的状态文件\n    --storage \u003cstring\u003e  删除关联的存储卷（用逗号分开的目标或者源路径列表）（查看 domblklist）\n    --remove-all-storage  删除关联的存储卷（小心使用）\n    --delete-snapshots  delete snapshots associated with volume(s), requires --remove-all-storage (must be supported by storage driver)\n    --wipe-storage   擦除删除卷中的数据\n    --snapshots-metadata  如果不活跃则删除所有域快照元数据\n    --nvram          remove nvram file, if inactive\n    --keep-nvram     keep nvram file, if inactive\n[root@node1 ~]# ll /kvm/images/\n总用量 20975172\n-rw-r--r-- 1 root root      197120 8月  15 13:23 c1.qcow2\n-rw------- 1 qemu qemu 21478375424 8月  15 16:30 c2.qcow2\n[root@node1 ~]# ll /etc/libvirt/qemu/\n总用量 24\n-rw------- 1 root root 4531 8月  15 14:22 c1.xml\n-rw------- 1 root root 4531 8月  15 14:34 c2.xml\n-rw------- 1 root root 4609 8月  14 00:10 centos7.0.xml\ndrwx------ 3 root root   42 8月  13 23:31 networks\n[root@node1 ~]# virsh undefine c1\n域 c1 已经被取消定义\n[root@node1 ~]# ll /etc/libvirt/qemu/\n总用量 16\n-rw------- 1 root root 4531 8月  15 14:34 c2.xml\n-rw------- 1 root root 4609 8月  14 00:10 centos7.0.xml\ndrwx------ 3 root root   42 8月  13 23:31 networks\n[root@node1 ~]# ll /kvm/images/    \n总用量 20975172\n-rw-r--r-- 1 root root      197120 8月  15 13:23 c1.qcow2\n-rw------- 1 qemu qemu 21478375424 8月  15 16:30 c2.qcow2\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n 4     c2                             暂停\n[root@node1 ~]#\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-jr0ez7h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-jr0ez7h",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "提示：默认使用undefine只会把对应配置文件和虚拟机实例删除，如果还需要删除存储卷，可以在后面加上对应的选项指定即可；"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-umymcjc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241213171254-umymcjc",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "virsh autostart ：设置指定虚拟机为随宿主机启动而自动启动"
+				}
+			]
+		},
+		{
+			"ID": "20241213171254-ja9kt74",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241213171254-ja9kt74",
+				"updated": "20241213171254"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y29udGFpbmVy"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@node1 ~]# virsh help autostart   \n  NAME\n    autostart - 自动开始一个域\n  SYNOPSIS\n    autostart \u003cdomain\u003e [--disable]\n  DESCRIPTION\n    设置一个域在启动时自动开始.\n  OPTIONS\n    [--domain] \u003cstring\u003e  domain name, id or uuid\n    --disable        禁止自动启动\n[root@node1 ~]# virsh list --all\n Id    名称                         状态\n----------------------------------------------------\n 3     centos7.0                      running\n 4     c2                             暂停\n[root@node1 ~]# virsh autostart c2   \n域 c2标记为自动开始\n[root@node1 ~]# virsh autostart c2 --disable \n域 c2取消标记为自动开始\n[root@node1 ~]# \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

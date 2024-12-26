@@ -1,0 +1,355 @@
+{
+	"ID": "20241106153054-kv3nsej",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241106153054-kv3nsej",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20241106205556-j2b53i1\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241106205524-u7gywe2\u0026quot;,\u0026quot;scrollTop\u0026quot;:1300,\u0026quot;focusId\u0026quot;:\u0026quot;20241106205450-umvp9z1\u0026quot;,\u0026quot;focusStart\u0026quot;:1,\u0026quot;focusEnd\u0026quot;:1}",
+		"title": "启动参数配置及释义",
+		"updated": "20241106205616"
+	},
+	"Children": [
+		{
+			"ID": "20241106205556-j2b53i1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241106205556-j2b53i1",
+				"updated": "20241106205601"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 参数"
+				}
+			]
+		},
+		{
+			"ID": "20241106153054-jb6wumu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241106153054-jb6wumu",
+				"updated": "20241106175413"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "      -h, --help：显示帮助信息\n\n      --version：显示版本信息\n\n      --config.file=\"prometheus.yml\"：启动时，指定Prometheus读取配置文件的路径。  \n\n      --web.listen-address=\"0.0.0.0:9090\" ：指定网页打开Prometheus的ip和端口，默认为\"0.0.0.0:9090\"。\n\n      --web.read-timeout=5m：页面读取请求最大超时时间 。 \n\n      --web.max-connections=512：同时访问Prometheus页面的最大连接数，默认为512。\n\n      --web.external-url=\u003cURL\u003e：Prometheus对外提供的url(eg: Prometheus通过反向代理提供服务)。用于生成一个相对和绝对的链接返回给Prometheus本身。如果这个url有路径部分，它将用于Prometheus所有HTTP端点的前缀。如果省略了，则相关的url组件将自动派生(If the URL has a path portion, it will be used to prefix all HTTP endpoints served by Prometheus. If omitted, relevant URL components will be derived automatically)。    \n\n      --web.route-prefix=\u003cpath\u003e：Web端点内部路由的前缀。默认路径：web.external-url。\n\n      --web.user-assets=\u003cpath\u003e：静态资源路径，可以在/user下找到。\n\n      --web.enable-lifecycle：通过HTTP请求启用关闭和重新加载。\n\n      --web.enable-admin-api：启用管理控制操作的api端点。(Enables API endpoints for admin control actions)\n\n      --web.console.templates=\"consoles\"：到控制台模板目录的路径，可以在consoles/目录下找到。\n\n      --web.console.libraries=\"console_libraries\"：控制台库目录的路径。 \n\n      --storage.tsdb.path=\"data/\"：存储的基本路径。\n\n      --storage.tsdb.retention=STORAGE.TSDB.RETENTION：存储采样的保存时间。\n\n      --storage.tsdb.retention.time=STORAGE.TSDB.RETENTION.TIME：存储采样的保存时间。\n\n      --storage.tsdb.retention.size=STORAGE.TSDB.RETENTION.SIZE：存储采样保留最大字节数\n\n      --storage.tsdb.head-chunks-write-queue-size=0：将 head chunk 写入要进行内存映射的磁盘的队列大小。0是完全关闭队列。\n    \n      --storage.agent.path=\"data-agent/\" :指标存储的基本路径。仅与agent模式一起使用。\n    \n      --[no-]storage.agent.wal-compression：压缩agent的wal。仅与agent模式一起使用。\n\n      --storage.agent.retention.min-time=STORAGE.AGENT.RETENTION.MIN-TIME：当 WAL 被截断时，可以在考虑删除之前使用最小采样时间\n\n      --storage.agent.retention.max-time=STORAGE.AGENT.RETENTION.MAX-TIME：在 WAL 被截断时被强制删除之前的最大采样时间\n\n      --storage.remote.flush-deadline=\u003cduration\u003e：在关闭或配置重新加载时等待刷新sample的时间。\n\n      --storage.remote.read-sample-limit=5e7：在单个查询中，通过远程读取接口返回的最大样本总数。0 表示无限制。\n\n      --storage.remote.read-concurrent-limit=10 ：最大并发远程读取调用数。0 表示无限制。仅用于服务器模式\n    \n      --storage.remote.read-max-bytes-in-frame=1048576：在封装之前，用于流式传输远程读取响应类型的单个帧中的最大字节数。请注意，客户端也可能对帧大小有限制。protobuf 默认建议 1MB。仅用于服务器模式。\n  \n      --rules.alert.for-outage-tolerance=1h：恢复 “for” 警报状态可容忍 prometheus 中断的最长时间。仅用于服务器模式\n\n      --rules.alert.for-grace-period=10m：alert 和 restored “for” 状态之间的最短持续时间。仅对配置的 “for” 时间大于宽限期的警报进行维护。仅用于服务器模式\n\n      --rules.alert.resend-delay=1m：在向 Alertmanager 重新发送警报之前等待的最短时间。仅用于服务器模式\n  \n      --rules.max-concurrent-evals=4: 可并发运行的独立规则的全局并发限制。仅用于服务器模式。\n  \n      --storage.tsdb.no-lockfile：不在数据目录中创建lockfile(Do not create lockfile in data directory)。\n\n      --alertmanager.notification-queue-capacity=10000：等待报警通知队列的大小。\n\n      --alertmanager.timeout=10s：发送警报到Alertmanager的超时时间。\n\n      --query.lookback-delta=5m：允许在表达式求值期间检索度量值的delta差值(The delta difference allowed for retrieving metrics during expression evaluations)。\n\n      --query.timeout=2m： 一个查询在终止之前可以执行的最长时间(如果超过2min，就会自动kill掉)。\n\n      --query.max-concurrency=20：并发执行的最大查询数，默认为20。\n\n      --query.max-samples=50000000：一次查询可以加载入内存的最大采样数。如果加载入内存超过最大采样数，将会查询失败。\n\n      --log.level=info： 开启打印日志级别(debug,info,warn,error,fatal)。默认为info。\n\n      --log.format=logfmt:\t日志输出格式。(logfmt,json）\n    \n      --enable-feature=: 使用逗号分割打开的特性。有效参数：agent, auto-gomemlimit, exemplar-storage, expand-external-labels,\n                                 memory-snapshot-on-shutdown, promql-at-modifier, promql-negative-offset, promql-per-step-stats, promql-experimental-functions,\n                                 remote-write-receiver (DEPRECATED), extra-scrape-metrics, new-service-discovery-manager, auto-gomaxprocs, no-default-scrape-port,\n                                 native-histograms, otlp-write-receiver. See https://prometheus.io/docs/prometheus/latest/feature_flags/ \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241106205450-umvp9z1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241106205450-umvp9z1",
+				"updated": "20241106205613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 参数用法："
+				}
+			]
+		},
+		{
+			"ID": "20241106205417-0gq3mad",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241106205417-0gq3mad",
+				"updated": "20241106205417"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "eg:"
+				}
+			]
+		},
+		{
+			"ID": "20241106205435-y2zkrsp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241106205435-y2zkrsp",
+				"updated": "20241106205438"
+			},
+			"Children": [
+				{
+					"ID": "20241106205438-lspuse3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241106205438-lspuse3",
+						"updated": "20241106205438"
+					},
+					"Children": [
+						{
+							"ID": "20241106205438-iubeffe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241106205438-iubeffe",
+								"updated": "20241106205438"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "未设置参数 --web.enable-lifecycle时，执行curl -X POST http://localhost:9090/-/reload 会报错："
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241106205442-jbrack7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241106205442-jbrack7"
+					},
+					"Children": [
+						{
+							"ID": "20241106205442-ft6a4z3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241106205442-ft6a4z3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动设置参数--web.enable-lifecycle就可以用命令 curl -X POST http://localhost:9090/-/reload 重新加载配置文件了。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-8kc6zn1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241106205427-8kc6zn1",
+				"updated": "20241106205616"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 打印日志："
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-3yojlfp",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241106205427-3yojlfp",
+				"updated": "20241106205506"
+			},
+			"Children": [
+				{
+					"ID": "20241106205506-898e6kg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20241106205506-898e6kg",
+						"updated": "20241106205506"
+					},
+					"Children": [
+						{
+							"ID": "20241106205506-zzhuom2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241106205506-zzhuom2",
+								"updated": "20241106205506"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在prometheus目录下创建文件。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-gmopjft",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241106205427-gmopjft",
+				"updated": "20241106205536"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "      touch prome.log"
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-zfc1ebh",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241106205427-zfc1ebh",
+				"updated": "20241106205508"
+			},
+			"Children": [
+				{
+					"ID": "20241106205508-lh9cos2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20241106205508-lh9cos2",
+						"updated": "20241106205508"
+					},
+					"Children": [
+						{
+							"ID": "20241106205508-x7gh7yr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241106205508-x7gh7yr",
+								"updated": "20241106205508"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动prometheus时，把参数--log.level=info带上。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-2rtfxzh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241106205427-2rtfxzh",
+				"updated": "20241106205531"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "      启动命令为："
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-l4hyf9s",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241106205427-l4hyf9s",
+				"updated": "20241106205510"
+			},
+			"Children": [
+				{
+					"ID": "20241106205510-6d9vxa5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20241106205510-6d9vxa5",
+						"updated": "20241106205510"
+					},
+					"Children": [
+						{
+							"ID": "20241106205510-06u0fbo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241106205510-06u0fbo",
+								"updated": "20241106205510"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "再用命令curl -X POST http://localhost:9090/-/reload重新加载prometheus.yml"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-vmp3g6e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241106205427-vmp3g6e",
+				"updated": "20241106205517"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "    查看日志："
+				}
+			]
+		},
+		{
+			"ID": "20241106205427-iub4v8e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241106205427-iub4v8e",
+				"updated": "20241106205518"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "   可以看到日志最后一条输出Loading configuration file \"filename=prometheus.yml\""
+				}
+			]
+		},
+		{
+			"ID": "20241106205524-u7gywe2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241106205524-u7gywe2"
+			}
+		}
+	]
+}

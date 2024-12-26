@@ -1,0 +1,39 @@
+{
+	"ID": "20241115161912-gjcf2q6",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241115161912-gjcf2q6",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20241115161912-jcofp4f\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241115161912-jcofp4f\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20241115161912-jcofp4f\u0026quot;,\u0026quot;focusStart\u0026quot;:895,\u0026quot;focusEnd\u0026quot;:895}",
+		"title": "容器镜像损坏检查",
+		"updated": "20241115161958"
+	},
+	"Children": [
+		{
+			"ID": "20241115161912-jcofp4f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241115161912-jcofp4f",
+				"updated": "20241115161948"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 处理方法参考 https://wiki.cestc.cn/pages/viewpage.action?pageId=391593609\n# 工具编译方法参考 https://wiki.cestc.cn/pages/viewpage.action?pageId=385485571\n# containers-storage check\n# git clone https://github.com/containers/storage.git\n# 修改 Makefile\nAUTOTAGS := $(shell ./hack/btrfs_tag.sh) $(shell ./hack/libsubid_tag.sh)\n-BUILDFLAGS := -tags \"$(AUTOTAGS) $(TAGS)\" $(FLAGS)\n+BUILDFLAGS := -tags \"$(AUTOTAGS) $(TAGS) exclude_graphdriver_devicemapper\" $(FLAGS)\n GO ?= go\n TESTFLAGS := $(shell $(GO) test -race $(BUILDFLAGS) ./pkg/stringutils 2\u003e\u00261 \u003e /dev/null \u0026\u0026 echo -race)\n \n# 编译\n[root@syx storage]# make binary\ngo build -compiler gc -tags \"exclude_graphdriver_btrfs   exclude_graphdriver_devicemapper\"  ./cmd/containers-storage\n  \n# 源码根目录下会生成编译后的containers-storage\ncp ./containers-storage /usr/bin/\n \n# copy 到目标节点\nsudo -s\nchmod +x  /root/containers-storage\n \n# 结果会显示有问题的镜像层\n/root/containers-storage -D check\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

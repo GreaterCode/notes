@@ -1,0 +1,218 @@
+{
+	"ID": "20240909005023-t1234j8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240909005023-t1234j8",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240909005043-2aehbi0\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240909005652-2ufb4ef\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20240909005100-jxbtyqb\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "linux实现回收站，避免误删除",
+		"updated": "20240909005703"
+	},
+	"Children": [
+		{
+			"ID": "20240909005043-2aehbi0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240909005043-2aehbi0",
+				"updated": "20240909005100"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 先禁用rm"
+				}
+			]
+		},
+		{
+			"ID": "20240909005100-jxbtyqb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240909005100-jxbtyqb",
+				"updated": "20240909005139"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 打开\nvim /etc/profile\n\n# 文末添加\nalias rm='echo can not use rm command, please use de'\n\n# 使得生效\nsource  /etc/profile\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240909005023-b885ur4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240909005023-b885ur4",
+				"updated": "20240909005157"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "效果"
+				}
+			]
+		},
+		{
+			"ID": "20240909005223-68wfxkw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240909005223-68wfxkw",
+				"updated": "20240909005225"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240909005225-4b0rra3.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240909005245-zsky199",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240909005245-zsky199",
+				"updated": "20240909005256"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.  创建回收站"
+				}
+			]
+		},
+		{
+			"ID": "20240909005256-795r2ik",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240909005256-795r2ik",
+				"updated": "20240909005637"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建回收站目录\nmkdir -p ~/.Recycle_bin\n\n# 修改bash文件\nvim ~/.bashrc\n\n# bash文件后面，增加如下内容\nalias de=Recycle_bin\nalias dl='ls ~/.Recycle_bin'\nalias dr=undelfile\n\nundelfile(){  \n    mv -i ~/.Recycle_bin/$@ ./\n}\n\nRecycle_bin(){  \n   mv $@  ~/.Recycle_bin/\n}\n\nclearall(){  \n    read -p \"Clear Recycle_bin?[n]\" confirm \n    [ $confirm == 'y' ] || [ $confirm == 'Y' ] \u0026\u0026 /usr/bin/rm -rf ~/.Recycle_bin/*\n}\n\n# 生效\nsource ~/.bashrc\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240909005644-9t9xiib",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240909005644-9t9xiib",
+				"updated": "20240909005645"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "效果，使用de进行删除，dr进行恢复，dl查看目录，clearall清空"
+				}
+			]
+		},
+		{
+			"ID": "20240909005652-2ufb4ef",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240909005652-2ufb4ef",
+				"updated": "20240909005703"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240909005703-htto4nk.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		}
+	]
+}

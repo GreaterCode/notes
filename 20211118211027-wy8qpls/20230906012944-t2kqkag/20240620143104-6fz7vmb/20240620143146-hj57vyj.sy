@@ -1,0 +1,1193 @@
+{
+	"ID": "20240620143146-hj57vyj",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240620143146-hj57vyj",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240620143412-44x3qes\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240620145948-6dtnfex\u0026quot;,\u0026quot;scrollTop\u0026quot;:3060,\u0026quot;focusId\u0026quot;:\u0026quot;20240620154207-jgf8tjd\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "入门教程",
+		"updated": "20240621041243"
+	},
+	"Children": [
+		{
+			"ID": "20240620143412-44x3qes",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620143412-44x3qes",
+				"updated": "20240620143957"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "本教程仅包含怎样快速使用bcc工具解决性能、故障和网络问题。若想要开启开发新的bcc工具，请参考"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": " https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md",
+					"TextMarkTextContent": "bcc教程"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20240620143958-cdih9g6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620143958-cdih9g6",
+				"updated": "20240620144545"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "本教程认为bcc已经安装，可以成功运行execsnoop命令。如果未安装，可以参考"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/INSTALL.md",
+					"TextMarkTextContent": "安装教程"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240620143756-l87d5ny",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240620143756-l87d5ny"
+			}
+		},
+		{
+			"ID": "20240620143343-6fplabz",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240620143343-6fplabz"
+			}
+		},
+		{
+			"ID": "20240620143146-hg3lmk4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240620143146-hg3lmk4",
+				"updated": "20240620153515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "0. bcc开始之前"
+				}
+			]
+		},
+		{
+			"ID": "20240620153831-qzta33t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620153831-qzta33t",
+				"updated": "20240620153945"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 使用bcc之前，我们应该从linux基础开始"
+				}
+			]
+		},
+		{
+			"ID": "20240620153515-o3kin2l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240620153515-o3kin2l",
+				"updated": "20240620153645"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "uptime\ndmesg | tail\nvmstat 1\nmpstat -P ALL 1\npidstat 1\niostat -xz 1\nfree -m\nsar -n DEV 1\nsar -n TCP,ETCP 1\ntop\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240620143406-kwns6wa",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240620143406-kwns6wa",
+				"updated": "20240621041243"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 通用性能工具"
+				}
+			]
+		},
+		{
+			"ID": "20240620154345-7zp4hno",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620154345-7zp4hno",
+				"updated": "20240620154954"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这是一个通用的关于bcc 性能研究工具清单，然后详细说明："
+				}
+			]
+		},
+		{
+			"ID": "20240620154207-jgf8tjd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240620154207-jgf8tjd",
+				"updated": "20240620154223"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "execsnoop\nopensnoop\next4slower (or btrfs*, xfs*, zfs*)\nbiolatency\nbiosnoop\ncachestat\ntcpconnect\ntcpaccept\ntcpretrans\nrunqlat\nprofile\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240620145904-05qjeku",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240620145904-05qjeku",
+				"updated": "20240620155043"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 execsnoop"
+				}
+			]
+		},
+		{
+			"ID": "20240620155241-w5vkk25",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620155241-w5vkk25",
+				"updated": "20240620164801"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "execsnoop逐行打印每一个新的进程的输出，检查短暂的进程。 这些可能会消耗CPU资源，但在大多数监测工具不显示，这些工具只是定期采取正在运行程序的快照。"
+				}
+			]
+		},
+		{
+			"ID": "20240620164954-2uos16f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620164954-2uos16f",
+				"updated": "20240620165117"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "它通过跟踪exec(), 不是 fork(),所以它将会捕捉多种类型的新建进程，但不是所有的(例如，它不会看到一个应用程序的启动工作流程，这并不exec()任何东西)."
+				}
+			]
+		},
+		{
+			"ID": "20240620155102-mxl81ck",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240620155102-mxl81ck",
+				"updated": "20240620155207"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./execsnoop\nPCOMM            PID    RET ARGS\nsupervise        9660     0 ./run\nsupervise        9661     0 ./run\nmkdir            9662     0 /bin/mkdir -p ./main\nrun              9663     0 ./run\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240620155237-8sbetiv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620155237-8sbetiv",
+				"updated": "20240620164845"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/execsnoop_example.txt",
+					"TextMarkTextContent": "更多示例"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				}
+			]
+		},
+		{
+			"ID": "20240620165132-56ei8dc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240620165132-56ei8dc",
+				"updated": "20240620165138"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 opensnoop"
+				}
+			]
+		},
+		{
+			"ID": "20240620165216-cxgjuaq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620165216-cxgjuaq",
+				"updated": "20240620165232"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "opensnoop 用于打印每个open()系统调用，包括详细信息。"
+				}
+			]
+		},
+		{
+			"ID": "20240620165216-aemv51a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240620165216-aemv51a",
+				"updated": "20240620165408"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "打开的文件可以告诉你很多关于应用如何工作：确定其文件的数据，配置文件和日志的文件。 有时应用程序可以胡作非为，并执行不佳，当它们不断试图读的文件不存在时，opensnoop可以快速查找一下。"
+				}
+			]
+		},
+		{
+			"ID": "20240620165410-90ekx39",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240620165410-90ekx39",
+				"updated": "20240620165426"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./opensnoop\nPID    COMM               FD ERR PATH\n1565   redis-server        5   0 /proc/1565/stat\n1565   redis-server        5   0 /proc/1565/stat\n1565   redis-server        5   0 /proc/1565/stat\n1603   snmpd               9   0 /proc/net/dev\n1603   snmpd              11   0 /proc/net/if_inet6\n1603   snmpd              -1   2 /sys/class/net/eth0/device/vendor\n1603   snmpd              11   0 /proc/sys/net/ipv4/neigh/eth0/retrans_time_ms\n1603   snmpd              11   0 /proc/sys/net/ipv6/neigh/eth0/retrans_time_ms\n1603   snmpd              11   0 /proc/sys/net/ipv6/conf/eth0/forwarding\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621000046-h2xwh3n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621000046-h2xwh3n",
+				"updated": "20240621000100"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3. ext4slower (or btrfs"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "em",
+					"TextMarkTextContent": ", xfs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": ", zfs*)"
+				}
+			]
+		},
+		{
+			"ID": "20240621000046-mfkl8yx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621000046-mfkl8yx",
+				"updated": "20240621000115"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./ext4slower\nTracing ext4 operations slower than 10 ms\nTIME     COMM           PID    T BYTES   OFF_KB   LAT(ms) FILENAME\n06:35:01 cron           16464  R 1249    0          16.05 common-auth\n06:35:01 cron           16463  R 1249    0          16.04 common-auth\n06:35:01 cron           16465  R 1249    0          16.03 common-auth\n06:35:01 cron           16465  R 4096    0          10.62 login.defs\n06:35:01 cron           16464  R 4096    0          10.61 login.defs\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621000450-uzfllfp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621000450-uzfllfp",
+				"updated": "20240621030745"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\text4slower跟踪ext4文件系统和相同行为的时间，然后只打印那些超过某一阈值的进程。"
+				}
+			]
+		},
+		{
+			"ID": "20240621000450-j98hpsa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621000450-j98hpsa",
+				"updated": "20240621032002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t这用于识别性能问题是很有用的：显示慢I/O的文件系统。 磁盘处理异步I/O这种场景下就很难将应用延迟和磁盘IO关联起来。 在内核栈跟踪VFS-\u003e文件系统接口可以更深入观测到应用程序运行过程。 使用这个工具以识别文件系统中的等待时间是否超过阈值。"
+				}
+			]
+		},
+		{
+			"ID": "20240621000110-riadbk0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621000110-riadbk0",
+				"updated": "20240621032152"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t类似的工具存在bcc其他文件系统：btrfsslower、xfsslower和zfsslower。fileslower工作在VFS层，可以跟踪一切(虽然在一些更高的开销)。"
+				}
+			]
+		},
+		{
+			"ID": "20240621032214-fuxt3er",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621032214-fuxt3er",
+				"updated": "20240621032217"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/ext4slower_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621032255-8x0v0i7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621032255-8x0v0i7",
+				"updated": "20240621032303"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.4 biolatency"
+				}
+			]
+		},
+		{
+			"ID": "20240621032314-n8cp94j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621032314-n8cp94j",
+				"updated": "20240621032617"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tbiolatency可以跟踪IO延迟（因为设备问题）。当命令执行结束后（Ctrl"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBackslashContent",
+							"Data": "-"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "C，或者一段时间后），将会绘制延迟摘要直方图。"
+				}
+			]
+		},
+		{
+			"ID": "20240621032618-6j5zohw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621032618-6j5zohw",
+				"updated": "20240621032938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " \t这对于理解磁盘io延迟比iostat的平均时间更好。I/O延迟值以在结束时打印，也可以以其他形式输出。"
+				}
+			]
+		},
+		{
+			"ID": "20240621032939-c2w6ah3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621032939-c2w6ah3",
+				"updated": "20240621032958"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./biolatency\nTracing block device I/O... Hit Ctrl-C to end.\n^C\n     usecs           : count     distribution\n       0 -\u003e 1        : 0        |                                      |\n       2 -\u003e 3        : 0        |                                      |\n       4 -\u003e 7        : 0        |                                      |\n       8 -\u003e 15       : 0        |                                      |\n      16 -\u003e 31       : 0        |                                      |\n      32 -\u003e 63       : 0        |                                      |\n      64 -\u003e 127      : 1        |                                      |\n     128 -\u003e 255      : 12       |********                              |\n     256 -\u003e 511      : 15       |**********                            |\n     512 -\u003e 1023     : 43       |*******************************       |\n    1024 -\u003e 2047     : 52       |**************************************|\n    2048 -\u003e 4095     : 47       |**********************************    |\n    4096 -\u003e 8191     : 52       |**************************************|\n    8192 -\u003e 16383    : 36       |**************************            |\n   16384 -\u003e 32767    : 15       |**********                            |\n   32768 -\u003e 65535    : 2        |*                                     |\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621032314-d9cr1je",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621032314-d9cr1je",
+				"updated": "20240621033018"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/biolatency_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033056-81d549c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033056-81d549c",
+				"updated": "20240621033107"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.5 biosnoop"
+				}
+			]
+		},
+		{
+			"ID": "20240621033107-o22tg1b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621033107-o22tg1b",
+				"updated": "20240621033238"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tbiosnoop会逐行打印每个磁盘io，包含延迟等具体信息。"
+				}
+			]
+		},
+		{
+			"ID": "20240621033239-z8orl2d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621033239-z8orl2d",
+				"updated": "20240621033735"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t这可以让你检查磁盘I/O更详细的细节，并寻找时序的模式(例如，读排队后面写). 输出将可以详细展示你的系统是否在进行高速率的磁盘IO。"
+				}
+			]
+		},
+		{
+			"ID": "20240621032314-imjsv1y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621032314-imjsv1y",
+				"updated": "20240621033352"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./biosnoop\nTIME(s)        COMM           PID    DISK    T  SECTOR    BYTES   LAT(ms)\n0.000004001    supervise      1950   xvda1   W  13092560  4096       0.74\n0.000178002    supervise      1950   xvda1   W  13092432  4096       0.61\n0.001469001    supervise      1956   xvda1   W  13092440  4096       1.24\n0.001588002    supervise      1956   xvda1   W  13115128  4096       1.09\n1.022346001    supervise      1950   xvda1   W  13115272  4096       0.98\n1.022568002    supervise      1950   xvda1   W  13188496  4096       0.93\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621033824-9tssopc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621033824-9tssopc",
+				"updated": "20240621033948"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/biosnoop_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033357-6o2f4vs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033357-6o2f4vs",
+				"updated": "20240621033813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.6 cachestat"
+				}
+			]
+		},
+		{
+			"ID": "20240621034037-unzgpf6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621034037-unzgpf6",
+				"updated": "20240621034226"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tcachestat每秒(或每隔一定时间间隔)打印统计文件系统的缓存统计。"
+				}
+			]
+		},
+		{
+			"ID": "20240621034037-8erxj7j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621034037-8erxj7j",
+				"updated": "20240621034444"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t使用工具可以检测缓存命中率，以便进行性能调优。"
+				}
+			]
+		},
+		{
+			"ID": "20240621034456-s32cmi5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621034456-s32cmi5",
+				"updated": "20240621034509"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./cachestat\n    HITS   MISSES  DIRTIES  READ_HIT% WRITE_HIT%   BUFFERS_MB  CACHED_MB\n    1074       44       13      94.9%       2.9%            1        223\n    2195      170        8      92.5%       6.8%            1        143\n     182       53       56      53.6%       1.3%            1        143\n   62480    40960    20480      40.6%      19.8%            1        223\n       7        2        5      22.2%      22.2%            1        223\n     348        0        0     100.0%       0.0%            1        223\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621034022-gffw619",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621034022-gffw619",
+				"updated": "20240621034526"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/cachestat_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033829-i9e5a0t",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033829-i9e5a0t",
+				"updated": "20240621033830"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.7. tcpconnect"
+				}
+			]
+		},
+		{
+			"ID": "20240621034553-cshtcws",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621034553-cshtcws",
+				"updated": "20240621035138"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\ttcpconnect逐行打印每个活跃连接（connect()）的详细信息，包括源目地址。"
+				}
+			]
+		},
+		{
+			"ID": "20240621034822-n6v80j1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621034822-n6v80j1",
+				"updated": "20240621034951"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t查到不期望的连接可能是应用配置问题或者电脑被入侵。"
+				}
+			]
+		},
+		{
+			"ID": "20240621034952-28l89u2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621034952-28l89u2",
+				"updated": "20240621035004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./tcpconnect\nPID    COMM         IP SADDR            DADDR            DPORT\n1479   telnet       4  127.0.0.1        127.0.0.1        23\n1469   curl         4  10.201.219.236   54.245.105.25    80\n1469   curl         4  10.201.219.236   54.67.101.145    80\n1991   telnet       6  ::1              ::1              23\n2015   ssh          6  fe80::2000:bff:fe82:3ac fe80::2000:bff:fe82:3ac 22\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621035020-fmqcvim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035020-fmqcvim",
+				"updated": "20240621035031"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/tcpconnect_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033835-r3yi8v8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033835-r3yi8v8",
+				"updated": "20240621033844"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.8 tcpaccept"
+				}
+			]
+		},
+		{
+			"ID": "20240621035150-o792s7l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035150-o792s7l",
+				"updated": "20240621035219"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\ttcpaccept用于打印每一个被动的TCP连接(例如，通过accept())详细信息，包括来源和目的地址。"
+				}
+			]
+		},
+		{
+			"ID": "20240621035150-p78ofq9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035150-p78ofq9",
+				"updated": "20240621035237"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t显示不期望的连接可能是应用配置问题或者电脑被入侵。"
+				}
+			]
+		},
+		{
+			"ID": "20240621035039-fkcpmxw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621035039-fkcpmxw",
+				"updated": "20240621035255"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./tcpaccept\nPID    COMM         IP RADDR            LADDR            LPORT\n907    sshd         4  192.168.56.1     192.168.56.102   22\n907    sshd         4  127.0.0.1        127.0.0.1        22\n5389   perl         6  1234:ab12:2040:5020:2299:0:5:0 1234:ab12:2040:5020:2299:0:5:0 7001\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621035304-327o2jt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035304-327o2jt",
+				"updated": "20240621035318"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/tcpaccept_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033850-dyq01sp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033850-dyq01sp",
+				"updated": "20240621033902"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.9 tcpretrans"
+				}
+			]
+		},
+		{
+			"ID": "20240621035403-4984m8j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035403-4984m8j",
+				"updated": "20240621035447"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\ttcprerans用于打印每一个TCP重发包详细信息，包括来源和目的地的地址和内核态的TCP连接。"
+				}
+			]
+		},
+		{
+			"ID": "20240621035403-cdy103y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035403-cdy103y",
+				"updated": "20240621040014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tTCP重传会引起延迟和吞吐量的问题。 对ESTABLISHED重传，会使用网络进行寻找。 对于SYN_SENT状态，这可能造成目标CPU跑满和内核数据包丢失。"
+				}
+			]
+		},
+		{
+			"ID": "20240621035817-3cntniu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621035817-3cntniu",
+				"updated": "20240621035827"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./tcpretrans\nTIME     PID    IP LADDR:LPORT          T\u003e RADDR:RPORT          STATE\n01:55:05 0      4  10.153.223.157:22    R\u003e 69.53.245.40:34619   ESTABLISHED\n01:55:05 0      4  10.153.223.157:22    R\u003e 69.53.245.40:34619   ESTABLISHED\n01:55:17 0      4  10.153.223.157:22    R\u003e 69.53.245.40:22957   ESTABLISHED\n[...]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621035844-3yowb7h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621035844-3yowb7h",
+				"updated": "20240621035844"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/tcpretrans_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033820-uyy5j8v",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033820-uyy5j8v",
+				"updated": "20240621033919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.10 runqlat"
+				}
+			]
+		},
+		{
+			"ID": "20240621040028-z90hhlg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621040028-z90hhlg",
+				"updated": "20240621040220"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\trunqlat用于查看线程等待CPU上运行的队列多久，并打印本直方图。"
+				}
+			]
+		},
+		{
+			"ID": "20240621040028-2cigqv3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621040028-2cigqv3",
+				"updated": "20240621040338"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t这可以帮助量化在CPU饱和期间等待CPU耗费时间。"
+				}
+			]
+		},
+		{
+			"ID": "20240621040339-alkbd7m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240621040339-alkbd7m",
+				"updated": "20240621040347"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# ./runqlat\nTracing run queue latency... Hit Ctrl-C to end.\n^C\n     usecs               : count     distribution\n         0 -\u003e 1          : 233      |***********                             |\n         2 -\u003e 3          : 742      |************************************    |\n         4 -\u003e 7          : 203      |**********                              |\n         8 -\u003e 15         : 173      |********                                |\n        16 -\u003e 31         : 24       |*                                       |\n        32 -\u003e 63         : 0        |                                        |\n        64 -\u003e 127        : 30       |*                                       |\n       128 -\u003e 255        : 6        |                                        |\n       256 -\u003e 511        : 3        |                                        |\n       512 -\u003e 1023       : 5        |                                        |\n      1024 -\u003e 2047       : 27       |*                                       |\n      2048 -\u003e 4095       : 30       |*                                       |\n      4096 -\u003e 8191       : 20       |                                        |\n      8192 -\u003e 16383      : 29       |*                                       |\n     16384 -\u003e 32767      : 809      |****************************************|\n     32768 -\u003e 65535      : 64       |***                                     |\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240621040558-metu0zd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621040558-metu0zd",
+				"updated": "20240621040625"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/runqlat_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033921-9w86d17",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240621033921-9w86d17",
+				"updated": "20240621033933"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.11 profile"
+				}
+			]
+		},
+		{
+			"ID": "20240621040751-kab4ep9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621040751-kab4ep9",
+				"updated": "20240621041029"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tprofile是一个CPU分析器，这需要在一定的时间间隔采样跟踪堆栈，并打印摘要堆栈跟踪信息和发生的次数。使用这个工具来了解代码消耗CPU资源的途径。"
+				}
+			]
+		},
+		{
+			"ID": "20240621041052-lzdo7h6",
+			"Type": "NodeSuperBlock",
+			"Properties": {
+				"id": "20240621041052-lzdo7h6",
+				"updated": "20240621041136"
+			},
+			"Children": [
+				{
+					"Type": "NodeSuperBlockOpenMarker"
+				},
+				{
+					"Type": "NodeSuperBlockLayoutMarker",
+					"Data": "col"
+				},
+				{
+					"ID": "20240621033359-cf3x7po",
+					"Type": "NodeCodeBlock",
+					"IsFencedCodeBlock": true,
+					"Properties": {
+						"id": "20240621033359-cf3x7po",
+						"updated": "20240621041136"
+					},
+					"Children": [
+						{
+							"Type": "NodeCodeBlockFenceOpenMarker",
+							"Data": "```"
+						},
+						{
+							"Type": "NodeCodeBlockFenceInfoMarker"
+						},
+						{
+							"Type": "NodeCodeBlockCode",
+							"Data": "# ./profile\nSampling at 49 Hertz of all threads by user + kernel stack... Hit Ctrl-C to end.\n^C\n    00007f31d76c3251 [unknown]\n    47a2c1e752bf47f7 [unknown]\n    -                sign-file (8877)\n        1\n\n    ffffffff813d0af8 __clear_user\n    ffffffff813d5277 iov_iter_zero\n    ffffffff814ec5f2 read_iter_zero\n    ffffffff8120be9d __vfs_read\n    ffffffff8120c385 vfs_read\n    ffffffff8120d786 sys_read\n    ffffffff817cc076 entry_SYSCALL_64_fastpath\n    00007fc5652ad9b0 read\n    -                dd (25036)\n        4\n\n    0000000000400542 func_a\n    0000000000400598 main\n    00007f12a133e830 __libc_start_main\n    083e258d4c544155 [unknown]\n    -                func_ab (13549)\n        5\n\n[...]\n\n    ffffffff8105eb66 native_safe_halt\n    ffffffff8103659e default_idle\n    ffffffff81036d1f arch_cpu_idle\n    ffffffff810bba5a default_idle_call\n    ffffffff810bbd07 cpu_startup_entry\n    ffffffff8104df55 start_secondary\n    -                swapper/1 (0)\n        75\n"
+						},
+						{
+							"Type": "NodeCodeBlockFenceCloseMarker",
+							"Data": "```"
+						}
+					]
+				},
+				{
+					"ID": "20240621033359-3pw8bug",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240621033359-3pw8bug",
+						"updated": "20240621041053"
+					}
+				},
+				{
+					"Type": "NodeSuperBlockCloseMarker"
+				}
+			]
+		},
+		{
+			"ID": "20240621033359-zu3kizw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621033359-zu3kizw",
+				"updated": "20240621041056"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "a",
+					"TextMarkAHref": "https://github.com/iovisor/bcc/blob/master/tools/profile_example.txt",
+					"TextMarkTextContent": "更多示例"
+				}
+			]
+		},
+		{
+			"ID": "20240621033359-6e8ze08",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240621033359-6e8ze08"
+			}
+		},
+		{
+			"ID": "20240620145948-6dtnfex",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240620145948-6dtnfex",
+				"updated": "20240620145955"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " execsnoop  -h\nis name (regex), any\n                        arg\n  -l LINE, --line LINE  only print commands where arg contains this line\n                        (regex)\n  -U, --print-uid       print UID column\n  --max-args MAX_ARGS   maximum number of arguments parsed and displayed,\n                        defaults to 20\n\nexamples:\n    ./execsnoop           # trace all exec() syscalls\n    ./execsnoop -x        # include failed exec()s\n    ./execsnoop -T        # include time (HH:MM:SS)\n    ./execsnoop -U        # include UID\n    ./execsnoop -u 1000   # only trace UID 1000\n    ./execsnoop -u user   # get user UID and trace only them\n    ./execsnoop -t        # include timestamps\n    ./execsnoop -q        # add \"quotemarks\" around arguments\n    ./execsnoop -n main   # only print command lines containing \"main\"\n    ./execsnoop -l tpkg   # only print command where arguments contains \"tpkg\"\n    ./execsnoop --cgroupmap mappath  # only trace cgroups in this BPF map\n    ./execsnoop --mntnsmap mappath   # only trace mount namespaces in the mapusage: execsnoop [-h] [-T] [-t] [-x] [--cgroupmap CGROUPMAP]\n                 [--mntnsmap MNTNSMAP] [-u USER] [-q] [-n NAME] [-l LINE] [-U]\n                 [--max-args MAX_ARGS]\n\nTrace exec() syscalls\n\noptional arguments:\n  -h, --help            show this help message and exit\n  -T, --time            include time column on output (HH:MM:SS)\n  -t, --timestamp       include timestamp on output\n  -x, --fails           include failed exec()s\n  --cgroupmap CGROUPMAP\n                        trace cgroups in this BPF map only\n  --mntnsmap MNTNSMAP   trace mount namespaces in this BPF map only\n  -u USER, --uid USER   trace this UID only\n  -q, --quote           Add quotemarks (\") around arguments.\n  -n NAME, --name NAME  only print commands matching this name (regex), any\n                        arg\n  -l LINE, --line LINE  only print commands where arg contains this line\n                        (regex)\n  -U, --print-uid       print UID column\n  --max-args MAX_ARGS   maximum number of arguments parsed and displayed,\n                        defaults to 20\n\nexamples:\n    ./execsnoop           # trace all exec() syscalls\n    ./execsnoop -x        # include failed exec()s\n    ./execsnoop -T        # include time (HH:MM:SS)\n    ./execsnoop -U        # include UID\n    ./execsnoop -u 1000   # only trace UID 1000\n    ./execsnoop -u user   # get user UID and trace only them\n    ./execsnoop -t        # include timestamps\n    ./execsnoop -q        # add \"quotemarks\" around arguments\n    ./execsnoop -n main   # only print command lines containing \"main\"\n    ./execsnoop -l tpkg   # only print command where arguments contains \"tpkg\"\n    ./execsnoop --cgroupmap mappath  # only trace cgroups in this BPF map\n    ./execsnoop --mntnsmap mappath   # only trace mount namespaces in the map\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

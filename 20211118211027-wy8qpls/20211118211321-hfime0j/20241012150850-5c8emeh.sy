@@ -1,0 +1,545 @@
+{
+	"ID": "20241012150850-5c8emeh",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241012150850-5c8emeh",
+		"title": "获取服务器资产信息",
+		"updated": "20241012151300"
+	},
+	"Children": [
+		{
+			"ID": "20241012150941-bvrmznd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241012150941-bvrmznd",
+				"updated": "20241012150947"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 项目背景："
+				}
+			]
+		},
+		{
+			"ID": "20241012150941-ohvjzh5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241012150941-ohvjzh5",
+				"updated": "20241012150959"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　需要获取服务器CPU、主板、内存、网卡、硬盘、GPU等信息"
+				}
+			]
+		},
+		{
+			"ID": "20241012150941-uqp74dy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241012150941-uqp74dy",
+				"updated": "20241012150941"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "　　设计思路：通过脚本命令获取系统各个指标，之后通过ansible将脚本下发至所有管理服务器，通过运行脚本将内容导入至csv文件，根据思路一步一步操作。"
+				}
+			]
+		},
+		{
+			"ID": "20241012150941-55w7xfn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241012150941-55w7xfn",
+				"updated": "20241012150955"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 操作步骤："
+				}
+			]
+		},
+		{
+			"ID": "20241012150941-4gnddrc",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012150941-4gnddrc",
+				"updated": "20241012151100"
+			},
+			"Children": [
+				{
+					"ID": "20241012151100-936bmzk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20241012151100-936bmzk",
+						"updated": "20241012151100"
+					},
+					"Children": [
+						{
+							"ID": "20241012151100-vbln2au",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151100-vbln2au",
+								"updated": "20241012151100"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "首先将需要的脚本和查看硬盘的命令，放到了ansible的服务器/tmp目录下，并编写了如下playbook用于将命令和脚本放置所有需要获取指标的目标服务器。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151010-82ggxdr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241012151010-82ggxdr",
+				"updated": "20241012151013"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "---\n- hosts: tw_infor\n  remote_user: root\n  tasks:\n    - name: copy script file\n      copy:\n        src: /tmp/get_host_info.sh\n        dest: /tmp/get_host_info.sh\n        mode: 0755\n      register: copy_status\n    - debug: var=copy_status.changed\n    - name: copy storcli64 file\n      copy:\n        src: /tmp/storcli64\n        dest: /tmp/storcli64\n        mode: 0755\n      register: copy_status\n    - debug: var=copy_status.changed\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241012151049-7m7kspr",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012151049-7m7kspr",
+				"updated": "20241012151055"
+			},
+			"Children": [
+				{
+					"ID": "20241012151055-nh67xrf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20241012151055-nh67xrf",
+						"updated": "20241012151055"
+					},
+					"Children": [
+						{
+							"ID": "20241012151055-tod6ifp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151055-tod6ifp",
+								"updated": "20241012151055"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "查看一下获取服务器基本信息的脚本内容"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151110-enm9nio",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241012151110-enm9nio",
+				"updated": "20241012151112"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n#\n#\n#\n#获取主机IP地址\nips=$(ip addr|grep \"/24\"|awk -F\"/\" {'print $1'}|awk {'print $2'})\n#获取CPU型号\ncpumodel=$(sudo cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq)\n#获取CPU个数\ncpunumber=$(sudo cat /proc/cpuinfo| grep \"physical id\"| sort| uniq| wc -l)\n#CPU信息\n#echo \"($cpumodel)*$cpunumber\"\n#获取服务器主板信息\nboard_info=$(sudo dmidecode -t 1| grep \"Manufacturer\"|awk -F\":\" {'print $2'})\n#获取内存槽位大小\nmemory_size=$(sudo dmidecode|grep -P -A5 \"Memory\\s+Device\"|grep Size|grep -v Range|grep GB|uniq|awk '{gsub(/^\\s+|\\s+$/, \"\");print}')\n#获取内存槽位个数\nmemory_num=$(sudo dmidecode|grep -P -A5 \"Memory\\s+Device\"|grep Size|grep -v Range|grep GB|wc -l)\n#内存信息\n#echo \"(${memory_size})*${memory_num}\"\n#磁盘厂商\ndisk_product=$(cd /tmp \u0026\u0026 sudo ./storcli64 /call show|grep \"Product Name\"|awk -F\"=\" {'print $2'})\n#raid盘信息\ndisk_type=$(cd /tmp \u0026\u0026 sudo ./storcli64 /call show|grep \"RAID\"|grep -i \"ON\"|grep -v \"RAID-Mode\"|awk {'print $2'})\n#raid盘型号\ndisk_info=$(cd /tmp \u0026\u0026 sudo ./storcli64 /call show|grep INTEL|awk {'print $13'}|sort|uniq -c)\ndisk_type1=`echo $disk_type|tr -s '\\n'`\ndisk_info1=`echo $disk_info|tr -s '\\n'`\n\n#echo ${disk_type} ${disk_info}\n#获取网卡个数\nnet_number=$(lspci |egrep -i \"net|eth\"|grep  \"+\"|cut -d: -f1|sort |uniq -c|wc -l)\n#net_number1=$(lspci |egrep -i \"net|eth\"|grep  \"+\"|cut -d: -f1|sort|uniq -c|head -1|awk {'print $1'})\n#net_num=`expr $net_number \\* $net_number1`\n#网卡信息\nnet_info=$(lspci |egrep -i \"net|eth\"|grep  \"+\"|awk -F\":\" {'print $3'}|sort|uniq)\n#GPU信息\nnvidia-smi -L \u003e /dev/null 2\u003e\u00261\nresult=`echo $?`\nif [ $result -eq 0 ];then\n        gpu_info=`nvidia-smi -L|awk -F: {'print $2'}|awk -F\"(\" {'print $1'}|sort|uniq -c`\nelse\n        gpu_info=NULL\nfi\n\n#printf \"IP\\tCPU\\tboard\\tMemory\\tRAID_Product\\tRAID_Info\\tnetwork\\tGPU\\n\"\nprintf \"$ips\\t($cpumodel)*$cpunumber\\t$board_info\\t$memory_size*$memory_num\\t$disk_product\\t$disk_type1 $disk_info1\\t$net_number $net_info\\t$gpu_info\\n\"\n\nget_host_info.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-qozw39b",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012151159-qozw39b",
+				"updated": "20241012151203"
+			},
+			"Children": [
+				{
+					"ID": "20241012151203-tbmdlpu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20241012151203-tbmdlpu",
+						"updated": "20241012151203"
+					},
+					"Children": [
+						{
+							"ID": "20241012151203-3ys3mga",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151203-3ys3mga",
+								"updated": "20241012151203"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "配置需要查询的服务器清单列表"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-0mkl8hc",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012151159-0mkl8hc",
+				"updated": "20241012151205"
+			},
+			"Children": [
+				{
+					"ID": "20241012151205-4i2aqs3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20241012151205-4i2aqs3",
+						"updated": "20241012151205"
+					},
+					"Children": [
+						{
+							"ID": "20241012151205-stpo2vn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151205-stpo2vn",
+								"updated": "20241012151205"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行playbook将命令和脚本分发至所有被管理机"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-fpi5re4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241012151159-fpi5re4",
+				"updated": "20241012151222"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "\tansible-playbook -i /root/idc-tw/hosts/asset_infor asset_checkscript.yml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-d6838kb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012151159-d6838kb",
+				"updated": "20241012151235"
+			},
+			"Children": [
+				{
+					"ID": "20241012151235-uhafb8t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20241012151235-uhafb8t",
+						"updated": "20241012151235"
+					},
+					"Children": [
+						{
+							"ID": "20241012151235-1udk1li",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151235-1udk1li",
+								"updated": "20241012151235"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "批量执行脚本内容获取服务器资产信息，并保持至csv文件中"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-6fr3g71",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241012151159-6fr3g71",
+				"updated": "20241012151230"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "\tansible -i /root/idc-tw/hosts/asset_infor tw_infor -m shell -a"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " \u0026quot;sh /tmp/get_host_info.sh\u0026quot;"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "|grep -v"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " \u0026quot;\u0026gt;\u0026gt;\u0026quot; "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "\u0026gt; /tmp/tw.csv"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-spjz0oc",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012151159-spjz0oc",
+				"updated": "20241012151239"
+			},
+			"Children": [
+				{
+					"ID": "20241012151239-55sf91d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20241012151239-55sf91d",
+						"updated": "20241012151239"
+					},
+					"Children": [
+						{
+							"ID": "20241012151239-5iahart",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151239-5iahart",
+								"updated": "20241012151239"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "将csv文件格式进行改动，否则无法展示"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-4ks0wgx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241012151159-4ks0wgx",
+				"updated": "20241012151250"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "\tsed -e"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": " 's/\\t/,/g' "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "/tmp/tw.csv \u0026gt; /tmp/tw_host.csv"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-8bzw69i",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241012151159-8bzw69i",
+				"updated": "20241012151242"
+			},
+			"Children": [
+				{
+					"ID": "20241012151242-qk65b2e",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ny4=",
+						"Num": 7
+					},
+					"Properties": {
+						"id": "20241012151242-qk65b2e",
+						"updated": "20241012151242"
+					},
+					"Children": [
+						{
+							"ID": "20241012151242-juvdajp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241012151242-juvdajp",
+								"updated": "20241012151242"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "针对于mac电脑可能会有字符集问题，可以使用如下命令进行解决"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241012151159-hqrq56h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241012151159-hqrq56h",
+				"updated": "20241012151300"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong code",
+					"TextMarkTextContent": "\ticonv -f UTF8 -t GB18030 tw_host.csv \u0026gt; tw_hostv1.csv"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		}
+	]
+}

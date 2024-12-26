@@ -1,0 +1,2296 @@
+{
+	"ID": "20240817140104-krxrf16",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240817140104-krxrf16",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240817140104-f44bgai\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240817140104-85lcyr1\u0026quot;,\u0026quot;scrollTop\u0026quot;:629,\u0026quot;focusId\u0026quot;:\u0026quot;20240817140104-jetm8fp\u0026quot;,\u0026quot;focusStart\u0026quot;:16,\u0026quot;focusEnd\u0026quot;:16}",
+		"title": "Mysql5.7之XtraBackup备份与恢复实践_qpress是什么-CSDN博客",
+		"updated": "20240817140434"
+	},
+	"Children": [
+		{
+			"ID": "20240817140104-f44bgai",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240817140104-f44bgai",
+				"updated": "20240817140104"
+			}
+		},
+		{
+			"ID": "20240817140104-9km4b0j",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240817140104-9km4b0j",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"ID": "20240817140104-6gsizat",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-6gsizat",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-u7k8q92",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-u7k8q92",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://sunsite.blog.csdn.net/article/details/110170360",
+									"TextMarkTextContent": "https://sunsite.blog.csdn.net/article/details/110170360"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-xprvqxz",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240817140104-xprvqxz",
+				"updated": "20240817140104"
+			}
+		},
+		{
+			"ID": "20240817140104-ytlnl59",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-ytlnl59",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、XtrBackup工具简介"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-11dr10k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-11dr10k",
+				"updated": "20240817140431"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "XtraBackup 是一个用来备份 MySQL 的 InnoDB 数据库的开源工具。支持在线热备份（备份时不影响数据读写），是商业备份工具InnoDB Hotbackup的一个很好的替代品。Xtrabackup有两个主要的工具：xtrabackup、innobackupex"
+				}
+			]
+		},
+		{
+			"ID": "20240817140432-sn6hk2d",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20240817140432-sn6hk2d",
+				"updated": "20240817140434"
+			},
+			"Children": [
+				{
+					"ID": "20240817140434-g73zhju",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20240817140434-g73zhju",
+						"updated": "20240817140434"
+					},
+					"Children": [
+						{
+							"ID": "20240817140434-soix793",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140434-soix793",
+								"updated": "20240817140437"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "xtrabackup只能备份InnoDB和XtraDB两种数据表，而不能备份MyISAM数据表"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140438-y2us1xc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20240817140438-y2us1xc"
+					},
+					"Children": [
+						{
+							"ID": "20240817140438-sqia9vj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140438-sqia9vj"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "innobackupex-1.5.1则封装了xtrabackup，是一个脚本封装，所以能同时备份处理innodb和myisam，但在处理myisam时需要加一个读锁。本文主要介绍和实践xtrabackup工具。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-g6ns58z",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-g6ns58z",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、XtrBackup主要参数说明"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-jetm8fp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-jetm8fp",
+				"updated": "20240817140418"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如下是常用参数说明，更多参数信息见官网"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "https://www.percona.com/doc/perconaxtrabackup/LATEST/xtrabackup_bin/xbk_option_reference.html"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240817140148-am7m0sy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240817140148-am7m0sy",
+				"updated": "20240817140149"
+			},
+			"Children": [
+				{
+					"ID": "20240817140149-wv0gdee",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140149-wv0gdee",
+						"updated": "20240817140149"
+					},
+					"Children": [
+						{
+							"ID": "20240817140149-2gyd5q2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140149-2gyd5q2",
+								"updated": "20240817140153"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–backup 模式以在目标目录中进行备份。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140153-ntv48sf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140153-ntv48sf"
+					},
+					"Children": [
+						{
+							"ID": "20240817140153-uxi77vy",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140153-uxi77vy",
+								"updated": "20240817140155"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–prepare模式以从备份还原数据（以–backup模式创建）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140155-x8ki5sc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140155-x8ki5sc"
+					},
+					"Children": [
+						{
+							"ID": "20240817140155-0sj4x8x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140155-0sj4x8x",
+								"updated": "20240817140201"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–copy-back将数据从备份复制到包含原始数据的位置；要移动数据而不是复制，请使用备用–move-back模式。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140201-zk7t9hr",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140201-zk7t9hr"
+					},
+					"Children": [
+						{
+							"ID": "20240817140201-8cuv9s4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140201-8cuv9s4",
+								"updated": "20240817140222"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–defaults-file 从给定文件中读取默认选项。–apply-log-only 此选项使准备备份时仅执行重做阶段。这对于增量备份非常重要。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140222-9beg4nx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140222-9beg4nx"
+					},
+					"Children": [
+						{
+							"ID": "20240817140222-i6km09s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140222-i6km09s",
+								"updated": "20240817140233"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–compress此选项告诉xtrabackup使用quicklz或 lz4压缩算法压缩所有输出数据，包括事务日志文件和元数据文件。quicklz默认情况下处于选中状态。当使用–compress=quicklz或时–compress，生成的文件具有qpress存档格式，即xtrabackup"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": ".qp生成的每个文件本质上都是一个单文件的qpress存档，并且可以由qpress文件存档器提取和解压缩。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140233-x3e67bq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140233-x3e67bq"
+					},
+					"Children": [
+						{
+							"ID": "20240817140233-74fzk7g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140233-74fzk7g",
+								"updated": "20240817140235"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "em",
+									"TextMarkTextContent": "–compress=lz4产生"
+								},
+								{
+									"Type": "NodeText",
+									"Data": ".lz4文件。您可以使用诸如的程序来提取这些文件的内容lz4。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140236-2rsguej",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140236-2rsguej"
+					},
+					"Children": [
+						{
+							"ID": "20240817140236-gqq7fjv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140236-gqq7fjv",
+								"updated": "20240817140411"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–compress-chunk-size=#\n压缩线程的工作缓冲区的大小（以字节为单位）。默认值为64K。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140411-m8thle8",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140411-m8thle8"
+					},
+					"Children": [
+						{
+							"ID": "20240817140411-v932jx3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140411-v932jx3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–compress-threads=#\n此选项指定xtrabackup用于并行数据压缩的工作线程数。此选项默认为1。并行压缩（–compress-threads）可以与并行文件复制（–parallel）一起使用。例如， 将创建4个I / O线程，这些线程将读取数据并将其通过管道传递给2个压缩线程。–parallel=4 --compress --compress-threads=2"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140409-d4yg8fj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140409-d4yg8fj"
+					},
+					"Children": [
+						{
+							"ID": "20240817140409-9ezdc5h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140409-9ezdc5h"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–databases=#\n此选项指定应备份的数据库和表的列表。该选项接受表单列表。“databasename1[.table_name1] databasename2[.table_name2] . . .”"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140250-muv1xz2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140250-muv1xz2"
+					},
+					"Children": [
+						{
+							"ID": "20240817140250-k23of62",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140250-k23of62",
+								"updated": "20240817140259"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–databases-exclude=name\n排除基于名称的数据库，操作方式与相同–databases，但匹配的名称将从备份中排除。请注意，此选项的优先级高于 --databases。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140259-364e2qz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140259-364e2qz"
+					},
+					"Children": [
+						{
+							"ID": "20240817140259-g8e4lb3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140259-g8e4lb3",
+								"updated": "20240817140306"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–databases-file=此选项指定文件路径，该文件包含应备份的数据库和表的列表。该文件可以包含形式的列表元素，databasename1[.table_name1]每行一个元素。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140306-a7yz1j6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140306-a7yz1j6"
+					},
+					"Children": [
+						{
+							"ID": "20240817140306-8hny20v",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140306-8hny20v",
+								"updated": "20240817140317"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–decompress  .qp在以前使用该–compress选项进行的备份中，将所有带有扩展名的文件解压缩。该 --parallel选项将允许同时解密多个文件。为了解压缩，必须在路径内安装qpress实用程序并对其进行访问。Percona XtraBackup不会自动删除压缩文件。为了清理备份目录，用户应使用–remove-originaloption。该–decompress选项可与xbstream一起使用以解压缩单个qpress文件。\n如果您使用lz4压缩算法来压缩文件（–compress=lz4），请相应地更改–decompress参数：–decompress=lz4。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140318-kgfvtnd",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140318-kgfvtnd"
+					},
+					"Children": [
+						{
+							"ID": "20240817140318-t5jjdad",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140318-t5jjdad"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–decompress-threads=#\n强制xbstream使用指定数量的线程进行解压缩。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140315-7dualci",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140315-7dualci"
+					},
+					"Children": [
+						{
+							"ID": "20240817140315-bq9kqgo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140315-bq9kqgo",
+								"updated": "20240817140404"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–help\n当使用此选项或没有任何选项运行时，xtrabackup会显示有关如何在命令行上运行程序的信息，以及所有支持的选项和带有默认值的变量（如果适用）。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140404-l9wnhdk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140404-l9wnhdk"
+					},
+					"Children": [
+						{
+							"ID": "20240817140404-4v2fw7w",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140404-4v2fw7w"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–history=NAME\n使用此选项可以跟踪PERCONA_SCHEMA.xtrabackup_history表中的备份历史记录 。可以指定一个可选的历史系列名称，该名称将与获取当前备份的历史记录一起放置。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140402-nxfxoy6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140402-nxfxoy6"
+					},
+					"Children": [
+						{
+							"ID": "20240817140402-ts5xqvn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140402-ts5xqvn"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–host=HOST\n此选项接受一个字符串参数，该参数指定使用TCP / IP连接到数据库服务器时要使用的主机。它被直接传递给mysql子进程。有关详细信息，请参见mysql --help。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140356-uw83sra",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140356-uw83sra"
+					},
+					"Children": [
+						{
+							"ID": "20240817140356-gmbamz6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140356-gmbamz6"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–incremental\n此选项告诉xtrabackup创建增量备份。它被传递给xtrabackup子进程。指定此选项后，可以指定 --incremental-lsn或–incremental-basedir。如果两个选项均未给出，–incremental-basedir则默认情况下将选项传递给xtrabackup，设置为备份基本目录中第一个带时间戳的备份目录。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140354-01ymau6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140354-01ymau6"
+					},
+					"Children": [
+						{
+							"ID": "20240817140354-osuyer9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140354-osuyer9"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–incremental-basedir=DIRECTORY\n创建增量备份时，该目录包含完整备份，该目录是增量备份的基本数据集。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140352-fng7n3l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140352-fng7n3l"
+					},
+					"Children": [
+						{
+							"ID": "20240817140352-s53fq8g",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140352-s53fq8g"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–incremental-dir=DIRECTORY\n准备增量备份时，该目录是增量备份与完全备份结合在一起以创建新的完全备份的目录。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140349-1yzcnqe",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140349-1yzcnqe"
+					},
+					"Children": [
+						{
+							"ID": "20240817140349-umvn3lg",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140349-umvn3lg"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–incremental-force-scan\n创建增量备份时，即使有完整的已更改页面位图数据，也要强制对正在备份的实例中的数据页进行全面扫描。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140347-tztaj4x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140347-tztaj4x"
+					},
+					"Children": [
+						{
+							"ID": "20240817140347-xzryr2l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140347-xzryr2l"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–incremental-history-name=name\n此选项指定存储在PERCONA_SCHEMA.xtrabackup_history历史记录中的备份系列的名称， 以作为增量备份的基础"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140344-w0iioe1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140344-w0iioe1"
+					},
+					"Children": [
+						{
+							"ID": "20240817140344-2xhfskr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140344-2xhfskr",
+								"updated": "20240817140345"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "xtrabackup将搜索历史记录表以查找innodb_to_lsn该系列中最近（最高）的成功备份，并使用to_lsn值作为lsn增量备份的起点。这将是互相排斥的 --incremental-history-uuid，–incremental-basedir和 --incremental-lsn。如果找不到有效的lsn（该名称没有序列，该名称没有成功备份），xtrabackup将返回错误。与该–incremental选项一起使用。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140342-2ulixgi",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140342-2ulixgi"
+					},
+					"Children": [
+						{
+							"ID": "20240817140342-vhwx6jt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140342-vhwx6jt"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–password=PASSWORD\n此选项指定连接到数据库时要使用的密码。它接受一个字符串参数。有关详细信息，请参见mysql --help。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140329-u8g55pj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140329-u8g55pj"
+					},
+					"Children": [
+						{
+							"ID": "20240817140329-2tf8x0s",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140329-2tf8x0s",
+								"updated": "20240817140330"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–port=PORT\n该选项接受一个字符串参数，该参数指定使用TCP / IP连接到数据库服务器时要使用的端口。它被直接传递给 mysql子进程。有关详细信息，请参见mysql --help。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140331-hi3wlgf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140331-hi3wlgf"
+					},
+					"Children": [
+						{
+							"ID": "20240817140331-63dyy19",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140331-63dyy19",
+								"updated": "20240817140332"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–remove-original\n实施了Percona的XtraBackup 2.4.6，当指定将删除此选项.qp，.xbcrypt并.qp.xbcrypt解密和解压后的文件。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140333-2rqvsrc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140333-2rqvsrc"
+					},
+					"Children": [
+						{
+							"ID": "20240817140333-gsq3hl5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140333-gsq3hl5",
+								"updated": "20240817140334"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–socket\n该选项接受一个字符串参数，该参数指定使用UNIX域套接字连接到本地数据库服务器时要使用的套接字。它被直接传递给mysql子进程。有关详细信息，请参见mysql --help。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140334-od2wkot",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140334-od2wkot"
+					},
+					"Children": [
+						{
+							"ID": "20240817140334-yscvzje",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140334-yscvzje",
+								"updated": "20240817140336"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–tables=name\n与完整表名（databasename.tablename格式）匹配的正则表达式 。如果名称匹配，则备份表。请参阅部分备份。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140336-kil4b4p",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140336-kil4b4p"
+					},
+					"Children": [
+						{
+							"ID": "20240817140336-seqr920",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140336-seqr920"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "–version\n此选项打印xtrabackup版本并退出。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-4csatai",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-4csatai",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、XtrBackup安装"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-be3wdb5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-be3wdb5",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、下载安装包"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-4iwd4cp",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-4iwd4cp",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-b3cf3ip",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-b3cf3ip",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#wget https://www.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.14/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.14-1.el7.x86_64.rpm"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-9aghqg9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-9aghqg9",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、rpm方式安装"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-y83rr40",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-y83rr40",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-84gobt7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-84gobt7",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#yum install -y percona-xtrabackup-24-2.4.14-1.el7.x86_64.rpm"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-ncggqq0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-ncggqq0",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、XtrBackup全量备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-3abauhx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-3abauhx",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、创建备份用户"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-rbuspxx",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-rbuspxx",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-85j3pzo",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-85j3pzo",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "mysql\u003e create user backup@‘localhost’ identified by ‘123456’;\nmysql\u003e grant reload,lock tables,replication client,CREATE TABLESPACE,PROCESS,SUPER,CREATE,INSERT,SELECT on "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "em",
+							"TextMarkTextContent": "."
+						},
+						{
+							"Type": "NodeText",
+							"Data": " to ‘backup’@‘localhost’;"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-kqy9hsv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-kqy9hsv",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、配置XtraBackup"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-esulggo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-esulggo",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在my.cnf配置文件，增加以下参数"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-w5fib8f",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-w5fib8f",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-vfxdodl",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-vfxdodl",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "[xtrabackup]\ntarget_dir = /data/backup/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-9ywieyb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-9ywieyb",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若没在my.cnf配置文件增加xtrabackup参数，可以在备份时指定备份目录，如："
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-d1owvt6",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-d1owvt6",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-kcu5o0w",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-kcu5o0w",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#xtrabackup -S /tmp/mysql.sock -ubackup -p123456 --backup --target-dir=/data/backup/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-iktbefb",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-iktbefb",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、全量备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-ukiwrck",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-ukiwrck",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-k2jp6mv",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-k2jp6mv",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#xtrabackup --backup -S /tmp/mysql3306.sock -ubackup -pmysql --target-dir=/data/backup/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-egpfxb3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-egpfxb3",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "五、XtrBackup全量备份恢复"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-zylg7re",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-zylg7re",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、prepare备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-50hlmwj",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-50hlmwj",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-dolqyvg",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-dolqyvg",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "xtrabackup --prepare --target-dir=/data/backup/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-zaz5iaw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-zaz5iaw",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、停止mysql数据库并清空data目录"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-s0ynfdu",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-s0ynfdu",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-5qrxsgs",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-5qrxsgs",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#service mysqld stop\n#rm -rf ~/mysql/data/* ~/mysql/data目录为真实目录，可以通过my.cnf文件查看确认"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-bm91kij",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-bm91kij",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、恢复数据库"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-rh5gbv1",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-rh5gbv1",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-kwbfcn2",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-kwbfcn2",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#xtrabackup —defaults-file=/etc/my.cnf -copy-back --target-dir=/data/backup/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-em8p0t2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-em8p0t2",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4、修改数据库data目录属主"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-okxf5hr",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-okxf5hr",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-x53desw",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-x53desw",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#chown -R mysql:mysql data"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-qx66xma",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-qx66xma",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5、启动数据库实例"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-k02oi77",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-k02oi77",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-clupz83",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-clupz83",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#service start mysqld"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-fbeff8l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-fbeff8l",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "六、XtrBackup增量备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-9kzuf0f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-9kzuf0f",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、创建基础备份（全备份）"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-k9xe9r2",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-k9xe9r2",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-p8l6b94",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-p8l6b94",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#mkdir /data/backup/base\n#mkdir /data/backup/incre\n#chown mysql:mysql /data/backup/*\n#xtrabackup --backup -S /tmp/mysqlsock -ubackup -pmysql --target-dir=/data/backup/base/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-xoqyu67",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-xoqyu67",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、创建增量备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-xcqlfza",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-xcqlfza",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-wcagjzt",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-wcagjzt",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "数据库中执行一些增删改操作后执行增量备份\n#xtrabackup --backup -S /tmp/mysql.sock -ubackup -pmysql --target-dir=/data/backup/incre/ --incremental-basedir=/data/backup/base/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-qfy22qx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-qfy22qx",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "七、XtrBackup增量备份恢复"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-6tlsab1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-6tlsab1",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、准备全量备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-b6iij2u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-b6iij2u",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "xtrabackup --prepare --apply-log-only --target-dir=/data/backup/base"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-xn6je3y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-xn6je3y",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、增量增量备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-l2rg3l2",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-l2rg3l2",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-jtjo90u",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-jtjo90u",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "xtrabackup --prepare --apply-log-only --target-dir=/data/backup/base"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-b0qsh7q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-b0qsh7q",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、停止数据库并清空data目录"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-yhovykz",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-yhovykz",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-ciabi5h",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-ciabi5h",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#mysqladmin -S /tmp/mysql.sock shutdown\n#rm -rf ~/mysql/data/*"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-zof1fn1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-zof1fn1",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4、恢复备份数据"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-i6erjum",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-i6erjum",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-cdkylik",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-cdkylik",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#xtrabackup —defaults-file=/etc/my.cnf --copy-back --target-dir=/data/backup/base/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-lgyvcet",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-lgyvcet",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5、修改数据data目录属主"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-o0n9sn8",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-o0n9sn8",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-jmv4q71",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-jmv4q71",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#chown -R mysql:mysql data"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-ixkpepm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-ixkpepm",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6、启动数据库"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-ldrwinl",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-ldrwinl",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-n89u8ic",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-n89u8ic",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#service start mysqld"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-3nyqltz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240817140104-3nyqltz",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "八、注意事项"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-ai1lm0c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-ai1lm0c",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、查看xtrabackup版本（支持最低mysql版本）"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-q9ojhau",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-q9ojhau",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-ltfk73r",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-ltfk73r",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "[root@mysqlenv mysql]# xtrabackup -v\nxtrabackup: recognized server arguments: --datadir=/var/lib/mysql\nxtrabackup version 2.4.14 based on MySQL server 5.7.19 Linux (x86_64) (revision id: ef675d4)"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-n3xkpwj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-n3xkpwj",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、使用–decompress解压需要安装qpress工具"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-w7cqh6l",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240817140104-w7cqh6l",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"ID": "20240817140104-33ddmv2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-33ddmv2",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-ojehgia",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-ojehgia",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "官网下载qpress工具http://www.quicklz.com/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-ap4r8zn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-ap4r8zn",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-25611aa4cd4543acd1c34a57e2b64b5d-20240817140104-bdu8na2.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-q4qlvql",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240817140104-q4qlvql",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"ID": "20240817140104-tilh7vb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-tilh7vb",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-21l3j0c",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-21l3j0c",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在window终端解压后上传到服务器/usr/bin目录下"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140104-0tu9a6q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-0tu9a6q",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-6psldpj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-6psldpj",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "授予文件可执行权限才可以使用chmod 755 qpress"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140104-mw13i0o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-mw13i0o",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-pmb6gsj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-pmb6gsj",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "准备备份数据前需要使用–decompress先解压"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-4qy5f9y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-4qy5f9y",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、使用–stream=xbstream备份解压方式"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-jfzhjue",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240817140104-jfzhjue",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"ID": "20240817140104-ntcljca",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-ntcljca",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-ac0v4nc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-ac0v4nc",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "备份后的文件后缀为.xbs"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240817140104-t78unze",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240817140104-t78unze",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"ID": "20240817140104-lu104kc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240817140104-lu104kc",
+								"updated": "20240817140104"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用xbstream解压\n#xbstream -x \u003cfull.xbs"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-b8tdiq3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-b8tdiq3",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4、建议设置–use-memory参数"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-jyzl3ke",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-jyzl3ke",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此选项会影响分配多少内存以使用进行备份 --prepare或使用进行分析 --stats。其目的类似于innodb_buffer_pool_size。它与Oracle InnoDB热备份工具中类似命名的选项没有相同的作用。默认值为100MB，如果您有足够的可用内存，建议使用1GB到2GB。支持提供单位的倍数（例如1MB，1M，1GB，1G）。"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-3r6dltn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240817140104-3r6dltn",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5、清空data目录时建议先备份"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-vdmpknu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240817140104-vdmpknu",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以使用如下方式清空目录"
+				}
+			]
+		},
+		{
+			"ID": "20240817140104-85lcyr1",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240817140104-85lcyr1",
+				"updated": "20240817140104"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240817140104-uxp9swu",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240817140104-uxp9swu",
+						"updated": "20240817140104"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "#mv data data_bak\n#mkdir data"
+						}
+					]
+				}
+			]
+		}
+	]
+}

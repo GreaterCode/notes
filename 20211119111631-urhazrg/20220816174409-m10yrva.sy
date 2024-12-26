@@ -4,9 +4,9 @@
 	"Type": "NodeDocument",
 	"Properties": {
 		"id": "20220816174409-m10yrva",
-		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240129171656-my3mgjg\u0026quot;,\u0026quot;scrollTop\u0026quot;:11599,\u0026quot;focusId\u0026quot;:\u0026quot;20230810230852-gf15czq\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240515150103-jesae6b\u0026quot;,\u0026quot;scrollTop\u0026quot;:13726,\u0026quot;focusId\u0026quot;:\u0026quot;20220816184436-qi66y96\u0026quot;,\u0026quot;focusStart\u0026quot;:5,\u0026quot;focusEnd\u0026quot;:5}",
 		"title": "便捷操作",
-		"updated": "20240517143643"
+		"updated": "20241031151404"
 	},
 	"Children": [
 		{
@@ -633,7 +633,7 @@
 			"IsFencedCodeBlock": true,
 			"Properties": {
 				"id": "20220816184436-qi66y96",
-				"updated": "20220905095049"
+				"updated": "20240719144751"
 			},
 			"Children": [
 				{
@@ -646,7 +646,7 @@
 				},
 				{
 					"Type": "NodeCodeBlockCode",
-					"Data": "function e() {\n    set -eu\n    ns=${2-\"default\"}\n    pod=`kubectl -n $ns describe pod $1 | grep -A10 \"^Containers:\" | grep -Eo 'docker://.*$' | head -n 1 | sed 's/docker:\\/\\/\\(.*\\)$/\\1/'`\n    pid=`docker inspect -f {{.State.Pid}} $pod`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd068\n    $cmd\n}\n\n\n# pod2pid\n# 入参： podName NS\nfunction e(){\n    set -eu\n    ns=${2-\"default\"}\n    podID=`kubectl get   pods -n  $ns  $1  -o json |jq  .status.containerStatuses[0].containerID | awk -F '/' '{print $NF}'| awk -F '\"' '{print $1}'`\n    pid=`crictl  inspect $podID | jq .info.pid`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd\n    $cmd\n}\n\n\n# 入参：pid\nfunction pid2pod {\n  local pid=$1\n  if [ -f /proc/${pid}/cgroup ]; then\n    local cid=$(cat /proc/${pid}/cgroup | grep \":memory:\" | awk -F '/' '{print $NF}' | awk -F '-'  '{print $3}'| awk -F '.' '{print $1}')\n    if [ \"${cid}\" != \"\" ]; then\n      ctr -n k8s.io c info ${cid} 2\u003e/dev/null | jq -r '.Labels[\"io.kubernetes.pod.namespace\"]+\" \"+.Labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null\n    fi\n  fi\n}\n"
+					"Data": "function e() {\n    set -eu\n    ns=${2-\"default\"}\n    pod=`kubectl -n $ns describe pod $1 | grep -A10 \"^Containers:\" | grep -Eo 'docker://.*$' | head -n 1 | sed 's/\u003cspan data-type=\"a\" data-href=\"assets/纯管Cell0及跨两AZ高可用-20240719144751-ky7lct6.md\"\u003e纯管Cell0及跨两AZ高可用.md\u003c/span\u003edocker:\\/\\/\\(.*\\)$/\\1/'`\n    pid=`docker inspect -f {{.State.Pid}} $pod`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd068\n    $cmd\n}\n\n\n# pod2pid\n# 入参： podName NS\nfunction e(){\n    set -eu\n    ns=${2-\"default\"}\n    podID=`kubectl get   pods -n  $ns  $1  -o json |jq  .status.containerStatuses[0].containerID | awk -F '/' '{print $NF}'| awk -F '\"' '{print $1}'`\n    pid=`crictl  inspect $podID | jq .info.pid`\n    echo \"entering pod netns for $ns/$1\"\n    cmd=\"nsenter -n --target $pid\"\n    echo $cmd\n    $cmd\n}\n\n\n# 入参：pid\nfunction pid2pod {\n  local pid=$1\n  if [ -f /proc/${pid}/cgroup ]; then\n    local cid=$(cat /proc/${pid}/cgroup | grep \":memory:\" | awk -F '/' '{print $NF}' | awk -F '-'  '{print $3}'| awk -F '.' '{print $1}')\n    if [ \"${cid}\" != \"\" ]; then\n      ctr -n k8s.io c info ${cid} 2\u003e/dev/null | jq -r '.Labels[\"io.kubernetes.pod.namespace\"]+\" \"+.Labels[\"io.kubernetes.pod.name\"]' 2\u003e/dev/null\n    fi\n  fi\n}\n"
 				},
 				{
 					"Type": "NodeCodeBlockFenceCloseMarker",
@@ -1541,7 +1541,7 @@
 			"IsFencedCodeBlock": true,
 			"Properties": {
 				"id": "20240429143132-5ju799r",
-				"updated": "20240429143327"
+				"updated": "20240809122656"
 			},
 			"Children": [
 				{
@@ -1553,13 +1553,46 @@
 				},
 				{
 					"Type": "NodeCodeBlockCode",
-					"Data": "df -h\nsudo du -h --max-depth=1 /var\nsudo find /var/subdirectory -type f -size +1G\nsudo find /var/log -type f -name \"*.log\" -exec rm -f {\n"
+					"Data": "df -h\nsudo du -h --max-depth=1 /var\nsudo find /var/subdirectory -type f -size +1G\nsudo find /var/log -type f -name \"*.log\" -exec rm -f {}\n"
 				},
 				{
 					"Type": "NodeCodeBlockFenceCloseMarker",
 					"Data": "```"
 				}
 			]
+		},
+		{
+			"ID": "20240809122659-gcbozlh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240809122659-gcbozlh",
+				"updated": "20240809122952"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1、统计当前目录下各子目录的大小，并排序\ndu -h --max-depth=1 /bak | sort -hr\n\n[root@YLMS bak]# du -h --max-depth=1 /bak | sort -hr\n62G  /bak\n36G  /bak/定厂\n16G  /bak/吴派\n9.5G  /bak/榆化\n415M  /bak/延系统\n326M  /bak/资产系统\n33M  /bak/党建系统\n17M  /bak/数据备份\n248K  /bak/煤化\n244K  /bak/煤业\n\n2、统计当前目录下包含各子目录文件的大小，并显示前10个\nfind /bak -type f -exec du -h {} + | sort -rh | head -n 10\n\n[root@YLMS bak]# find /bak -type f -exec du -h {} + | sort -rh | head -n 10\n8.9G  /bak/采油厂/液量系统/20231023.dmp\n8.9G  /bak/采油厂/液量系统/20231022.dmp\n8.9G  /bak/采油厂/液量系统/20231020.dmp\n1.8G  /bak/调派/2023/10/mysql-vehicle_s2-20231023190501.sql.tgz\n1.8G  /bak/调派/2023/10/mysql-vehicle_s2-20231022190501.sql.tgz\n1.8G  /bak/调派/2023/10/mysql-vehicle_s2-20231021190501.sql.tgz\n1.8G  /bak/调派/2023/10/mysql-vehicle_s2-20231015190501.sql.tgz\n1.7G  /bak/调派/2023/10/mysql-vehicle_s2-20231020190501.sql.tgz\n1.7G  /bak/调派/2023/10/mysql-vehicle_s2-20231019190501.sql.tgz\nYou have new mail in /var/spool/mail/root\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240809122703-5of8zw5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809122703-5of8zw5"
+			}
 		},
 		{
 			"ID": "20240515150110-83qaum8",
@@ -1605,18 +1638,93 @@
 		{
 			"ID": "20240515150110-qechmdv",
 			"Type": "NodeHeading",
-			"HeadingLevel": 2,
+			"HeadingLevel": 1,
 			"Properties": {
 				"id": "20240515150110-qechmdv",
-				"updated": "20240517143643"
-			}
+				"updated": "20240611111351"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "22. 查看crio堆栈"
+				}
+			]
+		},
+		{
+			"ID": "20240611111351-uw173se",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240611111351-uw173se",
+				"updated": "20240611111404"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "查看CRIO pprof\nsudo curl --unix-socket /var/run/crio/crio.sock http://localhost/debug/pprof/goroutine?debug=4\nsudo curl --unix-socket /var/run/crio/crio.sock http://localhost/debug/pprof/heap \u003e mem.profile\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240627160413-64j54qr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240627160413-64j54qr",
+				"updated": "20240627160432"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "23. 一行改密码"
+				}
+			]
+		},
+		{
+			"ID": "20240627160451-ayv0c8h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240627160451-ayv0c8h",
+				"updated": "20240627160509"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "// 用root或admin用户执行"
+				}
+			]
+		},
+		{
+			"ID": "20240627160432-er49nwx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240627160432-er49nwx",
+				"updated": "20240627160524"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "echo 'xxxxxx'| passwd  --stdin  USERNAME"
+				}
+			]
 		},
 		{
 			"ID": "20240430141531-zv3p59d",
 			"Type": "NodeParagraph",
 			"Properties": {
 				"id": "20240430141531-zv3p59d",
-				"updated": "20240430141710"
+				"updated": "20240627160416"
 			},
 			"Children": [
 				{
@@ -1708,7 +1816,7 @@
 			"Type": "NodeParagraph",
 			"Properties": {
 				"id": "20230829140650-qdey5z5",
-				"updated": "20230829140651"
+				"updated": "20240903155144"
 			},
 			"Children": [
 				{
@@ -1723,6 +1831,32 @@
 				{
 					"Type": "NodeText",
 					"Data": "2}' | bash -x"
+				}
+			]
+		},
+		{
+			"ID": "20241031151349-ubruzd7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241031151349-ubruzd7",
+				"updated": "20241031151404"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1. 删除Crash\nkubectl get pods -o wide -A| grep Crash| awk ‘{print “kubectl delete pods -n”,$1,$2}’ | bash -x\n\n2. 删除Evict\nkubectl get pods -o wide -A| grep Evict| awk ‘{print “kubectl delete pods -n”,$1,$2}’ | bash -x\n\n3. 删除NodeAffinity\nkubectl get pods -o wide -A| grep NodeAffinity| awk ‘{print “kubectl delete pods -n”,$1,$2}’ | bash -x\n \n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
 				}
 			]
 		},

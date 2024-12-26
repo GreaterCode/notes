@@ -1,0 +1,66 @@
+{
+	"ID": "20241104174423-y3tcd69",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241104174423-y3tcd69",
+		"title": "定时清理MySQL的备份文件",
+		"updated": "20241104175046"
+	},
+	"Children": [
+		{
+			"ID": "20241104175001-obu89m0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241104175001-obu89m0",
+				"updated": "20241104175002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面是一个简化的bash脚本示例，用于自动化清理MySQL的备份文件。这个脚本会保留最近7天的全备和增量备份，同时也会保留每个月的第一个周三的全备。请注意，根据您的具体需求和备份命名规则，您可能需要调整脚本中的正则表达式和条件判断。"
+				}
+			]
+		},
+		{
+			"ID": "20241104174423-8jje2b3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241104174423-8jje2b3",
+				"updated": "20241104174704"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n\n# 配置参数\nBACKUP_ROOT=\"/path/to/your/backup/directory\"\nFULL_BACKUP_DIR=\"$BACKUP_ROOT/full\"\nINCREMENTAL_BACKUP_DIR=\"$BACKUP_ROOT/inc\"\n\n# 获取当前日期\nCURRENT_DATE=$(date +%Y%m%d)\nCURRENT_MONTH=$(date +%Y%m)\n\n# 函数：查找并保留每个月第一个周三的全备\npreserve_monthly_full() {\n    local month=$1\n    local wednesdays=($(cal $month | awk '{for(i=1;i\u003c=7;i++) if($i~/^ [1-9]/) print $i}'))\n    for day in \"${wednesdays[@]}\"; do\n        if [ \"$(date -d \"$month-$day\" +%u)\" -eq 3 ]; then\n            find \"$FULL_BACKUP_DIR\" -maxdepth 1 -type f -name \"full_backup_$month$day*.tar.gz\" -exec echo \"Preserving monthly backup: {}\" \\;\n            break\n        fi\n    done\n}\n\n# 清理全备\nfind \"$FULL_BACKUP_DIR\" -type f ! -newermt \"-7 days\" \\\n    | while read -r file; do\n        if ! preserve_monthly_full $(basename \"$file\" | cut -d'_' -f2 | cut -c1-6); then\n            echo \"Deleting old full backup: $file\"\n            rm -f \"$file\"\n        fi\n    done\n\n# 清理增量备份\nfind \"$INCREMENTAL_BACKUP_DIR\" -type f ! -newermt \"-7 days\" -delete\n\necho \"Backup cleanup completed.\"\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241104175046-qt0t9tm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241104175046-qt0t9tm",
+				"updated": "20241104175046"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "使用说明：\n修改 BACKUP_ROOT 变量为您实际的备份根目录。\n此脚本假定全备文件位于 full 子目录，增量备份位于 inc 子目录下，并且备份文件命名遵循 full_backup_YYYYMMDD.tar.gz 和 inc_backup_YYYYMMDD.tar.gz 的格式。\n脚本首先会检查并保留每个月的第一个周三的全备，然后删除超过7天的非保留全备和所有增量备份。\n执行此脚本前，请务必备份重要数据并仔细测试脚本以确保它符合您的具体需求。"
+				}
+			]
+		}
+	]
+}

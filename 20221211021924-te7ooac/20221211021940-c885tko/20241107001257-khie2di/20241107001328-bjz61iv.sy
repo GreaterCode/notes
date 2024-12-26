@@ -1,0 +1,1401 @@
+{
+	"ID": "20241107001328-bjz61iv",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241107001328-bjz61iv",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20241107001359-ykiksr4\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241107005806-ftcnt06\u0026quot;,\u0026quot;scrollTop\u0026quot;:4528,\u0026quot;focusId\u0026quot;:\u0026quot;20241107005605-tbjb526\u0026quot;,\u0026quot;focusStart\u0026quot;:451,\u0026quot;focusEnd\u0026quot;:451}",
+		"title": "深入了解 kube-scheduler",
+		"updated": "20241107005806"
+	},
+	"Children": [
+		{
+			"ID": "20241107001359-ykiksr4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107001359-ykiksr4",
+				"updated": "20241107001405"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. kube-scheduler 用途"
+				}
+			]
+		},
+		{
+			"ID": "20241107001422-dk1t4gw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107001422-dk1t4gw",
+				"updated": "20241107001432"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107001432-zr9jhqk.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001543-0kddn4n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107001543-0kddn4n"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107001545-l2k09sm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107001545-l2k09sm",
+				"updated": "20241107001545"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pod  创建流程："
+				}
+			]
+		},
+		{
+			"ID": "20241107001545-js42f1t",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241107001545-js42f1t",
+				"updated": "20241107001550"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241107001550-wxd9qr4",
+					"Type": "NodeBlockquote",
+					"Properties": {
+						"id": "20241107001550-wxd9qr4",
+						"updated": "20241107001550"
+					},
+					"Children": [
+						{
+							"Type": "NodeBlockquoteMarker",
+							"Data": "\u003e"
+						},
+						{
+							"ID": "20241107001550-cvyawb9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001550-cvyawb9",
+								"updated": "20241107001550"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "说明：所有的组件只与 Apiserver 做交互，Apiserver 再把信息更新的 Etcd 中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001559-mm5en25",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241107001559-mm5en25",
+				"updated": "20241107001616"
+			},
+			"Children": [
+				{
+					"ID": "20241107001616-ys623lh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20241107001616-ys623lh",
+						"updated": "20241107001616"
+					},
+					"Children": [
+						{
+							"ID": "20241107001616-nwjgkfm",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001616-nwjgkfm",
+								"updated": "20241107001616"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "用户向 Kubernetes API server 发送创建（create/apply）指令。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001559-yibdama",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241107001559-yibdama",
+				"updated": "20241107001618"
+			},
+			"Children": [
+				{
+					"ID": "20241107001618-t2205tq",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20241107001618-t2205tq",
+						"updated": "20241107001618"
+					},
+					"Children": [
+						{
+							"ID": "20241107001618-5fh9kmr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001618-5fh9kmr",
+								"updated": "20241107001618"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Apiserver 接收到配置文件，进行校验后，将配置数据存储到 etcd 中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001559-0rql6p9",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241107001559-0rql6p9",
+				"updated": "20241107001623"
+			},
+			"Children": [
+				{
+					"ID": "20241107001623-8xal01n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20241107001623-8xal01n",
+						"updated": "20241107001623"
+					},
+					"Children": [
+						{
+							"ID": "20241107001623-0s20nk5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001623-0s20nk5",
+								"updated": "20241107001623"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Controller-manager 监听 Apiserver 的变化，检测到有新的 Pod 对象时，控制器创建 Pod 并将其状态设为 Pending。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001559-3vq4mag",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241107001559-3vq4mag",
+				"updated": "20241107001729"
+			},
+			"Children": [
+				{
+					"ID": "20241107001628-y994rs5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20241107001628-y994rs5",
+						"updated": "20241107001729"
+					},
+					"Children": [
+						{
+							"ID": "20241107001628-za3xxau",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001628-za3xxau",
+								"updated": "20241107001729"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Scheduler 也通过监听 Apiserver 的变化，发现有新的、尚未分配节点的 Pod。根据预选策略和优选策略，选择一个最适合的 Node 来运行新的 Pod。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001559-5rh86ka",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241107001559-5rh86ka",
+				"updated": "20241107001716"
+			},
+			"Children": [
+				{
+					"ID": "20241107001716-0jmgjey",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NS4=",
+						"Num": 5
+					},
+					"Properties": {
+						"id": "20241107001716-0jmgjey",
+						"updated": "20241107001716"
+					},
+					"Children": [
+						{
+							"ID": "20241107001716-nhd9ao6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001716-nhd9ao6",
+								"updated": "20241107001716"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Pod 被调度到对应的 Node 后，该 Node 上的 kubelet 组件则开始根据 Pod 配置文件，拉镜像、启动 app、就绪探针探测。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001559-a5ch1xo",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20241107001559-a5ch1xo",
+				"updated": "20241107001819"
+			},
+			"Children": [
+				{
+					"ID": "20241107001819-grlduo0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Ni4=",
+						"Num": 6
+					},
+					"Properties": {
+						"id": "20241107001819-grlduo0",
+						"updated": "20241107001819"
+					},
+					"Children": [
+						{
+							"ID": "20241107001819-2n5ytdx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107001819-2n5ytdx",
+								"updated": "20241107001819"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Kubelet 向 Apiserver  上报状态为 Reday， Apiserver 写入到 etcd 中。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107001359-0oxuoc0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107001359-0oxuoc0",
+				"updated": "20241107001408"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. Scheduler Pod 调度流程"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-qrsg2el",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-qrsg2el",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Scheduler 的作用是 负责将 Pod "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "调度"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "到 Node 上。"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-nznkl3d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-nznkl3d",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果让你设计这个组件，你会如何设计，保证它稳定高效的运行。"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-qcjc9yo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-qcjc9yo",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）需要能够"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "实时监听"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "到 有新的 Pod 待调度"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-00ngql1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-00ngql1",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）同一时间如果有大量待调度的 Pod，如果处理，如果保证不能漏掉，应该先处理哪个 Pod，调度过程中，如果失败，如何处理，  所以得"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "加个队列"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，有重试机制等"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-0hepuy9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-0hepuy9",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3）调度过程中依赖 Node、Pod 的实时信息，根据 Node、Pod 信息，决策 Pod 调度到哪个Node上合适，每次调度 调 Apiserver ，显然低效， 得在本地缓存一份数据，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "加个缓存"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-dz8i1uz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-dz8i1uz",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4）调度选择过程中，考虑因素太多，很难周全，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "可扩展性"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "一定要设计好"
+				}
+			]
+		},
+		{
+			"ID": "20241107003750-jvhpslg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003750-jvhpslg",
+				"updated": "20241107003750"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5）Pod 绑定过程中 可能依赖 pvc 绑定等，耗时较长， 所以绑定得是异步的， 但是匹配哪个Node合适的算法 需要同步执行，所"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "以要有两个周期， 调度周期和绑定周期，调度周期串行，绑定周期并行"
+				}
+			]
+		},
+		{
+			"ID": "20241107003804-rx36drd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003804-rx36drd",
+				"updated": "20241107003813"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107003813-tgu9wkv.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107001359-hfr343o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107001359-hfr343o",
+				"updated": "20241107001410"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 源码调用链路"
+				}
+			]
+		},
+		{
+			"ID": "20241107003857-51sgqvm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003857-51sgqvm",
+				"updated": "20241107003857"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "原图放到 Github 上了，需要的自取，图片使用 draw.io 画的，可打开后二次编辑"
+				}
+			]
+		},
+		{
+			"ID": "20241107003857-cjbxtha",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003857-cjbxtha",
+				"updated": "20241107003857"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "https://github.com/clay-wangzhi/draw/blob/main/k8s-scheduler.png"
+				}
+			]
+		},
+		{
+			"ID": "20241107003918-79hnqcx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107003918-79hnqcx",
+				"updated": "20241107005355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107003919-d8wske2.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107005356-rc1hrv0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107005356-rc1hrv0",
+				"updated": "20241107005405"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 42个序号对应的源码位置依次为：\n1 找到启动主函数\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/scheduler.go#L30\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L81\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/scheduler.go#L31\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L134\n\n2 Setup 初始化\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L153\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L384\n\n3、16 初始化 scheduler 实例\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L413\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L363\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L65\n\n4、5 初始化 snapshot 实例\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L293\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/snapshot.go#L48\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/snapshot.go#L29\n\n6、7、8、9 初始化 profiles、fwk 实例\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L304\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/profile/profile.go#L49\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/profile/profile.go#L38\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L260\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L53\n\n10、11、12 初始化 podQueue 实例\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L340\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L134\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L372\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L155\n\n13、14、15 初始化 schedulerCache 实例\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L357\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/cache.go#L41\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/cache.go#L87\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/cache.go#L57\n\n17、18 运行 scheduler\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L159\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/cmd/kube-scheduler/app/server.go#L163\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L460\n\n19、运行 SchedulingQueue\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L462\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L417\n\n20、21 从队列中拿出 Pod 进行调度\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/scheduler.go#L470\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L65\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L944\n\n获取 fwk\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L85\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L368\n\n22、23、24、25、26、27、28、29、30、31、32、33、34、35 进入 调度周期\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L110\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L138\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L148\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L400\n\n更新 Snapshot\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L403\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/cache.go#L185\n\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L412\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/cache/snapshot.go#L173\n\n运行 PreFilterPlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L463\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L698\n\n运行 FilterPlugin\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L507\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L582\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L616\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L649\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L973\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L861\n\n运行 PreScorePlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L435\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L754\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L777\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1052\n\n运行 ScorePlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L783\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1101\n\n运行 ReservePluginsReserve\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L208\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1359\n\n运行 PermitPlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L230\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1443\n\n36、37、38、39、40、41 进入 绑定周期\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L124\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L264\n\n运行 WaitOnPermit\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L277\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1503\n\n运行 PreBindPlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L293\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1232\n\n运行 BindPlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L309\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L967\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L977\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1275\n\n运行 PostBindPlugins\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L322\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/framework/runtime/framework.go#L1324\n\n42 标记 Pod 调度已完成，不要回队列\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/schedule_one.go#L131\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L981\nhttps://github.com/kubernetes/kubernetes/blob/v1.31.0/pkg/scheduler/internal/queue/scheduling_queue.go#L988\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107001359-dkrom22",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107001359-dkrom22",
+				"updated": "20241107001416"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. Scheduler Framework"
+				}
+			]
+		},
+		{
+			"ID": "20241107005427-n4lg3f9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005427-n4lg3f9",
+				"updated": "20241107005434"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面调度链路图，可以清晰的看出  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "Framework"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 调度算法的扩展点。"
+				}
+			]
+		},
+		{
+			"ID": "20241107005435-faj56yu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005435-faj56yu",
+				"updated": "20241107005435"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107005435-7aoywr7.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107005444-07z0fa9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005444-07z0fa9",
+				"updated": "20241107005445"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体每个扩展点包含哪些 plugin， 每个 plugin 可作用于那些扩展点，如下图："
+				}
+			]
+		},
+		{
+			"ID": "20241107005453-ausuj83",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005453-ausuj83",
+				"updated": "20241107005459"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107005459-30bv2n8.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107005447-houet3d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005447-houet3d"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107001359-oy4v1p3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107001359-oy4v1p3",
+				"updated": "20241107001419"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 如何扩展"
+				}
+			]
+		},
+		{
+			"ID": "20241107005529-y4u3qri",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005529-y4u3qri",
+				"updated": "20241107005530"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果我们要实现自己的插件，必须向调度框架注册插件并完成配置，另外还必须实现扩展点接口。"
+				}
+			]
+		},
+		{
+			"ID": "20241107005535-vehf6f0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005535-vehf6f0",
+				"updated": "20241107005535"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1）向调度框架注册插件 \u0026 扩展点实现接口如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107005535-na4m5i1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005535-na4m5i1",
+				"updated": "20241107005535"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "out-of-tree 实现扩展示例"
+				}
+			]
+		},
+		{
+			"ID": "20241107005535-ao9szri",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005535-ao9szri",
+				"updated": "20241107005535"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "main.go"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107005549-nqffpkh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107005549-nqffpkh",
+				"updated": "20241107005553"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package main\n\nimport (\n \"os\"\n\n \"k8s.io/component-base/cli\"\n _ \"k8s.io/component-base/metrics/prometheus/clientgo\" // for rest client metric registration\n _ \"k8s.io/component-base/metrics/prometheus/version\"  // for version metric registration\n \"k8s.io/kubernetes/cmd/kube-scheduler/app\"\n\n \"xxx/pkg/example\"\n\n // Ensure scheme package is initialized.\n _ \"sigs.k8s.io/scheduler-plugins/apis/config/scheme\"\n)\n\nfunc main() {\n // Register custom plugins to the scheduler framework.\n // Later they can consist of scheduler profile(s) and hence\n // used by various kinds of workloads.\n command := app.NewSchedulerCommand(\n  app.WithPlugin(example.Name, example.New),\n )\n\n code := cli.Run(command)\n os.Exit(code)\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107005605-8x1umvn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005605-8x1umvn",
+				"updated": "20241107005605"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "example.go"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107005605-tbjb526",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107005605-tbjb526",
+				"updated": "20241107005619"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "package example\n\nimport (\n \"context\"\n\n v1 \"k8s.io/api/core/v1\"\n \"k8s.io/apimachinery/pkg/runtime\"\n \"k8s.io/klog/v2\"\n \"k8s.io/kubernetes/pkg/scheduler/framework\"\n)\n\nconst Name = \"example\"\n\nvar _ framework.FilterPlugin = \u0026ExamplePlugin{}\n\ntype ExamplePlugin struct{}\n\n// NewExampleSchedPlugin initializes a new plugin and returns it.\nfunc NewExamplePlugin(_ runtime.Object, _ framework.Handle) (framework.Plugin, error) {\n return \u0026ExamplePlugin{}, nil\n}\n\nfunc (e *ExamplePlugin) Filter(ctx context.Context, state *framework.CycleState, pod *v1.Pod, nodeInfo *framework.NodeInfo) *framework.Status {\n cpu := nodeInfo.Allocatable.MilliCPU\n memory := nodeInfo.Allocatable.Memory\n klog.InfoS(\"tanjunchen-scheduler Filter\", \"pod_name\", pod.Name, \"current node\", nodeInfo.Node().Name, \"cpu\", cpu, \"memory\", memory)\n return framework.NewStatus(framework.Success, \"\")\n}\n\nfunc (e *ExamplePlugin) Name() string {\n return Name\n}\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107005636-018gdv6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005636-018gdv6",
+				"updated": "20241107005636"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2）进行配置， enable 插件"
+				}
+			]
+		},
+		{
+			"ID": "20241107005636-c0xjp0a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005636-c0xjp0a",
+				"updated": "20241107005636"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编写 kube-scheduler 启动命令配置文件 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "example-cm.yaml"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107005642-de83fs0",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241107005642-de83fs0",
+				"updated": "20241107005655"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241107005655-iv5wt1q",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107005655-iv5wt1q",
+						"updated": "20241107005655"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "一个 ksc 里面可以描述多个 profile， 会启动多个独立 scheduler。"
+						}
+					]
+				},
+				{
+					"ID": "20241107005655-g29d3hh",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107005655-g29d3hh",
+						"updated": "20241107005655"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "pod 想用哪个 schduler，就填对应的 schdulerName。如果没指定，就是 default-scheduler。"
+						}
+					]
+				},
+				{
+					"ID": "20241107005655-tgipwdv",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107005655-tgipwdv",
+						"updated": "20241107005655"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "由于这个配置是给 kube-scheduler 的，而不是 kube-apiserver，"
+						}
+					]
+				},
+				{
+					"ID": "20241107005655-vjjfq43",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107005655-vjjfq43",
+						"updated": "20241107005655"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "所以 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "k api-resources"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "​ 或 "
+						},
+						{
+							"Type": "NodeTextMark",
+							"TextMarkType": "code",
+							"TextMarkTextContent": "k get KubeSchedulerConfiguration"
+						},
+						{
+							"Type": "NodeText",
+							"Data": "​ 都是找不到这个资源的。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107005715-9wd03jp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107005715-9wd03jp",
+				"updated": "20241107005717"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: example-scheduler-config\n  namespace: kube-system\ndata:\n  scheduler-config.yaml: |\n    apiVersion: kubescheduler.config.k8s.io/v1\n    kind: KubeSchedulerConfiguration\n    leaderElection:\n      leaderElect: false\n    clientConnection:\n      acceptContentTypes: \"\"\n      burst: 100\n      contentType: application/vnd.kubernetes.protobuf\n      qps: 100\n    profiles:\n    - schedulerName: example-scheduler\n      plugins:\n        filter:\n          enabled:\n          - name: \"example\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107005736-pkmh09z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005736-pkmh09z",
+				"updated": "20241107005748"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107005748-0e6h5ny.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107005806-gzpsu3z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005806-gzpsu3z",
+				"updated": "20241107005806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3） 使用自定义 scheduler"
+				}
+			]
+		},
+		{
+			"ID": "20241107005806-3s2oml2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005806-3s2oml2",
+				"updated": "20241107005806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Pod  yaml 文件中指定  "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "schedulerName: example-scheduler"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​  即可使用自定义 Scheduler 了"
+				}
+			]
+		},
+		{
+			"ID": "20241107005806-f27bbu7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005806-f27bbu7",
+				"updated": "20241107005806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "rbac授权 及 自定义 Scheduler 部署文件：略"
+				}
+			]
+		},
+		{
+			"ID": "20241107005806-wjfrtu1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005806-wjfrtu1",
+				"updated": "20241107005806"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "enjoy~"
+				}
+			]
+		},
+		{
+			"ID": "20241107005806-trwqseu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107005806-trwqseu",
+				"updated": "20241107005806"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考链接："
+				}
+			]
+		},
+		{
+			"ID": "20241107005806-ftcnt06",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241107005806-ftcnt06",
+				"updated": "20241107005806"
+			},
+			"Children": [
+				{
+					"ID": "20241107005806-jekx2j2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107005806-jekx2j2",
+						"updated": "20241107005806"
+					},
+					"Children": [
+						{
+							"ID": "20241107005806-y1e57v9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107005806-y1e57v9",
+								"updated": "20241107005806"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "深入理解 Kubernetes Scheduler Framework 调度框架（Part 2）："
+								}
+							]
+						},
+						{
+							"ID": "20241107005831-k16pmyd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107005831-k16pmyd"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://tanjunchen.github.io/post/2024-04-07-scheduler-framework-02/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107005806-ans8g4g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107005806-ans8g4g",
+						"updated": "20241107005806"
+					},
+					"Children": [
+						{
+							"ID": "20241107005806-ml5j3hx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107005806-ml5j3hx",
+								"updated": "20241107005806"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "K8s 调度框架设计与 scheduler plugins 开发部署示例（2024）："
+								}
+							]
+						},
+						{
+							"ID": "20241107005825-fkcr7e3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107005825-fkcr7e3"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "https://arthurchiao.art/blog/k8s-scheduling-plugins-zh/"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

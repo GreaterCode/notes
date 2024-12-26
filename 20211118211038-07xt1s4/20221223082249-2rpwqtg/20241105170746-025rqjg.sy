@@ -1,0 +1,1316 @@
+{
+	"ID": "20241105170746-025rqjg",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241105170746-025rqjg",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20241105171412-6o4ei39\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241105170746-r160akp\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20241105171543-uoci0c5\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "基于 xfs_quota 限制目录大小",
+		"updated": "20241105171700"
+	},
+	"Children": [
+		{
+			"ID": "20241105171412-6o4ei39",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241105171412-6o4ei39",
+				"updated": "20241105171412"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. xfs_quota简介"
+				}
+			]
+		},
+		{
+			"ID": "20241105171412-c7sb43e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171412-c7sb43e",
+				"updated": "20241105171412"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "xfs_quota"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 是一个管理XFS文件系统配额的工具，它提供了一套丰富的命令行操作来配置项目、用户和组的磁盘配额。\n比如某些情况下，我们需要限制Linux系统中一些目录的大小，此时就可以使用 xfs_quota 来实现。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171445-5a2bsij",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241105171445-5a2bsij",
+				"updated": "20241105171454"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 挂载 xfs 分区"
+				}
+			]
+		},
+		{
+			"ID": "20241105171505-h8ow8r7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171505-h8ow8r7",
+				"updated": "20241105171513"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为想要使用 xfs_quota 限制目录大小，所以挂载命令和普通的挂载会有不同。\n单次挂载命令为："
+				}
+			]
+		},
+		{
+			"ID": "20241105171518-z6qxjwp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171518-z6qxjwp",
+				"updated": "20241105171523"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mkdir -p /limitdata\nmount -o pquota,uquota,gquota /dev/sdb1 /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171506-lkq078y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171506-lkq078y",
+				"updated": "20241105171528"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "挂载命令中，加入了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "pquota,uquota,gquota"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，意思是启用项目配额限制、用户配额限制和组配额限制。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171537-7n1onx8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171537-7n1onx8",
+				"updated": "20241105171538"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "自动挂载命令为："
+				}
+			]
+		},
+		{
+			"ID": "20241105171543-uoci0c5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171543-uoci0c5",
+				"updated": "20241105171543"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mkdir -p /limitdata\necho \"/dev/sdb1 /limitdata xfs defaults,pquota,uquota,gquota 0 0\" \u003e\u003e /etc/fstab\nmount -a\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171551-2nnr8o0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241105171551-2nnr8o0",
+				"updated": "20241105171609"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. xfs_quota常用命令"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-2u6lv90",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241105171700-2u6lv90",
+				"updated": "20241105171739"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1. 查看配额使用情况"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-83o70aa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-83o70aa",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要查看用户或组的配额使用情况，可以使用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "report"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 命令："
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-66d2x4v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-66d2x4v",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x -c 'report -h' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-vqje3pj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-vqje3pj",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "report -h"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 参数会显示用户和组的磁盘使用情况，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-h"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 为人类可读格式（如KB、MB、GB）。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-xsqwpo3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-xsqwpo3",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "初始配额使用情况为："
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-sl9px4j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-sl9px4j",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "User quota on /limitdata (/dev/sdb1)\n                        Blocks\nUser ID      Used   Soft   Hard Warn/Grace\n---------- ---------------------------------\nroot            0      0      0  00 [------]\n\nGroup quota on /limitdata (/dev/sdb1)\n                        Blocks\nGroup ID     Used   Soft   Hard Warn/Grace\n---------- ---------------------------------\nroot            0      0      0  00 [------]\n\nProject quota on /limitdata (/dev/sdb1)\n                        Blocks\nProject ID   Used   Soft   Hard Warn/Grace\n---------- ---------------------------------\n#0              0      0      0  00 [------]\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-rtd9wtm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241105171700-rtd9wtm",
+				"updated": "20241105171914"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2. 进入交互shell"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-46nkucf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-46nkucf",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "xfs_quota 可以通过一个交互式的shell界面来操作，或者通过命令行参数执行单个命令。\n如果想要使用交互式shell界面，可以运行："
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-c5v8u13",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-c5v8u13",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-n1bka5h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-n1bka5h",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里 /limitdata 是XFS文件系统挂载点。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-6tw0p3r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241105171700-6tw0p3r",
+				"updated": "20241105171928"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3. 设置用户配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-i4wfut2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-i4wfut2",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x -c 'limit bsoft=10G bhard=20G username' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-waun1lw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-waun1lw",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这个例子中，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bsoft"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 是软限制（当用户达到这个限制时，系统会发出警告但仍允许一定时间内超额使用），"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "bhard"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 是硬限制（用户不能超过这个限制），"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "username"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 是要设置配额的用户名，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "10G"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 和 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "20G"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 分别是对应的大小限制。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-ilmyeu9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241105171700-ilmyeu9",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.4. 设置组配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-p6i5dt9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-p6i5dt9",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "sudo xfs_quota -x -c 'limit bsoft=10G bhard=20G -g groupname' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-zl3h7od",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-zl3h7od",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-g"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 参数指明接下来的限制是针对组的。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "groupname"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 是要设置配额的组名。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-ohcomcr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241105171700-ohcomcr",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.5. 删除用户和组配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-jkestm4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-jkestm4",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x -c 'limit -u bsoft=0 bhard=0 username' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-iz8u9rv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-iz8u9rv",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同理，删除组配额，用 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-g"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 参数替换 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-u"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 并提供组名。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-5wik4eh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241105171700-5wik4eh",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6. 设置项目配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-fluwwez",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241105171700-fluwwez",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6.1. 定义项目"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-7wf4swd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-7wf4swd",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、编辑项目定义文件"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-dhl7cz1",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-dhl7cz1",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "vim /etc/projid\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-r8b6xvx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-r8b6xvx",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "添加："
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-nlp6ryt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-nlp6ryt",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "project100:100\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-deepf2x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-deepf2x",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中，冒号前的项目名，冒号后的是项目ID。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-dt8zhmn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-dt8zhmn",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、编辑项目和路径映射文件"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-n6ws59l",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-n6ws59l",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "vim /etc/projects\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-fvgah7f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-fvgah7f",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "添加："
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-la09zsb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-la09zsb",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "100:/limitdata/dir100\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-9981lap",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-9981lap",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中，冒号前的是项目ID，冒号后的是项目路径。意思是 /limitdata/dir100 归属 100 这个项目。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-e637v60",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241105171700-e637v60",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6.2. 初始化项目配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-04huy35",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-04huy35",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在配置配额之前，需要初始化目录的项目配额记录。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-h8ldhhd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-h8ldhhd",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mkdir -p /limitdata/dir100\nxfs_quota -x -c 'project -s project100' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-r95zv6x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-r95zv6x",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "-s"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 选项会扫描目录树，查找所有属于该项目的文件，并初始化项目的配额记录。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-6m4694o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-6m4694o",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Setting up project project100 (path /limitdata/dir100)...\nProcessed 1 (/etc/projects and cmdline) paths for project project100 with recursion depth infinite (-1).\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-uesl2x2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241105171700-uesl2x2",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6.3. 设置项目配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-sfsntf4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-sfsntf4",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x -c 'limit -p bhard=2g project100' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-8qzs2tk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-8qzs2tk",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个命令设置 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "project100"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 这个项目的硬磁盘空间限制为2GB。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-jkxznpn",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241105171700-jkxznpn",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6.4. 调整项目配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-ldrlakx",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-ldrlakx",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x -c 'limit -p bhard=1g project100' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-srr2ruv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241105171700-srr2ruv",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6.5. 检查项目配额"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-7lzry4y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-7lzry4y",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "xfs_quota -x -c 'report -p' /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-8sx1hm5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-8sx1hm5",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个命令会显示所有项目的配额和使用情况。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-j0zgofk",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20241105171700-j0zgofk",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4.6.6. 测试写入内容"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-peo2trm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-peo2trm",
+				"updated": "20241105172104"
+			}
+		},
+		{
+			"ID": "20241105171700-5vxr4o9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-5vxr4o9",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dd if=/dev/zero of=/limitdata/dir100/testfile bs=1G count=2\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-9tasah4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-9tasah4",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "正常应该会报错："
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-6g3itsh",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-6g3itsh",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dd: 写入\"/limitdata/dir100/testfile\" 出错: 设备上没有空间\n记录了2+0 的读入\n记录了1+0 的写出\n1073741824字节(1.1 GB)已复制，3.31217 秒，324 MB/秒\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-juv39mm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241105171700-juv39mm",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5. 限制目录的大小"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-r4g3mdd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-r4g3mdd",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "限制目录的大小，对应 xfs_quota 就是设置项目配额。"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-jnvnha0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105171700-jnvnha0",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "name=p101\nid=101\n\necho \"${id}:/limitdata/dir${id}\" \u003e\u003e /etc/projects\necho \"${name}:${id}\" \u003e\u003e /etc/projid\nxfs_quota -x -c \"project -s ${name}\" /limitdata\nxfs_quota -x -c \"limit -p bhard=1G ${name}\" /limitdata\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-x8kn09i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241105171700-x8kn09i",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6. xfs_quota + nfs"
+				}
+			]
+		},
+		{
+			"ID": "20241105171700-oexpl6r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241105171700-oexpl6r",
+				"updated": "20241105171700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注意： xfs_quota 管理的目录，开启了nfs共享目录，依然可以被限制。\n比如 /limitdata 目录作为nfs共享目录对外开放，从其他主机上往 /limitdata/dir100 目录中写入数据，依然会受到 xfs_quota 的限制。"
+				}
+			]
+		},
+		{
+			"ID": "20241105170746-r160akp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241105170746-r160akp",
+				"updated": "20241105170803"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 3. 查询对应 pv 在节点上的挂载点,例如\nmount |grep pvc-f2c55a94-0f26-477c-9fa0-8a311199cc80\n \n# 4. 使用交互式命令修改对应 ProjectID 的xfs_quota 限制,如下面两图所示，这里修改的是Project ID 为 1，通过命令将 400G的quota 成功修改为了 320GiB(1024单位)\nsudo xfs_quota -x /var/lib/kubelet/pods/5d0c2ff3-48ae-49e0-a077-02de73d746a6/volume-subpaths/pvc-f2c55a94-0f26-477c-9fa0-8a311199cc80/prometheus/3\nxfs_quota\u003e limit -p bsoft=346030080k bhard=346030080k 1\nxfs_quota\u003e report -p\nxfs_quota\u003e quit\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

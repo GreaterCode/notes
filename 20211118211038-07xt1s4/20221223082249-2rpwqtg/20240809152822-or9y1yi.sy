@@ -1,0 +1,1113 @@
+{
+	"ID": "20240809152822-or9y1yi",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240809152822-or9y1yi",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240809152850-ds83c3f\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240809163145-zaddivk\u0026quot;,\u0026quot;scrollTop\u0026quot;:3703,\u0026quot;focusId\u0026quot;:\u0026quot;20240809165735-v2pio87\u0026quot;,\u0026quot;focusStart\u0026quot;:81,\u0026quot;focusEnd\u0026quot;:81}",
+		"title": "Linux：procmeminfo参数详细解释",
+		"updated": "20240809165745"
+	},
+	"Children": [
+		{
+			"ID": "20240809152850-ds83c3f",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240809152850-ds83c3f",
+				"updated": "20240809152901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、Linux内存总览图"
+				}
+			]
+		},
+		{
+			"ID": "20240809152822-sdei9p7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809152822-sdei9p7",
+				"updated": "20240809152842"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20240809152842-bs64smy.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240809152902-ueearw6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240809152902-ueearw6",
+				"updated": "20240809152906"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、meminfo参数的详细介绍"
+				}
+			]
+		},
+		{
+			"ID": "20240809153002-vqttqph",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809153002-vqttqph",
+				"updated": "20240809153002"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t/proc/meminfo是了解Linux系统内存使用状况的主要接口，我们最常用的”free”、”vmstat”等命令就是通过它获取数据的 ，/proc/meminfo所包含的信息比”free”等命令要丰富得多，然而真正理解它并不容易，比如我们知道”Cached”统计的是文件缓存页，manpage上说是“In-memory cache for files read from the disk (the page cache)”，那为什么它不等于[Active(file)+Inactive(file)]？AnonHugePages与AnonPages、HugePages_Total有什么联系和区别？很多细节在手册中并没有讲清楚，本文对此做了一点探究。"
+				}
+			]
+		},
+		{
+			"ID": "20240809153002-rynaouh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809153002-rynaouh",
+				"updated": "20240809153044"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t负责输出/proc/meminfo的源代码是："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "fs/proc/meminfo.c : meminfo_proc_show()"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240809153034-4se0f2q",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240809153034-4se0f2q",
+				"updated": "20240809153114"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "MemTotal:       196061492 kB\nMemFree:         1233480 kB\nMemAvailable:   154889260 kB\nBuffers:            1052 kB\nCached:         152202724 kB\nSwapCached:            0 kB\nActive:         110431584 kB\nInactive:       77995800 kB\nActive(anon):   33561124 kB\nInactive(anon):  2664924 kB\nActive(file):   76870460 kB\nInactive(file): 75330876 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nDirty:               104 kB\nWriteback:             0 kB\nAnonPages:      34856044 kB\nMapped:           175808 kB\nShmem:              2440 kB\nKReclaimable:    3054628 kB\nSlab:            4162044 kB\nSReclaimable:    3054628 kB\nSUnreclaim:      1107416 kB\nKernelStack:       16272 kB\nPageTables:        98900 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    98030744 kB\nCommitted_AS:   79714864 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:      308932 kB\nVmallocChunk:          0 kB\nPercpu:           104064 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:  34338816 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nCmaTotal:              0 kB\nCmaFree:               0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:     2481360 kB\nDirectMap2M:    130248704 kB\nDirectMap1G:    69206016 kB\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240809153318-5frhlls",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240809153318-5frhlls",
+				"updated": "20240809163519"
+			},
+			"Children": [
+				{
+					"ID": "20240809153329-ppohrma",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809153329-ppohrma",
+						"updated": "20240809153329"
+					},
+					"Children": [
+						{
+							"ID": "20240809153329-zard26h",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809153329-zard26h",
+								"updated": "20240809153431"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "MemTotal："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "系统从加电开始到引导完成，firmware/BIOS要保留一些内存，kernel本身要占用一些内存，最后剩下可供kernel支配的内存就是MemTotal。这个值在系统运行期间一般是固定不变的。可参阅解读DMESG中的内存初始化信息"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809153407-n1478lg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809153407-n1478lg"
+					},
+					"Children": [
+						{
+							"ID": "20240809153407-6bc9v07",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809153407-6bc9v07",
+								"updated": "20240809153425"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "MemFree："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "表示系统尚未使用的内存。[MemTotal-MemFree]就是已被用掉的内存"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809163519-buxmhnb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809163519-buxmhnb",
+						"updated": "20240809163519"
+					},
+					"Children": [
+						{
+							"ID": "20240809163519-svatk71",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809163519-svatk71"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "MemAvailable："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "有些应用程序会根据系统的可用内存大小自动调整内存申请的多少，所以需要一个记录当前可用内存数量的统计值，MemFree并不适用，因为MemFree不能代表全部可用的内存，系统中有些内存虽然已被使用但是可以回收的，比如cache/buffer、slab都有一部分可以回收，所以这部分可回收的内存加上MemFree才是系统可用的内存，即MemAvailable。/proc/meminfo中的MemAvailable是内核使用特定的算法估算出来的，要注意这是一个估计值，并不精确。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240809162101-t7thhnu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240809162101-t7thhnu",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "内存黑洞："
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-qu53tpp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809162117-qu53tpp",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "追踪Linux系统的内存使用一直是个难题，很多人试着把能想到的各种内存消耗都加在一起，kernel text、kernel modules、buffer、cache、slab、page table、process RSS…等等，却总是与物理内存的大小对不上，这是为什么呢？因为Linux kernel并没有滴水不漏地统计所有的内存分配，kernel动态分配的内存中就有一部分没有计入/proc/meminfo中。"
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-ovaulq1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809162117-ovaulq1",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们知道，Kernel的动态内存分配通过以下几种接口："
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-mqjw445",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240809162117-mqjw445",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"ID": "20240809162117-y21ov54",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809162117-y21ov54",
+						"updated": "20240809162117"
+					},
+					"Children": [
+						{
+							"ID": "20240809162117-aylv5h4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809162117-aylv5h4",
+								"updated": "20240809162117"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "alloc_pages/__get_free_page: 以页为单位分配"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809162117-v638dvk",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809162117-v638dvk",
+						"updated": "20240809162117"
+					},
+					"Children": [
+						{
+							"ID": "20240809162117-rxucttq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809162117-rxucttq",
+								"updated": "20240809162117"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "vmalloc: 以字节为单位分配虚拟地址连续的内存块"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809162117-fja9vh4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809162117-fja9vh4",
+						"updated": "20240809162117"
+					},
+					"Children": [
+						{
+							"ID": "20240809162117-wz8kkuf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809162117-wz8kkuf",
+								"updated": "20240809162117"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "slab allocator"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809162117-awysff1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809162117-awysff1",
+						"updated": "20240809162117"
+					},
+					"Children": [
+						{
+							"ID": "20240809162117-5k5z4fr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809162117-5k5z4fr",
+								"updated": "20240809162419"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "kmalloc: 以字节为单位分配物理地址连续的内存块，它是以slab为基础的，使用slab层的general caches — 大小为2^n，名称是kmalloc-32、kmalloc-64等（在老kernel上的名称是size-32、size-64等）。通过slab层分配的内存会被精确统计，可以参见/proc/meminfo中的slab/SReclaimable/SUnreclaim；"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-ugtqmo9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809162117-ugtqmo9",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过vmalloc分配的内存也有统计，参见/proc/meminfo中的VmallocUsed 和 /proc/vmallocinfo（下节中还有详述）；"
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-iq1yjt9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809162117-iq1yjt9",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "而通过alloc_pages分配的内存不会自动统计，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "除非调用alloc_pages的内核模块或驱动程序主动进行统计"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，否则我们只能看到free memory减少了，但从/proc/meminfo中看不出它们具体用到哪里去了。比如在VMware guest上有一个常见问题，就是VMWare ESX宿主机会通过guest上的Balloon driver(vmware_balloon module)占用guest的内存，有时占用得太多会导致guest无内存可用，这时去检查guest的/proc/meminfo只看见MemFree很少、但看不出内存的去向，原因就是Balloon driver通过alloc_pages分配内存，没有在/proc/meminfo中留下统计值，所以很难追踪。"
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-oc3slgz",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20240809162117-oc3slgz",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20240809162117-dx6lz0p",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20240809162117-dx6lz0p",
+						"updated": "20240809162117"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "内存都到哪里去了？ 使用内存的，不是kernel就是用户进程，下面我们就分类讨论。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240809162117-zu4cogw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809162117-zu4cogw",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "注：page cache比较特殊，很难区分是属于kernel还是属于进程，其中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "mark",
+					"TextMarkTextContent": "被进程mmap的页面自然是属于进程的了，而另一些页面没有被mapped到任何进程，那就只能算是属于kernel了"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "。"
+				}
+			]
+		},
+		{
+			"ID": "20240809163225-w6ljhfr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240809163225-w6ljhfr",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核"
+				}
+			]
+		},
+		{
+			"ID": "20240809163323-m21fe3x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809163323-m21fe3x",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核所用内存的静态部分，比如内核代码、页描述符等数据在引导阶段就分配掉了，并不计入MemTotal里，而是算作Reserved(在dmesg中能看到)。而内核所用内存的动态部分，是通过上文提到的几个接口申请的，其中通过alloc_pages申请的内存有可能未纳入统计，就像黑洞一样。"
+				}
+			]
+		},
+		{
+			"ID": "20240809163323-15mmko8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809163323-15mmko8",
+				"updated": "20240809163515"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面讨论的都是/proc/meminfo中所统计的部分。"
+				}
+			]
+		},
+		{
+			"ID": "20240809163439-pfuj6cy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240809163439-pfuj6cy",
+				"updated": "20240809165745"
+			},
+			"Children": [
+				{
+					"ID": "20240809163447-0cwys7r",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809163447-0cwys7r",
+						"updated": "20240809163450"
+					},
+					"Children": [
+						{
+							"ID": "20240809163447-oexfnww",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809163447-oexfnww",
+								"updated": "20240809164311"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "SALB:"
+								}
+							]
+						},
+						{
+							"ID": "20240809164247-ndfenpf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809164247-ndfenpf",
+								"updated": "20240809164300"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": " 通过slab分配的内存被统计在以下三个值中："
+								}
+							]
+						},
+						{
+							"ID": "20240809164301-17wian5",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20240809164301-17wian5",
+								"updated": "20240809164301"
+							},
+							"Children": [
+								{
+									"ID": "20240809164301-mbsuvvl",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20240809164301-mbsuvvl",
+										"updated": "20240809164301"
+									},
+									"Children": [
+										{
+											"ID": "20240809164301-gmrj9rk",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20240809164301-gmrj9rk",
+												"updated": "20240809164301"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "SReclaimable: slab中可回收的部分。调用kmem_getpages()时加上SLAB_RECLAIM_ACCOUNT标记，表明是可回收的，计入SReclaimable，否则计入SUnreclaim。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20240809164301-bdo9pk4",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20240809164301-bdo9pk4",
+										"updated": "20240809164301"
+									},
+									"Children": [
+										{
+											"ID": "20240809164301-jm6vf80",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20240809164301-jm6vf80",
+												"updated": "20240809164301"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "SUnreclaim: slab中不可回收的部分。"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20240809164301-v56gqab",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20240809164301-v56gqab",
+										"updated": "20240809164301"
+									},
+									"Children": [
+										{
+											"ID": "20240809164301-8hel090",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20240809164301-8hel090",
+												"updated": "20240809164301"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Slab: slab中所有的内存，等于以上两者之和。\n"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809164349-i055yng",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809164349-i055yng",
+						"updated": "20240809165745"
+					},
+					"Children": [
+						{
+							"ID": "20240809164349-k2prjwt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809164349-k2prjwt",
+								"updated": "20240809164402"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "VmallocUsed:"
+								}
+							]
+						},
+						{
+							"ID": "20240809164410-40ah5ua",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809164410-40ah5ua",
+								"updated": "20240809164410"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过vmalloc分配的内存都统计在/proc/meminfo的 VmallocUsed 值中，但是要注意这个值不止包括了分配的物理内存，还统计了VM_IOREMAP、VM_MAP等操作的值，譬如VM_IOREMAP是把IO地址映射到内核空间、并未消耗物理内存，所以我们要把它们排除在外。从物理内存分配的角度，我们只关心VM_ALLOC操作，这可以从/proc/vmallocinfo中的vmalloc记录看到："
+								}
+							]
+						},
+						{
+							"ID": "20240809164413-b1a0o6a",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20240809164413-b1a0o6a",
+								"updated": "20240809164426"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# grep vmalloc /proc/vmallocinfo\n...\n0xffffc90004702000-0xffffc9000470b000   36864 alloc_large_system_hash+0x171/0x239 pages=8 vmalloc N0=8\n0xffffc9000470b000-0xffffc90004710000   20480 agp_add_bridge+0x2aa/0x440 pages=4 vmalloc N0=4\n0xffffc90004710000-0xffffc90004731000  135168 raw_init+0x41/0x141 pages=32 vmalloc N0=32\n0xffffc90004736000-0xffffc9000473f000   36864 drm_ht_create+0x55/0x80 [drm] pages=8 vmalloc N0=8\n0xffffc90004744000-0xffffc90004746000    8192 dm_table_create+0x9e/0x130 [dm_mod] pages=1 vmalloc N0=1\n0xffffc90004746000-0xffffc90004748000    8192 dm_table_create+0x9e/0x130 [dm_mod] pages=1 vmalloc N0=1\n...\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20240809164439-2yk2ol6",
+							"Type": "NodeBlockquote",
+							"Properties": {
+								"id": "20240809164439-2yk2ol6",
+								"updated": "20240809164443"
+							},
+							"Children": [
+								{
+									"Type": "NodeBlockquoteMarker",
+									"Data": "\u003e"
+								},
+								{
+									"ID": "20240809164443-4ihymle",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20240809164443-4ihymle",
+										"updated": "20240809164452"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "注：/proc/vmallocinfo中能看到vmalloc来自哪个调用者(caller)，那是vmalloc()记录下来的，相应的源代码可见：\nmm/vmalloc.c: vmalloc \u003e __vmalloc_node_flags \u003e __vmalloc_node \u003e __vmalloc_node_range \u003e __get_vm_area_node \u003e setup_vmalloc_vm"
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20240809165711-copd9jx",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809165711-copd9jx",
+								"updated": "20240809165711"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过vmalloc分配了多少内存，可以统计/proc/vmallocinfo中的vmalloc记录，例如："
+								}
+							]
+						},
+						{
+							"ID": "20240809165720-d38g53m",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20240809165720-d38g53m",
+								"updated": "20240809165731"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "# grep vmalloc /proc/vmallocinfo | awk '{total+=$2}; END {print total}'\n23375872\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20240809165735-v2pio87",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809165735-v2pio87",
+								"updated": "20240809165745"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一些driver以及网络模块和文件系统模块可能会调用vmalloc，加载内核模块(kernel module)时也会用到，可参见 kernel/module.c。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809155812-xgmjx6q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809155812-xgmjx6q",
+						"updated": "20240809155854"
+					},
+					"Children": [
+						{
+							"ID": "20240809155818-ydbnnaq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809155818-ydbnnaq",
+								"updated": "20240809155854"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "HardwareCorrupted："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "当系统检测到内存的硬件故障时，会把有问题的页面删除掉，不再使用，/proc/meminfo中的HardwareCorrupted统计了删除掉的内存页的总大小。相应的代码参见 mm/memory-failure.c: memory_failure()。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809160153-dwe8apj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809160153-dwe8apj"
+					},
+					"Children": [
+						{
+							"ID": "20240809160158-09796lj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809160158-09796lj",
+								"updated": "20240809160159"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "PageTables：Page Table用于将内存的虚拟地址翻译成物理地址，随着内存地址分配得越来越多，Page Table会增大，/proc/meminfo中的PageTables统计了Page Table所占用的内存大小。"
+								}
+							]
+						},
+						{
+							"ID": "20240809160211-hxa9of0",
+							"Type": "NodeBlockquote",
+							"Properties": {
+								"id": "20240809160211-hxa9of0",
+								"updated": "20240809160221"
+							},
+							"Children": [
+								{
+									"Type": "NodeBlockquoteMarker",
+									"Data": "\u003e"
+								},
+								{
+									"ID": "20240809160221-cjb5yhr",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20240809160221-cjb5yhr",
+										"updated": "20240809160221"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "注：请把Page Table与Page Frame（页帧）区分开，物理内存的最小单位是page frame，每个物理页对应一个描述符(struct page)，在内核的引导阶段就会分配好、保存在mem_map[]数组中，mem_map[]所占用的内存被统计在dmesg显示的reserved中，/proc/meminfo的MemTotal是不包含它们的。（在NUMA系统上可能会有多个mem_map数组，在node_data中或mem_section中）。\n而Page Table的用途是翻译虚拟地址和物理地址，它是会动态变化的，要从MemTotal中消耗内存。"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240809160739-p2ut5c5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240809160739-p2ut5c5",
+				"updated": "20240809160825"
+			},
+			"Children": [
+				{
+					"ID": "20240809160741-urp8vxx",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809160741-urp8vxx",
+						"updated": "20240809160825"
+					},
+					"Children": [
+						{
+							"ID": "20240809160742-cmng61r",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809160742-cmng61r",
+								"updated": "20240809160753"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "KernelStack："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "每一个用户线程都会分配一个kernel stack（内核栈），内核栈虽然属于线程，但用户态的代码不能访问，只有通过系统调用(syscall)、自陷(trap)或异常(exception)进入内核态的时候才会用到，也就是说内核栈是给kernel code使用的。在x86系统上Linux的内核栈大小是固定的8K或16K（可参阅我以前的文章：内核栈溢出）。"
+								}
+							]
+						},
+						{
+							"ID": "20240809160758-320075d",
+							"Type": "NodeBlockquote",
+							"Properties": {
+								"id": "20240809160758-320075d",
+								"updated": "20240809160825"
+							},
+							"Children": [
+								{
+									"Type": "NodeBlockquoteMarker",
+									"Data": "\u003e"
+								},
+								{
+									"ID": "20240809160825-3878oec",
+									"Type": "NodeParagraph",
+									"Properties": {
+										"id": "20240809160825-3878oec",
+										"updated": "20240809160825"
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "Kernel stack（内核栈）是常驻内存的，既不包括在LRU lists里，也不包括在进程的RSS/PSS内存里，所以我们认为它是kernel消耗的内存。统计值是/proc/meminfo的KernelStack。"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240809160757-68pd0k4",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240809160757-68pd0k4",
+				"updated": "20240809164215"
+			},
+			"Children": [
+				{
+					"ID": "20240809161107-hksmbp2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809161107-hksmbp2",
+						"updated": "20240809164215"
+					},
+					"Children": [
+						{
+							"ID": "20240809161107-g665vxr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809161107-g665vxr",
+								"updated": "20240809164215"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "Bounce："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "有些老设备只能访问低端内存，比如16M以下的内存，当应用程序发出一个I/O 请求，DMA的目的地址却是高端内存时（比如在16M以上），内核将在低端内存中分配一个临时buffer作为跳转，把位于高端内存的缓存数据复制到此处。这种额外的数据拷贝被称为“bounce buffering”，会降低I/O 性能。大量分配的bounce buffers 也会占用额外的内存。"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240809161117-mixvl47",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240809161117-mixvl47",
+						"updated": "20240809161619"
+					},
+					"Children": [
+						{
+							"ID": "20240809161117-7lfzo1i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240809161117-7lfzo1i",
+								"updated": "20240809161619"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "NFS_Unstable："
+								},
+								{
+									"Type": "NodeText",
+									"Data": "是发给NFS server但尚未写入硬盘的缓存页"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240809163145-zaddivk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240809163145-zaddivk"
+			}
+		}
+	]
+}

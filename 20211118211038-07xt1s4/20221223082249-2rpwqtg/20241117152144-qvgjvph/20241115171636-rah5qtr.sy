@@ -1,0 +1,39 @@
+{
+	"ID": "20241115171636-rah5qtr",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241115171636-rah5qtr",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20241115171636-j6f1t1o\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241115171636-j6f1t1o\u0026quot;,\u0026quot;scrollTop\u0026quot;:0,\u0026quot;focusId\u0026quot;:\u0026quot;20241115171636-j6f1t1o\u0026quot;,\u0026quot;focusStart\u0026quot;:1031,\u0026quot;focusEnd\u0026quot;:1031}",
+		"title": "清理lvm(clean-lvm.sh)",
+		"updated": "20241115171657"
+	},
+	"Children": [
+		{
+			"ID": "20241115171636-j6f1t1o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241115171636-j6f1t1o",
+				"updated": "20241115171657"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n \n# 获取存在 /boot 分区的磁盘列表\nboot_disks=$(lsblk -no NAME,MOUNTPOINT | awk '$2 == \"/boot\" {print $1}')\n \n# 遍历所有磁盘, 过滤掉系统盘, 如果不存在分区就创建一个\nfor disk in $(lsblk -dn --list | grep -v loop | awk '{print $1}'); do\n \n    # 检查磁盘是否已经在 /boot 分区列表中\n    if ! echo \"$boot_disks\" | grep -q \"$disk\"; then\n        echo \"Checking disk: $disk\"\n        count=$(lsblk \"/dev/$disk\" | grep \"$disk\" | wc -l)\n        if [ ${count} -gt 1 ]; then\n            echo \"/dev/$disk\" already has a partition. will not create.\n            continue\n        fi\n \n        echo \"/dev/$disk\" has not a partition. will create.\n        sgdisk -n 1 \"/dev/$disk\"\n    else\n        echo \"Disk /dev/$disk is used for /boot, skipping...\"\n    fi\ndone\n \n# 删除 vg 与 lvm\nlv_paths=$(lvdisplay | grep 'LV Path' | awk '{print $3}')\nfor lv_path in $lv_paths; do\n    if ! echo \"$lv_path\" | grep -q \"WARNING\"; then\n      echo \"Removing LV at path: $lv_path\"\n      lvremove -f \"$lv_path\"\n    fi\ndone\n \nvg_names=$(vgdisplay |grep \"VG Name\" | awk '{print $3}')\nfor vg_name in $vg_names; do\n    if ! echo \"$vg_name\" | grep -q \"WARNING\"; then\n      echo \"Removing VG at path: $vg_name\"\n      vgremove -f \"$vg_name\"\n    fi\ndone\n \n# 获取所有物理卷的名称\npvs_list=$(pvs --noheadings -o pv_name)\n \n# 遍历所有物理卷并删除\nfor pv in $pvs_list; do\n    echo \"Removing PV: $pv\"\n    pvremove -f \"$pv\"\ndone\n \n# 遍历所有磁盘\nfor disk in $(lsblk -dn --list | grep -v loop | awk '{print $1}'); do\n \n    # 检查磁盘是否已经在 /boot 分区列表中\n    if ! echo \"$boot_disks\" | grep -q \"$disk\"; then\n        echo \"Checking disk: $disk\"\n        count=$(lsblk \"/dev/$disk\" | grep \"$disk\" | wc -l)\n        if [ ${count} -gt 1 ]; then\n            echo \"/dev/$disk\" has a partition. will delete.\n            sgdisk -d 1 \"/dev/$disk\"\n        fi\n    else\n        echo \"Disk /dev/$disk is used for /boot, skipping...\"\n    fi\ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

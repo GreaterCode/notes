@@ -1,0 +1,4428 @@
+{
+	"ID": "20241107164211-18yvgx1",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241107164211-18yvgx1",
+		"title": "图解Linux网络包接收过程",
+		"updated": "20241107164211"
+	},
+	"Children": [
+		{
+			"ID": "20241107164211-n0qoc3q",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20241107164211-n0qoc3q",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-61jpyzy",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241107164211-61jpyzy",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"ID": "20241107164211-zs41p9x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-zs41p9x",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-lnmlz9i",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107164211-lnmlz9i",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://mp.weixin.qq.com/s?__biz=MjM5Njg5NDgwNA==\u0026mid=2247484058\u0026idx=1\u0026sn=a2621bc27c74b313528eefbc81ee8c0f\u0026chksm=a6e303a191948ab7d06e574661a905ddb1fae4a5d9eb1d2be9f1c44491c19a82d95957a0ffb6\u0026cur_album_id=1532487451997454337\u0026scene=190#rd",
+									"TextMarkTextContent": "https://mp.weixin.qq.com/s?__biz=MjM5Njg5NDgwNA==\u0026amp;mid=2247484058\u0026amp;idx=1\u0026amp;sn=a2621bc27c74b313528eefbc81ee8c0f\u0026amp;chksm=a6e303a191948ab7d06e574661a905ddb1fae4a5d9eb1d2be9f1c44491c19a82d95957a0ffb6\u0026amp;cur_album_id=1532487451997454337\u0026amp;scene=190#rd - 微信公众平台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-x7urp4d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-x7urp4d",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-nq7fgpd",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107164211-nq7fgpd",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一线互联网企业里面试和晋升后端开发同学的一个重点要求就是要理解性能开销，会进行性能优化。如果对Linux底层能理解较深的话，你对性能的掌控能力也将会提升N个台阶。今天我们来详细了解下Linux的网络包接收过程，长文慎入！"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-vnbakhl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-vnbakhl",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-sk38bwj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107164211-sk38bwj",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2024-11-07 16:42:11"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-3mpmsl0",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20241107164211-3mpmsl0",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-uxj1sfi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-uxj1sfi",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-asrn561"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-s0kiq7y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-s0kiq7y",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "因为要对百万、千万、甚至是过亿的用户提供各种网络服务，所以在一线互联网企业里面试和晋升后端开发同学的其中一个重点要求就是要能支撑高并发，要理解性能开销，会进行性能优化。而很多时候，如果你对Linux底层的理解不深的话，遇到很多线上性能瓶颈你会觉得狗拿刺猬，无从下手。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ennrcqr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-ennrcqr",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们今天用图解的方式，来深度理解一下在Linux下网络包的接收过程。还是按照惯例来借用一段最简单的代码开始思考。为了简单起见，我们用udp来举例，如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ktlkr2o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-ktlkr2o",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "int main(){\n    int serverSocketFd = socket(AF_INET, SOCK_DGRAM, 0);\n    bind(serverSocketFd, ...);    char buff[BUFFSIZE];\n    int readCount = recvfrom(serverSocketFd, buff, BUFFSIZE, 0, ...);\n    buff[readCount] = '\\0';    printf(\"Receive from client:%s\\n\", buff);}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-p9sutbv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-p9sutbv",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面代码是一段udp server接收收据的逻辑。当在开发视角看的时候，只要客户端有对应的数据发送过来，服务器端执行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;recv_from\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​后就能收到它，并把它打印出来。我们现在想知道的是，当网络包达到网卡，直到我们的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;recvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​收到数据，这中间，究竟都发生过什么？"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-sqicyna",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-sqicyna",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过本文，你将深入理解Linux网络系统内部是如何实现的，以及各个部分之间如何交互。相信这对你的工作将会有非常大的帮助。本文基于Linux 3.10，源代码参见https://mirrors.edge.kernel.org/pub/linux/kernel/v3.x/，网卡驱动采用Intel的igb网卡举例。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-9d22q92",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-9d22q92",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "友情提示，本文略长，可以先Mark后看！"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-p09z5rl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-p09z5rl",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-hvvmnev",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-hvvmnev",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux网络收包总览"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-bdgq7zc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-bdgq7zc",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在TCP/IP网络分层模型里，整个协议栈被分成了物理层、链路层、网络层，传输层和应用层。物理层对应的是网卡和网线，应用层对应的是我们常见的Nginx，FTP等等各种应用。Linux实现的是链路层、网络层和传输层这三层。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-3bfa4kw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-3bfa4kw",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Linux内核实现中，链路层协议靠网卡驱动来实现，内核协议栈来实现网络层和传输层。内核对更上层的应用层提供socket接口来供用户进程访问。我们用Linux的视角来看到的TCP/IP网络分层模型应该是下面这个样子的。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-j1tco66",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-j1tco66",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-isf1iy4"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-oyeom6h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-oyeom6h",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "图1 Linux视角的网络协议栈"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-5vlwzu7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-5vlwzu7",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在Linux的源代码中，网络设备驱动对应的逻辑位于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;driver/net/ethernet\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 其中intel系列网卡的驱动在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;driver/net/ethernet/intel\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​目录下。协议栈模块代码位于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;kernel\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;net\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​目录。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-h6lockt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-h6lockt",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核和网络设备驱动是通过中断的方式来处理的。当设备上有数据到达的时候，会给CPU的相关引脚上触发一个电压变化，以通知CPU来处理数据。对于网络模块来说，由于处理过程比较复杂和耗时，如果在中断函数中完成所有的处理，将会导致中断处理函数（优先级过高）将过度占据CPU，将导致CPU无法响应其它设备，例如鼠标和键盘的消息。因此Linux中断处理函数是分上半部和下半部的。上半部是只进行最简单的工作，快速处理然后释放CPU，接着CPU就可以允许其它中断进来。剩下将绝大部分的工作都放到下半部中，可以慢慢从容处理。2.4以后的内核版本采用的下半部实现方式是软中断，由ksoftirqd内核线程全权处理。和硬中断不同的是，硬中断是通过给CPU物理引脚施加电压变化，而软中断是通过给内存中的一个变量的二进制值以通知软中断处理程序。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-xadrwdw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-xadrwdw",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "好了，大概了解了网卡驱动、硬中断、软中断和ksoftirqd线程之后，我们在这几个概念的基础上给出一个内核收包的路径示意:"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-irxjh65",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-irxjh65",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-k4vn021"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图2 Linux内核网络收包总览"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-9ismsmc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-9ismsmc",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当网卡上收到数据以后，Linux中第一个工作的模块是网络驱动。网络驱动会以DMA的方式把网卡上收到的帧写到内存里。再向CPU发起一个中断，以通知CPU有数据到达。第二，当CPU收到中断请求后，会去调用网络驱动注册的中断处理函数。网卡的中断处理函数并不做过多工作，发出软中断请求，然后尽快释放CPU。ksoftirqd检测到有软中断请求到达，调用poll开始轮询收包，收到后交由各级协议栈处理。对于UDP包来说，会被放到用户socket的接收队列中。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-50th0dk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-50th0dk",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们从上面这张图中已经从整体上把握到了Linux对数据包的处理过程。但是要想了解更多网络模块工作的细节，我们还得往下看。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-8uc2fn0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-8uc2fn0",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-25gw985",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-25gw985",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux启动"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-0sr1acf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-0sr1acf",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux驱动，内核协议栈等等模块在具备接收网卡数据包之前，要做很多的准备工作才行。比如要提前创建好ksoftirqd内核线程，要注册好各个协议对应的处理函数，网络设备子系统要提前初始化好，网卡要启动好。只有这些都Ready之后，我们才能真正开始接收数据包。那么我们现在来看看这些准备工作都是怎么做的。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-q5opld6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-q5opld6",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 创建ksoftirqd内核线程"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-rbuuzps",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-rbuuzps",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux的软中断都是在专门的内核线程（ksoftirqd）中进行的，因此我们非常有必要看一下这些进程是怎么初始化的，这样我们才能在后面更准确地了解收包过程。该进程数量不是1个，而是N个，其中N等于你的机器的核数。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-6bseecz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-6bseecz",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "系统初始化的时候在kernel/smpboot.c中调用了smpboot_register_percpu_thread， 该函数进一步会执行到spawn_ksoftirqd（位于kernel/softirq.c）来创建出softirqd进程。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-lpe5im5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-lpe5im5",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-qqfm4nd"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图3 创建ksoftirqd内核线程"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-osfeyu1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-osfeyu1",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "相关代码如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-47mikbw",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: kernel/softirq.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e smp_hotplug_thread softirq_threads \u003cspan\u003e=\u003c/span\u003e {\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    .store          \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e\u0026\u003c/span\u003eksoftirqd,\u003cbr/\u003e    .thread_should_run  \u003cspan\u003e=\u003c/span\u003e ksoftirqd_should_run,\u003cbr/\u003e    .thread_fn      \u003cspan\u003e=\u003c/span\u003e run_ksoftirqd,\u003cbr/\u003e    .thread_comm        \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e\"ksoftirqd/%u\"\u003c/span\u003e,};\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-47mikbw",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-x3ixh27",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-x3ixh27",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static __init int spawn_ksoftirqd(void){\n    register_cpu_notifier(\u0026cpu_nfb);    BUG_ON(smpboot_register_percpu_thread(\u0026softirq_threads));    return 0;}early_initcall(spawn_ksoftirqd);\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-j8uafhz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-j8uafhz",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当ksoftirqd被创建出来以后，它就会进入自己的线程循环函数ksoftirqd_should_run和run_ksoftirqd了。不停地判断有没有软中断需要被处理。这里需要注意的一点是，软中断不仅仅只有网络软中断，还有其它类型。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-553outk",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-553outk",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//file: include/linux/interrupt.h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-i03pdt2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-i03pdt2",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "enum{\n    HI_SOFTIRQ=0,\n    TIMER_SOFTIRQ,\n    NET_TX_SOFTIRQ,\n    NET_RX_SOFTIRQ,\n    BLOCK_SOFTIRQ,\n    BLOCK_IOPOLL_SOFTIRQ,\n    TASKLET_SOFTIRQ,\n    SCHED_SOFTIRQ,\n    HRTIMER_SOFTIRQ,\n    RCU_SOFTIRQ,  \n};\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-nn276bz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-nn276bz",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 网络子系统初始化"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-41eiun1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-41eiun1",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-8701bxj"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图4 网络子系统初始化"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-pxiuqev",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-pxiuqev",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "linux内核通过调用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;subsys_initcall\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​来初始化各个子系统，在源代码目录里你可以grep出许多对这个函数的调用。这里我们要说的是网络子系统的初始化，会执行到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;net_dev_init\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-toa2x4t",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/core/dev.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e __init \u003cspan\u003enet_dev_init\u003c/span\u003e(\u003cspan\u003evoid\u003c/span\u003e){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cp\u003e    for_each_possible_cpu(i) {\u003cbr/\u003e        \u003cspan\u003estruct\u003c/span\u003e softnet_data \u003cspan\u003e*\u003c/span\u003esd \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e\u0026\u003c/span\u003eper_cpu(softnet_data, i);\u003c/p\u003e\u003cp\u003e        memset(sd, \u003cspan\u003e0\u003c/span\u003e, \u003cspan\u003esizeof\u003c/span\u003e(\u003cspan\u003e*\u003c/span\u003esd));\u003cbr/\u003e        skb_queue_head_init(\u003cspan\u003e\u0026\u003c/span\u003esd\u003cspan\u003e-\u003e\u003c/span\u003einput_pkt_queue);\u003cbr/\u003e        skb_queue_head_init(\u003cspan\u003e\u0026\u003c/span\u003esd\u003cspan\u003e-\u003e\u003c/span\u003eprocess_queue);\u003cbr/\u003e        sd\u003cspan\u003e-\u003e\u003c/span\u003ecompletion_queue \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003eNULL\u003c/span\u003e;\u003cbr/\u003e        INIT_LIST_HEAD(\u003cspan\u003e\u0026\u003c/span\u003esd\u003cspan\u003e-\u003e\u003c/span\u003epoll_list);\u003cbr/\u003e        ......\u003cbr/\u003e    }\u003cbr/\u003e    ......\u003cbr/\u003e    open_softirq(NET_TX_SOFTIRQ, net_tx_action);\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    open_softirq(NET_RX_SOFTIRQ, net_rx_action);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003esubsys_initcall(net_dev_init);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-toa2x4t",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-7bt3clo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-7bt3clo",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这个函数里，会为每个CPU都申请一个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;softnet_data\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​数据结构，在这个数据结构里的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;poll_list\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​是等待驱动程序将其poll函数注册进来，稍后网卡驱动初始化的时候我们可以看到这一过程。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-epg11gj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-epg11gj",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外open_softirq注册了每一种软中断都注册一个处理函数。NET_TX_SOFTIRQ的处理函数为net_tx_action，NET_RX_SOFTIRQ的为net_rx_action。继续跟踪"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;open_softirq\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​后发现这个注册的方式是记录在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;softirq_vec\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​变量里的。后面ksoftirqd线程收到软中断的时候，也会使用这个变量来找到每一种软中断对应的处理函数。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-fvnt7iu",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: kernel/softirq.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003evoid\u003c/span\u003e \u003cspan\u003eopen_softirq\u003c/span\u003e(\u003cspan\u003eint\u003c/span\u003e nr, \u003cspan\u003evoid\u003c/span\u003e (\u003cspan\u003e*\u003c/span\u003eaction)(\u003cspan\u003estruct\u003c/span\u003e softirq_action \u003cspan\u003e*\u003c/span\u003e)){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    softirq_vec[nr].action \u003cspan\u003e=\u003c/span\u003e action;\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-fvnt7iu",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-iecybtj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-iecybtj",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 协议栈注册"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-7gc5li5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-7gc5li5",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核实现了网络层的ip协议，也实现了传输层的tcp协议和udp协议。这些协议对应的实现函数分别是ip_rcv(),tcp_v4_rcv()和udp_rcv()。和我们平时写代码的方式不一样的是，内核是通过注册的方式来实现的。Linux内核中的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;fs_initcall\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;subsys_initcall\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​类似，也是初始化模块的入口。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;fs_initcall\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​调用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_init\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​后开始网络协议栈注册。通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_init\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，将这些函数注册到了inet_protos和ptype_base数据结构中了。如下图:"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-5lrtmak",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-5lrtmak",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-xym074n"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图5 AF_INET协议栈注册"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-m1pj1pe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-m1pj1pe",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "相关代码如下"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-6ccdvlz",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/af_inet.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e packet_type ip_packet_type __read_mostly \u003cspan\u003e=\u003c/span\u003e {\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    .type \u003cspan\u003e=\u003c/span\u003e cpu_to_be16(ETH_P_IP),\u003cbr/\u003e    .func \u003cspan\u003e=\u003c/span\u003e ip_rcv,};\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003econst\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e net_protocol udp_protocol \u003cspan\u003e=\u003c/span\u003e {\u003cbr/\u003e    .handler \u003cspan\u003e=\u003c/span\u003e  udp_rcv,\u003cbr/\u003e    .err_handler \u003cspan\u003e=\u003c/span\u003e  udp_err,\u003cbr/\u003e    .no_policy \u003cspan\u003e=\u003c/span\u003e    \u003cspan\u003e1\u003c/span\u003e,\u003cbr/\u003e    .netns_ok \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e1\u003c/span\u003e,};\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003econst\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e net_protocol tcp_protocol \u003cspan\u003e=\u003c/span\u003e {\u003cbr/\u003e    .early_demux    \u003cspan\u003e=\u003c/span\u003e   tcp_v4_early_demux,\u003cbr/\u003e    .handler    \u003cspan\u003e=\u003c/span\u003e   tcp_v4_rcv,\u003cbr/\u003e    .err_handler    \u003cspan\u003e=\u003c/span\u003e   tcp_v4_err,\u003cbr/\u003e    .no_policy  \u003cspan\u003e=\u003c/span\u003e   \u003cspan\u003e1\u003c/span\u003e,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    .netns_ok   \u003cspan\u003e=\u003c/span\u003e   \u003cspan\u003e1\u003c/span\u003e,\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e __init \u003c/span\u003e\u003cspan\u003einet_init\u003c/span\u003e\u003cspan\u003e(\u003c/span\u003e\u003cspan\u003evoid\u003c/span\u003e\u003cspan\u003e){\u003c/span\u003e\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (inet_add_protocol(\u003cspan\u003e\u0026\u003c/span\u003eicmp_protocol, IPPROTO_ICMP) \u003cspan\u003e\u003c\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e)\u003cbr/\u003e        pr_crit(\u003cspan\u003e\"%s: Cannot add ICMP protocol\\n\"\u003c/span\u003e, __func__);\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (inet_add_protocol(\u003cspan\u003e\u0026\u003c/span\u003eudp_protocol, IPPROTO_UDP) \u003cspan\u003e\u003c\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e)\u003cbr/\u003e        pr_crit(\u003cspan\u003e\"%s: Cannot add UDP protocol\\n\"\u003c/span\u003e, __func__);\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (inet_add_protocol(\u003cspan\u003e\u0026\u003c/span\u003etcp_protocol, IPPROTO_TCP) \u003cspan\u003e\u003c\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e)\u003cbr/\u003e        pr_crit(\u003cspan\u003e\"%s: Cannot add TCP protocol\\n\"\u003c/span\u003e, __func__);\u003cbr/\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    dev_add_pack(\u003cspan\u003e\u0026\u003c/span\u003eip_packet_type);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-6ccdvlz",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-p4cprhl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-p4cprhl",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面的代码中我们可以看到，udp_protocol结构体中的handler是udp_rcv，tcp_protocol结构体中的handler是tcp_v4_rcv，通过inet_add_protocol被初始化了进来。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-2epruqm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-2epruqm",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "int inet_add_protocol(const struct net_protocol *prot, unsigned char protocol){\n    if (!prot-\u003enetns_ok) {\n        pr_err(\"Protocol %u is not namespace aware, cannot register.\\n\",\n            protocol);\n        return -EINVAL;\n    }    return !cmpxchg((const struct net_protocol **)\u0026inet_protos[protocol],            NULL, prot) ? 0 : -1;}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-2ip8sfp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-2ip8sfp",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_add_protocol\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数将tcp和udp对应的处理函数都注册到了inet_protos数组中了。再看"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;dev_add_pack(\u0026amp;ip_packet_type);\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​这一行，ip_packet_type结构体中的type是协议名，func是ip_rcv函数，在dev_add_pack中会被注册到ptype_base哈希表中。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-fkx6iup",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/core/dev.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003evoid\u003c/span\u003e \u003cspan\u003edev_add_pack\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e packet_type \u003cspan\u003e*\u003c/span\u003ept){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003estruct\u003c/span\u003e list_head \u003cspan\u003e*\u003c/span\u003ehead \u003cspan\u003e=\u003c/span\u003e ptype_head(pt);\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003einline\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e list_head \u003cspan\u003e*\u003c/span\u003e\u003cspan\u003eptype_head\u003c/span\u003e(\u003cspan\u003econst\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e packet_type \u003cspan\u003e*\u003c/span\u003ept){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003eif\u003c/span\u003e (pt\u003cspan\u003e-\u003e\u003c/span\u003etype \u003cspan\u003e==\u003c/span\u003e htons(ETH_P_ALL))\u003cbr/\u003e        \u003cspan\u003ereturn\u003c/span\u003e \u003cspan\u003e\u0026\u003c/span\u003eptype_all;\u003cbr/\u003e    \u003cspan\u003eelse\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e        \u003cspan\u003ereturn\u003c/span\u003e \u003cspan\u003e\u0026\u003c/span\u003eptype_base[ntohs(pt\u003cspan\u003e-\u003e\u003c/span\u003etype) \u003cspan\u003e\u0026\u003c/span\u003e PTYPE_HASH_MASK];\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-fkx6iup",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-lkgtdv2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-lkgtdv2",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里我们需要记住inet_protos记录着udp，tcp的处理函数地址，ptype_base存储着ip_rcv()函数的处理地址。后面我们会看到软中断中会通过ptype_base找到ip_rcv函数地址，进而将ip包正确地送到ip_rcv()中执行。在ip_rcv中将会通过inet_protos找到tcp或者udp的处理函数，再而把包转发给udp_rcv()或tcp_v4_rcv()函数。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-01zyjjd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-01zyjjd",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "扩展一下，如果看一下ip_rcv和udp_rcv等函数的代码能看到很多协议的处理过程。例如，ip_rcv中会处理netfilter和iptable过滤，如果你有很多或者很复杂的 netfilter 或 iptables 规则，这些规则都是在软中断的上下文中执行的，会加大网络延迟。再例如，udp_rcv中会判断socket接收队列是否满了。对应的相关内核参数是net.core.rmem_max和net.core.rmem_default。如果有兴趣，建议大家好好读一下"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_init\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​这个函数的代码。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-snfre67",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-snfre67",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 网卡驱动初始化"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-3f8p9gr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-3f8p9gr",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "每一个驱动程序（不仅仅只是网卡驱动）会使用 module_init 向内核注册一个初始化函数，当驱动被加载时，内核会调用这个函数。比如igb网卡驱动的代码位于"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;drivers/net/ethernet/intel/igb/igb_main.c\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-mnm312m",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: drivers/net/ethernet/intel/igb/igb_main.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e pci_driver igb_driver \u003cspan\u003e=\u003c/span\u003e {\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    .name     \u003cspan\u003e=\u003c/span\u003e igb_driver_name,\u003cbr/\u003e    .id_table \u003cspan\u003e=\u003c/span\u003e igb_pci_tbl,\u003cbr/\u003e    .probe    \u003cspan\u003e=\u003c/span\u003e igb_probe,\u003cbr/\u003e    .remove   \u003cspan\u003e=\u003c/span\u003e igb_remove,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e;\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan\u003estatic\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e __init \u003c/span\u003e\u003cspan\u003eigb_init_module\u003c/span\u003e\u003cspan\u003e(\u003c/span\u003e\u003cspan\u003evoid\u003c/span\u003e\u003cspan\u003e){\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    ret \u003cspan\u003e=\u003c/span\u003e pci_register_driver(\u003cspan\u003e\u0026\u003c/span\u003eigb_driver);\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e ret;\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-mnm312m",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-8f66dxw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-8f66dxw",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "驱动的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;pci_register_driver\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​调用完成后，Linux内核就知道了该驱动的相关信息，比如igb网卡驱动的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_driver_name\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_probe\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数地址等等。当网卡设备被识别以后，内核会调用其驱动的probe方法（igb_driver的probe方法是igb_probe）。驱动probe方法执行的目的就是让设备ready，对于igb网卡，其"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_probe\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​位于drivers/net/ethernet/intel/igb/igb_main.c下。主要执行的操作如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-lrzdzsd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-lrzdzsd",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-5waad4n"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图6 网卡驱动初始化"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-xgvtl8t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-xgvtl8t",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第5步中我们看到，网卡驱动实现了ethtool所需要的接口，也在这里注册完成函数地址的注册。当 ethtool 发起一个系统调用之后，内核会找到对应操作的回调函数。对于igb网卡来说，其实现函数都在drivers/net/ethernet/intel/igb/igb_ethtool.c下。相信你这次能彻底理解ethtool的工作原理了吧？这个命令之所以能查看网卡收发包统计、能修改网卡自适应模式、能调整RX 队列的数量和大小，是因为ethtool命令最终调用到了网卡驱动的相应方法，而不是ethtool本身有这个超能力。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-39ssffa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-39ssffa",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第6步注册的igb_netdev_ops中包含的是igb_open等函数，该函数在网卡被启动的时候会被调用。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-dwbzx7y",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: drivers/net/ethernet/intel/igb/igb_main.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003cspan\u003estatic\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003econst\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003estruct\u003c/span\u003e\u003cspan\u003e net_device_ops igb_netdev_ops \u003c/span\u003e\u003cspan\u003e=\u003c/span\u003e\u003cspan\u003e {\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e  .ndo_open               \u003cspan\u003e=\u003c/span\u003e igb_open,\u003cbr/\u003e  .ndo_stop               \u003cspan\u003e=\u003c/span\u003e igb_close,\u003cbr/\u003e  .ndo_start_xmit         \u003cspan\u003e=\u003c/span\u003e igb_xmit_frame,\u003cbr/\u003e  .ndo_get_stats64        \u003cspan\u003e=\u003c/span\u003e igb_get_stats64,\u003cbr/\u003e  .ndo_set_rx_mode        \u003cspan\u003e=\u003c/span\u003e igb_set_rx_mode,\u003cbr/\u003e  .ndo_set_mac_address    \u003cspan\u003e=\u003c/span\u003e igb_set_mac,\u003cbr/\u003e  .ndo_change_mtu         \u003cspan\u003e=\u003c/span\u003e igb_change_mtu,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e  .ndo_do_ioctl           \u003cspan\u003e=\u003c/span\u003e igb_ioctl,\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e .\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e.....\u003c/span\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-dwbzx7y",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-i37q1s2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-i37q1s2",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "第7步中，在igb_probe初始化过程中，还调用到了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_alloc_q_vector\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。他注册了一个NAPI机制所必须的poll函数，对于igb网卡驱动来说，这个函数就是igb_poll,如下代码所示。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-y1ivr83",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-y1ivr83",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int igb_alloc_q_vector(struct igb_adapter *adapter,\n                  int v_count, int v_idx,\n                  int txr_count, int txr_idx,\n                  int rxr_count, int rxr_idx){\n    ......\n    /* initialize NAPI */\n    netif_napi_add(adapter-\u003enetdev, \u0026q_vector-\u003enapi,               igb_poll, 64);}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-vt1su71",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-vt1su71",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.5 启动网卡"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-eq3dzst",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-eq3dzst",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当上面的初始化都完成以后，就可以启动网卡了。回忆前面网卡驱动初始化时，我们提到了驱动向内核注册了 structure net_device_ops 变量，它包含着网卡启用、发包、设置mac 地址等回调函数（函数指针）。当启用一个网卡时（例如，通过 ifconfig eth0 up），net_device_ops 中的 igb_open方法会被调用。它通常会做以下事情："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-p3i794n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-p3i794n",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-ty6fq3s"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图7 启动网卡"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-hsxh0h4",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003e\u003cem\u003e//file: drivers/net/ethernet/intel/igb/igb_main.c\u003c/em\u003e\u003cbr/\u003e\u003c/span\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e \u003cspan\u003e__igb_open\u003c/span\u003e\u003cspan\u003e(\u003c/span\u003e\u003cspan\u003estruct\u003c/span\u003e\u003cspan\u003e net_device \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003enetdev, \u003c/span\u003e\u003cspan\u003ebool\u003c/span\u003e\u003cspan\u003e resuming){\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003e/* allocate transmit descriptors */\u003c/span\u003e\u003cbr/\u003e    err \u003cspan\u003e=\u003c/span\u003e igb_setup_all_tx_resources(adapter);\u003cp\u003e    \u003cspan\u003e/* allocate receive descriptors */\u003c/span\u003e\u003cbr/\u003e    err \u003cspan\u003e=\u003c/span\u003e igb_setup_all_rx_resources(adapter);\u003c/p\u003e\u003cp\u003e    \u003cspan\u003e/* 注册中断处理函数 */\u003c/span\u003e\u003cbr/\u003e    err \u003cspan\u003e=\u003c/span\u003e igb_request_irq(adapter);\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (err)\u003cbr/\u003e        \u003cspan\u003egoto\u003c/span\u003e err_req_irq;\u003c/p\u003e\u003cp\u003e    \u003cspan\u003e/* 启用NAPI */\u003c/span\u003e\u003cbr/\u003e    \u003cspan\u003efor\u003c/span\u003e (i \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e; i \u003cspan\u003e\u003c\u003c/span\u003e adapter\u003cspan\u003e-\u003e\u003c/span\u003enum_q_vectors; i\u003cspan\u003e++\u003c/span\u003e)\u003cbr/\u003e        napi_enable(\u003cspan\u003e\u0026\u003c/span\u003e(adapter\u003cspan\u003e-\u003e\u003c/span\u003eq_vector[i]\u003cspan\u003e-\u003e\u003c/span\u003enapi));\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-hsxh0h4",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-fzcyy80",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-fzcyy80",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在上面"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__igb_open\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数调用了igb_setup_all_tx_resources,和igb_setup_all_rx_resources。在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_setup_all_rx_resources\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​这一步操作中，分配了RingBuffer，并建立内存和Rx队列的映射关系。（Rx Tx 队列的数量和大小可以通过 ethtool 进行配置）。我们再接着看中断函数注册"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_request_irq\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​:"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-9ishx8s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-9ishx8s",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int igb_request_irq(struct igb_adapter *adapter){\n    if (adapter-\u003emsix_entries) {\n        err = igb_request_msix(adapter);\n        if (!err)\n            goto request_done;\n        ......    }}static int igb_request_msix(struct igb_adapter *adapter){    ......\n    for (i = 0; i \u003c adapter-\u003enum_q_vectors; i++) {\n        ...\n        err = request_irq(adapter-\u003emsix_entries[vector].vector,\n                  igb_msix_ring, 0, q_vector-\u003ename,\n    }\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-1edju2h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-1edju2h",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在上面的代码中跟踪函数调用， "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__igb_open\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ =\u003e "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_request_irq\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ =\u003e "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_request_msix\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_request_msix\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中我们看到了，对于多队列的网卡，为每一个队列都注册了中断，其对应的中断处理函数是igb_msix_ring（该函数也在drivers/net/ethernet/intel/igb/igb_main.c下）。我们也可以看到，msix方式下，每个 RX 队列有独立的MSI-X 中断，从网卡硬件中断的层面就可以设置让收到的包被不同的 CPU处理。（可以通过 irqbalance ，或者修改 /proc/irq/IRQ_NUMBER/smp_affinity能够修改和CPU的绑定行为）。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ypztp48",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-ypztp48",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当做好以上准备工作以后，就可以开门迎客（数据包）了！"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-30i93ed",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-30i93ed",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ejstabo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-ejstabo",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "迎接数据的到来"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ley33d2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-ley33d2",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 硬中断处理"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-nxqgn8h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-nxqgn8h",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先当数据帧从网线到达网卡上的时候，第一站是网卡的接收队列。网卡在分配给自己的RingBuffer中寻找可用的内存位置，找到后DMA引擎会把数据DMA到网卡之前关联的内存里，这个时候CPU都是无感的。当DMA操作完成以后，网卡会像CPU发起一个硬中断，通知CPU有数据到达。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ybm2l50",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-ybm2l50",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-aayslma"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图8 网卡数据硬中断处理过程"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-5kijku5",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241107164211-5kijku5",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241107164211-lcoh5sa",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107164211-lcoh5sa",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "注意：当RingBuffer满的时候，新来的数据包将给丢弃。ifconfig查看网卡的时候，可以里面有个overruns，表示因为环形队列满被丢弃的包。如果发现有丢包，可能需要通过ethtool命令来加大环形队列的长度。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-zotsxi0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-zotsxi0",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在启动网卡一节，我们说到了网卡的硬中断注册的处理函数是igb_msix_ring。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-73rqbm4",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: drivers/net/ethernet/intel/igb/igb_main.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e irqreturn_t \u003cspan\u003eigb_msix_ring\u003c/span\u003e(\u003cspan\u003eint\u003c/span\u003e irq, \u003cspan\u003evoid\u003c/span\u003e \u003cspan\u003e*\u003c/span\u003edata){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003estruct\u003c/span\u003e igb_q_vector \u003cspan\u003e*\u003c/span\u003eq_vector \u003cspan\u003e=\u003c/span\u003e data;\u003cp\u003e    \u003cspan\u003e/* Write the ITR value calculated from the previous interrupt. */\u003c/span\u003e\u003cbr/\u003e    igb_write_itr(q_vector);\u003c/p\u003e\u003cp\u003e    napi_schedule(\u003cspan\u003e\u0026\u003c/span\u003eq_vector\u003cspan\u003e-\u003e\u003c/span\u003enapi);\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e IRQ_HANDLED;\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-73rqbm4",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-1a15ans",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-1a15ans",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_write_itr\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​只是记录一下硬件中断频率（据说目的是在减少对CPU的中断频率时用到）。顺着napi_schedule调用一路跟踪下去，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__napi_schedule\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​=\u003e"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;____napi_schedule\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-smrdexg",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e/* Called with irq disabled */\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003einline\u003c/span\u003e \u003cspan\u003evoid\u003c/span\u003e \u003cspan\u003e____napi_schedule\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e softnet_data \u003cspan\u003e*\u003c/span\u003esd,\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e                     \u003cspan\u003estruct\u003c/span\u003e napi_struct \u003cspan\u003e*\u003c/span\u003enapi){\u003cbr/\u003e    list_add_tail(\u003cspan\u003e\u0026\u003c/span\u003enapi\u003cspan\u003e-\u003e\u003c/span\u003epoll_list, \u003cspan\u003e\u0026\u003c/span\u003esd\u003cspan\u003e-\u003e\u003c/span\u003epoll_list);\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    __raise_softirq_irqoff(NET_RX_SOFTIRQ);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-smrdexg",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-8drg5jy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-8drg5jy",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里我们看到，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;list_add_tail\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​修改了CPU变量softnet_data里的poll_list，将驱动napi_struct传过来的poll_list添加了进来。其中softnet_data中的poll_list是一个双向列表，其中的设备都带有输入帧等着被处理。紧接着"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__raise_softirq_irqoff\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​触发了一个软中断NET_RX_SOFTIRQ， 这个所谓的触发过程只是对一个变量进行了一次或运算而已。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-n210yoq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-n210yoq",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "void __raise_softirq_irqoff(unsigned int nr){\n    trace_softirq_raise(nr);    or_softirq_pending(1UL \u003c\u003c nr);}//file: include/linux/irq_cpustat.h#define or_softirq_pending(x)  (local_softirq_pending() |= (x))\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-3vscy1m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-3vscy1m",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们说过，Linux在硬中断里只完成简单必要的工作，剩下的大部分的处理都是转交给软中断的。通过上面代码可以看到，硬中断处理过程真的是非常短。只是记录了一个寄存器，修改了一下下CPU的poll_list，然后发出个软中断。就这么简单，硬中断工作就算是完成了。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-vrgjjcd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-vrgjjcd",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 ksoftirqd内核线程处理软中断"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-1v24gv1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-1v24gv1",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-y2o3xhr"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图9 ksoftirqd内核线程"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-0jvnyod",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-0jvnyod",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核线程初始化的时候，我们介绍了ksoftirqd中两个线程函数"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ksoftirqd_should_run\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;run_ksoftirqd\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。其中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ksoftirqd_should_run\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​代码如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-bx6a1ph",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-bx6a1ph",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int ksoftirqd_should_run(unsigned int cpu){    return local_softirq_pending();}#define local_softirq_pending() \\    __IRQ_STAT(smp_processor_id(), __softirq_pending)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-uxwx9ed",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-uxwx9ed",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里看到和硬中断中调用了同一个函数"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;local_softirq_pending\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。使用方式不同的是硬中断位置是为了写入标记，这里仅仅只是读取。如果硬中断中设置了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;NET_RX_SOFTIRQ\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​,这里自然能读取的到。接下来会真正进入线程函数中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;run_ksoftirqd\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​处理："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-uree1dt",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-uree1dt",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static void run_ksoftirqd(unsigned int cpu){\n    local_irq_disable();\n    if (local_softirq_pending()) {\n        __do_softirq();\n        rcu_note_context_switch(cpu);\n        local_irq_enable();\n        cond_resched();\n        return;\n    }    local_irq_enable();}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-apgvn4r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-apgvn4r",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__do_softirq\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中，判断根据当前CPU的软中断类型，调用其注册的action方法。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-llx8cwr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-llx8cwr",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "asmlinkage void __do_softirq(void){\n    do {\n        if (pending \u0026 1) {\n            unsigned int vec_nr = h - softirq_vec;\n            int prev_count = preempt_count();\n            ...\n            trace_softirq_entry(vec_nr);\n            h-\u003eaction(h);\n            trace_softirq_exit(vec_nr);\n            ...\n        }\n        h++;\n        pending \u003e\u003e= 1;    } while (pending);}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-v65h4b6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-v65h4b6",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在网络子系统初始化小节， 我们看到我们为NET_RX_SOFTIRQ注册了处理函数net_rx_action。所以"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;net_rx_action\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数就会被执行到了。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-5764mlj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-5764mlj",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里需要注意一个细节，硬中断中设置软中断标记，和ksoftirq的判断是否有软中断到达，都是基于smp_processor_id()的。这意味着只要硬中断在哪个CPU上被响应，那么软中断也是在这个CPU上处理的。所以说，如果你发现你的Linux软中断CPU消耗都集中在一个核上的话，做法是要把调整硬中断的CPU亲和性，来将硬中断打散到不同的CPU核上去。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-wya0txz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-wya0txz",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们再来把精力集中到这个核心函数"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;net_rx_action\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​上来。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-ekvssok",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-ekvssok",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static void net_rx_action(struct softirq_action *h){\n    struct softnet_data *sd = \u0026__get_cpu_var(softnet_data);\n    unsigned long time_limit = jiffies + 2;\n    int budget = netdev_budget;\n    void *have;    local_irq_disable();\n    while (!list_empty(\u0026sd-\u003epoll_list)) {\n        ......\n        n = list_first_entry(\u0026sd-\u003epoll_list, struct napi_struct, poll_list);        work = 0;\n        if (test_bit(NAPI_STATE_SCHED, \u0026n-\u003estate)) {\n            work = n-\u003epoll(n, weight);\n            trace_napi_poll(n);\n        }\n        budget -= work;    }}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-cm6awvf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-cm6awvf",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "函数开头的time_limit和budget是用来控制net_rx_action函数主动退出的，目的是保证网络包的接收不霸占CPU不放。等下次网卡再有硬中断过来的时候再处理剩下的接收数据包。其中budget可以通过内核参数调整。这个函数中剩下的核心逻辑是获取到当前CPU变量softnet_data，对其poll_list进行遍历, 然后执行到网卡驱动注册到的poll函数。对于igb网卡来说，就是igb驱动力的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_poll\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数了。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-p2lchwe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-p2lchwe",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int igb_poll(struct napi_struct *napi, int budget){\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-jd9o0gg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-jd9o0gg",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    ...\n    if (q_vector-\u003etx.ring)\n        clean_complete = igb_clean_tx_irq(q_vector);    if (q_vector-\u003erx.ring)\n        clean_complete \u0026= igb_clean_rx_irq(q_vector, budget);    ...}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-n32h3ht",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-n32h3ht",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在读取操作中，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_poll\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​的重点工作是对"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_clean_rx_irq\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​的调用。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-x4x74m7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-x4x74m7",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static bool igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget){\n    ...\n    do {\n        /* retrieve a buffer from the ring */\n        skb = igb_fetch_rx_buffer(rx_ring, rx_desc, skb);        /* fetch next buffer in frame if non-eop */\n        if (igb_is_non_eop(rx_ring, rx_desc))\n            continue;\n        }        /* verify the packet layout is correct */\n        if (igb_cleanup_headers(rx_ring, rx_desc, skb)) {\n            skb = NULL;\n            continue;\n        }        /* populate checksum, timestamp, VLAN, and protocol */\n        igb_process_skb_fields(rx_ring, rx_desc, skb);        napi_gro_receive(\u0026q_vector-\u003enapi, skb);\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-g8t5h2m",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-g8t5h2m",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-6t9yx05",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-6t9yx05",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_fetch_rx_buffer\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;igb_is_non_eop\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​的作用就是把数据帧从RingBuffer上取下来。为什么需要两个函数呢？因为有可能帧要占多多个RingBuffer，所以是在一个循环中获取的，直到帧尾部。获取下来的一个数据帧用一个sk_buff来表示。收取完数据以后，对其进行一些校验，然后开始设置sbk变量的timestamp, VLAN id, protocol等字段。接下来进入到napi_gro_receive中:"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-hykit84",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/core/dev.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003egro_result_t \u003cspan\u003enapi_gro_receive\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e napi_struct \u003cspan\u003e*\u003c/span\u003enapi, \u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    skb_gro_reset_offset(skb);\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e napi_skb_finish(dev_gro_receive(napi, skb), skb);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-hykit84",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-kpj136l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-kpj136l",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;dev_gro_receive\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​这个函数代表的是网卡GRO特性，可以简单理解成把相关的小包合并成一个大包就行，目的是减少传送给网络栈的包数，这有助于减少 CPU 的使用量。我们暂且忽略，直接看"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;napi_skb_finish\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 这个函数主要就是调用了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;netif_receive_skb\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-29kvun8",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/core/dev.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e gro_result_t \u003cspan\u003enapi_skb_finish\u003c/span\u003e(gro_result_t ret, \u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003eswitch\u003c/span\u003e (ret) {\u003cbr/\u003e    \u003cspan\u003ecase\u003c/span\u003e GRO_NORMAL:\u003cbr/\u003e        \u003cspan\u003eif\u003c/span\u003e (netif_receive_skb(skb))\u003cbr/\u003e            ret \u003cspan\u003e=\u003c/span\u003e GRO_DROP;\u003cbr/\u003e        \u003cspan\u003ebreak\u003c/span\u003e;\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-29kvun8",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-rba9fkz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-rba9fkz",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;netif_receive_skb\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中，数据包将被送到协议栈中。声明，以下的3.3, 3.4, 3.5也都属于软中断的处理过程，只不过由于篇幅太长，单独拿出来成小节。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-kl4mk02",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-kl4mk02",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 网络协议栈处理"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-hik7wwk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-hik7wwk",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;netif_receive_skb\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​函数会根据包的协议，假如是udp包，会将包依次送到ip_rcv(),udp_rcv()协议处理函数中进行处理。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-93yne4c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-93yne4c",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-1e6ox9l"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图10 网络协议栈处理"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-vbtcvrk",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/core/dev.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e \u003cspan\u003enetif_receive_skb\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003e//RPS处理逻辑，先忽略\u003c/span\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e __netif_receive_skb(skb);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e \u003cspan\u003e__netif_receive_skb\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......  \u003cbr/\u003e    ret \u003cspan\u003e=\u003c/span\u003e __netif_receive_skb_core(skb, \u003cspan\u003efalse\u003c/span\u003e);}\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e \u003cspan\u003e__netif_receive_skb_core\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb, \u003cspan\u003ebool\u003c/span\u003e pfmemalloc){\u003cbr/\u003e    ......\u003cp\u003e    \u003cspan\u003e//pcap逻辑，这里会将数据送入抓包点。tcpdump就是从这个入口获取包的\u003c/span\u003e    list_for_each_entry_rcu(ptype, \u003cspan\u003e\u0026\u003c/span\u003eptype_all, list) {\u003cbr/\u003e        \u003cspan\u003eif\u003c/span\u003e (\u003cspan\u003e!\u003c/span\u003eptype\u003cspan\u003e-\u003e\u003c/span\u003edev \u003cspan\u003e||\u003c/span\u003e ptype\u003cspan\u003e-\u003e\u003c/span\u003edev \u003cspan\u003e==\u003c/span\u003e skb\u003cspan\u003e-\u003e\u003c/span\u003edev) {\u003cbr/\u003e            \u003cspan\u003eif\u003c/span\u003e (pt_prev)\u003cbr/\u003e                ret \u003cspan\u003e=\u003c/span\u003e deliver_skb(skb, pt_prev, orig_dev);\u003cbr/\u003e            pt_prev \u003cspan\u003e=\u003c/span\u003e ptype;\u003cbr/\u003e        }\u003cbr/\u003e    }\u003cbr/\u003e    ......\u003cbr/\u003e    list_for_each_entry_rcu(ptype,\u003cbr/\u003e            \u003cspan\u003e\u0026\u003c/span\u003eptype_base[ntohs(type) \u003cspan\u003e\u0026\u003c/span\u003e PTYPE_HASH_MASK], list) {\u003cbr/\u003e        \u003cspan\u003eif\u003c/span\u003e (ptype\u003cspan\u003e-\u003e\u003c/span\u003etype \u003cspan\u003e==\u003c/span\u003e type \u003cspan\u003e\u0026\u0026\u003c/span\u003e\u003cbr/\u003e            (ptype\u003cspan\u003e-\u003e\u003c/span\u003edev \u003cspan\u003e==\u003c/span\u003e null_or_dev \u003cspan\u003e||\u003c/span\u003e ptype\u003cspan\u003e-\u003e\u003c/span\u003edev \u003cspan\u003e==\u003c/span\u003e skb\u003cspan\u003e-\u003e\u003c/span\u003edev \u003cspan\u003e||\u003c/span\u003e\u003cbr/\u003e             ptype\u003cspan\u003e-\u003e\u003c/span\u003edev \u003cspan\u003e==\u003c/span\u003e orig_dev)) {\u003cbr/\u003e            \u003cspan\u003eif\u003c/span\u003e (pt_prev)\u003cbr/\u003e                ret \u003cspan\u003e=\u003c/span\u003e deliver_skb(skb, pt_prev, orig_dev);\u003cbr/\u003e            pt_prev \u003cspan\u003e=\u003c/span\u003e ptype;\u003cbr/\u003e        }\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    }\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-vbtcvrk",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-f9qnfak",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-f9qnfak",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__netif_receive_skb_core\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中，我看着原来经常使用的tcpdump的抓包点，很是激动，看来读一遍源代码时间真的没白浪费。接着"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__netif_receive_skb_core\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​取出protocol，它会从数据包中取出协议信息，然后遍历注册在这个协议上的回调函数列表。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ptype_base\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 是一个 hash table，在协议注册小节我们提到过。ip_rcv 函数地址就是存在这个 hash table中的。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-nxfv55i",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/core/dev.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003einline\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e \u003cspan\u003edeliver_skb\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb,\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e                  \u003cspan\u003estruct\u003c/span\u003e packet_type \u003cspan\u003e*\u003c/span\u003ept_prev,\u003cbr/\u003e                  \u003cspan\u003estruct\u003c/span\u003e net_device \u003cspan\u003e*\u003c/span\u003eorig_dev){\u003cbr/\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e pt_prev\u003cspan\u003e-\u003e\u003c/span\u003efunc(skb, skb\u003cspan\u003e-\u003e\u003c/span\u003edev, pt_prev, orig_dev);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-nxfv55i",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-gg6krwf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-gg6krwf",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;pt_prev-\u0026gt;func\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​这一行就调用到了协议层注册的处理函数了。对于ip包来讲，就会进入到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_rcv\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​（如果是arp包的话，会进入到arp_rcv）。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-9w6cw8o",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-9w6cw8o",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.4 IP协议层处理"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-6wtixmn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-6wtixmn",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们再来大致看一下linux在ip协议层都做了什么，包又是怎么样进一步被送到udp或tcp协议处理函数中的。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-sxk9jm9",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/ip_input.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e \u003cspan\u003eip_rcv\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb, \u003cspan\u003estruct\u003c/span\u003e net_device \u003cspan\u003e*\u003c/span\u003edev, \u003cspan\u003estruct\u003c/span\u003e packet_type \u003cspan\u003e*\u003c/span\u003ept, \u003cspan\u003estruct\u003c/span\u003e net_device \u003cspan\u003e*\u003c/span\u003eorig_dev){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    \u003cspan\u003ereturn\u003c/span\u003e NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING, skb, dev, \u003cspan\u003eNULL\u003c/span\u003e,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e               ip_rcv_finish);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-sxk9jm9",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-greyoci",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-greyoci",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;NF_HOOK\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​是一个钩子函数，当执行完注册的钩子后就会执行到最后一个参数指向的函数"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_rcv_finish\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-1q7dfio",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107164211-1q7dfio",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int ip_rcv_finish(struct sk_buff *skb){\n    ......\n    if (!skb_dst(skb)) {\n        int err = ip_route_input_noref(skb, iph-\u003edaddr, iph-\u003esaddr,\n                           iph-\u003etos, skb-\u003edev);\n        ...\n    }\n    ......    return dst_input(skb);}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-2gsw5mn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-2gsw5mn",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "跟踪"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_route_input_noref\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​ 后看到它又调用了 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_route_input_mc\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_route_input_mc\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中，函数"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_local_deliver\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​被赋值给了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;dst.input\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​, 如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-1svgywr",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/route.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e \u003cspan\u003eip_route_input_mc\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb, __be32 daddr, __be32 saddr,\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e\u003cspan\u003eu8 tos, \u003c/span\u003e\u003cspan\u003estruct\u003c/span\u003e\u003cspan\u003e net_device \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003edev, \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e our){\u003c/span\u003e\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003eif\u003c/span\u003e (our) {\u003cbr/\u003e        rth\u003cspan\u003e-\u003e\u003c/span\u003edst.input\u003cspan\u003e=\u003c/span\u003e ip_local_deliver;\u003cbr/\u003e        rth\u003cspan\u003e-\u003e\u003c/span\u003ert_flags \u003cspan\u003e|=\u003c/span\u003e RTCF_LOCAL;\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    }\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-1svgywr",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-f0d24zh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-f0d24zh",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以回到"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;ip_rcv_finish\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​中的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;return dst_input(skb);\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-okd5ph9",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e/* Input packet from network to transport.  */\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estatic\u003c/span\u003e \u003cspan\u003einline\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e \u003cspan\u003edst_input\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e skb_dst(skb)\u003cspan\u003e-\u003e\u003c/span\u003einput(skb);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-okd5ph9",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-4scnlw7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-4scnlw7",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;skb_dst(skb)-\u0026gt;input\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​调用的input方法就是路由子系统赋的ip_local_deliver。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-hopeg83",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/ip_input.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e \u003cspan\u003eip_local_deliver\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003e/*     *  Reassemble IP fragments.     */\u003c/span\u003e\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (ip_is_fragment(ip_hdr(skb))) {\u003cbr/\u003e        \u003cspan\u003eif\u003c/span\u003e (ip_defrag(skb, IP_DEFRAG_LOCAL_DELIVER))\u003cbr/\u003e            \u003cspan\u003ereturn\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e;\u003cbr/\u003e    }\u003cp\u003e    \u003cspan\u003ereturn\u003c/span\u003e NF_HOOK(NFPROTO_IPV4, NF_INET_LOCAL_IN, skb, skb\u003cspan\u003e-\u003e\u003c/span\u003edev, \u003cspan\u003eNULL\u003c/span\u003e,\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e               ip_local_deliver_finish);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003es\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e\u003cspan\u003etatic\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003eip_local_deliver_finish\u003c/span\u003e\u003cspan\u003e(\u003c/span\u003e\u003cspan\u003estruct\u003c/span\u003e\u003cspan\u003e sk_buff \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003eskb){\u003c/span\u003e\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    \u003cspan\u003eint\u003c/span\u003e protocol \u003cspan\u003e=\u003c/span\u003e ip_hdr(skb)\u003cspan\u003e-\u003e\u003c/span\u003eprotocol;\u003cbr/\u003e    \u003cspan\u003econst\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e net_protocol \u003cspan\u003e*\u003c/span\u003eipprot;\u003cp\u003e    ipprot \u003cspan\u003e=\u003c/span\u003e rcu_dereference(inet_protos[protocol]);\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (ipprot \u003cspan\u003e!=\u003c/span\u003e \u003cspan\u003eNULL\u003c/span\u003e) {\u003cbr/\u003e        ret \u003cspan\u003e=\u003c/span\u003e ipprot\u003cspan\u003e-\u003e\u003c/span\u003ehandler(skb);\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    }\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-hopeg83",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-jddett9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-jddett9",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如协议注册小节看到inet_protos中保存着tcp_rcv()和udp_rcv()的函数地址。这里将会根据包中的协议类型选择进行分发,在这里skb包将会进一步被派送到更上层的协议中，udp和tcp。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-x5yhqui",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20241107164211-x5yhqui",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.5 UDP协议层处理"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-nwu6t3h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-nwu6t3h",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在协议注册小节的时候我们说过，udp协议的处理函数是"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;udp_rcv\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-xgvyarz",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/udp.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e \u003cspan\u003eudp_rcv\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e __udp4_lib_rcv(skb, \u003cspan\u003e\u0026\u003c/span\u003eudp_table, IPPROTO_UDP);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003cbr/\u003e\u003cspan\u003ei\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e\u003cspan\u003ent\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003e__udp4_lib_rcv\u003c/span\u003e\u003cspan\u003e(\u003c/span\u003e\u003cspan\u003estruct\u003c/span\u003e\u003cspan\u003e sk_buff \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003eskb, \u003c/span\u003e\u003cspan\u003estruct\u003c/span\u003e\u003cspan\u003e udp_table \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003eudptable,\u003c/span\u003e\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e           \u003cspan\u003eint\u003c/span\u003e proto){\u003cbr/\u003e    sk \u003cspan\u003e=\u003c/span\u003e __udp4_lib_lookup_skb(skb, uh\u003cspan\u003e-\u003e\u003c/span\u003esource, uh\u003cspan\u003e-\u003e\u003c/span\u003edest, udptable);\u003cp\u003e    \u003cspan\u003eif\u003c/span\u003e (sk \u003cspan\u003e!=\u003c/span\u003e \u003cspan\u003eNULL\u003c/span\u003e) {\u003cbr/\u003e        \u003cspan\u003eint\u003c/span\u003e ret \u003cspan\u003e=\u003c/span\u003e udp_queue_rcv_skb(sk, skb\u003cbr/\u003e    }\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    icmp_send(skb, ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, \u003cspan\u003e0\u003c/span\u003e);\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-xgvyarz",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-sl83yfj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-sl83yfj",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;__udp4_lib_lookup_skb\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​是根据skb来寻找对应的socket，当找到以后将数据包放到socket的缓存队列里。如果没有找到，则发送一个目标不可达的icmp包。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-24a9m9y",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/udp.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e \u003cspan\u003eudp_queue_rcv_skb\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sock \u003cspan\u003e*\u003c/span\u003esk, \u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003eskb){  \u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (sk_rcvqueues_full(sk, skb, sk\u003cspan\u003e-\u003e\u003c/span\u003esk_rcvbuf))\u003cbr/\u003e        \u003cspan\u003egoto\u003c/span\u003e drop;\u003cp\u003e    rc \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e;\u003c/p\u003e\u003cp\u003e    ipv4_pktinfo_prepare(skb);\u003cbr/\u003e    bh_lock_sock(sk);\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (\u003cspan\u003e!\u003c/span\u003esock_owned_by_user(sk))\u003cbr/\u003e        rc \u003cspan\u003e=\u003c/span\u003e __udp_queue_rcv_skb(sk, skb);\u003cbr/\u003e    \u003cspan\u003eelse\u003c/span\u003e \u003cspan\u003eif\u003c/span\u003e (sk_add_backlog(sk, skb, sk\u003cspan\u003e-\u003e\u003c/span\u003esk_rcvbuf)) {\u003cbr/\u003e        bh_unlock_sock(sk);\u003cbr/\u003e        \u003cspan\u003egoto\u003c/span\u003e drop;\u003cbr/\u003e    }\u003cbr/\u003e    bh_unlock_sock(sk);\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e rc;\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-24a9m9y",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-bfcco78",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-bfcco78",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "sock_owned_by_user判断的是用户是不是正在这个socker上进行系统调用（socket被占用），如果没有，那就可以直接放到socket的接收队列中。如果有，那就通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sk_add_backlog\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​把数据包添加到backlog队列。当用户释放的socket的时候，内核会检查backlog队列，如果有数据再移动到接收队列中。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-nr7wsgd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-nr7wsgd",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sk_rcvqueues_full\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​接收队列如果满了的话，将直接把包丢弃。接收队列大小受内核参数net.core.rmem_max和net.core.rmem_default影响。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-zeso5qj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-zeso5qj",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-tig9lwt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-tig9lwt",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "recvfrom系统调用"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-skpfs16",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-skpfs16",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "花开两朵，各表一枝。上面我们说完了整个Linux内核对数据包的接收和处理过程，最后把数据包放到socket的接收队列中了。那么我们再回头看用户进程调用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;recvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​后是发生了什么。我们在代码里调用的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;recvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​是一个glibc的库函数，该函数在执行后会将用户进行陷入到内核态，进入到Linux实现的系统调用"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sys_recvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。在理解Linux对"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sys_revvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​之前，我们先来简单看一下"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;socket\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​这个核心数据结构。这个数据结构太大了，我们只把对和我们今天主题相关的内容画出来，如下："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-tyuxw84",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-tyuxw84",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-bok12xa"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图11 socket内核数据机构"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-pcc9s68",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-pcc9s68",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;socket\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​数据结构中的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;const struct proto_ops\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​对应的是协议的方法集合。每个协议都会实现不同的方法集，对于IPv4 Internet协议族来说,每种协议都有对应的处理方法，如下。对于udp来说，是通过"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_dgram_ops\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​来定义的，其中注册了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_recvmsg\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​方法。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-t8rr7gm",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/af_inet.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003econst\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e proto_ops inet_stream_ops \u003cspan\u003e=\u003c/span\u003e {\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    .recvmsg       \u003cspan\u003e=\u003c/span\u003e inet_recvmsg,\u003cbr/\u003e    .mmap          \u003cspan\u003e=\u003c/span\u003e sock_no_mmap,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003econst\u003c/span\u003e \u003cspan\u003estruct\u003c/span\u003e proto_ops inet_dgram_ops \u003cspan\u003e=\u003c/span\u003e {\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    .sendmsg       \u003cspan\u003e=\u003c/span\u003e inet_sendmsg,\u003cbr/\u003e    .recvmsg       \u003cspan\u003e=\u003c/span\u003e inet_recvmsg,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-t8rr7gm",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-3mi41wt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-3mi41wt",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;socket\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​数据结构中的另一个数据结构"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;struct sock *sk\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​是一个非常大，非常重要的子结构体。其中的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sk_prot\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​又定义了二级处理函数。对于UDP协议来说，会被设置成UDP协议实现的方法集"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;udp_prot\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-u3tryug",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/udp.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estruct\u003c/span\u003e proto udp_prot \u003cspan\u003e=\u003c/span\u003e {\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    .name          \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e\"UDP\"\u003c/span\u003e,\u003cbr/\u003e    .owner         \u003cspan\u003e=\u003c/span\u003e THIS_MODULE,\u003cbr/\u003e    .close         \u003cspan\u003e=\u003c/span\u003e udp_lib_close,\u003cbr/\u003e    .connect       \u003cspan\u003e=\u003c/span\u003e ip4_datagram_connect,\u003cbr/\u003e    ......\u003cbr/\u003e    .sendmsg       \u003cspan\u003e=\u003c/span\u003e udp_sendmsg,\u003cbr/\u003e    .recvmsg       \u003cspan\u003e=\u003c/span\u003e udp_recvmsg,\u003cbr/\u003e    .sendpage      \u003cspan\u003e=\u003c/span\u003e udp_sendpage,\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-u3tryug",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-in0qqer",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-in0qqer",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "看完了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;socket\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​变量之后，我们再来看"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sys_revvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​的实现过程。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-db3mfkm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-db3mfkm",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-ae2sk0x"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\n图12 recvfrom函数内部实现过程"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-qs90nt8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-qs90nt8",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;inet_recvmsg\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​调用了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sk-\u0026gt;sk_prot-\u0026gt;recvmsg\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-4svauh8",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file: net/ipv4/af_inet.c\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e \u003cspan\u003einet_recvmsg\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e kiocb \u003cspan\u003e*\u003c/span\u003eiocb, \u003cspan\u003estruct\u003c/span\u003e socket \u003cspan\u003e*\u003c/span\u003esock, \u003cspan\u003estruct\u003c/span\u003e msghdr \u003cspan\u003e*\u003c/span\u003emsg,\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e\u003cspan\u003esize_t size, \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e flags){  \u003c/span\u003e\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    err \u003cspan\u003e=\u003c/span\u003e sk\u003cspan\u003e-\u003e\u003c/span\u003esk_prot\u003cspan\u003e-\u003e\u003c/span\u003erecvmsg(iocb, sk, msg, size, flags \u003cspan\u003e\u0026\u003c/span\u003e MSG_DONTWAIT,\u003cbr/\u003e                   flags \u003cspan\u003e\u0026\u003c/span\u003e \u003cspan\u003e~\u003c/span\u003eMSG_DONTWAIT, \u003cspan\u003e\u0026\u003c/span\u003eaddr_len);\u003cbr/\u003e    \u003cspan\u003eif\u003c/span\u003e (err \u003cspan\u003e\u003e=\u003c/span\u003e \u003cspan\u003e0\u003c/span\u003e)\u003cbr/\u003e        msg\u003cspan\u003e-\u003e\u003c/span\u003emsg_namelen \u003cspan\u003e=\u003c/span\u003e addr_len;\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    \u003cspan\u003ereturn\u003c/span\u003e err;\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-4svauh8",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-puvegnm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-puvegnm",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "上面我们说过这个对于udp协议的socket来说，这个"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sk_prot\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​就是"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;net/ipv4/udp.c\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​下的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;struct proto udp_prot\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。由此我们找到了"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;udp_recvmsg\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​方法。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-markpoc",
+			"Type": "NodeHTMLBlock",
+			"Data": "\u003cpre\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e//file:net/core/datagram.c:\u003c/span\u003e\u003c/code\u003e\u003cspan\u003eEXPORT_SYMBOL(__skb_recv_datagram);\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e\u003cspan\u003estruct\u003c/span\u003e sk_buff \u003cspan\u003e*\u003c/span\u003e\u003cspan\u003e__skb_recv_datagram\u003c/span\u003e(\u003cspan\u003estruct\u003c/span\u003e sock \u003cspan\u003e*\u003c/span\u003esk, \u003cspan\u003eunsigned\u003c/span\u003e \u003cspan\u003eint\u003c/span\u003e flags,\u003c/span\u003e\u003c/code\u003e\u003cspan\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003epeeked, \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003eoff, \u003c/span\u003e\u003cspan\u003eint\u003c/span\u003e\u003cspan\u003e \u003c/span\u003e\u003cspan\u003e*\u003c/span\u003e\u003cspan\u003eerr){\u003c/span\u003e\u003c/span\u003e\u003c/p\u003e\u003ccode\u003e\u003cspan\u003e    ......\u003cbr/\u003e    \u003cspan\u003edo\u003c/span\u003e {\u003cbr/\u003e        \u003cspan\u003estruct\u003c/span\u003e sk_buff_head \u003cspan\u003e*\u003c/span\u003equeue \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e\u0026\u003c/span\u003esk\u003cspan\u003e-\u003e\u003c/span\u003esk_receive_queue;\u003cbr/\u003e        skb_queue_walk(queue, skb) {\u003cbr/\u003e            ......\u003cbr/\u003e        }\u003cp\u003e        \u003cspan\u003e/* User doesn't want to wait */\u003c/span\u003e\u003cbr/\u003e        error \u003cspan\u003e=\u003c/span\u003e \u003cspan\u003e-\u003c/span\u003eEAGAIN;\u003cbr/\u003e        \u003cspan\u003eif\u003c/span\u003e (\u003cspan\u003e!\u003c/span\u003etimeo)\u003cbr/\u003e            \u003cspan\u003egoto\u003c/span\u003e no_packet;\u003c/p\u003e\u003c/span\u003e\u003c/code\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e    } \u003cspan\u003ewhile\u003c/span\u003e (\u003cspan\u003e!\u003c/span\u003ewait_for_more_packets(sk, err, \u003cspan\u003e\u0026\u003c/span\u003etimeo, last));\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003cp\u003e\u003ccode\u003e\u003cspan\u003e}\u003c/span\u003e\u003c/code\u003e\u003c/p\u003e\u003c/pre\u003e",
+			"Properties": {
+				"id": "20241107164211-markpoc",
+				"updated": "20241107164211"
+			}
+		},
+		{
+			"ID": "20241107164211-ees5o0c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-ees5o0c",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "终于我们找到了我们想要看的重点，在上面我们看到了所谓的读取过程，就是访问"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;sk-\u0026gt;sk_receive_queue\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。如果没有数据，且用户也允许等待，则将调用wait_for_more_packets()执行等待操作，它加入会让用户进程进入睡眠状态。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-yogl75v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-yogl75v",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "五"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-29dp3ch",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-29dp3ch",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-9dg5yqt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-9dg5yqt",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "网络模块是Linux内核中最复杂的模块了，看起来一个简简单单的收包过程就涉及到许多内核组件之间的交互，如网卡驱动、协议栈，内核ksoftirqd线程等。看起来很复杂，本文想通过图示的方式，尽量以容易理解的方式来将内核收包过程讲清楚。现在让我们再串一串整个收包过程。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-vbf6zcg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-vbf6zcg",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当用户执行完"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;recvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​调用后，用户进程就通过系统调用进行到内核态工作了。如果接收队列没有数据，进程就进入睡眠状态被操作系统挂起。这块相对比较简单，剩下大部分的戏份都是由Linux内核其它模块来表演了。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-34x812l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-34x812l",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先在开始收包之前，Linux要做许多的准备工作："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-skvqn8d",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241107164211-skvqn8d",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"ID": "20241107164211-nlmq0uz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-nlmq0uz",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-pkghwes",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-pkghwes",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-xomqq9a",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "MS4=",
+										"Num": 1
+									},
+									"Properties": {
+										"id": "20241107164211-xomqq9a",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-w7k17b5",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-w7k17b5",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "创建ksoftirqd线程，为它设置好它自己的线程函数，后面指望着它来处理软中断呢"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-g2rs10g",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-g2rs10g",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-laus3lo",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-laus3lo",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-ipi6wxk",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "Mi4=",
+										"Num": 2
+									},
+									"Properties": {
+										"id": "20241107164211-ipi6wxk",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-q5ghjmy",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-q5ghjmy",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "协议栈注册，linux要实现许多协议，比如arp，icmp，ip，udp，tcp，每一个协议都会将自己的处理函数注册一下，方便包来了迅速找到对应的处理函数"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-ppmihfu",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-ppmihfu",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-lg8yjx7",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-lg8yjx7",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-6dmghp8",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "My4=",
+										"Num": 3
+									},
+									"Properties": {
+										"id": "20241107164211-6dmghp8",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-624j7pu",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-624j7pu",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "网卡驱动初始化，每个驱动都有一个初始化函数，内核会让驱动也初始化一下。在这个初始化过程中，把自己的DMA准备好，把NAPI的poll函数地址告诉内核"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-ufzsk16",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-ufzsk16",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-v7r1rni",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-v7r1rni",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-mqss18a",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "NC4=",
+										"Num": 4
+									},
+									"Properties": {
+										"id": "20241107164211-mqss18a",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-gs50fs0",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-gs50fs0",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "启动网卡，分配RX，TX队列，注册中断对应的处理函数"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-s23ohnq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-s23ohnq",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以上是内核准备收包之前的重要工作，当上面都ready之后，就可以打开硬中断，等待数据包的到来了。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-cc1xgyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-cc1xgyy",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当数据到来了以后，第一个迎接它的是网卡（我去，这不是废话么）："
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-jb0mzq3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241107164211-jb0mzq3",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"ID": "20241107164211-g83jb3c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-g83jb3c",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-f1za12j",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-f1za12j",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-kq83n3g",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "MS4=",
+										"Num": 1
+									},
+									"Properties": {
+										"id": "20241107164211-kq83n3g",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-vsazc2t",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-vsazc2t",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "网卡将数据帧DMA到内存的RingBuffer中，然后向CPU发起中断通知"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-cafa8pb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-cafa8pb",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-vk0mwpi",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-vk0mwpi",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-15653ue",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "Mi4=",
+										"Num": 2
+									},
+									"Properties": {
+										"id": "20241107164211-15653ue",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-qs3tmtc",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-qs3tmtc",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "CPU响应中断请求，调用网卡启动时注册的中断处理函数"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-7qyvk43",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-7qyvk43",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-aae43i0",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-aae43i0",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-9w96404",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "My4=",
+										"Num": 3
+									},
+									"Properties": {
+										"id": "20241107164211-9w96404",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-9y041t6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-9y041t6",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "中断处理函数几乎没干啥，就发起了软中断请求"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-0yoltgl",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-0yoltgl",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-90hfvnz",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-90hfvnz",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-h1z6ly3",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "NC4=",
+										"Num": 4
+									},
+									"Properties": {
+										"id": "20241107164211-h1z6ly3",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-roy9dwt",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-roy9dwt",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "内核线程ksoftirqd线程发现有软中断请求到来，先关闭硬中断"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-2jbg04t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-2jbg04t",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-uvkn5yg",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-uvkn5yg",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-o82j2hd",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "NS4=",
+										"Num": 5
+									},
+									"Properties": {
+										"id": "20241107164211-o82j2hd",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-o1wvf19",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-o1wvf19",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ksoftirqd线程开始调用驱动的poll函数收包"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-m0zcjy7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-m0zcjy7",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-fmth0sm",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-fmth0sm",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-rbaeztu",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "Ni4=",
+										"Num": 6
+									},
+									"Properties": {
+										"id": "20241107164211-rbaeztu",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-tg3dr6o",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-tg3dr6o",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "poll函数将收到的包送到协议栈注册的ip_rcv函数中"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107164211-g90np8c",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107164211-g90np8c",
+						"updated": "20241107164211"
+					},
+					"Children": [
+						{
+							"ID": "20241107164211-g9515rx",
+							"Type": "NodeList",
+							"ListData": {
+								"Typ": 1
+							},
+							"Properties": {
+								"id": "20241107164211-g9515rx",
+								"updated": "20241107164211"
+							},
+							"Children": [
+								{
+									"ID": "20241107164211-cpsaddm",
+									"Type": "NodeListItem",
+									"ListData": {
+										"Typ": 1,
+										"Delimiter": 46,
+										"Marker": "Ny4=",
+										"Num": 7
+									},
+									"Properties": {
+										"id": "20241107164211-cpsaddm",
+										"updated": "20241107164211"
+									},
+									"Children": [
+										{
+											"ID": "20241107164211-6106zh5",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20241107164211-6106zh5",
+												"updated": "20241107164211"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ip_rcv函数再讲包送到udp_rcv函数中（对于tcp包就送到tcp_rcv）"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-pb3taqu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-pb3taqu",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "现在我们可以回到开篇的问题了，我们在用户层看到的简单一行"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "\u0026lt;span\u0026gt;recvfrom\u0026lt;/span\u0026gt;"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​,Linux内核要替我们做如此之多的工作，才能让我们顺利收到数据。这还是简简单单的UDP，如果是TCP，内核要做的工作更多，不由得感叹内核的开发者们真的是用心良苦。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-vydiz0f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-vydiz0f",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "理解了整个收包过程以后，我们就能明确知道Linux收一个包的CPU开销了。首先第一块是用户进程调用系统调用陷入内核态的开销。第二块是CPU响应包的硬中断的CPU开销。第三块是ksoftirqd内核线程的软中断上下文花费的。后面我们再专门发一篇文章实际观察一下这些开销。"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-e2n9l4c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-e2n9l4c",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外网络收发中有很多末支细节咱们并没有展开了说，比如说no NAPI， GRO，RPS等。因为我觉得说的太对了反而会影响大家对整个流程的把握，所以尽量只保留主框架了，少即是多！"
+				}
+			]
+		},
+		{
+			"ID": "20241107164211-rr8uyck",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107164211-rr8uyck",
+				"updated": "20241107164211"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/640-20241107164211-ww6bj69"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		}
+	]
+}

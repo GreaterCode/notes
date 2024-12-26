@@ -1,0 +1,2415 @@
+{
+	"ID": "20240812090621-qzur1sx",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240812090621-qzur1sx",
+		"title": "dpdk之kni实现",
+		"updated": "20240812090855"
+	},
+	"Children": [
+		{
+			"ID": "20240812090621-z4dqu5c",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240812090621-z4dqu5c",
+				"updated": "20240812090621"
+			}
+		},
+		{
+			"ID": "20240812090621-781nchh",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240812090621-781nchh",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"ID": "20240812090621-1tls03l",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240812090621-1tls03l",
+						"updated": "20240812090621"
+					},
+					"Children": [
+						{
+							"ID": "20240812090621-e1ao0ya",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240812090621-e1ao0ya",
+								"updated": "20240812090621"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://zhuanlan.zhihu.com/p/632517532",
+									"TextMarkTextContent": "https://zhuanlan.zhihu.com/p/632517532 - 知乎专栏"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240812090621-p6zclwc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240812090621-p6zclwc",
+						"updated": "20240812090621"
+					},
+					"Children": [
+						{
+							"ID": "20240812090621-jppcuzf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240812090621-jppcuzf",
+								"updated": "20240812090621"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "一、为什么要用kni通常情况下dpdk用于二三层报文转发，接收到来自网卡的报文后，如果是二层报文则查找fdb表； 如果是三层报文，则进行dnat, snat处理后，查找路由表， 将报文转发给下一跳路由。这些二三层转发操作…"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240812090621-9tobwsg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240812090621-9tobwsg",
+						"updated": "20240812090621"
+					},
+					"Children": [
+						{
+							"ID": "20240812090621-lhuwr6j",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240812090621-lhuwr6j",
+								"updated": "20240812090621"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "2024-08-12 09:06:21"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-fx3c99e",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240812090621-fx3c99e",
+				"updated": "20240812090621"
+			}
+		},
+		{
+			"ID": "20240812090621-5lz4g0a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-5lz4g0a",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通常情况下dpdk用于二三层报文转发，接收到来自网卡的报文后，如果是二层报文则查找fdb表； 如果是三层报文，则进行dnat, snat处理后，查找路由表， 将报文转发给下一跳路由。这些二三层转发操作都是直接转发到另一台设备上，不需要经过内核，无需内核协议栈的参与。dpdk将报文发往内核协议栈的过程，也叫作exception  path"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-rbmwkcz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-rbmwkcz",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "然而有些场景下报文是直接发给运行dpdk程序的这台设备本身的。例如ping运行dpdk程序这台设备；或者访问dpdk程序这台设备上运行的nginx服务器， ftp服务器，smtp邮件服务器等等。 这些操作都是发给运行dpdk程序本机这台设备， 因此报文是一定需要经过内核，由tcp协议栈进行处理。也就是说dpdk收到这些报文后，需要将报文转发给内核。例如ping操作，dpdk收到ping请求后，将报文发给内核协议栈，由内核协议栈处理完ping请求后，发送ping响应。dpdk收到ping响应后再转发给源主机。在如访问本机的nginx服务器， dpdk收到http请求后，转发给内核协议栈，内核协议栈收到http请求后，在将这个请求转发到应用层监听80端口的服务器进程。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-wbzh2ik",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-wbzh2ik",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-4d2e88040edd7b6edb6ea49b5110cca8_b-20240812090621-ocjnf2n.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-b288vta",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-b288vta",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那dpdk通过什么方式将报文转发给内核呢？ 可以通过kni设备，也可以通过tun/tap虚拟网卡来实现。 相对于tun/tap实现， kni减少了内核态与应用层之间内存拷贝的操作，具有更高的转发性能。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-l955rwo",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240812090621-l955rwo",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、kni的使用"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-gdwqsoz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-gdwqsoz",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kni分为应用层实现与驱动层实现。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-wsg4cvd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-wsg4cvd",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、驱动层使用"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-o1slsg0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-o1slsg0",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当编译好dpdk后，在dpdk安装目录下有一个kmod目录，里面会生成rte_kni.ko驱动。在kmod目录下执行insmod ./rte_kni.ko加载kni驱动。加载kni驱动时可以指定参数，例如指定多线程参数等，如果不指定参数，则默认是单线程模型。需要注意的是，如果dpdk编译完成后，在kmod目录下找不到rte_kni.ko驱动，那换更高的dpdk版本吧。我使用的dpdk1.8版本就没有生成这个驱动，换到最新版本就有了。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-rchexho",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-rchexho",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-da1edec6c8d8479047f33bd7bbdbdc0d_b-20240812090620-7r5v1b4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-twkl1bc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-twkl1bc",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核加载完这个kni驱动后，此时会在/dev目录下生产一个kni设备文件。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-199rxcz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-199rxcz",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-808d22ecc07bccf5feb9ebda7a4890a4_b-20240812090620-gyvioab.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-j6rwx55",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-j6rwx55",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、应用层使用"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-b54tu51",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-b54tu51",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层examples目录下提供了一个kni的例子，编译好这个kni例子就可以执行了。如果编译kni报错，则有可能是kni相关的开关没有打开，也就不会参与编译。此时需要在dpdk安装目录下搜索所有的kni关键词， 将搜索到所有关于kni的开关打开就好了，重新编译整个dpdk。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-c5o53yj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-c5o53yj",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "编译好kni例子后，就可以执行./kni -c 0xf -- -p 0x1 -P --config=\"(0,0,1,2)\"运行kni程序。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-zsvpo5c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-zsvpo5c",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行ifconfig -a就可以看到这个kni设备名，例如:vEth0_0。 后续dpdk与内核的交互，都是通过这个kni设备来进行。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-vpmzb5c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-vpmzb5c",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-619be08d978d26ca629d2abc9f4830d1_b-20240812090621-44d7q1o.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-51hkkc6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-51hkkc6",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当生成了kni设备后，后续就可以使用应用层工具ifconfig, ethtool, tcpdump对这个kni设备进行操作。例如"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-ottj7a4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-ottj7a4",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " ifcofnig vEth0_0 up\t\t\t开启kni设备\n ifcofnig vEth0_0 down\t\t\t关闭kni设备\n ifcofnig vEth0_0 192.168.0.1 netmast 255.255.255.0 promisc 设置ip\n ethtool -i vEth0_0\t\t\t\t查看kni设备信息\n tcpcudp -i vEth0_0 -nne -s0 -v 抓到这个kni设备的报文\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-lbghvt1",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240812090621-lbghvt1",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、kni实现原理"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-xocjwy4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-xocjwy4",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要使得dpdk能够利用kni设备将报文发给内核协议栈， kni需要实现应用层功能与驱动层功能。 驱动层需要创建一个/dev/kni混合设备，这个在应用层加载kni驱动的时候自动完成创建。 通过这个/dev/kni混合设备，可以接收应用层的ioctl消息，按需来创建各种kni设备、删除kni设备、打开kni设备、关闭kni设备、设置mtu、接收ethtool工具的命令操作消息等等。需要注意的是，驱动层创建的两种设备，一个是/dev/kni混合设备， 另一个是kni设备，这两个是不同的设备类型。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-xu4ycog",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-xu4ycog",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层则提供给调用者操作kni设备的接口。例如kni的初始化、按照需要为每个网卡分配一个或者多个kni设备、将来自网卡的报文通过kni设备发给内核、接收来自内核的报文后将报文通过网卡发送出去。另外也可以使用linux工具ifconfig、ethtool、tcpdump来操作kni设备。例如给kni设备配置ip地址，抓包等。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-v32ql4r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-v32ql4r",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "下面分别从应用层与驱动层，来看下kni设备的具体实现。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-z52ysyi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240812090621-z52ysyi",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、应用层kni的实现"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-r7b8d4d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-r7b8d4d",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "对于每一个网卡，都可以创建一个或者多个kni设备。具体每一张网卡可以创建多少个kni设备，由应用层自行指定。创建完kni设备后，ifconfig -a命令执行后就可以看到这些虚拟网卡名，例如veth1_0, veth1_1。如果加载驱动的时候，指定了单线程模型，则kni驱动将只会创建一个线程，用于所有的kni设备接收来自应用层的报文。 如果加载kni驱动的时候，指定了多线程模型，则对于每个kni设备，kni驱动都会创建一个线程去接收来自应用层发来的报文。 kni设备与线程是一一对应的关系。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-7sdk586",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-7sdk586",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-46e13f105833fd493e5ed460a3cea43c_b-20240812090621-yfpszwo.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-4d8jysh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-4d8jysh",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先以一张图来整体说明下kni设备应用层整体的结构。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-pjpmc95",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-pjpmc95",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-914b322c15976640159693d64073fde5_b-20240812090621-payy89u.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-gkui79j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-gkui79j",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层使用一个struct rte_kni_memzone_slot数组来存放所有的kni设备， 每个数组元素对应一个kni设备。 每个kni设备本身，都有一个独占的发送队列、接收队列、分配队列、释放队列、请求队列、响应队列。需要注意的是m_ctx成员指向的struct rte_kni结构本身，内部也有各种队列，但这些都是一个指针，指向刚才提到的些队列，是一种引用关系，而不会为它重复开辟这些队列空间。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-w1ypesg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-w1ypesg",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当应用层从网卡收到报文后，将报文放到kni设备的rx接收队队列。kni驱动就会从这个rx接收队列中取出mbuf报文，将mbuf报文转为内核协议栈支持的sk_buff，调用netif_rx内核接口发给内核。将报文发给内核后，会将这些mbuf报文放到free释放队列，由应用层读取释放队列中待释放的mbuf进行释放操作。为什么要由应用层释放呢? 秉承谁开辟空间，那就谁释放的原则。另外也是为了使得驱动层代码最简洁化，驱动只实现最少的功能，将mbuf内存申请与释放的操作交给应用层来操作。驱动与应用层通过malloc, free队列来传递已经分配好或者待释放的报文。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-jzl3y5a",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-jzl3y5a",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当kni驱动收到来自内核的报文后，会调用kni_net_tx从malloc分配队列中获取一个应用层已经分配好的mbuf结构。同时将sk_buff报文转为mbuf报文，存放到mbuf中。之后将mbuf报文发到tx发送队列中。应用层从tx发送队列中获取报文后，将报文通过网卡发送出去。应用层也会重新开辟mbuf空间，放到malloc队列中，供后续kni驱动发包给应用层使用。这也可以体现刚才说的内容，驱动只实现最少的功能，将mbuf内存申请与释放的操作交给应用层来操作。驱动与应用层通过malloc, free队列来传递已经分配好或者待释放的报文。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-rq2osfh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-rq2osfh",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "那请求与发送队列是做什么的？当应用层调用ifconfig, ethtool等工具，设置kni设备的mtu,  使得kni设备up/down的时候。kni驱动收到这些设置操作，会构造一个请求报文，将这个请求报文放到req请求队列。应用层就会从这个req请求队列中获取一个请求，执行这个请求操作。例如设置mtu,  使得网卡up等。应用层会调用pmd用户态驱动实现的接口，来真正的对网卡设置mtu， 使得网卡up等操作。之后应用层会构造一个响应消息，将消息放到resp队列中，驱动从这个resp队列中获取响应消息就知道请求的执行结果了。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-08uppq7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-08uppq7",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-81380f808b30b18df4a5fb0b9b0ab58e_b-20240812090621-mxcgka3.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-g6gqi2j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-g6gqi2j",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接下里进入代码分析环节，看下应用层代码的实现。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-bniuwem",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-bniuwem",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、kni初始化"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-141fk34",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-141fk34",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层调用rte_kni_init接口执行kni初始化操作。所谓的kni初始化，其实就是为所有的kni设备分配好空间，构成上图中提到的struct rte_kni_memzone_slot数组。 每个数组元素对应一个kni设备。并为每一个kni设备，分配好发送队列、接收队列、分配队列、释放队列、请求队列、响应队列。另外会将每个kni设备构成一个数组链表， 既能有数组快速遍历功能，也有链表快速插入删除操作的高效。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-hpv24bu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-hpv24bu",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "另外也会执行打开/dev/kni混合设备的操作，之所以要打开/dev/kni混合设备，是为了后续能通过ioctl操作这个混合设备，进而能创建kni设备。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-7uvnhuy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-7uvnhuy",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "void rte_kni_init(unsigned int max_kni_ifaces)\n{\n\t//打开/dev/kni设备\n\tkni_fd = open(\"/dev/\" KNI_DEVICE, O_RDWR);\n\t//为每个kni设备开辟队列空间\n\tfor (i = 0; i \u003c max_kni_ifaces; i++)\n\t{\n\t\tit = \u0026kni_memzone_pool.slots[i];\n\t\t//开辟kni结构\n\t\tsnprintf(mz_name, RTE_MEMZONE_NAMESIZE, \"KNI_INFO_%d\", i);\n\t\tmz = kni_memzone_reserve(mz_name, sizeof(struct rte_kni), SOCKET_ID_ANY, 0);\n\t\tit-\u003em_ctx = mz;\n\t\t//开辟发送队列空间\n\t\tsnprintf(obj_name, OBJNAMSIZ, \"kni_tx_%d\", i);\n\t\tmz = kni_memzone_reserve(obj_name, KNI_FIFO_SIZE, SOCKET_ID_ANY, 0);\n\t\tit-\u003em_tx_q = mz;\n\t\t//开辟接收队列空间\n\t\tsnprintf(obj_name, OBJNAMSIZ, \"kni_rx_%d\", i);\n\t\tmz = kni_memzone_reserve(obj_name, KNI_FIFO_SIZE, SOCKET_ID_ANY, 0);\n\t\tit-\u003em_rx_q = mz;\n\t\t/*开辟分配队列空间 ALLOC RING */\n\t\tsnprintf(obj_name, OBJNAMSIZ, \"kni_alloc_%d\", i);\n\t\tmz = kni_memzone_reserve(obj_name, KNI_FIFO_SIZE, SOCKET_ID_ANY, 0);\n\t\tit-\u003em_alloc_q = mz;\n\t\t/* 开辟释放队列空间FREE RING */\n\t\tsnprintf(obj_name, OBJNAMSIZ, \"kni_free_%d\", i);\n\t\tmz = kni_memzone_reserve(obj_name, KNI_FIFO_SIZE, SOCKET_ID_ANY, 0);LL);\n\t\tit-\u003em_free_q = mz;\n\t\t/* 开辟请求队列空间 */\n\t\tsnprintf(obj_name, OBJNAMSIZ, \"kni_req_%d\", i);\n\t\tmz = kni_memzone_reserve(obj_name, KNI_FIFO_SIZE, SOCKET_ID_ANY, 0);\n\t\tit-\u003em_req_q = mz;\n\t\t/* 开辟响应队列空间 */\n\t\tsnprintf(obj_name, OBJNAMSIZ, \"kni_resp_%d\", i);\n\t\tmz = kni_memzone_reserve(obj_name, KNI_FIFO_SIZE, SOCKET_ID_ANY, 0);\n\t\tit-\u003em_resp_q = mz;\n\t\n\t\t//构成一个数组链表\n\t\tit-\u003enext = \u0026kni_memzone_pool.slots[i+1];\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-k5lgpw6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-k5lgpw6",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2、应用层kni设备的创建"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-vh9ajp8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-vh9ajp8",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调用rte_kni_alloc接口将会创建一个kni设备。具体实现方式就是向/dev/kni混合设备发送ioctl消息，kni驱动收到ioctl消息后后，kni驱动负责创建kni设备。另外也会对发送队列，接收队列、分配队列、释放队列、请求队列、响应队列进行初始化操作。同时将将rte_kni结构中的各种队列与struct rte_kni_memzone_slot中的相应队列关联起来，也就是一种引用关系。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-dju428s",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-dju428s",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "struct rte_kni * rte_kni_alloc(struct rte_mempool *pktmbuf_pool, const struct rte_kni_conf *conf, struct rte_kni_ops *ops)\n{\n\t//从所有空闲的kni设备曹中获取一个空闲曹\n\tslot = kni_memzone_pool_alloc();\n\t//得到struct rte_kni结构\n\tctx = slot-\u003em_ctx-\u003eaddr;\n\t//将rte_kni结构中的发送、接收、分片、释放、请求、响应队列与struct rte_kni_memzone_slot中的\n\t//发送、接收、分片、释放、请求、响应队列关联起来。是一种引用关系\n\tmz = slot-\u003em_tx_q;\n\tctx-\u003etx_q = mz-\u003eaddr;\n\t//发送队列初始化\n\tkni_fifo_init(ctx-\u003etx_q, KNI_FIFO_COUNT_MAX);\n\n\t//通过/dev/kni设备发送ioctl，用来创建kni设备\n\tret = ioctl(kni_fd, RTE_KNI_IOCTL_CREATE, \u0026dev_info);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-144t1vy",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-144t1vy",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3、应用层发包到内核"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-68l35kb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-68l35kb",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层在收到来自网卡的报文后，通过调用rte_kni_tx_burst接口将报文发给内核。具体实现方式就是将报文放到kni设备所在的发送队列，kni驱动就会从这个队列中取出mbuf报文。kni驱动将这个mbuf报文转为内核支持的sk_buff，通过调用netif_rx内核函数发给内核。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-hvbqzzf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-hvbqzzf",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "将报文发给内核后，kni驱动会将这些已经发给内核的mbuf报文放到free释放队列，由应用层读取释放队列中待释放的mbuf进行释放操作"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-04i5k7j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-04i5k7j",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//发包给内核\nunsigned rte_kni_tx_burst(struct rte_kni *kni, struct rte_mbuf **mbufs, unsigned num)\n{\n\t//将报文写入kni设备所在发送队列，内核从这个队列读数据\n\tunsigned ret = kni_fifo_put(kni-\u003erx_q, (void **)mbufs, num);\n\t//释放内核已经接收的报文\n\tkni_free_mbufs(kni);\n\treturn ret;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-kkuwvgr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-kkuwvgr",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4、应用层接收内核的报文"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-p4txb07",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-p4txb07",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当kni驱动收到来自内核的报文后，会调用kni_net_tx从malloc分配队列中获取一个应用层已经分配好的mbuf结构。同时将sk_buff报文转为mbuf报文，存放到mbuf中。之后kni驱动将mbuf报文放到tx发送队列中。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-n6uwato",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-n6uwato",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层从tx发送队列中获取报文后，将报文通过网卡发送出去。应用层也会重新开辟mbuf空间，放到malloc队列中，供后续kni驱动发包给应用层使用"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-tbwqpp0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-tbwqpp0",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//从内核收包\nunsigned rte_kni_rx_burst(struct rte_kni *kni, struct rte_mbuf **mbufs, unsigned num)\n{\n\t//从队列获取来自内核的报文\n\tunsigned ret = kni_fifo_get(kni-\u003etx_q, (void **)mbufs, num);\n\t//分配新的空间给驱动使用\n\tkni_allocate_mbufs(kni);\n\treturn ret;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-0zz5g2q",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-0zz5g2q",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5、应用层对kni设备的配置操作"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-wdh8nvz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-wdh8nvz",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当应用层调用ifconfig, ethtool等工具，设置kni设备的mtu,  使得kni设备up/down的时候。kni驱动收到这些设置操作，会构造一个请求报文，将这个请求报文放到req请求队列。应用层就会从这个req请求队列中获取一个请求，执行这个请求操作。例如设置mtu,  使得网卡up等。应用层会调用pmd用户态驱动实现的接口，来真正的对网卡设置mtu， 使得网卡up等操作。之后应用层会构造一个响应消息，将消息放到resp队列中，驱动从这个resp队列中获取响应消息就知道请求的执行结果了。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-2tv14aj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-2tv14aj",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "驱动层操作的接口:"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-thuiaaw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-thuiaaw",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//打开kni设备\nstatic int kni_net_open(struct net_device *dev)\n{\n\tstruct rte_kni_request req;\n\t//构造设置网卡up的请求内容\n\treq.req_id = RTE_KNI_REQ_CFG_NETWORK_IF;\n\treq.if_up = 1;\n\tret = kni_net_process_request(kni, \u0026req);\n}\nstatic int kni_net_process_request(struct kni_dev *kni, struct rte_kni_request *req)\n{\n\t//请求消息放到队列\n\tnum = kni_fifo_put(kni-\u003ereq_q, \u0026kni-\u003esync_va, 1);\n\t//等待响应\n\tret_val = wait_event_interruptible_timeout(kni-\u003ewq, kni_fifo_count(kni-\u003eresp_q), 3 * HZ);\n\t//获取响应\n\tnum = kni_fifo_get(kni-\u003eresp_q, (void **)\u0026resp_va, 1);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-033ivdd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-033ivdd",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层主动发起操作，kni驱动接收到消息后会构造请求放到请求队列，之后应用层读取队列的请求后调用pmd用户态驱动提供的接口。处理完后应用层构造响应消息，放入到响应队列。kni驱动读取响应队列中的响应消息就知道结果了。是不是感觉兜了一大圈的节奏。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-eyl61wc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-eyl61wc",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层操作的接口:rte_kni_handle_request; 该函数用于处理请求队列中的请求，因此这个函数需要周期性的执行，以免请求得不到处理，超时导致配置失败。为了避免请求队列中的请求被延迟，也为了避免阻塞dpdk快路径处理，可以使用一个单独的线程来处理rte_kni_handle_request函数。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-0iupind",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-0iupind",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "int rte_kni_handle_request(struct rte_kni *kni)\n{\n\t//应用层从队列中获取一个请求\n\tret = kni_fifo_get(kni-\u003ereq_q, (void **)\u0026req, 1);\n\t//根据消息id, 开始处理请求\n\tswitch (req-\u003ereq_id)\n\t{\n\t\tcase RTE_KNI_REQ_CHANGE_MTU: \n\t\t\t//设置网卡的mtu\n\t\t\treq-\u003eresult = kni-\u003eops.change_mtu(kni-\u003eops.port_id, req-\u003enew_mtu);\n\t\t\tbreak;\n\t\tcase RTE_KNI_REQ_CFG_NETWORK_IF: \n\t\t\t//设置网卡up/down\n\t\t\treq-\u003eresult = kni-\u003eops.config_network_if(kni-\u003eops.port_id, req-\u003eif_up);\n\t\t\tbreak;\n\t}\n\t//处理完请求后，将请求的结果写入队列。kni驱动从这个队列获取结果\n\tret = kni_fifo_put(kni-\u003eresp_q, (void **)\u0026req, 1);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-hqrepfa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-hqrepfa",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层有两种方式为kni设备设置操作接口。一个是调用rte_kni_alloc创建kni设备时，会要求传递一个kni设备的操作对象ops,  这个对象中实现了操作kni设备的接口，例如改变mtu, 设置kni设备up/down等；另一种方式是调用rte_kni_register_handlers为kni设置注册一个操作接口。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-g89mz4a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-g89mz4a",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "    struct rte_kni_ops ops;\n    ops.change_mtu = kni_application_change_mtu;\n    ops.config_network_if = kni_application_config_network_if;\n    ops.config_mac_address = kni_application_config_mac_address;\n    rte_kni_alloc(mbuf_pool, \u0026conf, \u0026ops);\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-g48is8w",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-g48is8w",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6、应用层内存队列的分配与释放"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-1fpsehm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-1fpsehm",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "驱动只实现最少的功能，将mbuf内存申请与释放的操作交给应用层来操作。驱动与应用层通过malloc, free队列来传递已经分配好或者待释放的报文。具体来说就是应用层开辟好报文空间后，将空间放到分配队列中给kni驱动使用，kni驱动从这个分配队列中获取报文空间。 kni驱动使用完这个报文空间后，会放到释放队列，应用层读取这个释放队列中待释放的报文进行释放操作。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-dxo1kz6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-dxo1kz6",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static void kni_allocate_mbufs(struct rte_kni *kni)\n{\n\t//从内存池中mbuf空间\n\tfor (i = 0; i \u003c MAX_MBUF_BURST_NUM; i++) \n\t{\n\t\tpkts[i] = rte_pktmbuf_alloc(kni-\u003epktmbuf_pool);\n\t}\n\t//将mbuf放入队列，给kni驱动使用\n\tret = kni_fifo_put(kni-\u003ealloc_q, (void **)pkts, i);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-dojx856",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-dojx856",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static void kni_free_mbufs(struct rte_kni *kni)\n{\n\tint i, ret;\n\tstruct rte_mbuf *pkts[MAX_MBUF_BURST_NUM];\n\t//从队列中获取报文进行释放操作\n\tret = kni_fifo_get(kni-\u003efree_q, (void **)pkts, MAX_MBUF_BURST_NUM);\n\tfor (i = 0; i \u003c ret; i++)\n\t{\n\t\trte_pktmbuf_free(pkts[i]);\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-bln4non",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-bln4non",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "到此为止，kni设备应用层部分已经分析完了，接下里分析驱动层kni的实现。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-2l3x03g",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240812090621-2l3x03g",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "五、驱动层kni的实现"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-tfc2gul",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-tfc2gul",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "驱动层会创建一个/dev/kni混合设备，这个在应用层加载kni驱动的时候自动完成创建。 通过这个/dev/kni混合设备，可以接收应用层的ioctl消息，按需来创建各种kni设备、删除kni设备、打开kni设备、关闭kni设备、设置mtu、接收ethtool工具的命令操作消息等等。需要注意的是，驱动层创建的两种设备，一个是/dev/kni混合设备， 另一个是kni设备，这两个是不同的设备类型。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-nkyaa09",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-nkyaa09",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-5e05c96079d3300debb1ade0e7dfe556_b-20240812090620-n2vaepp.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-3v5t00x",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20240812090621-3v5t00x",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1、kni驱动初始化"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-z5e4rx1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-z5e4rx1",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kni驱动初始化的时候，会在/dev目录下创建一个/dev/kni混合设备， 后续由这个混合设备创建kni设备。另外kni驱动初始化的时候，还会初始化线程模型，根据加载驱动的参数来决定是启用单线程还是多线程。以此同时注册接收应用层报文的回调，正常情况下都使用kni_net_rx_normal这个接口来接收来自应用层的报文"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-vzqisjb",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-vzqisjb",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int __init kni_init(void)\n{\n\t//线程模型初始化\n\tkni_parse_kthread_mode();\n\t//注册一个/dev/kni设备\n\tmisc_register(\u0026kni_misc);\n\t//根据loopback模式，注册接收来自应用层报文的接收回调\n\tkni_net_config_lo_mode(lo_mode);\n\treturn 0;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-0xriqp3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-0xriqp3",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "来看下可以对/dev/kni混合设备执行哪些操作。从中可以看出应用层可以对/dev/kni混合设备执行打开混合设备、关闭混合设备、对混合设备执行ioctl操作。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-1ft9boy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-1ft9boy",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//dev/kni设备操作接口\nstatic struct file_operations kni_fops = \n{\n\t.owner = THIS_MODULE,\n\t.open = kni_open,                   //打开/dev/kni混合设备\n\t.release = kni_release,             //关闭/dev/kni混合设备\n\t.unlocked_ioctl = (void *)kni_ioctl,\n\t.compat_ioctl = (void *)kni_compat_ioctl,\n};\n \n//dev/kni混合设备\nstatic struct miscdevice kni_misc =\n{\n\t.minor = MISC_DYNAMIC_MINOR,\n\t.name = KNI_DEVICE,\n\t.fops = \u0026kni_fops,\t\t\t\t\t//混合设备操作接口\n};\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-pr9i3ie",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-pr9i3ie",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2、驱动中kni设备的创建"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-fj3n1lz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-fj3n1lz",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层对/dev/kni执行ioctl系统调用时，可以创建或者删除一个kni设备。创建完kni设备后，执行ifconfig -a就可以看到对应的kni设备，例如veth0_0, veth0_1等。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-zqvilhm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-zqvilhm",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int kni_ioctl(struct inode *inode, unsigned int ioctl_num, unsigned long ioctl_param)\n{\n\tswitch (_IOC_NR(ioctl_num)) \n\t{\n\t\tcase _IOC_NR(RTE_KNI_IOCTL_CREATE):\n\t\t\t//创建kni设备\n\t\t\tret = kni_ioctl_create(ioctl_num, ioctl_param);\n\t\t\tbreak;\n\t\tcase _IOC_NR(RTE_KNI_IOCTL_RELEASE):\n\t\t\t//销毁kni设备\n\t\t\tret = kni_ioctl_release(ioctl_num, ioctl_param);\n\t\t\tbreak;\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-5rd8hu3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-5rd8hu3",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "创建kni设备过程比较多。首先将应用层的ioctl设置信息拷贝到内核空间来，根据应用层提供的参数来进行设置。创建好kni设备后，根据应用层传进来的参数，例如将各种队列从应用层空间转换到内核空间来(指向的内存位置是同一个)。另外也会设置ethtool的操作接口，驱动层实现这个接口，使得应用层能够使用ethtool工具对kni设备进行操作。最后，如果驱动被加载时指定了多线程模型，则会为这个kni设备创建一个线程，用于驱动与应用层之间的交互。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-s72wvqr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-s72wvqr",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int kni_ioctl_create(unsigned int ioctl_num, unsigned long ioctl_param)\n{\n\t//从应用层拷贝数据到内核\n\tret = copy_from_user(\u0026dev_info, (void *)ioctl_param, sizeof(dev_info));\n\t//创建一个kni设备，内部会调用kni_net_init对net_dev初始化。kni_dev作为net_dev的私有结构\n\tnet_dev = alloc_netdev(sizeof(struct kni_dev), dev_info.name, kni_net_init);\n\tkni = netdev_priv(net_dev);\n\t//转换用户空间的队列，到内核空间\n\tkni-\u003etx_q = phys_to_virt(dev_info.tx_phys);\n\tkni-\u003erx_q = phys_to_virt(dev_info.rx_phys);\n \n\t//对kni设备，设置针对ethtool工具的操作接口\n\tkni_set_ethtool_ops(kni-\u003enet_dev);\n\t//将创建的kni设备注册到内核。注册完成后执行ifconfig -a就可以看到kni设备\n\tret = register_netdev(net_dev);\n \n\t//如果是多线程模型，则创建kni线程，用于处理与应用层的交互\n\tif (multiple_kthread_on)\n\t{\n\t\tkni-\u003epthread = kthread_create(kni_thread_multiple, (void *)kni,  \"kni_%s\", kni-\u003ename);\n\t}\n \n\t//将kni设备插入到链表\n\tlist_add(\u0026kni-\u003elist, \u0026kni_list_head);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-ddmakay",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-ddmakay",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "来看下应用层可以对kni设备执行什么设置操作。应用层可以调用ifconfig工具，例如ifconfig veth0_0 up打开kni设备，调用"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-yn8yvm0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-yn8yvm0",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ifconfig veth0_0 down关闭kni设备。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-yxu5m27",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-yxu5m27",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//kni设备的操作接口\nstatic const struct net_device_ops kni_net_netdev_ops = \n{\n\t.ndo_open = kni_net_open,\t\t\t\t\t//打开kni设备\n\t.ndo_stop = kni_net_release,\t\t\t\t//关闭kni设备\n\t.ndo_set_config = kni_net_config,\n\t.ndo_start_xmit = kni_net_tx,\t\t\t\t//内核发包给应用层\n\t.ndo_change_mtu = kni_net_change_mtu,\n\t.ndo_do_ioctl = kni_net_ioctl,\n\t.ndo_get_stats = kni_net_stats,\n\t.ndo_tx_timeout = kni_net_tx_timeout,\n\t.ndo_set_mac_address = kni_net_set_mac,\n};\n//初始化kni设备\nvoid kni_net_init(struct net_device *dev)\n{\n\t//注册kni设备的操作接口\n\tether_setup(dev); /* assign some of the fields */\n\tdev-\u003enetdev_ops      = \u0026kni_net_netdev_ops;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-lccr9sk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-lccr9sk",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "除此之外还kni设备还提供了对ethtool工具的操作接口。需要注意的是，为了使得kni设备能够支持ethtool工具，需要使用linux内核提供的标准ixgbe/igb驱动。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-1iby24u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-1iby24u",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//ethtool工具操作接口\nstruct ethtool_ops kni_ethtool_ops = \n{\n\t.begin \t\t\t\t= kni_check_if_running,\n\t.get_drvinfo\t\t= kni_get_drvinfo,\n\t.get_settings\t\t= kni_get_settings,\n\t.set_settings\t\t= kni_set_settings,\n\t.get_regs_len\t\t= kni_get_regs_len,\n\t.get_regs\t\t\t= kni_get_regs,\n\t.....................................\n};\n//ethtool工具操作接口\nvoid kni_set_ethtool_ops(struct net_device *netdev)\n{\n\tnetdev-\u003eethtool_ops = \u0026kni_ethtool_ops;\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-2bmsrci",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-2bmsrci",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3、多线程模式下接收应用层报文"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-iysmol3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-iysmol3",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "多线程模式下，每一个kni设备都有一个与之一一对于的线程，用于从接收队列中接收来自应用层的报文。同时也会从响应队列接收来自应用层处理完成后的命令响应。多线程入口为:kni_thread_multiple"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-9ny543v",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-9ny543v",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//多线程模式下，线程入口\nstatic int kni_thread_multiple(void *param)\n{\n\twhile (!kthread_should_stop()) \n\t{\n\t\t//接收来自应用层的报文\n\t\tkni_net_rx(dev);\n\t\t//接收来自应用层的响应消息\n\t\tkni_net_poll_resp(dev);\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-pfh2ces",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-pfh2ces",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "正常情况下接收应用层报文的接口为kni_net_rx_normal。首先会从rx接收队列中获取应用层传进来的报文，然后将报文转为内核协议栈支持的sk_buff节后，最后调用netif_rx内核接口将sk_buff发往内核。  对于已经发往内核的报文，将mbuf放回到释放队列，由应用层统一进行释放，保证驱动代码的简洁，使得驱动只做最小的事情。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-hq3fg2o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-hq3fg2o",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "应用层dpdk使用的是物理地址，kni驱动使用的是虚拟地址，因此kni驱动中需要将物理地址转为虚拟地址。需要注意的是，当fifo满的时候，后面收到的报文会被丢弃。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-cunl0ax",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-cunl0ax",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//接收应用层报文处理,  将mbuf转为sk_buff后，将报文发往内核\nstatic void kni_net_rx_normal(struct kni_dev *kni)\n{\n\t//从应用层传进来的队列中获取报文\n\tret = kni_fifo_get(kni-\u003erx_q, (void **)va, num);\n\t//将来自应用层的报文转成sk_buff结构，然后发给内核协议栈\n\tfor (i = 0; i \u003c num; i++)\n\t{\n\t\tkva = (void *)va[i] - kni-\u003embuf_va + kni-\u003embuf_kva;\n\t\tlen = kva-\u003edata_len;\n\t\tdata_kva = kva-\u003ebuf_addr + kva-\u003edata_off - kni-\u003embuf_va + kni-\u003embuf_kva;\n\t\t//开辟sk_bff空间\n\t\tskb = dev_alloc_skb(len + 2);\n\t\t//从mbuf拷贝报文到sk_buff\n\t\tmemcpy(skb_put(skb, len), data_kva, len);\n\t\tskb-\u003edev = dev;\n\t\tskb-\u003eprotocol = eth_type_trans(skb, dev);\n\t\tskb-\u003eip_summed = CHECKSUM_UNNECESSARY;\n\t\t//交给内核，发送到协议栈\n\t\tnetif_rx(skb);\n\t}\n\t//已经处理完成的报文，放到释放队列，由应用层进行释放\n\tret = kni_fifo_put(kni-\u003efree_q, (void **)va, num);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-7qx9qh0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-7qx9qh0",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4、单线程模式下接收应用层报文"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-cahrupu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-cahrupu",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "单线程模式下，整个kni驱动将只会有一个线程，用于接收所有kni设备来自应用层的报文。在应用层执行open操作，打开/dev/kni混合设备的时候将会创建单线程。单线程入口为kni_thread_single"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-yuzmdii",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-yuzmdii",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//打开/dev/kni混合设备\nstatic int kni_open(struct inode *inode, struct file *file)\n{\n\t//创建单线程\n\tkni_kthread = kthread_run(kni_thread_single, NULL, \"kni_single\");\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-84ennpa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-84ennpa",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "单线程模式下只有一个线程，轮询所有的kni设备，接收这个kni设备来自应用层的报文。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-s8d408z",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-s8d408z",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//单线程模式下，线程入口\nstatic int kni_thread_single(void *unused)\n{\n\tint j;\n\tstruct kni_dev *dev, *n;\n \n\twhile (!kthread_should_stop())\n\t{\n\t\t//遍历所有的kni设备\n\t\tlist_for_each_entry_safe(dev, n, \u0026kni_list_head, list) \n\t\t{\n\t\t\t//接收kni设备来自应用层的报文\n\t\t\tkni_net_rx(dev);\n\t\t\t//接收kni设备来自应用层的响应消息\n\t\t\tkni_net_poll_resp(dev);\n\t\t}\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-o76qadg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-o76qadg",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kni内核线程不是死循环，而是一次性处理完一定量的的报文后，会主动睡眠让出cpu，默认睡眠5微妙。这个睡眠是可以中断的，如果收到中断，还是会立即返回，返回值就是还剩余睡眠的时间，此时可以继续进行接收报文。为了避免死循环占用过多的cpu，使用了睡眠方式，因此延时吞吐都不会太理想。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-5qsoj4c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-5qsoj4c",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当有多个kni设备时，建议使用多线程模式，每个kni设备对应一个线程，提升单kni设备的性能，也可以为kni线程指定cpu亲和性。好的优化方式是使用eventfd机制，用户态发包后唤醒kni内核线程处理，性能才会更高，这和epoll是一样的道理，有数据就立即返回，没有数据就睡眠等待超时返回。另一种优化方式是，dpdk与kni设备使用多个fifo， 每个fifo启用一个内核线程，利用cpu亲和性，将这些kni内核线程和cpu绑定，充分利用多核的特性来提升性能。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-gfis8ca",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-gfis8ca",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5、kni驱动发包给应用层"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-zsf91x6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-zsf91x6",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当kni驱动收到来自内核的报文后，会调用kni_net_tx从malloc分配队列中获取一个应用层已经分配好的mbuf结构。同时将sk_buff报文转为mbuf报文，存放到mbuf中。之后将mbuf报文放到tx发送队列中。应用层从tx发送队列中获取报文后，将报文通过网卡发送出去。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-q8aiqmm",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-q8aiqmm",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static int kni_net_tx(struct sk_buff *skb, struct net_device *dev)\n{\n\t//从应用层获取一个mbuf空间，将sk_buff的内容填充到这个mbuf中。然后发给应用层\n\tret = kni_fifo_get(kni-\u003ealloc_q, (void **)\u0026pkt_va, 1);\n\tpkt_kva = (void *)pkt_va - kni-\u003embuf_va + kni-\u003embuf_kva;\n\tdata_kva = pkt_kva-\u003ebuf_addr + pkt_kva-\u003edata_off - kni-\u003embuf_va + kni-\u003embuf_kva;\n\t//将sk_buff填充到mbuf中\n\tlen = skb-\u003elen;\n\tmemcpy(data_kva, skb-\u003edata, len);\n\tpkt_kva-\u003epkt_len = len;\n\tpkt_kva-\u003edata_len = len;\n\t//将报文放到发送队列，由应用层读取\n\tret = kni_fifo_put(kni-\u003etx_q, (void **)\u0026pkt_va, 1);\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-vzh7hxv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-vzh7hxv",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "内核回包时，怎么确定是发给kni设备呢？ kni驱动中，kni_net_netdev_ops对象实现了ndo_start_xmit发包方法kni_net_tx。内核协议栈在回包时，netpoll中的queue_process函数会调用ndo_start_xmit方法，进而回调kni驱动中实现的kni_net_tx方法，将报文发给kni设备。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-2u43xji",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-2u43xji",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "static void queue_process(struct work_struct *work)\n{\n\twhile ((skb = skb_dequeue(\u0026npinfo-\u003etxq))) \n\t{\n\t\tconst struct net_device_ops *ops = dev-\u003enetdev_ops;\n \n        //kni_net_tx\n\t\tops-\u003endo_start_xmit(skb, dev);\n\t}\n}\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-pnpdnux",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240812090621-pnpdnux",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "六、综合案例"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-lytzkk6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-lytzkk6",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "以一个邮件服务器案例来说明使用dpdk以及kni之间需要注意的地方。邮件服务器分为3个部分。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-ua0kxzo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-ua0kxzo",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1、模块组成"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-p95wsqu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-p95wsqu",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "首先是nignx服务器，这是一个http服务器，是邮件服务器的控制页面，用于对邮件服务器进行设置操作。例如设置邮件服务器监听的端口，设置邮件服务器支持的协议类型等。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-w5f7qy6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-w5f7qy6",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "接着是邮件服务器本身，用于邮件协议的处理，处理邮件的收发。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-ho1pw1j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-ho1pw1j",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最后是dpdk程序，负责将邮件消息，以及邮件服务器的控制消息转发给邮件服务器。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-vsgoxbc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-vsgoxbc",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/v2-bd885b80d5b06aa5b65e14cea2c09715_b-20240812090620-05chv62.jpg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-75t6omh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-75t6omh",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2、实现过程"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-dj6mynl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-dj6mynl",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "dpdk与邮件服务处于两个不同的进程，双方之间使用ring无锁队列进行通信，也就是通过共享内存的方式通信。当网卡收到报文后，被dpdk托管，dpdk发现是邮件协议的报文，进而将报文写入到队列中，发给邮件服务器。邮件服务器从队列中接收报文后，对报文进行处理。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-03e1h47",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-03e1h47",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "同样，dpdk收到网卡的报文，发现报文不是邮件协议，而是一些控制报文，发现目的ip是本机自己。则将报文通过kni设备转发给内核。内核协议栈收包后，内核将报文发给应用层的nginx服务器。nginx服务器接收消息后，通过ipc进程通信的方式，发给邮件服务器，对邮件服务器进行配置操作。例如禁用smtp功能。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-oo3qvtt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-oo3qvtt",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3、dpdk注意项"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-yg8mcfr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-yg8mcfr",
+				"updated": "20240812090850"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(1)当报文是到达本机的，例如ping等。则dpdk将报文发给kni设备，进入内核协议栈处理"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-hi7x5ix",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-hi7x5ix",
+				"updated": "20240812090852"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(2)如果报文不是发给本机的， 接收到来自网卡的报文后，dpdk判断如果是二层报文则查找fdb表； 如果是三层报文，则进行dnat, snat处理后，查找路由表， 将报文转发给下一跳路由。 当然，二三层转发，路由，snat, dnat都需要应用层自己实现。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-ih7gycp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-ih7gycp",
+				"updated": "20240812090853"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(3)通常网卡被dpdk拖管后，ifconfig是看不到网卡信息了的，也就无法通过tcpdump进行抓包。怎么做呢？使用kni设备，或者tun设备，就可以给虚拟网卡设置一个ip地址， 自然也就可以通过tcpdcump抓包。但此时仅能够抓经过内核协议栈的报文，也就是经过本机的报文，无法抓转发给下一跳的报文。怎么做呢？ 这就需要代码来实现了，其实也不会复杂。在抓转发报文的时候，将转发到下一跳的报文顺便发一份给内核就好了。在使用tcpdump抓包的时候，tcpdump内部使用libcap库就能从内核抓到所有的报文。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-k1hr4qc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-k1hr4qc",
+				"updated": "20240812090855"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "(4)需要设置kni设备的carrier为true，内核收到dpdk的报文后才会回包。有三种方式可以实现这个目的。手动将/sys/devices/virtual/net/vEth0/carrier文件的内容设置为1；或者插入kni驱动时设置好carrier，例如insmod rte_kni.ko carrier=on； 最后一种方式是调用rte_kni_update_link这个函数。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-ok5b6d2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20240812090621-ok5b6d2",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "七、tun虚拟网卡拓展"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-xmkpucp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-xmkpucp",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "除了kni外，还有一种方式，也可以将报文发给内核协议栈，那就是tun虚拟网卡方式。这其实和kni操作是差不多的。dpdk提供了exception_path例子来介绍tun的使用。首先应用层打开/dev/net/tun设备，然后通过往这个/dev/net/tun设备发送ioctl消息，  内核接收到ioctl消息后创建虚拟网卡。这和kni设备的创建是不是很相似，kni设备是通过往/dev/kni混合设备发ioctl消息来创建kni设备的。在创建完虚拟网卡后，也可以和kni设备执行类似的操作。例如ifconfig配置tun虚拟网卡ip,  ethtool设置虚拟网卡信息，tcpdump抓包等。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-misx1c5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-misx1c5",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kni作为用户态和内核的接口，没有系统调用和内存拷贝，dpdk通过大页内存实现的fifo，从而实现零拷贝，因此比传统的tun/tap设备性能更好，而tun需要通过write系统调用，同时从应用层拷贝要发送的数据到内核。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-q6jh3z4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-q6jh3z4",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "kni混合设备只实现了open和ioctl接口，没有实现read/write接口，因此不能像tun/tap设备一样使用读写文件的方式进行数据收发。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-dqbdhji",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-dqbdhji",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要使用tun虚拟网卡功能，大体上就下面三个调用操作就行了。"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-meqefbr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240812090621-meqefbr",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "dGV4dA=="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "//读写方式打开tun设备\nint tap_fd = open(\"/dev/net/tun\", O_RDWR);\nifr.ifr_flags = IFF_TAP | IFF_NO_PI;\nsnprintf(ifr.ifr_name, IFNAMSIZ, \"%s\", name);\nret = ioctl(tap_fd, TUNSETIFF, (void *) \u0026ifr);\n \n//通过tun,将报文发往内核\nret = write(tap_fd, rte_pktmbuf_mtod(m, void*), rte_pktmbuf_data_len(m));\n\t\t\t\t\t\t\t\n//通过tun接口，从内核接收报文\nret = read(tap_fd, rte_pktmbuf_mtod(m, void *), MAX_PACKET_SZ);\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240812090621-87al0dc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240812090621-87al0dc",
+				"updated": "20240812090621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "到此kni设备的实现已经分析完成了。"
+				}
+			]
+		}
+	]
+}

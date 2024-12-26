@@ -1,0 +1,948 @@
+{
+	"ID": "20240730173144-f5o8laq",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240730173144-f5o8laq",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20240730173144-tvjuui0\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240730175922-5pfqkle\u0026quot;,\u0026quot;scrollTop\u0026quot;:4627,\u0026quot;focusId\u0026quot;:\u0026quot;20240730175248-ghsorh9\u0026quot;,\u0026quot;focusStart\u0026quot;:0,\u0026quot;focusEnd\u0026quot;:0}",
+		"title": "10-ovs相关命令",
+		"updated": "20240730180004"
+	},
+	"Children": [
+		{
+			"ID": "20240730173144-tvjuui0",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240730173144-tvjuui0",
+				"updated": "20240730173144"
+			}
+		},
+		{
+			"ID": "20240730175103-tb9eqq3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20240730175103-tb9eqq3",
+				"updated": "20240730175117"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ovs-vswitchd： 主要模块，实现switch的daemon，包括一个支持流交换的Linux内核模块；\novsdb-server： 轻量级数据库服务器，提供ovs-vswitchd获取配置信息，例如vlan、port等信息；\novs-brcompatd： 让ovs-vswitch替换linux bridge，包括获取bridge ioctls的Linux内核模块；\novs-dpctl：用来配置switch内核模块；\novs-vsctl： 查询和更新ovs-vswitchd的配置；\novs-appctl： 发送命令消息，运行相关daemon；\novs-ofctl： 查询和控制OpenFlow交换机和控制器；\novs-openflowd：一个简单的OpenFlow交换机；\novs-controller：一个简单的OpenFlow控制器；\novs-pki：OpenFlow交换机创建和管理公钥框架；\novs-tcpundump：tcpdump的补丁，解析OpenFlow的消息；\novs-bugtool：管理openvswitch的bug信息\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175056-mgjn9my",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240730175056-mgjn9my",
+				"updated": "20240730175056"
+			}
+		},
+		{
+			"ID": "20240730175059-1fvltxe",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20240730175059-1fvltxe",
+				"updated": "20240730175207"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#添加网桥\novs-vsctl add-br br-int\n\n#列出网桥\novs-vsctl list-br\n\n#给网桥添加端口\novs-vsctl add-port br-int tap-xxx\n\n#列出挂载某网络接口的所有网桥\novs-vsctl port-to-br tap-xxx\n\n#查看全部信息\novs-vsctl show\n\n#举例 查看所有网桥\novs-vsctl list bridge\n\n#可以很方便的创建网桥，也就是交换机。使用如下命令创建一个名字叫着 br-test的网桥。\novs-vsctl add-br  br-test\n#在上面创建好一个网桥之后默认有一个同名的port，使用下面的命令可以继续添加port。格式是：ovs-vsctl add-port 网桥名  端口名 。这里端口需要是存在机器上的网卡名。\novs-vsctl add-port br-test enp0s3\n#能添加一个port，就能删除这个port。这是ovs的最基本的操作\novs-vsctl del-port br-test enp0s3 \n\n#注意：如果删除port时不指明名字，那么将会删除全部的port，小心这个操作。\n#使用如下命令删除一个网桥。\novs-vsctl del-br br-test\n#值得注意的是：删除网桥时如果网桥上有很多端口，那么端口也会被一并删除\n#删除br-int所连控制器\novs-vsctl del-controller br-int\n\n#添加br-int所连控制器（可以添加多个）\novs-vsctl set-controller br-int \"tcp:192.168.53.53:6633\" \"tcp:192.168.53.68:6633\"\n\n#添加br-int所连控制器步骤2（可以添加多个）\novs-vsctl set-manager \"tcp:192.168.53.53:6640\" \"tcp:192.168.53.68:6640\"\n\n#修改br-int支持的of协议\novs-vsctl set bridge br0 protocols=OpenFlow13\n\n#举例 删除一条qos记录\novs-vsctl destroy qos \u003cqos-id\u003e\n\nQos可以针对网络接口，也可以针对端口设置:\n#针对网络接口 1000±100kbps\novs-vsctl set interface tap-xxx ingress_policing_rate=1000\novs-vsctl set interface tap-xxx ingress_policing_burst=100\n\n#修改端口 p1 的 VLAN tag 为 101，使端口 p1 成为一个隶属于 VLAN 101 的端口\novs-vsctl set Port p1 tag=101\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175208-6x5lfmr",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20240730175208-6x5lfmr",
+				"updated": "20240730175226"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ovs-ofctl 命令是对流表的操作，包括对流表的增，删，改，查等命令。简单来说流表类似于交换机的MAC地址表，路由器的路由表，是ovs交换机指挥流量转发的表。\n\n#查看某网桥信息\novs-ofctl show br-tun\n\n#查看某网桥上所有端口的状态\novs-ofctl dump-ports br-tun\n\n#添加一条流表规则 丢弃从port2上发来的所有数据表\novs-ofctl add-flow br-tun idle_timeout=120,in_port=2,actions=drop\n\n#查看某网桥上面的流表规则\novs-ofctl dump-flows br-tun\n\n#屏蔽所有进入 OVS 的以太网广播数据包\novs-ofctl add-flow ovs-switch \"table=0, dl_src=01:00:00:00:00:00/01:00:00:00:00:00, actions=drop\"\n\n#屏蔽 STP 协议的广播数据包\novs-ofctl add-flow ovs-switch \"table=0, dl_dst=01:80:c2:00:00:00/ff:ff:ff:ff:ff:f0, actions=drop\"\n\n屏蔽对目的主机访问:\novs-ofctl add-flow br0 idle_timeout=0,dl_type=0x0800,nw_src=xx.xx.xx.xx,actions=drop\n\n#指定协议查看流表\novs-ofctl dump-flows -O OpenFlow13 br-int\n\n#把ovs的状态设置成normal，就是全转发\novs-ofctl add-flow br-int \"actions=normal\"\n\n#增加in_port和out_port的对应规则\novs-ofctl add-flow br-int \"in_port=22,actions=output:32\" -O OpenFlow13\n\n#删除br-int上所有流表\novs-ofctl del-flows br-int\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175246-bjcotdd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240730175246-bjcotdd",
+				"updated": "20240730175247"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "#下发流表的命令，需要加上匹配项和动作，可以匹配到上面提到 1~4 层。",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175248-ghsorh9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20240730175248-ghsorh9",
+				"updated": "20240730175317"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "1.第一层：入端口\n\nin_port 表示入端口，匹配到之后的actions是output:2, 意思是从2端口转发出去。\n\novs-ofctl add-flow br-test in_port=1,action=output:2\n\n2.第二层：匹配MAC地址\n\n匹配mac地址的关键字是：\n\ndl_src ：源mac地址\n\ndl_dst ：目的mac地址\n\n然后转发actions=output:2 从2端口转发出去\n\novs-ofctl add-flow br-test dl_src=08:00:27:3d:ac:f7,action=output:2\n\n3.第三层：匹配IP地址 \n\n匹配网络层ip地址比匹配入端口和mac地址要复杂一些。因为网络层中除了IP协议外还有ICMP，IGMP等，所以需要指定匹配的是网络层中的哪一种协议。\n\n匹配方式：\n\n协议： dl_type=0x0800 或者 ip   表明是用于匹配哪一种协议\n\nnw_src: 源ip地址\n\nnw_dst: 目的ip地址\n\ndl_type = 0x0800 \n\novs-ofctl add-flow br-test dl_type=0x0800,nw_src=114.114.114.114,action=output:2\n\nIP\n\novs-ofctl add-flow br-test ip,nw_src=30.0.1.9/24,action=output:2\n\n更多匹配字段：\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175328-ocqo64g",
+			"Type": "NodeTable",
+			"Data": "|字段名称|说明|\n| --------------------------------------| -------------------------------------------------------------------------------------------------------------------------|\n|in_port=port|传递数据包的端口的 OpenFlow 端口编号|\n|dl_vlan=vlan|数据包的 VLAN Tag 值，范围是 0-4095，0xffff 代表不包含 VLAN Tag 的数据包|\n|dl_vlan_pcp=priority|VLAN 优先级，改值取值区间为[0-7]。数字越大，表示优先级越高。|\n|dl_src=\u003cMAC\u003e\u003cbr /\u003edl_dst=\u003cMAC\u003e|匹配源或者目标的 MAC 地址 01:00:00:00:00:00/01:00:00:00:00:00 代表广播地址 00:00:00:00:00:00/01:00:00:00:00:00 代表单播|\n|dl_type=ethertype|匹配以太网协议类型，其中：\u003cbr /\u003edl_type=0x0800 代表 IPv4 协议\u003cbr /\u003edl_type=0x086dd 代表 IPv6 协议\u003cbr /\u003edl_type=0x0806 代表 ARP 协议|\n|nw_src=ip[/netmask]nw_dst=ip[/netmask]|当 dl_typ=0x0800 时，匹配源或者目标的 IPv4 地址，可以使 IP 地址或者域名|\n|nw_proto=proto|和 dl_type 字段协同使用。当 dl_type=0x0800 时，匹配 IP 协议编号\u003cbr /\u003e当 dl_type=0x086dd 代表 IPv6 协议编号|\n|table=number|指定要使用的流表的编号，范围是 0-254。在不指定的情况下，默认值为 0 通过使用流表编号，可以创建或者修改多个 Table 中的 Flow|\n|reg\u003cidx\u003e=value[/mask]|交换机中的寄存器的值。当一个数据包进入交换机时，所有的寄存器都被清零，用户可以通过 Action 的指令修改寄存器中的值|\n|tp_src=number|TCP/UDP/SCTP 源端口|\n|tp_dst=number|TCP/UDP/SCTP 目的端口|",
+			"TableAligns": [
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "|",
+				"id": "20240730175328-ocqo64g",
+				"updated": "20240730175328"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Properties": {
+										"id": ""
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "字段名称",
+											"Properties": {
+												"id": ""
+											}
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Properties": {
+										"id": ""
+									},
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "说明",
+											"Properties": {
+												"id": ""
+											}
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "in_port=port",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "传递数据包的端口的 OpenFlow 端口编号",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "dl_vlan=vlan",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "数据包的 VLAN Tag 值，范围是 0-4095，0xffff 代表不包含 VLAN Tag 的数据包",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "dl_vlan_pcp=priority",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "VLAN 优先级，改值取值区间为[0-7]。数字越大，表示优先级越高。",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "dl_src=\u003cMAC\u003e",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeBr",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeText",
+									"Data": "dl_dst=\u003cMAC\u003e",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "匹配源或者目标的 MAC 地址 01:00:00:00:00:00/01:00:00:00:00:00 代表广播地址 00:00:00:00:00:00/01:00:00:00:00:00 代表单播",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "dl_type=ethertype",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "匹配以太网协议类型，其中：",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeBr",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeText",
+									"Data": "dl_type=0x0800 代表 IPv4 协议",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeBr",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeText",
+									"Data": "dl_type=0x086dd 代表 IPv6 协议",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeBr",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeText",
+									"Data": "dl_type=0x0806 代表 ARP 协议",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "nw_src=ip[/netmask]nw_dst=ip[/netmask]",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当 dl_typ=0x0800 时，匹配源或者目标的 IPv4 地址，可以使 IP 地址或者域名",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "nw_proto=proto",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "和 dl_type 字段协同使用。当 dl_type=0x0800 时，匹配 IP 协议编号",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeBr",
+									"Properties": {
+										"id": ""
+									}
+								},
+								{
+									"Type": "NodeText",
+									"Data": "当 dl_type=0x086dd 代表 IPv6 协议编号",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "table=number",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "指定要使用的流表的编号，范围是 0-254。在不指定的情况下，默认值为 0 通过使用流表编号，可以创建或者修改多个 Table 中的 Flow",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "reg\u003cidx\u003e=value[/mask]",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "交换机中的寄存器的值。当一个数据包进入交换机时，所有的寄存器都被清零，用户可以通过 Action 的指令修改寄存器中的值",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "tp_src=number",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "TCP/UDP/SCTP 源端口",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"TableAligns": [
+						0,
+						0
+					],
+					"Properties": {
+						"id": ""
+					},
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "tp_dst=number",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Properties": {
+								"id": ""
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "TCP/UDP/SCTP 目的端口",
+									"Properties": {
+										"id": ""
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240730175355-dqfku89",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240730175355-dqfku89",
+				"updated": "20240730175355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "流表不仅要会添加，同时也要会删除。删除流表的命令是：ovs-ofctl del-flows  + 网桥 + 匹配条件",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175355-qzn0bjy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240730175355-qzn0bjy",
+				"updated": "20240730175355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "匹配条件一：入端口",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175355-hwv0l0e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240730175355-hwv0l0e",
+				"updated": "20240730175355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ovs-ofctl del-flows br-test in_port=1",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175355-jorjuja",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240730175355-jorjuja",
+				"updated": "20240730175355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "匹配条件二：源 ip 地址。删除去往 114.114.114.114 的流表",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175355-vyjb2wd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240730175355-vyjb2wd",
+				"updated": "20240730175355"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ovs-ofctl del-flows br-test ip,nw_src=114.114.114.114",
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		},
+		{
+			"ID": "20240730175355-xegt111",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240730175355-xegt111",
+				"updated": "20240730175355"
+			}
+		},
+		{
+			"ID": "20240730175922-5pfqkle",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"CodeBlockFenceChar": 96,
+			"CodeBlockFenceLen": 3,
+			"CodeBlockOpenFence": "YGBg",
+			"CodeBlockCloseFence": "YGBg",
+			"Properties": {
+				"id": "20240730175922-5pfqkle",
+				"updated": "20240730180004"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "在master节点上show出pod\nkubectl get pod -A -o wide\n进入上述show出的pod中\nkubectl exec -it httpd-7bdf87d7c7-82zcv -- sh\n查看ovn-central容器信息\nkubectl get pod -A -o wide|grep ovn-central\n查看ovn信息\nkubectl ko nbctl show\n\nkubectl ko nbctl ls-list\n查看监听端口\nnetstat -lntp\n\nmetr表配置\n\nkubectl ko nbctl meter-add s1 drop 2000 kbps\n\n kubectl ko nbctl meter-list\n\ns1: bands:\n\n  drop: 2000 kbps\n\nmeter表删除\n\nkubectl ko nbctl meter-del s1\n\n注意不指定名称时删除所有meter表\n\n新建个vpc 和subnet\n\n#more subnet-2023.yaml\n\napiVersion: [kubeovn.io/v1](http://kubeovn.io/v1)\nkind: Subnet\nmetadata:\nname: vpc2023-subnet2023\nspec:\ncidrBlock: 100.66.0.0/16\ndefault: false\ngateway: 100.66.0.254\nexcludeIps:\n\n* 100.66.0.254\n* 100.66.0.1\n  gatewayType: centralized\n  gatewayNode: \"bj-wlc-dev-com001\"\n  natOutgoing: true\n  vlan: vlan-2023\n  vpc: vpc2023\n\n#kubectl apply -f vpc-2023.yaml\n\n#kubectl get subnet\n",
+					"Properties": {
+						"id": ""
+					}
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```",
+					"CodeBlockFenceLen": 3,
+					"Properties": {
+						"id": ""
+					}
+				}
+			]
+		}
+	]
+}

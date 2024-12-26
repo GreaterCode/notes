@@ -1,0 +1,792 @@
+{
+	"ID": "20240911102135-etqb4ig",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20240911102135-etqb4ig",
+		"title": "linux新添加硬盘制作LVM卷并进行分区挂载",
+		"updated": "20240911102135"
+	},
+	"Children": [
+		{
+			"ID": "20240911102135-gzq2qw6",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240911102135-gzq2qw6",
+				"updated": "20240911102135"
+			}
+		},
+		{
+			"ID": "20240911102135-f2xjvy9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240911102135-f2xjvy9",
+				"updated": "20240911102135"
+			},
+			"Children": [
+				{
+					"ID": "20240911102135-q9iibgb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240911102135-q9iibgb",
+						"updated": "20240911102135"
+					},
+					"Children": [
+						{
+							"ID": "20240911102135-tlogukr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911102135-tlogukr",
+								"updated": "20240911102135"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "a",
+									"TextMarkAHref": "https://blog.csdn.net/linlin92tm/article/details/110185985",
+									"TextMarkTextContent": "https://blog.csdn.net/linlin92tm/article/details/110185985"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240911102135-g8bwwp7",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20240911102135-g8bwwp7",
+				"updated": "20240911102135"
+			}
+		},
+		{
+			"ID": "20240911153504-yacwgd6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153504-yacwgd6",
+				"updated": "20240911153506"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.查看新增的磁盘，需要使用root权限"
+				}
+			]
+		},
+		{
+			"ID": "20240911102135-t7cccx8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911102135-t7cccx8",
+				"updated": "20240911153531"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "fdisk -l"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240911153508-dd8izob",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153508-dd8izob",
+				"updated": "20240911153508"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.对磁盘进行分区"
+				}
+			]
+		},
+		{
+			"ID": "20240911102135-wuc1viq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911102135-wuc1viq",
+				"updated": "20240911225609"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 　　fdisk /dev/xvdb\n 　　1，输入：n\n 　　表示创建一个新的分区（new的意思）\n 　　2，输入：p\n 　　表示创建一个基本分区（p是基本分区，e是扩展分区）\n 　　3，选择分区编号，1~4，默认使用1，直接按回车即可。\n 　　4，选择分区起始点，使用默认即可，直接按回车。\n 　　5，选择分区终点，使用默认即可，直接按回车。\n 　　6，分区完成。"
+				}
+			]
+		},
+		{
+			"ID": "20240911225611-37139s3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911225611-37139s3",
+				"updated": "20240911225611"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.更改分区编号"
+				}
+			]
+		},
+		{
+			"ID": "20240911225610-hnyedue",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911225610-hnyedue",
+				"updated": "20240911225611"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 　　我们需要将分区类型改成linux lvm卷才能创建lvm。\n 　　输入：t\n 　　输入t表示更改分区编号\n 　　输入:L\n 　　大写的L表示查看所有编号\n 　　输入：8e\n 回车即可\n 　　输入：w\n 　　表示写入磁盘（write）\n 在进行下一步之前，我们说明一下pv、vg、lv的关系。\n 一个硬盘f分区组成一个pv（物理卷）\n 一个或者多个pv组成一个vg（卷组）\n 一个vg可以划分出多个lv（逻辑卷）"
+				}
+			]
+		},
+		{
+			"ID": "20240911153547-ibkun6n",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153547-ibkun6n",
+				"updated": "20240911153548"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4.创建pv"
+				}
+			]
+		},
+		{
+			"ID": "20240911153547-2i9h5oa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911153547-2i9h5oa",
+				"updated": "20240911153554"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 输入：pvcreate /dev/xvdb1\n 此时的磁盘分区是xvdb1，而不是xvdb了"
+				}
+			]
+		},
+		{
+			"ID": "20240911153556-qsg0akz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153556-qsg0akz",
+				"updated": "20240911153556"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.创建vg"
+				}
+			]
+		},
+		{
+			"ID": "20240911153555-nu8q5sb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911153555-nu8q5sb",
+				"updated": "20240911153600"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 输入：vgcreate vg_group /dev/xvdb1\n 此处的vg_group是vg组的名字，可以自定义"
+				}
+			]
+		},
+		{
+			"ID": "20240911153601-wkqlh6c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153601-wkqlh6c",
+				"updated": "20240911153601"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "6.创建lv"
+				}
+			]
+		},
+		{
+			"ID": "20240911153601-02r5cgp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911153601-02r5cgp",
+				"updated": "20240911153604"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 输入：lvcreate -L 60G -n vg_usr vg_group\n 盘全部划 ： lvcreate -l +100%FREE -n vg_usr vg_group\n 分配剩余的所有空间给lv： lvcreate -l 100%FREE -n lv名 vg名\n -L后面是要分给lv的大小\n -n新建一个名字为vg_usr的lv\n 使用的vg是vg_group"
+				}
+			]
+		},
+		{
+			"ID": "20240911153606-xghvcrc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153606-xghvcrc",
+				"updated": "20240911153606"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "7.查看系统的文件类型 "
+				}
+			]
+		},
+		{
+			"ID": "20240911153604-k1koyg0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911153604-k1koyg0",
+				"updated": "20240911153606"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 输入:df -Th\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-41b87fd70063165742cf03262cf0f1c5-20240911102136-g2j3kh4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240911102135-0cqpml3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911102135-0cqpml3",
+				"updated": "20240911153610"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "文件类型是ext4\n 格式化lv\n 输入：mkfs.ext4 /dev/vg_group/vg_usr\n mkfs后面是文件类型。\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-ce371cc60bb7350d2852b1066d3d120e-20240911102136-hnve998.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240911153611-q0ojm3i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153611-q0ojm3i",
+				"updated": "20240911153611"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "8.创建目录并挂载"
+				}
+			]
+		},
+		{
+			"ID": "20240911153610-wgcziw6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911153610-wgcziw6",
+				"updated": "20240911153613"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 创建目录：mkdir /test\n 挂载：mount /dev/vg_group/vg_usr /test\n 查看：df -h\n 我们发现系统已经挂载了刚刚创建的LV"
+				}
+			]
+		},
+		{
+			"ID": "20240911153613-hl7bbl0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911153613-hl7bbl0",
+				"updated": "20240911153614"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "9.编辑/etc/fstab文件，创建磁盘开机自动挂载"
+				}
+			]
+		},
+		{
+			"ID": "20240911135821-f418jnx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911135821-f418jnx",
+				"updated": "20240911135851"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\n​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "在这里插入图片描述"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/net-img-7526904be757c7f4fe5e45c608e50653-20240911102136-bq1pl63.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20240911135825-11z9nsl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20240911135825-11z9nsl",
+				"updated": "20240911135847"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": " vim /etc/fstab\n 在文件最后加入一行\n 第一列：要挂载的磁盘\n 第二列：挂载点\n 第三列：文件类型\n 第四列：挂载选项，详细参考man mount. 下面列出一些常用的选项：\n auto: 系统自动挂载，fstab默认就是这个选项\n ro: read-only\n rw: read-write\n defaults: rw, suid, dev, exec, auto, nouser, and async.\n 第五列：为dump选项，设置是否让备份程序dump备份文件系统，0为忽略，1为备份。\n 第六列：为fsck选项，告诉fsck程序以什么顺序检查文件系统，0为忽略。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20240911102802-fihvwy8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20240911102802-fihvwy8",
+				"updated": "20240911153624"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "10.重新挂载"
+				}
+			]
+		},
+		{
+			"ID": "20240911102800-iwnsr28",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911102800-iwnsr28",
+				"updated": "20240911103146"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "mount -a"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​\n 查看是否挂载成功df -h\n 至此，新磁盘创建lvm已完成，后续可以随时扩容lvm。"
+				}
+			]
+		},
+		{
+			"ID": "20240911102814-641xi9y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20240911102814-641xi9y",
+				"updated": "20240911103112"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "扩容lvm"
+				}
+			]
+		},
+		{
+			"ID": "20240911102814-1uqqual",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240911102814-1uqqual",
+				"updated": "20240911102900"
+			},
+			"Children": [
+				{
+					"ID": "20240911102900-a5ky2nh",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240911102900-a5ky2nh",
+						"updated": "20240911102900"
+					},
+					"Children": [
+						{
+							"ID": "20240911102900-vfs18a1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911102900-vfs18a1",
+								"updated": "20240911102900"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "扩容固定大小"
+								}
+							]
+						},
+						{
+							"ID": "20240911103118-hgpmhyv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911103118-hgpmhyv"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": " lvextend -L +100G /dev/mapper/vg_group-vg_user"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240911102909-nmex0wc",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240911102909-nmex0wc",
+				"updated": "20240911103033"
+			},
+			"Children": [
+				{
+					"ID": "20240911102910-hlcr85w",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240911102910-hlcr85w",
+						"updated": "20240911102910"
+					},
+					"Children": [
+						{
+							"ID": "20240911102910-z2y8xir",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911102910-z2y8xir",
+								"updated": "20240911102910"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "扩容剩余全部空间\n​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": " lvextend -l +100%FREE /dev/mapper/OAVG-OALV"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​ "
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240911102936-nutp2dw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240911102936-nutp2dw"
+					},
+					"Children": [
+						{
+							"ID": "20240911102936-blillvo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911102936-blillvo",
+								"updated": "20240911102942"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "之后使用resize2fs进行更新\n​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "resize2fs /dev/mapper/vg_group-vg_user"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​\n即可扩容完成\n"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20240911102946-1to6y5n",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240911102946-1to6y5n",
+						"updated": "20240911103033"
+					},
+					"Children": [
+						{
+							"ID": "20240911102946-t3takww",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911102946-t3takww"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "如果resize2fs出现错误："
+								}
+							]
+						},
+						{
+							"ID": "20240911102950-jejnar9",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20240911102950-jejnar9",
+								"updated": "20240911103033"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "resize2fs 1.42.9 (28-Dec-2013)\nresize2fs: Bad magic number in super-block while trying to open /dev/mapper/vg_group-vg_user\nCouldn’t find valid filesystem superblock.\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20240911103020-45xyd9g",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20240911103020-45xyd9g",
+				"updated": "20240911103133"
+			},
+			"Children": [
+				{
+					"ID": "20240911103127-xmwhmr5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20240911103127-xmwhmr5",
+						"updated": "20240911103133"
+					},
+					"Children": [
+						{
+							"ID": "20240911103127-zmtbdkz",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911103127-zmtbdkz",
+								"updated": "20240911103127"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "则使用下面的方式"
+								}
+							]
+						},
+						{
+							"ID": "20240911103129-3zq14l9",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20240911103129-3zq14l9",
+								"updated": "20240911103133"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "xfs_growfs /dev/mapper/vg_group-vg_user"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

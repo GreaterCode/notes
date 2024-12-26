@@ -1,0 +1,1035 @@
+{
+	"ID": "20241107010117-yg2dz03",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241107010117-yg2dz03",
+		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20241107010117-qmfroku\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20241107010901-j0aeo3w\u0026quot;,\u0026quot;scrollTop\u0026quot;:3111,\u0026quot;focusId\u0026quot;:\u0026quot;20241107010753-7k6cz9d\u0026quot;,\u0026quot;focusStart\u0026quot;:56,\u0026quot;focusEnd\u0026quot;:56}",
+		"title": "K8s 负载感知调度实践（koordinator \u0026amp; crane）",
+		"updated": "20241107010917"
+	},
+	"Children": [
+		{
+			"ID": "20241107010117-qmfroku",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010117-qmfroku",
+				"updated": "20241107010144"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "koordinator 和 crane 都是基于Scheduler Framework 进行实现的 负载感知插件。"
+				}
+			]
+		},
+		{
+			"ID": "20241107010146-sp76p9i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107010146-sp76p9i",
+				"updated": "20241107010152"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 背景"
+				}
+			]
+		},
+		{
+			"ID": "20241107010200-je8z9lp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010200-je8z9lp",
+				"updated": "20241107010203"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "koordinator 和 crane 都是基于Scheduler Framework 进行实现的 负载感知插件。"
+				}
+			]
+		},
+		{
+			"ID": "20241107010153-kf9hshd",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107010153-kf9hshd",
+				"updated": "20241107010154"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 开源方案对比 koordinator VS crane"
+				}
+			]
+		},
+		{
+			"ID": "20241107010258-gqnyowo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010258-gqnyowo",
+				"updated": "20241107010313"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "crane-scheduler 架构"
+				}
+			]
+		},
+		{
+			"ID": "20241107010318-rx65zxr",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010318-rx65zxr",
+				"updated": "20241107010330"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107010330-ea2tx6g.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107010407-p4nqjjo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010407-p4nqjjo"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107010413-u6nc4cq",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241107010413-u6nc4cq",
+				"updated": "20241107010413"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241107010413-rh77me7",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107010413-rh77me7",
+						"updated": "20241107010413"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "前置条件是安装了 Prometheus ， 从 Prometheus 中获取数据。"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107010417-juq09k1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010417-juq09k1",
+				"updated": "20241107010425"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "koord-scheduler 架构"
+				}
+			]
+		},
+		{
+			"ID": "20241107010418-bqqkm0r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010418-bqqkm0r",
+				"updated": "20241107010433"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107010433-srq40vc.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107010418-lvdvs2k",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241107010418-lvdvs2k",
+				"updated": "20241107010514"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241107010514-ctd1d2g",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107010514-ctd1d2g",
+						"updated": "20241107010514"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "监控指标是从  koordlet 中获取， koordlet 是一个 daemonset 类型的插件，负责收集指标，并存储在本地 Prometheus 中"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107010418-f97g2h3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010418-f97g2h3",
+				"updated": "20241107010521"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "对比"
+				}
+			]
+		},
+		{
+			"ID": "20241107010522-g7rnef6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010522-g7rnef6",
+				"updated": "20241107010537"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20241107010537-fs7sxnz.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107010604-613g5ef",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010604-613g5ef",
+				"updated": "20241107010604"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "综上，选用 koord-scheduler 。"
+				}
+			]
+		},
+		{
+			"ID": "20241107010219-4em8j8l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107010219-4em8j8l",
+				"updated": "20241107010221"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. koordinator 使用实践"
+				}
+			]
+		},
+		{
+			"ID": "20241107010615-26f1s7x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010615-26f1s7x",
+				"updated": "20241107010615"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "新增 UsageAggregatedDuration 为 18h 的时间段"
+				}
+			]
+		},
+		{
+			"ID": "20241107010615-5csasn9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010615-5csasn9",
+				"updated": "20241107010632"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n koordinator-system edit  cm slo-controller-config\n\ndata:\n  colocation-config: |\n    {\n      \"enable\": true,\n      \"metricAggregatePolicy\": {\n        \"durations\": [\n          \"5m\",\n          \"10m\",\n          \"30m\",\n          \"18h\"\n        ]\n      }\n    }\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010647-oazhzaj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010647-oazhzaj",
+				"updated": "20241107010647"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改 koordlet 中 Prometheus 的存储时间"
+				}
+			]
+		},
+		{
+			"ID": "20241107010647-iwbtbwg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010647-iwbtbwg",
+				"updated": "20241107010659"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n koordinator-system edit ds koordlet\n\n      containers:\n      - args:\n        - -addr=:9316\n        - -cgroup-root-dir=/host-cgroup/\n        - --logtostderr=true\n        - --tsdb-retention-duration=18h\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010709-5za2d0i",
+			"Type": "NodeBlockquote",
+			"Properties": {
+				"id": "20241107010709-5za2d0i",
+				"updated": "20241107010709"
+			},
+			"Children": [
+				{
+					"Type": "NodeBlockquoteMarker",
+					"Data": "\u003e"
+				},
+				{
+					"ID": "20241107010709-ggq18q5",
+					"Type": "NodeParagraph",
+					"Properties": {
+						"id": "20241107010709-ggq18q5",
+						"updated": "20241107010709"
+					},
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "可以使用promtool 工具进入 Pod 查看数据：./promtool  tsdb list /metric-data/"
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241107010716-awpp92p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010716-awpp92p",
+				"updated": "20241107010716"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "修改 阈值 触发规则， 需要重启 koord-scheduler 才生效。"
+				}
+			]
+		},
+		{
+			"ID": "20241107010716-9z8poea",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010716-9z8poea",
+				"updated": "20241107010722"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n koordinator-system edit cm  koord-scheduler-config\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010723-31sc24j",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010723-31sc24j",
+				"updated": "20241107010732"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "       aggregated:\n              usageThresholds:\n                cpu: 55\n                memory: 85\n              usageAggregationType: \"p99\"\n              scoreAggregationType: \"p99\"\n            estimatedScalingFactors:\n              cpu: 85\n              memory: 70\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010736-llkv7ig",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010736-llkv7ig",
+				"updated": "20241107010740"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl -n koordinator-system rollout restart deployment koord-scheduler\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010744-hgjcnel",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010744-hgjcnel",
+				"updated": "20241107010745"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "考虑到 公有云资源 可能有自己的 调度实现， 所以只改 IDC 机房的调度器，增加 mutatingwebhook 进行拦截修改，有问题可以快速回退。"
+				}
+			]
+		},
+		{
+			"ID": "20241107010753-yud48oa",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010753-yud48oa",
+				"updated": "20241107010753"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "生效方式："
+				}
+			]
+		},
+		{
+			"ID": "20241107010753-7k6cz9d",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010753-7k6cz9d",
+				"updated": "20241107010759"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl label ns ${NsName} koordinator-injection=enabled\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010805-81oj9yz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010805-81oj9yz",
+				"updated": "20241107010805"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "回退方式："
+				}
+			]
+		},
+		{
+			"ID": "20241107010805-dz2w833",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010805-dz2w833",
+				"updated": "20241107010811"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl label ns ${NsName} koordinator-injection-\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010831-yo2urvh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010831-yo2urvh",
+				"updated": "20241107010831"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "源代码地址：https://github.com/koordinator-sh/koordinator"
+				}
+			]
+		},
+		{
+			"ID": "20241107010831-gprmset",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010831-gprmset",
+				"updated": "20241107010831"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "魔改代码地址："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "https://github.com/clay-wangzhi/koordinator"
+				}
+			]
+		},
+		{
+			"ID": "20241107010831-eesk0oc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010831-eesk0oc",
+				"updated": "20241107010831"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "魔改代码 快速部署："
+				}
+			]
+		},
+		{
+			"ID": "20241107010841-7l7y3b4",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010841-7l7y3b4",
+				"updated": "20241107010843"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "git clone https://github.com/clay-wangzhi/koordinator\ncd koordinator/manifests\nkubectl apply -f setup/\nkubectl apply -f koordlet/\nkubectl apply -f koord-scheduler/\nkubectl apply -f koord-manager/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-gl6jxya",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241107010901-gl6jxya",
+				"updated": "20241107010917"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4. 测试"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-mygvynd",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-mygvynd",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1） 找出 负载较高的 Node"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-m3fzm67",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010901-m3fzm67",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl top node | sort -nk 3\nkubectl get nodemetrics.slo.koordinator.sh\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-pzacr05",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-pzacr05",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2） 给一个 负载较高的 Node + 几个 负载正常的 Node 打标签"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-grit0df",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010901-grit0df",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl label node $(NodeName) test=true\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-1rb2k5z",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-1rb2k5z",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3）找到应用所在 Ns，打标，设置 SchedulerName 为 koord-scheduler 是通过 mutatingwebhook 实现的"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-z3f7g2o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010901-z3f7g2o",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "kubectl label ns ${NsName} koordinator-injection=enabled\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-klxhz47",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-klxhz47",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "4）找一个应用，加上节点亲和性 和 Pod 反亲和性， 并把副本数 设置为 和 打标的 Node 数 相等"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-9qphx2r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241107010901-9qphx2r",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "spec:\n  replicas: 4\n  template:\n    spec:\n      affinity:\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n            - matchExpressions:\n              - key: test\n                operator: In\n                values:\n                - \"true\"\n        podAntiAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n          - labelSelector:\n              matchExpressions:\n              - key: appid\n                operator: In\n                values:\n                - $(AppidName)\n            topologyKey: kubernetes.io/hostname\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-wwdadz6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-wwdadz6",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5）查看结果，当有一个 Pod 处于 Pending ，且时间 Reson 包涵如下字样，代表设置成功"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-jp89yf1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-jp89yf1",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://mmbiz.qpic.cn/sz_mmbiz_png/muS5JJVFcwics7VdUmtFQV51nSK7Wo6PCr6FIxE6FewKe011ThAwTv7JJL074uX9fncLkDibFgFVvp72PKsyav9g/640?wx_fmt=png\u0026from=appmsg\u0026tp=webp\u0026wxfrom=5\u0026wx_lazy=1\u0026wx_co=1"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-tynza4s",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241107010901-tynza4s",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "参考链接："
+				}
+			]
+		},
+		{
+			"ID": "20241107010901-j0aeo3w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241107010901-j0aeo3w",
+				"updated": "20241107010901"
+			},
+			"Children": [
+				{
+					"ID": "20241107010901-j0d1zsw",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107010901-j0d1zsw",
+						"updated": "20241107010901"
+					},
+					"Children": [
+						{
+							"ID": "20241107010901-zlko4lq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107010901-zlko4lq",
+								"updated": "20241107010901"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Crane-Scheduler:真实工作负载感知的调度器设计与实现：https://cloud.tencent.com/developer/article/2296515?areaId=106005"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241107010901-41121h7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241107010901-41121h7",
+						"updated": "20241107010901"
+					},
+					"Children": [
+						{
+							"ID": "20241107010901-kgm3o2t",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241107010901-kgm3o2t",
+								"updated": "20241107010901"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "koordinator 负载感知调度：https://koordinator.sh/zh-Hans/docs/user-manuals/load-aware-scheduling"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
