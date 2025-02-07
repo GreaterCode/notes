@@ -1,0 +1,1645 @@
+{
+	"ID": "20241227013938-jpcx4m3",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20241227013938-jpcx4m3",
+		"title": "Centos 7 配置本地网络YUM源，并定期自动同步阿里源",
+		"type": "doc",
+		"updated": "20241227014706"
+	},
+	"Children": [
+		{
+			"ID": "20241227013938-02j2898",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-02j2898",
+				"updated": "20241227014033"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-bbwt288",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-bbwt288",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "思路"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-wvk1wn0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-wvk1wn0",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过yum配置阿里云yum源，将下载的rpm包保留到本地（即同步下载rpm包），创建本地yum仓库，通过网站服务器（nginx或者apache，本文将采用apapche作为网站服务器）将本地yum源配置成内网可访问yum源，最后写个定时执行的脚本，自动同步阿里云yum源并下载最新的rpm软件包。"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-s6q0s7x",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-s6q0s7x",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "基本环境："
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-atigl73",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-atigl73",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-qua390t",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-qua390t",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-21ngdem",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-21ngdem",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "关闭firewalld"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241227013938-1btc1a4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-1btc1a4",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-ehif7to",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-ehif7to",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "关闭Selinux（由于是内网的缘故，不太需要繁琐的配置防火墙和selinux）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241227013938-icj47d3",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-icj47d3",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-eyjmhxs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-eyjmhxs",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装createrepo"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-586o9bt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-586o9bt",
+				"updated": "20241227014025"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-fgtovlm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-fgtovlm",
+				"updated": "20241227014622"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第一步：配置阿里云yum源，检查可用性"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-4wyo9wz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-4wyo9wz",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "首先我们需要准备一台可以连接外网的Centos7服务器。配置阿里yum源，安装阿里云yunm源，检查其可用性。"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-8lvp8ul",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-8lvp8ul",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-796lw9j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-796lw9j",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-vuc5omc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-vuc5omc",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "备份原有的yum文件："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-0qjssjp",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-0qjssjp",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mv /etc/yum.repos.d/* /root/bak/yum\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-xvmr87x",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-xvmr87x",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-i9v86o0",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-i9v86o0",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-6ue8yv1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-6ue8yv1",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装阿里云yum源文件"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-oovi0ys",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-oovi0ys",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "wget -o /etc/yum.repos.d/CentOSBase.repo https://mirrors.aliyun.com/repo/Centos-7.repo\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-hoza7o0",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-hoza7o0",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-l51rlsm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-l51rlsm",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-vp1pcml",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-vp1pcml",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过阿里云的yum源安装epel源"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-s5vzwj7",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-s5vzwj7",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "yum install -y epel-release\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-80hx4d6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-80hx4d6",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-jitoru6",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-jitoru6",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-0atdznj",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-0atdznj",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "清除原有的yum缓存，建立新的yum源的缓存,列出可用repo"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-bnbyeq5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-bnbyeq5",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "yum clean all \u0026\u0026 yum makecache \u0026\u0026 yum repolist\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-35tms90",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-35tms90",
+				"updated": "20241227014029"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​​"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-stye0fw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-stye0fw",
+				"updated": "20241227014532"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第二步"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-lk3qja6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-lk3qja6",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "安装createrepo，安装apache网站服务器（httpd），准备rpm包存放路径"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-kfx69k5",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-kfx69k5",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-6lrcr5z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-6lrcr5z",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-uuog9pk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-uuog9pk",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装相关依赖包"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-euqokan",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-euqokan",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "yum install -y httpd yum-utils crontabs createrepo make cmake gcc gcc-c++ pcre-devel zlib-devel openssl openssl-devel\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-6l9skiv",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-6l9skiv",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-w9brvtj",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-w9brvtj",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-g47uuj5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-g47uuj5",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "准备数据存储路径，我们要准备一个大一点的分区，阿里的yum源体积还是挺大的，而内网源就是把云yum源同步到本地。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-bh845ag",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-bh845ag",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "mkdir -p /data/repo\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-7p1f36z",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-7p1f36z",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-htmp179",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-htmp179",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-y5084zn",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-y5084zn",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "更改目录权限"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-trxfpd0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-trxfpd0",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "chown -R apache:apache /data/repo \u0026\u0026 chmod -R 755 /data/repo\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-l6t8v7r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-l6t8v7r",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "tips参数："
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-g95eeuo",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-g95eeuo",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-byj4tsf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-byj4tsf",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-8e8s3zq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-8e8s3zq",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "-n指定下载最新软件包"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20241227013938-j6zum9f",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-j6zum9f",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-2idlsv3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-2idlsv3",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "-p指定目录，指定本地的源–repoid（如果不指定就同步本地服务器所有的源），下载过程比较久"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-xpkmtie",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-xpkmtie",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "reposync -n --repoid=extras --repoid=updates --repoid=base --repoid=epel -p /data/repo\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-ynr5xb2",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-ynr5xb2",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-vq7jvyb",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-vq7jvyb",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-cvxt8d5",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-cvxt8d5",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "等待下载完成 查看下载后的文件大小"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-ih6rtr3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-ih6rtr3",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "du -sh /data/repo\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-41z3yhz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-41z3yhz",
+				"updated": "20241227014216"
+			}
+		},
+		{
+			"ID": "20241227013938-54h9nm5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-54h9nm5",
+				"updated": "20241227014536"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第三步：创建仓库索引"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-cga5hbw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-cga5hbw",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "createrepo -po /data/repo/base/ /data/repo/base/\ncreaterepo -po /data/repo/extras/ /data/repo/extras/\ncreaterepo -po /data/repo/updates/ /data/repo/updates/\ncreaterepo -po /date/repo/epel/ /data/repo/epel/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-73881ld",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-73881ld",
+				"updated": "20241227014540"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第四步：更新数据源"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-bd2j9hn",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-bd2j9hn",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-gz6jzg7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-gz6jzg7",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-l5xftn1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-l5xftn1",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "当公网yum源更新的时候，我们需要给本地的软件仓库中的软件包也一起更新"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-snm6i3o",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-snm6i3o",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "createrepo --update /data/repo/base/\ncreaterepo --update /data/repo/extras/\ncreaterepo --update /data/repo/updates/\ncreaterepo --update /data/repo/epel/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-5oq8x0b",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-5oq8x0b",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-5r9rfh1",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-5r9rfh1",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-di6s1ro",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-di6s1ro",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "这里我们可以写一个脚本结合计划任务，让服务器自己更新软件包"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-iuy6yy8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-iuy6yy8",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "脚本内容："
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-xcqrqkq",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-xcqrqkq",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\necho \"更新软件包\"\nyum update\necho \"开始同步centos7的yum源\"\nreposync -n --repoid=docker-ce-stable --repoid=extras --repoid=updates --repoid=base --repoid=epel --repoid=nginx -p /data\necho \"同步centos7和epel、nginx的yum源完成！！！\"\n\n\n#更新元数据\ncreaterepo --update /data/base/\ncreaterepo --update /data/nginx/\ncreaterepo --update /data/extras/\ncreaterepo --update /data/updates/\ncreaterepo --update /data/epel/\ncreaterepo --update /data/docker-ce-stable/\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-e6gmxrz",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-e6gmxrz",
+				"updated": "20241227014543"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第五步：创建计划任务"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-cnmomuk",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-cnmomuk",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-k9l539o",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-k9l539o",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-402wv1b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-402wv1b",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "使用crontab创建计划任务"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-hb0fp32",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-hb0fp32",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以使用crontab -e命令，创建计划任务，定时执行yum软件包的更新任务"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-pv5tl90",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-pv5tl90",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "* */1 * * * /usr/sbin/ntpdate cn.pool.ntp.org\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-zui86ly",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-zui86ly",
+				"updated": "20241227014658"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第六步：启动并配置web服务器"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-rak186w",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-rak186w",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-2qaxs46",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-2qaxs46",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-dwxpe3n",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-dwxpe3n",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "启动httpd服务并设置开机自动启动"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-k2fglq6",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-k2fglq6",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl enable --now httpd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-beht4gs",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-beht4gs",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-fbaumm4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-fbaumm4",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-2xkloin",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-2xkloin",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "编辑httpd配置文件："
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-shb50b9",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-shb50b9",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "vim /etc/httpd/conf.d/yum.conf\n\n\n\u003cVirtualHost *:80\u003e\n  DocumentRoot /data/repo/\n  ServerName repo.example.org\n  ErrorLog logs/repo.example.org-error_log\n  CustomLog logs/repo.example.org-access_log common\n\u003c/VirtualHost\u003e\n\n\n### 创建yum默认首页index.html\ncat \u003c\u003c EOF \u003e /data/repo/index.html\n\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003cmeta charset=\"utf-8\"\u003e\n\u003ctitle\u003eCentOS 7 镜像\u003c/title\u003e\n\n\n\u003cscript\u003edocument.createElement(\"myHero\")\u003c/script\u003e\n\u003cstyle\u003e\nmyHero {\n        display: block;\n        background-color: #ddd;\n        padding: 10px;\n        font-size: 20px;\n} \n\u003c/style\u003e \n\n\n\u003c/head\u003e\n\u003cbody\u003e\n    \u003ch1\u003e简介\u003c/h1\u003e\n    \u003chr\u003e\n    \u003cp\u003eCentOS，是基于 Red Hat Linux 提供的可自由使用源代码的企业级 Linux 发行版本，是一个稳定，可预测，可管理和可复制的免费企业级计算平台。\u003c/p\u003e\n    \u003chr\u003e\n    \u003cbr\u003e\n    \u003cbr\u003e\n\n\n        \u003ch1\u003eCentOS 7 配置内部YUM源\u003c/h1\u003e\n    \u003cbr\u003e\n        \u003ch2\u003e1、备份\u003c/h2\u003e\n        \u003cmyHero\u003emv /etc/yum.repos.d/* /opt/yum/\u003c/myHero\u003e\n    \u003cbr\u003e\n        \u003ch2\u003e2、下载新的 CentOS-Base.repo 到 /etc/yum.repos.d/ \u003c/h2\u003e\n        \u003cmyHero\u003ecurl -o /etc/yum.repos.d/CentOS-Base.repo http://repo.example.org/CentOS-Base.repo\u003c/myHero\u003e\n    \u003cbr\u003e\n        \u003ch2\u003e3、运行 yum makecache 生成缓存\u003c/h2\u003e\n    \u003cbr\u003e\n        \u003ch2\u003e4、运行 yum repolist   查看已经生成缓存\u003c/h2\u003e\n    \u003cbr\u003e\n    \u003cbr\u003e\n\n\n\u003c/body\u003e\n\u003c/html\u003e\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-pe1zmkx",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-pe1zmkx",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-liid36x",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-liid36x",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-fx13yvt",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-fx13yvt",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "编辑好配置文件后，重启一下httpd服务"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-8ph5ahy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-8ph5ahy",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "systemctl restart httpd\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-mv4gxjz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-mv4gxjz",
+				"updated": "20241227014407"
+			}
+		},
+		{
+			"ID": "20241227013938-qgwlewf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-qgwlewf",
+				"updated": "20241227014702"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第七步：编写本地客户端的yum配置文件"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-83939ai",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-83939ai",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "cat \u003c\u003c EOF \u003e /data/repo/CentOS-Base.repo\n[base]\nname=CentOS-$releasever - Base - repo.example.org\nfailovermethod=priority\nbaseurl=http://repo.example.org/base/\nenable=1\ngpgcheck=0\n \n#released updates \n[updates]\nname=CentOS-$releasever - Updates - repo.example.org\nfailovermethod=priority\nbaseurl=http://repo.example.org/updates/\nenable=1\ngpgcheck=0\n \n#additional packages that may be useful\n[extras]\nname=CentOS-$releasever - Extras - repo.example.org\nfailovermethod=priority\nbaseurl=http://repo.example.org/extras/\nenable=1\ngpgcheck=0\n \n#additional packages that may be useful\n[epel]\nname=CentOS-$releasever - Epel - repo.example.org\nfailovermethod=priority\nbaseurl=http://repo.example.org/epel/\nenable=1\ngpgcheck=0\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-rf1xntg",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-rf1xntg",
+				"updated": "20241227014413"
+			}
+		},
+		{
+			"ID": "20241227013938-2p93jvw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20241227013938-2p93jvw",
+				"updated": "20241227014706"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "第八步：客户端配置DNS解析，配置yum源"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-aq0rr5q",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-aq0rr5q",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-iugqcn9",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-iugqcn9",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-3pw6fm3",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-3pw6fm3",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "编写一下主机的hosts文件，将repo.example.org 跟你配置的yum本地源的服务器IP解析配置一下"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-19bg67l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-19bg67l",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "图片"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://mmbiz.qpic.cn/mmbiz_jpg/vLOB3aHm1F4yZHhYb9yENVeJUnSibICNibibcmdmTVHTERK9Uv0M3zicnpn0brAxcLibrhF0Ng7iaVmjtiaHS9eI8nuxA/640?wx_fmt=jpeg\u0026from=appmsg"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-4iayw5u",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20241227013938-4iayw5u",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"ID": "20241227013938-nn24ny2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20241227013938-nn24ny2",
+						"updated": "20241227013938"
+					},
+					"Children": [
+						{
+							"ID": "20241227013938-we6ymd4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20241227013938-we6ymd4",
+								"updated": "20241227013938"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "配置yum客户端"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-xuaie5g",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20241227013938-xuaie5g",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "curl -o /etc/yum.repos.d/CentOS-Base.repo http://repo.example/CentOS-Base.repo\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20241227013938-3voj8l0",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-3voj8l0",
+				"updated": "20241227014422"
+			}
+		},
+		{
+			"ID": "20241227013938-1u8ml1v",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20241227013938-1u8ml1v",
+				"updated": "20241227013938"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		}
+	]
+}

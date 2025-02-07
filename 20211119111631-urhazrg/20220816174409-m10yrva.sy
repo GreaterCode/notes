@@ -6,7 +6,8 @@
 		"id": "20220816174409-m10yrva",
 		"scroll": "{\u0026quot;startId\u0026quot;:\u0026quot;20220816174445-t5ay3qx\u0026quot;,\u0026quot;endId\u0026quot;:\u0026quot;20240515150103-jesae6b\u0026quot;,\u0026quot;scrollTop\u0026quot;:13726,\u0026quot;focusId\u0026quot;:\u0026quot;20220816184436-qi66y96\u0026quot;,\u0026quot;focusStart\u0026quot;:5,\u0026quot;focusEnd\u0026quot;:5}",
 		"title": "便捷操作",
-		"updated": "20241031151404"
+		"type": "doc",
+		"updated": "20250207144433"
 	},
 	"Children": [
 		{
@@ -1682,7 +1683,7 @@
 			"HeadingLevel": 1,
 			"Properties": {
 				"id": "20240627160413-64j54qr",
-				"updated": "20240627160432"
+				"updated": "20250207144433"
 			},
 			"Children": [
 				{
@@ -1716,6 +1717,180 @@
 				{
 					"Type": "NodeText",
 					"Data": "echo 'xxxxxx'| passwd  --stdin  USERNAME"
+				}
+			]
+		},
+		{
+			"ID": "20250207141557-9rcfc3i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250207141557-9rcfc3i",
+				"style": "line-height: 22px;",
+				"updated": "20250207144433"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for h in `kubectl get node  -owide --no-headers | awk '{print $6}' `;do echo \"开始修改${h}节点密码\";ssh -i id_rsa -o StrictHostKeyChecking=no ccadmin@$h \"echo 'user:xxx | sudo chpasswd\";echo \"节点${h}密码修改完成\";done\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250206102524-ssq3ode",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250206102524-ssq3ode",
+				"updated": "20250207111256"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "24. 存储巡检"
+				}
+			]
+		},
+		{
+			"ID": "20250206102657-ouzs2qb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250206102657-ouzs2qb",
+				"updated": "20250206102700"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "多路径巡检"
+				}
+			]
+		},
+		{
+			"ID": "20250206102540-muz6oac",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250206102540-muz6oac",
+				"style": "line-height: 22px;",
+				"updated": "20250206102654"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for i in `sudo kubectl get nodes -o wide|grep compute|awk '{print $6}'`; do sudo ssh -i id_rsa ccadmin@$i -o \"StrictHostKeyChecking no\"  \"sudo echo $i \u0026\u0026 sudo multipath -ll|grep -C2 -i failed\"; done\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250206102703-od3ao9b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250206102703-od3ao9b",
+				"updated": "20250206102713"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "检查指定计算节点IP显示所有的ecs的路径"
+				}
+			]
+		},
+		{
+			"ID": "20250206102714-jy7pb20",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250206102714-jy7pb20",
+				"style": "line-height: 22px;",
+				"updated": "20250206102732"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "for i in `sudo kubectl get pod -A  -owide | grep virt-launcher-ecs-  | grep 10.100.134.32| awk '{print $1$2}'`;\ndo\n   tenant=`echo $i |  cut -d 'v' -f1`;\n   ecs=`echo ${i##*virt}` ;\n   echo \"tenant=$tenant ecs=virt$ecs\";\n   sudo kubectl exec -it -n $tenant  virt$ecs -- ls -lsh /dev/|grep ecs-    ;\n   sudo kubectl exec -it -n $tenant  virt$ecs -- ls -lsh /var/run/kubevirt/hotplug-disks/| grep pvc-volume;   \t   \ndone\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250207111255-75n5wn2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250207111255-75n5wn2",
+				"updated": "20250207111255"
+			}
+		},
+		{
+			"ID": "20250207111255-gcr5y83",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250207111255-gcr5y83",
+				"updated": "20250207111309"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "25. 虚拟机操作"
+				}
+			]
+		},
+		{
+			"ID": "20250207111304-pt39ef8",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250207111304-pt39ef8",
+				"style": "line-height: 22px;",
+				"updated": "20250207111309"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/bin/bash\n# V5-虚机操作.sh 通过ecs-server接口获取信息、操作虚拟机\n\n# 显示帮助信息\nshow_help() {\n    echo \"虚机管理工具，请在cell0集群执行\"\n    echo \"用法: $0 [选项] [虚机ID] \u003c配置ID\u003e\"\n    echo \"选项:\"\n    echo \"  -q, --query              查询虚机信息\"\n    echo \"  -s, --start              启动虚机\"\n    echo \"  -t, --stop               关闭虚机\"\n    echo \"  -r, --restart            重启虚机\"\n    echo \"  -c, --cold-migrate       冷迁虚机\"\n    echo \"  -l, --live-migrate       热迁虚机\"\n    echo \"  -a, --adjust-config      调整配置\"\n    echo \"  -v, --validate-node      获取迁移可调度节点\"\n    echo \"  -h, --help               显示帮助信息\"\n}\n\nLOG_INFO(){\n\n    local green='\\033[32m'\n    local NC='\\033[0m' # No Color\n    local msg=$1\n    local now=`date  +\"%Y-%m-%d %H:%M:%S\"`\n\n    echo -e \"${now} ${green}INFO ${NC} ${msg}\"\n}\n\nLOG_ERROR(){\n\n    local green='\\033[0;31m'\n    local NC='\\033[0m' # No Color\n    local msg=$1\n    local now=`date  +\"%Y-%m-%d %H:%M:%S\"`\n\n    echo -e \"${now} ${green}ERROR${NC} ${msg}\"\n}\n\n# 定义操作函数\nstart_vm() {\n    local vm_id=$1\n    query_vm $vm_id\n    LOG_INFO \"开启虚机: $vm_id\"\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id/start\n    local temp=$$.tmp\n    curl -sk -X PUT $url \u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ $code != \"Success\" ]; then\n        LOG_ERROR \"开机失败！\"\n        cat $temp |jq\n        rm -f $temp\n        exit 1\n    else\n        LOG_INFO \"开启虚机: $vm_id 请求下发成功\"\n    fi\n    rm -f $temp\n}\n\nrestart_vm() {\n    local vm_id=$1\n    query_vm $vm_id\n    LOG_INFO \"重启虚机: $vm_id\"\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id/restart\n    local temp=$$.tmp\n    curl -sk -X PUT $url -d '{\"gracePeriodSeconds\":0}'\u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ $code != \"Success\" ]; then\n        LOG_ERROR \"重启虚机 $vm_id 失败！\"\n        cat $temp |jq\n        rm -f $temp\n        exit 1\n    else\n        LOG_INFO \"重启虚机: $vm_id 请求下发成功\"\n    fi\n    rm -f $temp\n}\n\nstop_vm() {\n    local vm_id=$1\n    query_vm $vm_id\n    LOG_INFO \"关闭虚机: $vm_id\"\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id/stop\n    local temp=$$.tmp\n    curl -sk -X PUT $url -d '{\"gracePeriodSeconds\":0}' \u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ $code != \"Success\" ]; then\n        LOG_ERROR \"关机失败！\"\n        cat $temp |jq\n        rm -f $temp\n        exit 1\n    else\n        LOG_INFO \"关闭虚机: $vm_id 请求下发成功\"\n    fi\n    rm -f $temp\n}\n\nquery_vm() {\n    local vm_id=$1\n    LOG_INFO \"获取虚机 $vm_id 信息中 ...\"\n    # https://ecs-service.region-xc-0.intranet.testcloud.com/api/ecs/v1/instances/ecs-0u5blryi8r4gt7\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id\n    local temp=$$.tmp\n    curl -sk $url \u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ $code != \"Success\" ]; then\n        LOG_ERROR \"获取虚机信息失败！\"\n        cat $temp |jq\n    else\n        displayName=$(cat $temp |jq -r .data.displayName)\n        tenantId=$(cat $temp |jq -r .data.tenantId)\n        status=$(cat $temp |jq -r .data.status)\n        LOG_INFO \"虚机基本信息：\"\n        echo \"虚机名:$displayName 虚机ID:$vm_id 所属租户:$tenantId 状态:$status\"\n        LOG_INFO \"虚机镜像信息：\"\n        imageId=$(cat $temp |jq -r .data.imageId)\n        imageUrl=$(cat $temp |jq -r .data.imageUrl)\n        imgServerUri=api/image/v1/images\n\tlocal imgServerUrl=https://$imgDomain/$imgServerUri/$imageId\n\timgTemp=imgTemp-$$.tmp\n\tcurl -sk $imgServerUrl \u003e $imgTemp\n        code=$(cat $imgTemp |jq -r .code)\n        if [ $code != \"Success\" ]; then\n            LOG_ERROR \"获取镜像信息失败！\"\n            cat $imgTemp |jq\n\telse\n\t    imageName=$(cat $imgTemp |jq -r .data.name)\n\t    imageMinSize=$(cat $imgTemp |jq -r .data.minDisk)\n\t    imageArch=$(cat $imgTemp |jq -r .data.cpuArch)\n\t    imageStatus=$(cat $imgTemp |jq -r .data.status)\n\tfi\n\trm -f $imgTemp\n        echo \"镜像名:$imageName 镜像ID:$imageId 大小:$imageMinSize 架构:$imageArch 状态:$imageStatus 镜像URL: $imageUrl\"\n        LOG_INFO \"虚机集群信息：\"\n        region=$(cat $temp |jq -r .data.region)\n        az=$(cat $temp |jq -r .data.az)\n        cell=$(cat $temp |jq -r .data.cell)\n        nodeName=$(cat $temp |jq -r .data.nodeName)\n        echo \"REGION:$region AZ:$az CELL:$cell 宿主机:$nodeName\"\n        LOG_INFO \"虚机规格信息：\"\n        flavorName=$(cat $temp |jq -r .data.flavor.name)\n        flavorId=$(cat $temp |jq -r .data.flavor.flavorId)\n        vcpu=$(cat $temp |jq -r .data.flavor.cpu)\n        ram=$(cat $temp |jq -r .data.flavor.ram)\n        echo \"规格名:$flavorName 规格ID:$flavorId 规格大小:${vcpu}C${ram}G\"\n        LOG_INFO \"虚机主网卡信息：\"\n        vpcId=$(cat $temp |jq -r .data.networkMappings[0].vpcId)\n        subnetId=$(cat $temp |jq -r .data.networkMappings[0].subnetId)\n        portId=$(cat $temp |jq -r .data.networkMappings[0].portId)\n        ipv4Address=$(cat $temp |jq -r .data.networkMappings[0].ipv4Address)\n        echo \"vpcId:$vpcId subnetId:$subnetId portId:$portId ipv4Address:$ipv4Address\"\n        LOG_INFO \"虚机系统盘信息：\"\n        volumeName=$(cat $temp |jq -r .data.blockDeviceMappings[0].name)\n        volumeId=$(cat $temp |jq -r .data.blockDeviceMappings[0].volumeId)\n        volumeUuid=$(cat $temp |jq -r .data.blockDeviceMappings[0].volumeUuid)\n        volumeType=$(cat $temp |jq -r .data.blockDeviceMappings[0].volumeType)\n        volumeSize=$(cat $temp |jq -r .data.blockDeviceMappings[0].volumeSize)\n        echo \"volumeName:$volumeName volumeId:$volumeId volumeUuid:$volumeUuid volumeType:$volumeType volumeSize:$volumeSize\"\n        volumeCount=$(cat $temp |jq -r '.data.blockDeviceMappings |length')\n        if [ $volumeCount -gt 1 ]; then\n            LOG_INFO \"虚机数据盘信息：\"\n            for n in $(seq 1 $(expr $volumeCount - 1)); do\n                echo \"数据盘$n:\"\n                diskName=$(cat $temp |jq -r .data.blockDeviceMappings[$n].name)\n                volumeName=$(cat $temp |jq -r .data.blockDeviceMappings[$n].name)\n                volumeId=$(cat $temp |jq -r .data.blockDeviceMappings[$n].volumeId)\n                volumeUuid=$(cat $temp |jq -r .data.blockDeviceMappings[$n].volumeUuid)\n                volumeType=$(cat $temp |jq -r .data.blockDeviceMappings[$n].volumeType)\n                volumeSize=$(cat $temp |jq -r .data.blockDeviceMappings[$n].volumeSize)\n                echo \"volumeName:$volumeName volumeId:$volumeId volumeUuid:$volumeUuid volumeType:$volumeType volumeSize:$volumeSize\"\n            done\n        fi\n        echo \"\"\n    fi\n    rm -f $temp\n}\n\ncold_migrate_vm() {\n    local vm_id=$1\n    query_vm $vm_id\n    #validate_node $vm_id\n    LOG_INFO \"冷迁移虚机: $vm_id\"\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id/cold-migrate\n    local temp=$$.tmp\n    dest=$2\n    curl -sk -X POST $url -d \"{\\\"nodeName\\\": \\\"$dest\\\"}\" \u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ $code != \"Success\" ]; then\n        LOG_ERROR \"冷迁移失败！\"\n        cat $temp |jq\n        rm -f $temp\n        exit 1\n    else\n        LOG_INFO \"冷迁移虚机: $vm_id 请求下发成功\"\n    fi\n    rm -f $temp\n}\n\nlive_migrate_vm() {\n    local vm_id=$1\n    #query_vm $vm_id\n    LOG_INFO \"热迁移虚机: $vm_id\"\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id/live-migrate\n    local temp=$$.tmp\n    dest=$2\n    curl -sk -X POST $url -d \"{\\\"nodeName\\\": \\\"$dest\\\"}\" \u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ $code != \"Success\" ]; then\n        LOG_ERROR \"热迁移失败！\"\n        cat $temp |jq\n        rm -f $temp\n        exit 1\n    else\n        LOG_INFO \"热迁移虚机: $vm_id 请求下发成功\"\n    fi\n    rm -f $temp\n}\n\nvalidate_node() {\n    local vm_id=$1\n    LOG_INFO \"获取迁移虚机 $vm_id 可调度节点：\"\n    local temp=$$.tmp\n    local url=https://$ecsDomain/$ecsUri/instances/$vm_id/schedulable-nodes\n    curl -sk $url \u003e $temp\n    code=$(cat $temp |jq -r .code)\n    if [ \"$code\" != \"Success\" ]; then\n        LOG_ERROR \"获取可调度节点失败！\"\n        cat $temp |jq\n        rm -f $temp\n        exit 1\n    else\n        LOG_INFO \"获取可调度节点请求下发成功\"\n        dests=$(cat $temp |jq .data[])\n        if [[ -z $dests ]]; then\n            LOG_ERROR \"没有可调度节点\"\n        else\n            LOG_INFO \"虚机 $vm_id 可迁移节点为：\\n$dests\"\n        fi\n    fi\n    rm -f $temp\n}\n\nadjust_config() {\n    local vm_id=$1\n    local config_id=$2\n    echo \"调整配置: 虚机ID=$vm_id, 配置ID=$config_id\"\n    # 在这里编写调整配置的具体操作\n}\n\n# 如果没有提供参数，则显示帮助信息并退出\nif [[ $# -lt 2 ]]; then\n    show_help\n    exit 1\nfi\n\n#判断命令是否存在\nprogram_exists() {\n    local ret='0'\n    command -v $1 \u003e/dev/null 2\u003e\u00261 || { local ret='1'; }\n\n    # fail on non-zero return value\n    if [ \"$ret\" -ne 0 ]; then\n        return 1\n    fi\n\n    return 0\n}\n\n# 判断当前环境使用的哪个命令\nif $(program_exists kubectl) ; then\n  ctlCMD=kubectl\nelif $(program_exists oc) ; then\n  ctlCMD=oc\nelif $(program_exists ccos) ; then\n  ctlCMD=ccos\nelse\n  echo \"没有可用的k8s命令行工具（kubectl/oc/ccos）\"\n  exit 1\nfi\n\n#ctlCMD=kubectl\n#ctlCMD=oc\n#ctlCMD=ccos\necsDomain=$($ctlCMD get route -n ccos-product-ecs ecs-service --no-headers |awk '{print $2}')\nif [ -z $ecsDomain ]; then\n    LOG_ERROR \"获取ecs route 失败，请确认命令：$ctlCMD get route -n ccos-product-ecs ecs-service 是否能正确执行\"\n    exit 1\nfi\necsUri=api/ecs/v1\n\nimgDomain=$($ctlCMD get route -n ccos-product-ecs ecs-image --no-headers |awk '{print $2}')\nif [ -z $imgDomain ]; then\n    LOG_ERROR \"获取ecs route 失败，请确认命令：$ctlCMD get route -n ccos-product-ecs ecs-image 是否能正确执行\"\n    exit 1\nfi\n\n\n# 解析命令行选项和参数\nwhile [[ $# -gt 0 ]]; do\n    case $1 in\n        -q|--query)\n            query_vm $2\n            exit 0\n            ;;\n        -s|--start)\n            start_vm $2\n            exit 0\n            ;;\n        -t|--stop)\n            stop_vm $2\n            exit 0\n            ;;\n        -r|--restart)\n            restart_vm $2\n            exit 0\n            ;;\n        -c|--cold-migrate)\n            if [[ -z $3 ]]; then\n                LOG_ERROR \"错误: 冷迁移操作必须提供目标节点参数，请从以下输出中选择目标节点\"\n                validate_node $2\n                exit 1\n            fi\n            cold_migrate_vm $2 $3\n            exit 0\n            ;;\n        -l|--live-migrate)\n            # $2是ecs-id $3为目标主机，不提供则由系统调度\n            # 例：sh ecs_operation.sh -l ecs-y60ui1qnbp6ei9 whr1a1-computer7-504b09u08\n            live_migrate_vm $2 $3\n            exit 0\n            ;;\n        -a|--adjust-config)\n            if [[ -z $3 ]]; then\n                echo \"错误: 调整配置操作需要提供配置ID参数\"\n                exit 1\n            fi\n            adjust_config $2 $3\n            exit 0\n            ;;\n        -v|--validate-node)\n            validate_node $2\n            exit 0\n            ;;\n        -?|--help)\n            show_help\n            exit 0\n            ;;\n        *)\n            echo \"未知选项: $1\"\n            exit 1\n            ;;\n    esac\n    shift # 处理下一个参数\ndone\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
 				}
 			]
 		},
