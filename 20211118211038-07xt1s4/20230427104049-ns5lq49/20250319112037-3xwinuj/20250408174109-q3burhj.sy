@@ -1,0 +1,2889 @@
+{
+	"ID": "20250408174109-q3burhj",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250408174109-q3burhj",
+		"title": "计算虚拟化1——CPU虚拟化",
+		"type": "doc",
+		"updated": "20250411023235"
+	},
+	"Children": [
+		{
+			"ID": "20250408174109-vbnxqx1",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20250408174109-vbnxqx1",
+				"updated": "20250408174109"
+			}
+		},
+		{
+			"ID": "20250408174109-o03zw9d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-o03zw9d",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "计算资源的虚拟化可以分为CPU虚拟化、内存虚拟化、I/O虚拟化三个方面"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-5is46do",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-5is46do",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " CPU虚拟化：多个虚拟机共享CPU资源，对虚拟机中的敏感指令进行截获并模拟执行"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-18jqi0c",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-18jqi0c",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " 内存虚拟化：多个虚拟机共享同一物理内存，需要相互隔离"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-vjeaefq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-vjeaefq",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": " I/O设备虚拟化：多个虚拟机共享一个物理设备"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-2ziyf5p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250408174109-2ziyf5p",
+				"updated": "20250411021008"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. vCPU的概念"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-p1euxvf",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250408174109-p1euxvf",
+				"updated": "20250411021008"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 vCPU和CPU的关系"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-rcgz0h9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-rcgz0h9",
+				"updated": "20250411015803"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "vCPU和物理CPU的关系"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-v49pqzj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-v49pqzj",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一个物理CPU有多个内核，每个内核可以有多个线程"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-jpziryr",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-jpziryr",
+				"updated": "20250411015903"
+			},
+			"Children": [
+				{
+					"ID": "20250411015847-0zfemdg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411015847-0zfemdg",
+						"updated": "20250411015903"
+					},
+					"Children": [
+						{
+							"ID": "20250411015847-t3bv354",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411015847-t3bv354",
+								"updated": "20250411015903"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"Properties": {
+										"style": "background-color: var(--b3-card-info-background); color: var(--b3-card-info-color);"
+									},
+									"TextMarkType": "text",
+									"TextMarkTextContent": "如果物理CPU没有超线程技术，"
+								},
+								{
+									"Type": "NodeKramdownSpanIAL",
+									"Data": "{: style=\"background-color: var(--b3-card-info-background); color: var(--b3-card-info-color);\"}"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "一个内核同时只能处理一个任务。即一个内核对应一个vCPU，将一个内核虚拟为一个vCPU，为虚拟机提供CPU资源"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-ukco6ut",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-ukco6ut",
+				"updated": "20250411015923"
+			},
+			"Children": [
+				{
+					"ID": "20250411015909-ybekcpm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411015909-ybekcpm",
+						"updated": "20250411015923"
+					},
+					"Children": [
+						{
+							"ID": "20250411015909-0xzbzbe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411015909-0xzbzbe",
+								"updated": "20250411015923"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"Properties": {
+										"style": "background-color: var(--b3-card-info-background); color: var(--b3-card-info-color);"
+									},
+									"TextMarkType": "text",
+									"TextMarkTextContent": "如果物理CPU有超线程技术，"
+								},
+								{
+									"Type": "NodeKramdownSpanIAL",
+									"Data": "{: style=\"background-color: var(--b3-card-info-background); color: var(--b3-card-info-color);\"}"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "一个内核若有两个线程，就可以同时处理2个任务。即一个线程对应一个vCPU，将一个线程虚拟为一个vCPU，为虚拟机提供CPU资源"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-u9xqe5d",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-u9xqe5d",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t综上可知：多台虚拟机之间可以复用同一个物理CPU"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-3txpfqh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-3txpfqh",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/c40fe39a4fa74008a1f126635ad359bf.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-mfz0dwl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-mfz0dwl",
+				"updated": "20250411015936"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "vCPU的分配"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-6oyodc5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-6oyodc5",
+				"updated": "20250411015953"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t虚拟CPU分配给虚拟机时，虚拟CPU的数量不能超过单台物理节点所能提供的vCPU数量，即：虚拟机分配的CPU总量不能超过单台物理节点所能提供的vCPU数量"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-lv8gp9n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-lv8gp9n",
+				"updated": "20250411020006"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "分配规则"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20250411020039-w28miqq",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250411020039-w28miqq",
+				"updated": "20250411020040"
+			},
+			"Children": [
+				{
+					"ID": "20250411020040-wwoywfz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411020040-wwoywfz",
+						"updated": "20250411020040"
+					},
+					"Children": [
+						{
+							"ID": "20250411020040-9tnpkey",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411020040-9tnpkey",
+								"updated": "20250411020040"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "为虚拟机分配CPU初始值，该初始值应考虑该虚拟机在物理机运行所需的配置（在物理机运行需要多少cpu资源，虚拟机就分配多少cpu资源）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-xwqc3pe",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-xwqc3pe",
+				"updated": "20250411020057"
+			},
+			"Children": [
+				{
+					"ID": "20250411020044-d3vfv2q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411020044-d3vfv2q",
+						"updated": "20250411020057"
+					},
+					"Children": [
+						{
+							"ID": "20250411020044-1q69ww8",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411020044-1q69ww8",
+								"updated": "20250411020057"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "观察该虚拟机使用资源的均值和峰值（2个星期左右），然后再修改CPU的分配数量，得到资源利用最大化（修改后的CPU尽量保证"
+								},
+								{
+									"Type": "NodeTextMark",
+									"Properties": {
+										"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+									},
+									"TextMarkType": "text",
+									"TextMarkTextContent": "虚拟机的均值控制在50~70%，峰值控制在50~90%之间"
+								},
+								{
+									"Type": "NodeKramdownSpanIAL",
+									"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-vfm5c9s",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250408174109-vfm5c9s",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 CPU的Ring级别"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-njbbs66",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-njbbs66",
+				"updated": "20250411021027"
+			},
+			"Children": [
+				{
+					"ID": "20250411021027-d2i9epc",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411021027-d2i9epc",
+						"updated": "20250411021027"
+					},
+					"Children": [
+						{
+							"ID": "20250411021027-nioou6x",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411021027-nioou6x",
+								"updated": "20250411021027"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CPU 指令分级"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-3hnhhfb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-3hnhhfb",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t现代计算机的CPU技术有个核心的特点，就是根据指令的敏感程度分为不同的权限级别来实现运行的，避免了用户与应用程序层面的错误导致整个系统的崩溃"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-x51ot13",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-x51ot13",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t不同类型的CPU会有不同的权限级别，不过总体的思想是一致的，以下我们主要通过x86的CPU作为代表来讲解CPU的虚拟化"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-adr5ta6",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-adr5ta6",
+				"updated": "20250411021116"
+			},
+			"Children": [
+				{
+					"ID": "20250411021040-wi9rc8a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411021040-wi9rc8a",
+						"updated": "20250411021116"
+					},
+					"Children": [
+						{
+							"ID": "20250411021040-3ojswlc",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411021040-3ojswlc",
+								"updated": "20250411021040"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "x86 物理CPU的权限分级"
+								}
+							]
+						},
+						{
+							"ID": "20250411021109-vd0y03y",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411021109-vd0y03y",
+								"updated": "20250411021109"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "x86 CPU分为4个级别，分别为Ring0、Ring1、Ring2、Ring3"
+								}
+							]
+						},
+						{
+							"ID": "20250411021114-dkgt0sk",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411021114-dkgt0sk",
+								"updated": "20250411021116"
+							},
+							"Children": [
+								{
+									"ID": "20250411021116-sadzmqo",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411021116-sadzmqo",
+										"style": "--en-bullet-line-height: 76px;",
+										"updated": "20250411021116"
+									},
+									"Children": [
+										{
+											"ID": "20250411021116-n7osxx4",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021116-n7osxx4",
+												"updated": "20250411021116"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Ring0级别（内核态）"
+												}
+											]
+										},
+										{
+											"ID": "20250411021120-v52lst0",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021120-v52lst0",
+												"updated": "20250411021120"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "直接作用于操作系统内核，给系统核心命令使用的权限，调用系统资源，优先级最高；可以访问内存的所有数据"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250411021124-id0m49l",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411021124-id0m49l",
+										"style": "--en-bullet-line-height: 152px;",
+										"updated": "20250411021124"
+									},
+									"Children": [
+										{
+											"ID": "20250411021124-thzvv1z",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021124-thzvv1z",
+												"updated": "20250411021124"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Ring1-2级别"
+												}
+											]
+										},
+										{
+											"ID": "20250411021127-i8j4dn2",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021127-i8j4dn2",
+												"updated": "20250411021127"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "主要运行的是设备驱动（操作系统服务）的命令"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250411021132-gcf14ye",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411021132-gcf14ye",
+										"style": "--en-bullet-line-height: 228px;",
+										"updated": "20250411021132"
+									},
+									"Children": [
+										{
+											"ID": "20250411021132-69stryn",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021132-69stryn",
+												"updated": "20250411021132"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Ring3级别（用户态）"
+												}
+											]
+										},
+										{
+											"ID": "20250411021135-41knarw",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021135-41knarw",
+												"updated": "20250411021135"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "应用程序APP使用的权限，优先级最低；只能受限的访问内存，并且CPU资源可以被其他程序获取（Ring1-2也属于用户态）"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-w0n8nau",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-w0n8nau",
+				"updated": "20250411021214"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "        "
+				},
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-success-background); color: var(--b3-card-success-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "我们重点关注的是Ring0（内核态）与Ring3（用户态）"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-success-background); color: var(--b3-card-success-color);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-imfqpo6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-imfqpo6",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t每一层只能访问本层以及权限更底层的数据，当用户态直接执行Ring0权限的指令时，会被系统显示为非法指令，会报错，这种操作可能会导致系统出错"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-uags6i2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-uags6i2",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/126ea07b9b748decf223eee9e751e10c.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-c5jmjqp",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-c5jmjqp",
+				"updated": "20250411021405"
+			},
+			"Children": [
+				{
+					"ID": "20250411021226-m6j0cjm",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411021226-m6j0cjm",
+						"updated": "20250411021405"
+					},
+					"Children": [
+						{
+							"ID": "20250411021226-kbtod83",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411021226-kbtod83",
+								"updated": "20250411021226"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "CPU的指令类型"
+								}
+							]
+						},
+						{
+							"ID": "20250411021240-4mdneyv",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411021240-4mdneyv",
+								"updated": "20250411021336"
+							},
+							"Children": [
+								{
+									"ID": "20250411021318-8odyg4u",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411021318-8odyg4u",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250411021336"
+									},
+									"Children": [
+										{
+											"ID": "20250411021318-33qb8ao",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021318-33qb8ao",
+												"updated": "20250411021318"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "特权指令"
+												}
+											]
+										},
+										{
+											"ID": "20250411021335-7mjaths",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250411021335-7mjaths",
+												"updated": "20250411021336"
+											},
+											"Children": [
+												{
+													"ID": "20250411021336-swjfm2d",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411021336-swjfm2d",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250411021336"
+													},
+													"Children": [
+														{
+															"ID": "20250411021336-yc5crg3",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411021336-yc5crg3",
+																"updated": "20250411021336"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "必须在Ring0权限级别上才能运行的指令，具有最高的权限级别"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250411021338-pu40aut",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411021338-pu40aut",
+														"updated": "20250411021338"
+													},
+													"Children": [
+														{
+															"ID": "20250411021338-hv877pf",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411021338-hv877pf",
+																"updated": "20250411021338"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "可以直接访问和控制计算机系统的硬件和核心资源，如内存、外设等"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20250411021306-wntiel7",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411021306-wntiel7",
+								"updated": "20250411021405"
+							},
+							"Children": [
+								{
+									"ID": "20250411021322-pjipuao",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411021322-pjipuao",
+										"style": "--en-bullet-line-height: 152px;",
+										"updated": "20250411021322"
+									},
+									"Children": [
+										{
+											"ID": "20250411021322-ziy7x3d",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021322-ziy7x3d",
+												"updated": "20250411021322"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "普通指令（非特权指令）"
+												}
+											]
+										},
+										{
+											"ID": "20250411021345-vnqgx8n",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021345-vnqgx8n",
+												"updated": "20250411021345"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "在CPU普通权限级别上就可以运行，即在Ring3、2级别上运行的指令，部分指令在Ring1"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250411021349-l7oabi5",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411021349-l7oabi5",
+										"style": "--en-bullet-line-height: 228px;",
+										"updated": "20250411021405"
+									},
+									"Children": [
+										{
+											"ID": "20250411021349-939g0id",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411021349-939g0id",
+												"updated": "20250411021349"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "敏感指令"
+												}
+											]
+										},
+										{
+											"ID": "20250411021353-67qhps8",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250411021353-67qhps8",
+												"updated": "20250411021405"
+											},
+											"Children": [
+												{
+													"ID": "20250411021405-vur5tek",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411021405-vur5tek",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250411021405"
+													},
+													"Children": [
+														{
+															"ID": "20250411021405-il2iwrn",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411021405-il2iwrn",
+																"updated": "20250411021406"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "在Ring1上运行的指令，部分指令运行在Ring0"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250411021408-y2awt9i",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411021408-y2awt9i",
+														"updated": "20250411021408"
+													},
+													"Children": [
+														{
+															"ID": "20250411021408-kssc7lz",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411021408-kssc7lz",
+																"updated": "20250411021408"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "也可以直接访问和控制硬件和核心资源，但是其执行权限级别较低；通常由需要执行敏感操作的应用程序或服务使用，例如访问用户隐私数据、修改系统设置等"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-7phzbh4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-7phzbh4",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/2fa85a02354afdc9ce175eeb1d2ea054.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-0n7xhpp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-0n7xhpp",
+				"updated": "20250411021447"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "物理机操作系统中的用户态如何实现访问内核态呢?"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-gon5dn4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-gon5dn4",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t当APP需要执行访问磁盘、写文件等操作时，APP需要通过执行系统调用函数，在执行系统调用时CPU的运行级别就会从Ring3切换到Ring0，并跳转到系统调用对应的内核代码位置来进行相关操作，相关操作执行完成之后，从Ring0返回到Ring3，实现用户态与内核态的切换"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-n7dipso",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20250408174109-n7dipso",
+				"updated": "20250408174109"
+			}
+		},
+		{
+			"ID": "20250408174109-78e7xb8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250408174109-78e7xb8",
+				"updated": "20250411021703"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. CPU虚拟化技术"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-kf3jzcu",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250408174109-kf3jzcu",
+				"updated": "20250411021703"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "传统的CPU架构在虚拟化架构中存在的问题"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-p7fv94f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-p7fv94f",
+				"updated": "20250411021605"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "当时在CPU的设计之初仅仅考虑了CPU的正常工作，并没有考虑虚拟化场景，因此当CPU运行在虚拟化场景下会存在问题，具体问题如下"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-2h5u614",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20250408174109-2h5u614",
+				"updated": "20250411021703"
+			},
+			"Children": [
+				{
+					"ID": "20250408174109-ll2sa0u",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20250408174109-ll2sa0u",
+						"updated": "20250408174109"
+					},
+					"Children": [
+						{
+							"ID": "20250408174109-96ufcha",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250408174109-96ufcha",
+								"updated": "20250408174109"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "物理主机操作系统的一些操作底层硬件的指令运行在内核态Ring0，应用程序运行在Ring3"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250408174109-r92xu3d",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20250408174109-r92xu3d",
+						"updated": "20250408174109"
+					},
+					"Children": [
+						{
+							"ID": "20250408174109-4tgj5kr",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250408174109-4tgj5kr",
+								"updated": "20250408174109"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在物理机上安装VMM对于物理机来说其实也是一个应用，因此VMM也运行在Ring3上"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250408174109-7opidos",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20250408174109-7opidos",
+						"updated": "20250411021703"
+					},
+					"Children": [
+						{
+							"ID": "20250408174109-iu0t4ok",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250408174109-iu0t4ok",
+								"updated": "20250411021703"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在VMM上创建的虚拟机，也就属于Ring3；此时虚拟机上的应用等是在Ring3级别的，这个没有问题；但是虚拟机的操作系统也需要操作底层硬件，也需要运行在Ring0上，此时就存在问题（"
+								},
+								{
+									"Type": "NodeTextMark",
+									"Properties": {
+										"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+									},
+									"TextMarkType": "text",
+									"TextMarkTextContent": "虚拟机操作底层硬件的指令本应该运行在Ring0上，实际处于Ring3"
+								},
+								{
+									"Type": "NodeKramdownSpanIAL",
+									"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-jzz5d17",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-jzz5d17",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以传统CPU结构并不能满足虚拟机操作系统想要运行的环境，这也是最早虚拟化所面临的第一大难题"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-q7q3v1p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-q7q3v1p",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/528315abb3cefbb8e8209506dc473749.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-eatzto9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-eatzto9",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "虚拟化架构知识"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-fi30llk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-fi30llk",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "为了解决以上问题，提出了软件辅助全虚拟化（全虚拟化）、半虚拟化、硬件辅助全虚拟化三种解决方法"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-219teey",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-219teey",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不论是哪种虚拟化技术，关于虚拟机特权指令的操作都要交给VMM，由VMM交给底层硬件，不同的虚拟化技术只是说VMM交给底层硬件的方式不同"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-y14vhez",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "|||",
+				"id": "20250408174109-y14vhez",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th"
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "软件辅助全虚拟化"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "半虚拟化"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "硬件虚拟化"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "实现技术"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过二进制转换、翻译实现"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过超级调用Hypercall实现"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过将特权指令转到Root模式实现"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "应用厂商"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Vmware Workstation"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Xen"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "不过Xen只支持对Linux的虚拟化"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "不支持对Windows的虚拟化"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "因为Windows不开源"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Vmware ESXi/Hyper-v/KVM/Xen 3.0"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "性能"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "差"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最好，几乎与物理主机性能相同"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "CPU需要在两种模式切换，带来额外开销"
+								},
+								{
+									"Type": "NodeBr",
+									"Data": "br"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "不过其性能正逐渐逼近半虚拟化"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "兼容性"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最佳兼容性"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "需要修改操作系统，兼容性差"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "最佳兼容性"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-gda0dh9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250408174109-gda0dh9",
+				"updated": "20250411022327"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 软件辅助全虚拟化"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-85kynz3",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-85kynz3",
+				"updated": "20250411022208"
+			},
+			"Children": [
+				{
+					"ID": "20250411022208-g38oxr5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411022208-g38oxr5",
+						"updated": "20250411022208"
+					},
+					"Children": [
+						{
+							"ID": "20250411022208-g2g4xvk",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411022208-g2g4xvk",
+								"updated": "20250411022208"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "针对传统CPU在虚拟化场景存在的问题，最早由Vmware公司提出并解决"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-n5zpla6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-n5zpla6",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这个解决方法就为Binary Translation，中文名叫二进制转化"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-n6des2l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-n6des2l",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/bb661db48e91dcd0934def103b05ee3a.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-0ch32yj",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-0ch32yj",
+				"updated": "20250411022216"
+			},
+			"Children": [
+				{
+					"ID": "20250411022216-hnd8own",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411022216-hnd8own",
+						"updated": "20250411022216"
+					},
+					"Children": [
+						{
+							"ID": "20250411022216-q0ojwct",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411022216-q0ojwct",
+								"updated": "20250411022216"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "实现的原理"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-c1hh2pe",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-c1hh2pe",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "具体实现方式就是给VMM附加了一个功能，并且使得VMM运行在最高权限等级"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-43o8rrf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-43o8rrf",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "由VMM来收集、辨识虚拟机的所有命令（包括Ring3、2、1、0）；对于虚拟机的Ring3的命令正常运行，VMM不拦截，对于Ring0的命令进行拦截，将拦截的命令进行翻译和替换，使之成为只能对虚拟机生效的虚拟特权指令，最终可以让虚拟机内核态的指令运行在Ring0的环境"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-8nyfefk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-8nyfefk",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/7bd7fcf2562f50f96ffa205183a40fb4.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-cfcz7st",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-cfcz7st",
+				"updated": "20250411022542"
+			},
+			"Children": [
+				{
+					"ID": "20250411022220-ftkekux",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411022220-ftkekux",
+						"updated": "20250411022542"
+					},
+					"Children": [
+						{
+							"ID": "20250411022220-7qsxik0",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411022220-7qsxik0",
+								"updated": "20250411022220"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "提供两种工作机制（特权解除、陷入模拟）"
+								}
+							]
+						},
+						{
+							"ID": "20250411022223-6i05ov5",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411022223-6i05ov5",
+								"updated": "20250411022542"
+							},
+							"Children": [
+								{
+									"ID": "20250411022225-gkrq5iv",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411022225-gkrq5iv",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250411022225"
+									},
+									"Children": [
+										{
+											"ID": "20250411022225-67a93p7",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411022225-67a93p7",
+												"updated": "20250411022322"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "特权解除（优先级压缩）"
+												}
+											]
+										},
+										{
+											"ID": "20250411022245-duq2gih",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250411022245-duq2gih",
+												"updated": "20250411022247"
+											},
+											"Children": [
+												{
+													"ID": "20250411022247-zqm1jsj",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411022247-zqm1jsj",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250411022247"
+													},
+													"Children": [
+														{
+															"ID": "20250411022247-9ccpxe0",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411022247-9ccpxe0",
+																"updated": "20250411022247"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "虚拟机执行Ring0指令时，将指令发到VMM时会触发VMM异常，这些异常就被VMM捕获，再由VMM将这些特权指令进行虚拟化成为只针对虚拟CPU起作用的虚拟特权指令"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250411022251-dojn9zj",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411022251-dojn9zj",
+														"style": "--en-bullet-line-height: 102px;",
+														"updated": "20250411022251"
+													},
+													"Children": [
+														{
+															"ID": "20250411022251-6e0zwbz",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411022251-6e0zwbz",
+																"updated": "20250411022251"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "本质为使用能运行在物理机用户态中的非特权指令模拟出只对虚拟机有效的虚拟特权指令，实现特权指令的降级"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250411022506-lsngrf9",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411022506-lsngrf9",
+														"style": "--en-bullet-line-height: 140px;",
+														"updated": "20250411022506"
+													},
+													"Children": [
+														{
+															"ID": "20250411022506-a57jqtp",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411022506-a57jqtp",
+																"updated": "20250411022506"
+															},
+															"Children": [
+																{
+																	"Type": "NodeTextMark",
+																	"TextMarkType": "strong",
+																	"TextMarkTextContent": "存在的问题："
+																},
+																{
+																	"Type": "NodeText",
+																	"Data": "有一部分特权指令会存在于Ring1权限中，而Ring1指令并不会触发VMM的异常捕获，从而导致在虚拟机中执行的特权指令直接对物理机造成了影响，可能导致系统出现故障"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250411022529-qufwxb4",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411022529-qufwxb4",
+										"style": "--en-bullet-line-height: 242px;",
+										"updated": "20250411022542"
+									},
+									"Children": [
+										{
+											"ID": "20250411022529-0rah3xe",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411022529-0rah3xe",
+												"updated": "20250411022529"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "陷入模拟（二进制模拟—使用较多）"
+												}
+											]
+										},
+										{
+											"ID": "20250411022538-vm31g5p",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250411022538-vm31g5p",
+												"updated": "20250411022542"
+											},
+											"Children": [
+												{
+													"ID": "20250411022542-dvvn5n8",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411022542-dvvn5n8",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250411022542"
+													},
+													"Children": [
+														{
+															"ID": "20250411022542-alpte0r",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411022542-alpte0r",
+																"updated": "20250411022542"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "VMM会对虚拟机传来的指令的二进制代码进行扫描，一旦发现执行的是特权指令时，会将这些二进制代码翻译成虚拟特权指令的二进制代码或者是翻译成运行在核心态中的特权指令二进制代码从而强制的触发异常"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250411022613-b0chlq5",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250411022613-b0chlq5",
+														"updated": "20250411022613"
+													},
+													"Children": [
+														{
+															"ID": "20250411022613-uvxtzc3",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250411022613-uvxtzc3",
+																"updated": "20250411022613"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "这种方案就解决了虚拟机运行Ring1指令时没有被VMM捕获的问题"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-31ykaw9",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-31ykaw9",
+				"updated": "20250411022327"
+			},
+			"Children": [
+				{
+					"ID": "20250411022327-nkby0lp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411022327-nkby0lp",
+						"updated": "20250411022327"
+					},
+					"Children": [
+						{
+							"ID": "20250411022327-4szx4xw",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411022327-4szx4xw",
+								"updated": "20250411022327"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "缺点"
+								}
+							]
+						},
+						{
+							"ID": "20250411022622-0alyqrv",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411022622-0alyqrv",
+								"updated": "20250411022622"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "VMM有大量的工作负荷，也会占用大量的CPU和内存资源，实际使用效率较低，性能开销大"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-8c1kcbs",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250408174109-8c1kcbs",
+				"updated": "20250411023050"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.3 半虚拟化"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-0u3eudd",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-0u3eudd",
+				"updated": "20250411022830"
+			},
+			"Children": [
+				{
+					"ID": "20250411022830-or6s2y5",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411022830-or6s2y5",
+						"updated": "20250411022830"
+					},
+					"Children": [
+						{
+							"ID": "20250411022830-lp4n42u",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411022830-lp4n42u",
+								"updated": "20250411022830"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "实现的原理"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-zyjgbw3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-zyjgbw3",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "通过对Guest OS的内核代码进行一定的修改，将原来在Host OS上执行的一些特权指令修改成可以和VMM直接交互的方式（即将虚拟机对特权指令的调用改为直接对VMM的调用---这种调用方式为Hypercall），由VMM直接将特权指令传递给物理机，这样就不会有捕获异常、翻译等过程，性能损耗比较少"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-pkwcw8e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-pkwcw8e",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/9c72f57207bceb0b4a843dc6fda12da2.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-7oy451d",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-7oy451d",
+				"updated": "20250411023050"
+			},
+			"Children": [
+				{
+					"ID": "20250411023032-igcc32q",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411023032-igcc32q",
+						"updated": "20250411023050"
+					},
+					"Children": [
+						{
+							"ID": "20250411023032-r97py89",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411023032-r97py89",
+								"updated": "20250411023032"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "缺点"
+								}
+							]
+						},
+						{
+							"ID": "20250411023036-5qhpwlp",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411023036-5qhpwlp",
+								"updated": "20250411023044"
+							},
+							"Children": [
+								{
+									"ID": "20250411023044-0civkcw",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411023044-0civkcw",
+										"updated": "20250411023044"
+									},
+									"Children": [
+										{
+											"ID": "20250411023044-3jbzp4b",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411023044-3jbzp4b",
+												"updated": "20250411023044"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "需要给虚拟机操作系统打补丁，并且虚拟机系统的镜像文件并不通用，兼容性弱"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"ID": "20250411023039-t72wlp9",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411023039-t72wlp9",
+								"updated": "20250411023050"
+							},
+							"Children": [
+								{
+									"ID": "20250411023050-58nyop0",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411023050-58nyop0",
+										"updated": "20250411023050"
+									},
+									"Children": [
+										{
+											"ID": "20250411023050-wahjjn2",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411023050-wahjjn2",
+												"updated": "20250411023050"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "此时虚拟机知道自己是运行在虚拟环境中，并不是运行在真正的物理主机上（主要是针对Linux实现半虚拟化）"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-0nn34aw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250408174109-0nn34aw",
+				"updated": "20250411023235"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.4 硬件辅助虚拟化"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-hw1zgbk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-hw1zgbk",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://i-blog.csdnimg.cn/blog_migrate/cb0057915150d8cd13baee3bd95efa92.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-ffs3ugf",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-ffs3ugf",
+				"updated": "20250411023144"
+			},
+			"Children": [
+				{
+					"ID": "20250411023127-gpt8wel",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411023127-gpt8wel",
+						"updated": "20250411023144"
+					},
+					"Children": [
+						{
+							"ID": "20250411023127-zo375ew",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411023127-zo375ew",
+								"updated": "20250411023127"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "通过此方式CPU有两个工作形态（Root态和非Root）"
+								}
+							]
+						},
+						{
+							"ID": "20250411023140-skkyev0",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411023140-skkyev0",
+								"updated": "20250411023144"
+							},
+							"Children": [
+								{
+									"ID": "20250411023144-klkv8we",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411023144-klkv8we",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250411023144"
+									},
+									"Children": [
+										{
+											"ID": "20250411023144-ouelkzi",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411023144-ouelkzi",
+												"updated": "20250411023144"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "通过这种新的执行态，使得VMM和Guest OS被完全隔离"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250411023147-b4t1tua",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411023147-b4t1tua",
+										"updated": "20250411023147"
+									},
+									"Children": [
+										{
+											"ID": "20250411023147-bumska7",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411023147-bumska7",
+												"updated": "20250411023147"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "Root与非Root操作模式将原有的CPU操作区分为VMM所在的Root操作区和虚拟机所在的非Root操作区，每个操作区都拥有Ring0-3的所有指令级别"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-luv6w3h",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250408174109-luv6w3h",
+				"updated": "20250411023235"
+			},
+			"Children": [
+				{
+					"ID": "20250411023136-wwses3s",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250411023136-wwses3s",
+						"updated": "20250411023235"
+					},
+					"Children": [
+						{
+							"ID": "20250411023136-z3qy3p4",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250411023136-z3qy3p4",
+								"updated": "20250411023136"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "实现原理"
+								}
+							]
+						},
+						{
+							"ID": "20250411023232-2qz4g82",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250411023232-2qz4g82",
+								"updated": "20250411023235"
+							},
+							"Children": [
+								{
+									"ID": "20250411023235-e434xc1",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411023235-e434xc1",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250411023235"
+									},
+									"Children": [
+										{
+											"ID": "20250411023235-f6om08n",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411023235-f6om08n",
+												"updated": "20250411023235"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "硬件辅助虚拟化是使用了支持虚拟化功能的CPU进行支撑（Inter-TV和AMD-V技术就可以使得CPU支持虚拟化）"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250411023243-8uqaie8",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250411023243-8uqaie8",
+										"updated": "20250411023243"
+									},
+									"Children": [
+										{
+											"ID": "20250411023243-zqebxdq",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250411023243-zqebxdq",
+												"updated": "20250411023243"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "虚拟机运行在非Root态的核心态中，可以直接调用特权指令，不过其调用特权指令是通过硬件的虚拟化机制将特权指令调转到处在根模式下的VMM中，由VMM完成对硬件的统一管理"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-iyocoej",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-iyocoej",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "CPU厂商支持虚拟化的力度在不断加大，靠着硬件辅助的虚拟化技术性能逐渐逼近半虚拟化，再加上该虚拟化不需要修改客户端操作系统的优势，该虚拟方式是未来的发展趋势（目前很多的服务器/CPU 上面都可以开启硬件辅助虚拟化）"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-6gu916j",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-6gu916j",
+				"updated": "20250408174109"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在使用时需要进入BIOS将CPU的硬件辅助虚拟化功能打开"
+				}
+			]
+		},
+		{
+			"ID": "20250408174109-i4nvek8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-i4nvek8",
+				"updated": "20250408174109"
+			}
+		},
+		{
+			"ID": "20250408174109-2jd68h3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-2jd68h3",
+				"updated": "20250408174109"
+			}
+		},
+		{
+			"ID": "20250408174109-sz59cte",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250408174109-sz59cte",
+				"updated": "20250408174109"
+			}
+		}
+	]
+}

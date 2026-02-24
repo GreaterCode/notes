@@ -1,0 +1,5605 @@
+{
+	"ID": "20250522034145-ce3h274",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250522034145-ce3h274",
+		"title": "udev规则以及编写",
+		"type": "doc",
+		"updated": "20250526150808"
+	},
+	"Children": [
+		{
+			"ID": "20250522034145-xhm1s7n",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20250522034145-xhm1s7n",
+				"updated": "20250522034145"
+			}
+		},
+		{
+			"ID": "20250522034145-boheb5y",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-boheb5y",
+				"updated": "20250526084631"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1. udev简介"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-165swig",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-165swig",
+				"updated": "20250526084631"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.1 什么是udev？"
+				}
+			]
+		},
+		{
+			"ID": "20250522041424-1k8k9ft",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522041424-1k8k9ft",
+				"updated": "20250522041449"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tlinux下有专门的文件系统用来对设备进行管理，devfs和sysfs就是其中两种。在2.6内核以前一直使用的是devfs，devfs挂载于/dev目录下，提供了一种类似于文件的方法来管理位于/dev目录下的所有设备，我们知道/dev目录下的每一个文件都对应的是一个设备，至于当前该设备存在与否先且不论，而且这些特殊文件是位于根文件系统上的，在制作文件系统的时候我们就已经建立了这些设备文件，因此通过操作这些特殊文件，可以实现与内核进行交互。但是devfs文件系统有一些缺点，"
+				}
+			]
+		},
+		{
+			"ID": "20250526084603-cuazqsb",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250526084603-cuazqsb",
+				"updated": "20250526084603"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t例如："
+				}
+			]
+		},
+		{
+			"ID": "20250526084610-mx35rwm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250526084610-mx35rwm",
+				"updated": "20250526084625"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\ta. 不确定的设备映射，有时一个设备映射的设备文件可能不同，例如我的U盘可能对应sda有可能对应sdb；"
+				}
+			]
+		},
+		{
+			"ID": "20250526084615-rrnhwp2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250526084615-rrnhwp2",
+				"updated": "20250526084628"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\tb. 没有足够的主/辅设备号，当设备过多的时候，显然这会成为一个问题；"
+				}
+			]
+		},
+		{
+			"ID": "20250526084622-aaab0z5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250526084622-aaab0z5",
+				"updated": "20250526084631"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t\tc. /dev目录下文件太多而且不能表示当前系统上的实际设备；命名不够灵活，不能任意指定等等。"
+				}
+			]
+		},
+		{
+			"ID": "20250522041628-sm9bj93",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522041628-sm9bj93",
+				"updated": "20250522041758"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\tlinux2.6内核以后，引入了一个新的文件系统"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "sysfs"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，它挂载于/sys目录下，跟devfs一样它也是一个虚拟文件系统，也是用来对系统的设备进行管理的，它把实际连接到系统上的设备和总线组织成一个分级的文件，用户空间的程序同样可以利用这些信息以实现和内核的交互，该文件系统是当前系统上实际设备树的一个直观反应，它是通过kobject子系统来建立这个信息的，当一个kobject被创建的时候，对应的文件和目录也就被创建了，位于/sys下的相关目录下，既然每个设备在sysfs中都有唯一对应的目录，那么也就可以被用户空间读写了。用户空间的工具udev就是利用了sysfs提供的信息来实现所有devfs的功能的，但不同的是"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "tag",
+					"TextMarkTextContent": "udev运行在用户空间中，而devfs却运行在内核空间"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，而且udev不存在devfs那些先天的缺陷。很显然，sysfs将是未来发展的方向。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-gpfufug",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-gpfufug",
+				"updated": "20250522041526"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t"
+				},
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "text",
+					"TextMarkTextContent": "udev是Linux（linux2.6内核之后）默认的设备管理工具"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "，替代了原来的 devfs。udev 以守护进程的形式运行，通过侦听内核发出来的 uevent 来管理 /dev目录下的设备文件。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-mrhc9nk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-mrhc9nk",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "\t如何理解udev是守护进程呢？即系统内核启动后init进程（比如busybox的init程序、sysinit、Upstart或systemd）根据runlevel运行等级进入某种模式，然后解析开启哪些服务进程。其中udev就是哪些服务进程中的一个，服务进程是在后台运行的。可以通过命令ps -aux来获取，比如在ubuntu终端中"
+				}
+			]
+		},
+		{
+			"ID": "20250522034256-9b9fe8r",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034256-9b9fe8r",
+				"style": "line-height: 22px;",
+				"updated": "20250522034310"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "ps -aux | grep udev\n\nroot       328  0.0  0.0  52220   852 ?        Ss    2月23   0:00 /lib/systemd/systemd-udevd --daemon\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ua9rwy7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ua9rwy7",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "所以只要有设备插入或删除，守护进程udev就会管理它。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-xb4u53p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-xb4u53p",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "也就是说使用了udev，所有的设备都能在/dev/目录下找到对应的设备文件。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-6lvu9xc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-6lvu9xc",
+				"updated": "20250522034335"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.2 使用udev的好处"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-lmgwbda",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250522034145-lmgwbda",
+				"updated": "20250522034328"
+			},
+			"Children": [
+				{
+					"ID": "20250522034328-hjtepsp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034328-hjtepsp",
+						"updated": "20250522034328"
+					},
+					"Children": [
+						{
+							"ID": "20250522034328-v3uafv6",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034328-v3uafv6",
+								"updated": "20250522034328"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "动态管理"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：当设备添加 / 删除时，udev 的守护进程侦听来自内核的 uevent，以此添加或者删除 /dev下的设备文件，所以 udev 只为已经连接的设备产生设备文件，而不会在 /dev下产生大量虚无的设备文件。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-g0wa027",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250522034145-g0wa027",
+				"updated": "20250522034331"
+			},
+			"Children": [
+				{
+					"ID": "20250522034331-zme2zkz",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034331-zme2zkz",
+						"updated": "20250522034331"
+					},
+					"Children": [
+						{
+							"ID": "20250522034331-40ox4ec",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034331-40ox4ec",
+								"updated": "20250522034331"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "自定义命名规则"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：通过 Linux 默认的规则文件，udev 在 /dev/ 里为所有的设备定义了内核设备名称，比如 /dev/sda、/dev/hda、/dev/fd等等。由于 udev 是在用户空间 (user space) 运行，Linux 用户可以通过自定义的规则文件，灵活地产生标识性强的设备文件名，比如 /dev/boot"
+								},
+								{
+									"Type": "NodeBackslash",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "_"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "disk、/dev/root"
+								},
+								{
+									"Type": "NodeBackslash",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "_"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "disk、/dev/color"
+								},
+								{
+									"Type": "NodeBackslash",
+									"Data": "span",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "_"
+										}
+									]
+								},
+								{
+									"Type": "NodeText",
+									"Data": "printer等等。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-dwcnxon",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250522034145-dwcnxon",
+				"updated": "20250522034335"
+			},
+			"Children": [
+				{
+					"ID": "20250522034335-4qsi18z",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034335-4qsi18z",
+						"updated": "20250522034335"
+					},
+					"Children": [
+						{
+							"ID": "20250522034335-cqpfd61",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034335-cqpfd61",
+								"updated": "20250522034335"
+							},
+							"Children": [
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "设定设备的权限和所有者 / 组"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "：udev 可以按一定的条件来设置设备文件的权限和设备文件所有者 / 组"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-i9w4kep",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-i9w4kep",
+				"updated": "20250522034341"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "1.3 udev工作流程"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-fiudcfs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-fiudcfs",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://images2015.cnblogs.com/blog/1045927/201703/1045927-20170303164629673-1549048336.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-4ms2mmi",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-4ms2mmi",
+				"updated": "20250522034350"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2. 如何配置和使用udev"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ivzi96j",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-ivzi96j",
+				"updated": "20250522034350"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.1 udev的配置文件(/etc/udev/udev.conf)"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-fw2f6nf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-fw2f6nf",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-xxf1g9y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034145-xxf1g9y",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@HOST_RHEL4 dev]# cat /etc/udev/udev.conf \n # udev.conf \n # The main config file for udev \n # \n # This file can be used to override some of udev's default values \n # for where it looks for files, and where it places device nodes. \n # \n # WARNING: changing any value, can cause serious system breakage! \n # \n\n # udev_root - where in the filesystem to place the device nodes \n udev_root=\"/dev/\"\n\n # udev_db - The name and location of the udev database. \n udev_db=\"/dev/.udev.tdb\"\n\n # udev_rules - The name and location of the udev rules file \n udev_rules=\"/etc/udev/rules.d/\"\n\n # udev_permissions - The name and location of the udev permission file \n udev_permissions=\"/etc/udev/permissions.d/\"\n\n # default_mode - set the default mode for all nodes that have no \n #                explicit match in the permissions file \n default_mode=\"0600\"\n\n # default_owner - set the default owner for all nodes that have no \n #                 explicit match in the permissions file \n default_owner=\"root\"\n\n # default_group - set the default group for all nodes that have no \n #                 explicit match in the permissions file \n default_group=\"root\"\n\n # udev_log - set to \"yes\" if you want logging, else \"no\"\n udev_log=\"no\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-98640gl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-98640gl",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ahoiiey",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ahoiiey",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "Linux 用户可以通过该文件设置以下参数："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-41q85nf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-41q85nf",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "udev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "root：udev 产生的设备所存放的目录​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "，默认值是 /dev/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。建议不要修改该参数，因为很多应用程序默认会从该目录调用设备文件。\n    udev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "db：udev 信息存放的数据库或者所在目录，​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "默认值是 /dev/.udev.tdb"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。\n    udev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "rules：udev 规则文件的名字或者所在目录，​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "默认值是 /etc/udev/rules.d/或/lib/udev/rules.d"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。\n    udev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "permissions：udev 权限文件的名字或者所在目录，默认值是 /etc/udev/permissions.d/。\n    default"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "mode/ default"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "owner/ default"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "group：如果设备文件的权限没有在权限文件里指定，就使用该参数作为默认权限，"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "默认值分别是：0600/root/roo"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "t。\n    udev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "log：是否需要 syslog记录 udev 日志的开关，默认值是 no。syslog记录日志的级别，默认值是 err。如果改为 info 或者 debug 的话，会有冗长的 udev 日志被记录下来。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-8hlzemk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-8hlzemk",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其实，在我们的终端上，udev配置文件没有那么复杂，因为大部分都是默认值，所以不用配置，看我ubuntu下的udev配置文件："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-nopvs4f",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-nopvs4f",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-5ss7or3",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034145-5ss7or3",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$cat /etc/udev/udev.conf \n# see udev(7) for details\n#\n# udevd is started in the initramfs, so when this file is modified the\n# initramfs should be rebuilt.\n\n#udev_log=\"info\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-e2r6jyv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-e2r6jyv",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-cs1rbrm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-cs1rbrm",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该文件都是注释，说明都用默认值。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-enbkjaw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-enbkjaw",
+				"updated": "20250522034400"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.2 udev的规则和规则文件"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-8mc88g6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-8mc88g6",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则文件是 udev 里最重要的部分，默认是存放在 /etc/udev/rules.d/下。所有的规则文件必须以“.rules”为后缀名。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-0zxc6sl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-0zxc6sl",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则文件里的规则有一系列的键/值对组成，键/值对之间用逗号(,)分割。每一个键或者是用户匹配键，或者是一个赋值键。匹配键确定规则是否被应用，而赋 值键表示分配某值给该键。这些值将影响udev创建的设备文件。赋值键可以处理一个多值列表。匹配键和赋值键操作符解释见下表："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-c8uswg5",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250522034145-c8uswg5",
+				"updated": "20250522034400"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.2.1 udev 键/值对操作符"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-waf9825",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-waf9825",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "操作符 　　匹配或赋值 　 解释\n－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－\n"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 　　　 匹配 　　　　                       相等比较\n!"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 　　　  匹配 　　　    不等比较\n"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 　　　　赋值 　　　　 分配一个特定的值给该键，他可以覆盖之前的赋值。\n+"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "　　　  赋值             追加特定的值给已经存在的键\n:"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "           赋值             分配一个特定的值给该键，后面的规则不可能覆盖它。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-78mv34r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250522034145-78mv34r",
+				"updated": "20250522040606"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.2.2 udev 规则的匹配键"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-itf3357",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-itf3357",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ACTION： 事件 (uevent) 的行为，例如：add( 添加设备 )、remove( 删除设备 )。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-vhcyzlj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-vhcyzlj",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KERNEL： 内核设备名称，例如：sda, cdrom。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-efb9v5n",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-efb9v5n",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "DEVPATH：设备的 devpath 路径。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-p87p2mw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-p87p2mw",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SUBSYSTEM： 设备的子系统名称，例如：sda 的子系统为 block。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-wptxbjl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-wptxbjl",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "BUS： 设备在 devpath 里的总线名称，例如：usb。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-4cus4d9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-4cus4d9",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "DRIVER： 设备在 devpath 里的设备驱动名称，例如：ide-cdrom。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-cqwg0jm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-cqwg0jm",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ID： 设备在 devpath 里的识别号。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-nlq5dkq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-nlq5dkq",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SYSFS{filename}： 设备的 devpath 路径下，设备的属性文件“filename”里的内容。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-flr0rgm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-flr0rgm",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例如：SYSFS{model}"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "“ST936701SS”表示：如果设备的型号为 ST936701SS，则该设备匹配该 匹配键。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-onydxbm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-onydxbm",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在一条规则中，可以设定最多五条 SYSFS 的 匹配键。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-qcp8rsu",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-qcp8rsu",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ENV{key}： 环境变量。在一条规则中，可以设定最多五条环境变量的 匹配键。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-m6qmyis",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-m6qmyis",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "PROGRAM：调用外部命令。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-7icc764",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-7icc764",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "RESULT： 外部命令 PROGRAM 的返回结果。"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "例如："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-b47lvsw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-b47lvsw",
+				"updated": "20250522040606"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "PROGRAM==\"/lib/udev/scsi_id -g -s $devpath\", RESULT==\"35000c50000a7ef67\""
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-7045mse",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-7045mse",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "调用外部命令 /lib/udev/scsi"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "id查询设备的 SCSI ID，如果返回结果为 35000c50000a7ef67，则该设备匹配该 匹配键。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-dtuxvqr",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250522034145-dtuxvqr",
+				"updated": "20250522034407"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.2.3 udev 的重要赋值键"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-s8m6qwp",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-s8m6qwp",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "NAME：在 /dev下产生的设备文件名。只有第一次对某个设备的 NAME 的赋值行为生效，之后匹配的规则再对该设备的 NAME 赋值行为将被忽略。如果没有任何规则对设备的 NAME 赋值，udev 将使用内核设备名称来产生设备文件。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-b7tztfn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-b7tztfn",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SYMLINK：为 /dev/下的设备文件产生符号链接。由于 udev 只能为某个设备产生一个设备文件，所以为了不覆盖系统默认的 udev 规则所产生的文件，推荐使用符号链接。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-5yecxm7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-5yecxm7",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "OWNER, GROUP, MODE：为设备设定权限。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-5gkd5yt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-5gkd5yt",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ENV{key}：导入一个环境变量。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-mthjto8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250522034145-mthjto8",
+				"updated": "20250522034410"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "2.2.4 udev 的值和可调用的替换操作符"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-14pipg9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-14pipg9",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在键值对中的键和操作符都介绍完了，最后是值 (value)。Linux 用户可以随意地定制 udev 规则文件的值。例如：my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "root"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "disk, my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "printer。同时也可以引用下面的替换操作符："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-xpqva9h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-xpqva9h",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "kernel, %k：设备的内核设备名称，例如：sda、cdrom。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-dss79g1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-dss79g1",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "number, %n：设备的内核号码，例如：sda3 的内核号码是 3。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-htsa5y7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-htsa5y7",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "devpath, %p：设备的 devpath路径。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-tj0w4n6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-tj0w4n6",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "id, %b：设备在 devpath里的 ID 号。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-2qmxuc9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-2qmxuc9",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "sysfs{file}, %s{file}：设备的 sysfs里 file 的内容。其实就是设备的属性值。\n例如："
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "sysfs{size} 表示该设备 ( 磁盘 ) 的大小。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-dl882yj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-dl882yj",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "env{key}, %E{key}：一个环境变量的值。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-n54czch",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-n54czch",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "major, %M：设备的 major 号。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ts6y6po",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ts6y6po",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "minor %m：设备的 minor 号。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-5dq2ara",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-5dq2ara",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "result, %c：PROGRAM 返回的结果。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-pl0swi1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-pl0swi1",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "parent, %P：父设备的设备文件名。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-sv3o7nn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-sv3o7nn",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "root, %r：udev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "root的值，默认是 /dev/。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-u3ilbv6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-u3ilbv6",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "tempnode, %N：临时设备名。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-c33mbxj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-c33mbxj",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "%%：符号 % 本身。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-937vxn3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-937vxn3",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "：符号 "
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 本身。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-qjl5ems",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-qjl5ems",
+				"updated": "20250522040827"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3. 如何编写udev规则"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-1rb92v4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-1rb92v4",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "其实"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，在安装udev时，会生成一系列的udev规则文件放在/etc/udev/rules.d/或/lib/udev/rules.d/目录下，比如/lib/udev/rules.d/50-udev-default.rules等默认的udev规则文件。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-w1fwmf3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-w1fwmf3",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我们只需添加自己想改的udev规则文件让其做我们想做的事，比如当U盘插入时，我要自动挂载它（或者其他什么动作），其实安装了udev，当U盘插入时，它有相应的.rules规则文件去解析它（即udev会动态管理它），在/dev/目录下产生相应的设备文件，比如/dev/sda4.但现在我需要在U盘插入时，我自动挂载它（比如挂载到/mnt/udisk/目录下），那么我就可以编写自己的udev规则文件automount.rules。该文件如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-7x9v0kq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-7x9v0kq",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-gg77ezu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034145-gg77ezu",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# There are a number of modifiers that are allowed to be used in some\n# of the different fields. They provide the following subsitutions:\n#\n# %n the \"kernel number\" of the device.\n#    For example, 'sda3' has a \"kernel number\" of '3'\n# %e the smallest number for that name which does not matches an existing node\n# %k the kernel name for the device\n# %M the kernel major number for the device\n# %m the kernel minor number for the device\n# %b the bus id for the device\n# %c the string returned by the PROGRAM\n# %s{filename} the content of a sysfs attribute\n# %% the '%' char itself\n#\n\n# Media automounting\nSUBSYSTEM==\"block\", ACTION==\"add\"    RUN+=\"/etc/udev/rules.d/mount.sh\"\nSUBSYSTEM==\"block\", ACTION==\"remove\" RUN+=\"/etc/udev/rules.d/mount.sh\"\nSUBSYSTEM==\"block\", ACTION==\"change\", ENV{DISK_MEDIA_CHANGE}==\"1\" RUN+=\"/etc/udev/rules.d/mount.sh\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-y3kzg1y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-y3kzg1y",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-pzdwy3k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-pzdwy3k",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "说明：当有U盘热插拔时都会去跑/etc/udev/rules.d/mount.sh脚本。其中SUBSYSTEM"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"block\"，U盘sda的子系统就是block。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-0fajvky",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-0fajvky",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "mount.sh如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-zual75e",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-zual75e",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-cwj8hky",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034145-cwj8hky",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "MOUNT=\"/bin/mount\"\nPMOUNT=\"/usr/bin/pmount\"\nUMOUNT=\"/bin/umount\"\nfor line in `grep -v ^# /etc/udev/mount.blacklist`\ndo\n    name=\"`basename \"$DEVNAME\"`\"\n    if [ ` expr match \"$DEVNAME\" \"$line\" ` -gt 0 ] || [ ` expr match \"$name\" \"$line\" ` -gt 0 ]\n    then\n        logger \"udev/mount.sh\" \"[$DEVNAME] is blacklisted, ignoring\"\n        exit 0\n    fi\ndone\n\nautomount() {    \n    name=\"`basename \"$DEVNAME\"`\"\n\n    if [[ $name =~ sd ]];then\n        mount_dir=/mnt/udisk\n        ! test -d $mount_dir \u0026\u0026 mkdir -p $mount_dir\n    elif [[ $name =~ mmcblk ]];then\n        mount_dir=/mnt/sdisk\n        ! test -d $mount_dir \u0026\u0026 mkdir -p $mount_dir\n    fi\n    \n    # Silent util-linux's version of mounting auto\n    if [ \"x`readlink $MOUNT`\" = \"x/bin/mount.util-linux\" ] ;\n    then\n        MOUNT=\"$MOUNT -o silent\"\n    fi\n    \n    # If filesystem type is vfat, change the ownership group to 'disk', and\n    # grant it with  w/r/x permissions.\n    case $ID_FS_TYPE in\n    vfat|fat)\n        MOUNT=\"$MOUNT -o umask=007,gid=`awk -F':' '/^disk/{print $3}' /etc/group`\"\n        ;;\n    # TODO\n    *)\n        ;;\n    esac\n\n    if ! $MOUNT -t auto -o iocharset=cp936 $DEVNAME $mount_dir\n    then\n        logger \"mount.sh/automount\" \"$MOUNT -t auto $DEVNAME $mount_dir failed!\"\n        rm_dir \"/run/media/$name\"\n    else\n        logger \"mount.sh/automount\" \"Auto-mount of [ $mount_dir] successful\"\n        touch \"/tmp/.automount-$name\"\n        killall -USR1 adas.exe\n    fi\n}\n    \nrm_dir() {\n    # We do not want to rm -r populated directories\n    if test \"`find \"$1\" | wc -l | tr -d \" \"`\" -lt 2 -a -d \"$1\"\n    then\n        ! test -z \"$1\" \u0026\u0026 rm -r \"$1\"\n        killall -USR1 adas.exe\n    else\n        logger \"mount.sh/automount\" \"Not removing non-empty directory [$1]\"\n    fi\n}\n\n# No ID_FS_TYPE for cdrom device, yet it should be mounted\nname=\"`basename \"$DEVNAME\"`\"\n[ -e /sys/block/$name/device/media ] \u0026\u0026 media_type=`cat /sys/block/$name/device/media`\n\nif [ \"$ACTION\" = \"add\" ] \u0026\u0026 [ -n \"$DEVNAME\" ] \u0026\u0026 [ -n \"$ID_FS_TYPE\" -o \"$media_type\" = \"cdrom\" ]; then\n    if [ -x \"$PMOUNT\" ]; then\n        $PMOUNT $DEVNAME 2\u003e /dev/null\n    elif [ -x $MOUNT ]; then\n            $MOUNT $DEVNAME 2\u003e /dev/null\n    fi\n    \n    # If the device isn't mounted at this point, it isn't\n    # configured in fstab (note the root filesystem can show up as\n    # /dev/root in /proc/mounts, so check the device number too)\n    if expr $MAJOR \"*\" 256 + $MINOR != `stat -c %d /`; then\n        grep -q \"^$DEVNAME \" /proc/mounts || automount\n    fi\nfi\n\n\nif [ \"$ACTION\" = \"remove\" ] || [ \"$ACTION\" = \"change\" ] \u0026\u0026 [ -x \"$UMOUNT\" ] \u0026\u0026 [ -n \"$DEVNAME\" ]; then\n    for mnt in `cat /proc/mounts | grep \"$DEVNAME\" | cut -f 2 -d \" \" `\n    do\n        $UMOUNT $mnt\n    done\n    \n    # Remove empty directories from auto-mounter\n    name=\"`basename \"$DEVNAME\"`\"\n    if [[ $name =~ sd ]];then\n        mount_dir=/mnt/udisk\n    elif [[ $name =~ mmcblk ]];then\n        mount_dir=/mnt/sdisk\n    fi\n    test -e \"/tmp/.automount-$name\" \u0026\u0026 rm_dir $mount_dir\nfi\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-cjd6x23",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-cjd6x23",
+				"updated": "20250522040701"
+			}
+		},
+		{
+			"ID": "20250522034145-uesxrwj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-uesxrwj",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这里只是举一个例子而已。可以编写我们想要的规则文件。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-w2zbpu3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-w2zbpu3",
+				"updated": "20250522040827"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "3.1 如何编写规则文件呢？"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-9f6mmya",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-9f6mmya",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其实就是两点："
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "匹配键"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "和"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "赋值键，"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "只需完善这两点就可以编写我们想要的规则文件"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-bcva2vh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-bcva2vh",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如：KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"tty\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"%k\", GROUP"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"tty\", MODE"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"0666\", OPTIONS"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"last"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "rule\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-wuluna4",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-wuluna4",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "该规则说明：如果有一个设备的内核设备名称为tty(KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"tty\")，那么设置新的权限为0600(MODE"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"0666\")，所在的组是tty(GROUP"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"tty\")。它也设置了一个特别的设备文件名:%K。在这里例子里，%k代表设备的内核名字。那也就意味着内核识别出这些设备是什么名字，就创建什么样的设备文件名。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-5kont4m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-5kont4m",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在这里就是要完善两点,"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "匹配键KERNEL==\"tty\";赋值键NAME=\"%k\", GROUP=\"tty\", MODE=\"0666\", OPTIONS=\"last_rule\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-9fjyjvn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-9fjyjvn",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "其实关键"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "是要如何找到设备的属性呢，即拿什么区匹配，规则所需要的信息如何获取？"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-evkgliv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-evkgliv",
+				"updated": "20250522040817"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以利用udev的命令：比如"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "udevadm info -a -p $(udevadm info -q path -n /dev/sda4)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​. 其中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "udevadm info -q path -n /dev/sda4返回sysfs中的设备路径；udevadm info -a -p $(设备路径)，这将查询这个设备路径，把结果信息输出来"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​：如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-tits55b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-tits55b",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-3pzvbv5",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034145-3pzvbv5",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Udevadm info starts with the device specified by the devpath and then\nwalks up the chain of parent devices. It prints for every device\nfound, all possible attributes in the udev rules key format.\nA rule to match, can be composed by the attributes of the device\nand the attributes from one single parent device.\n\n  looking at device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0/18:0:0:0/block/sdb/sdb4':\n    KERNEL==\"sdb4\"\n    SUBSYSTEM==\"block\"\n    DRIVER==\"\"\n    ATTR{ro}==\"0\"\n    ATTR{size}==\"15177600\"\n    ATTR{stat}==\"     202      382     1562      212        0        0        0        0        0      164      212\"\n    ATTR{partition}==\"4\"\n    ATTR{start}==\"14880\"\n    ATTR{discard_alignment}==\"0\"\n    ATTR{alignment_offset}==\"0\"\n    ATTR{inflight}==\"       0        0\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0/18:0:0:0/block/sdb':\n    KERNELS==\"sdb\"\n    SUBSYSTEMS==\"block\"\n    DRIVERS==\"\"\n    ATTRS{ro}==\"0\"\n    ATTRS{size}==\"15204352\"\n    ATTRS{stat}==\"     295      382     2306     1208        0        0        0        0        0     1156     1204\"\n    ATTRS{range}==\"16\"\n    ATTRS{discard_alignment}==\"0\"\n    ATTRS{events}==\"media_change\"\n    ATTRS{ext_range}==\"256\"\n    ATTRS{events_poll_msecs}==\"2000\"\n    ATTRS{alignment_offset}==\"0\"\n    ATTRS{inflight}==\"       0        0\"\n    ATTRS{removable}==\"1\"\n    ATTRS{capability}==\"51\"\n    ATTRS{events_async}==\"\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0/18:0:0:0':\n    KERNELS==\"18:0:0:0\"\n    SUBSYSTEMS==\"scsi\"\n    DRIVERS==\"sd\"\n    ATTRS{rev}==\"1.00\"\n    ATTRS{type}==\"0\"\n    ATTRS{scsi_level}==\"3\"\n    ATTRS{model}==\"                \"\n    ATTRS{state}==\"running\"\n    ATTRS{queue_type}==\"none\"\n    ATTRS{iodone_cnt}==\"0x152\"\n    ATTRS{iorequest_cnt}==\"0x152\"\n    ATTRS{device_busy}==\"0\"\n    ATTRS{evt_capacity_change_reported}==\"0\"\n    ATTRS{timeout}==\"30\"\n    ATTRS{evt_media_change}==\"0\"\n    ATTRS{max_sectors}==\"240\"\n    ATTRS{ioerr_cnt}==\"0x1\"\n    ATTRS{queue_depth}==\"1\"\n    ATTRS{vendor}==\"        \"\n    ATTRS{evt_soft_threshold_reached}==\"0\"\n    ATTRS{device_blocked}==\"0\"\n    ATTRS{evt_mode_parameter_change_reported}==\"0\"\n    ATTRS{evt_lun_change_reported}==\"0\"\n    ATTRS{evt_inquiry_change_reported}==\"0\"\n    ATTRS{iocounterbits}==\"32\"\n    ATTRS{eh_timeout}==\"10\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0':\n    KERNELS==\"target18:0:0\"\n    SUBSYSTEMS==\"scsi\"\n    DRIVERS==\"\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18':\n    KERNELS==\"host18\"\n    SUBSYSTEMS==\"scsi\"\n    DRIVERS==\"\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0':\n    KERNELS==\"1-8:1.0\"\n    SUBSYSTEMS==\"usb\"\n    DRIVERS==\"usb-storage\"\n    ATTRS{bInterfaceClass}==\"08\"\n    ATTRS{bInterfaceSubClass}==\"06\"\n    ATTRS{bInterfaceProtocol}==\"50\"\n    ATTRS{bNumEndpoints}==\"02\"\n    ATTRS{supports_autosuspend}==\"1\"\n    ATTRS{bAlternateSetting}==\" 0\"\n    ATTRS{bInterfaceNumber}==\"00\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8':\n    KERNELS==\"1-8\"\n    SUBSYSTEMS==\"usb\"\n    DRIVERS==\"usb\"\n    ATTRS{bDeviceSubClass}==\"00\"\n    ATTRS{bDeviceProtocol}==\"00\"\n    ATTRS{devpath}==\"8\"\n    ATTRS{idVendor}==\"1516\"\n    ATTRS{speed}==\"480\"\n    ATTRS{bNumInterfaces}==\" 1\"\n    ATTRS{bConfigurationValue}==\"1\"\n    ATTRS{bMaxPacketSize0}==\"64\"\n    ATTRS{busnum}==\"1\"\n    ATTRS{devnum}==\"17\"\n    ATTRS{configuration}==\"\"\n    ATTRS{bMaxPower}==\"500mA\"\n    ATTRS{authorized}==\"1\"\n    ATTRS{bmAttributes}==\"80\"\n    ATTRS{bNumConfigurations}==\"1\"\n    ATTRS{maxchild}==\"0\"\n    ATTRS{bcdDevice}==\"0100\"\n    ATTRS{avoid_reset_quirk}==\"0\"\n    ATTRS{quirks}==\"0x0\"\n    ATTRS{version}==\" 2.00\"\n    ATTRS{urbnum}==\"1001\"\n    ATTRS{ltm_capable}==\"no\"\n    ATTRS{manufacturer}==\"SKYMEDI\"\n    ATTRS{removable}==\"removable\"\n    ATTRS{idProduct}==\"1226\"\n    ATTRS{bDeviceClass}==\"00\"\n    ATTRS{product}==\"USB Drive\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1':\n    KERNELS==\"usb1\"\n    SUBSYSTEMS==\"usb\"\n    DRIVERS==\"usb\"\n    ATTRS{bDeviceSubClass}==\"00\"\n    ATTRS{bDeviceProtocol}==\"01\"\n    ATTRS{devpath}==\"0\"\n    ATTRS{idVendor}==\"1d6b\"\n    ATTRS{speed}==\"480\"\n    ATTRS{bNumInterfaces}==\" 1\"\n    ATTRS{bConfigurationValue}==\"1\"\n    ATTRS{bMaxPacketSize0}==\"64\"\n    ATTRS{authorized_default}==\"1\"\n    ATTRS{busnum}==\"1\"\n    ATTRS{devnum}==\"1\"\n    ATTRS{configuration}==\"\"\n    ATTRS{bMaxPower}==\"0mA\"\n    ATTRS{authorized}==\"1\"\n    ATTRS{bmAttributes}==\"e0\"\n    ATTRS{bNumConfigurations}==\"1\"\n    ATTRS{maxchild}==\"15\"\n    ATTRS{bcdDevice}==\"0402\"\n    ATTRS{avoid_reset_quirk}==\"0\"\n    ATTRS{quirks}==\"0x0\"\n    ATTRS{serial}==\"0000:00:14.0\"\n    ATTRS{version}==\" 2.00\"\n    ATTRS{urbnum}==\"348\"\n    ATTRS{ltm_capable}==\"no\"\n    ATTRS{manufacturer}==\"Linux 4.2.0-42-generic xhci-hcd\"\n    ATTRS{removable}==\"unknown\"\n    ATTRS{idProduct}==\"0002\"\n    ATTRS{bDeviceClass}==\"09\"\n    ATTRS{product}==\"xHCI Host Controller\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0':\n    KERNELS==\"0000:00:14.0\"\n    SUBSYSTEMS==\"pci\"\n    DRIVERS==\"xhci_hcd\"\n    ATTRS{irq}==\"27\"\n    ATTRS{subsystem_vendor}==\"0x1028\"\n    ATTRS{broken_parity_status}==\"0\"\n    ATTRS{class}==\"0x0c0330\"\n    ATTRS{driver_override}==\"(null)\"\n    ATTRS{consistent_dma_mask_bits}==\"64\"\n    ATTRS{dma_mask_bits}==\"64\"\n    ATTRS{local_cpus}==\"f\"\n    ATTRS{device}==\"0x8c31\"\n    ATTRS{enable}==\"1\"\n    ATTRS{msi_bus}==\"1\"\n    ATTRS{local_cpulist}==\"0-3\"\n    ATTRS{vendor}==\"0x8086\"\n    ATTRS{subsystem_device}==\"0x05a5\"\n    ATTRS{numa_node}==\"-1\"\n    ATTRS{d3cold_allowed}==\"1\"\n\n  looking at parent device '/devices/pci0000:00':\n    KERNELS==\"pci0000:00\"\n    SUBSYSTEMS==\"\"\n    DRIVERS==\"\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-q470uai",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-q470uai",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "复制代码"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "https://assets.cnblogs.com/images/copycode.gif"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ltdykse",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ltdykse",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "从中可以得到KERNEL,SUBSYSTEM等信息，这样就可以利用这些属性值去匹配。其实我们可以从那里看到“looking at parent device”是一层往一层打印出该设备的信息。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-q6wb34p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-q6wb34p",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样我们就可以KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"sdb4\", SUBSYSTEM"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"block\"去匹配，比如写udev规则如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-crtzegj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-crtzegj",
+				"updated": "20250522040827"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KERNEL==\"sdb4\", SUBSYSTEM==\"block\", RUN+=\"/etc/udev/rules.d/mount.sh\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-iryrk0l",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-iryrk0l",
+				"updated": "20250522040341"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4. 字符串替换和匹配"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-829bce3",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-829bce3",
+				"updated": "20250522040341"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4.1 字符串替换"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-uxtxeqk",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-uxtxeqk",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "kernel, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%k：设备的内核设备名称"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，例如：sda、cdrom。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-in8aqkw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-in8aqkw",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "number,​ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%n：设备的内核号码"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​，例如：sda3 的内核号码是 3。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-o02s5i3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-o02s5i3",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "devpath,​ "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%p：设备的 devpath路径"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-rfb79t2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-rfb79t2",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "id, "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%b：设备在 devpath里的 ID"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " 号。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-o9tyvmq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-o9tyvmq",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "sysfs{file}, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%s{file}：设备的 sysfs里 file 的内容"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。其实就是设备的属性值。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-o6kevf1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-o6kevf1",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例如："
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "sysfs{size} 表示该设备 ( 磁盘 ) 的大小。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-h7qbvnj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-h7qbvnj",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "env{key}, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%E{key}：一个环境变量的值"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-kuhb79b",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-kuhb79b",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "major, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%M：设备的 major 号"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ew7zs76",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ew7zs76",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "minor ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%m：设备的 minor 号"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-9tpexmx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-9tpexmx",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "result, "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%c：PROGRAM 返回的结果"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-1m6kcrt",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-1m6kcrt",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "parent, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%P：父设备的设备文件名"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-zfvab5k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-zfvab5k",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "root, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%r：udev_root的值，默认是 /dev/"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-u7k85r9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-u7k85r9",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "tempnode, ​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%N：临时设备名"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-oyxy9pz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-oyxy9pz",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "%%：符号 % 本身"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-s14m3as",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-s14m3as",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "$$：符号"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "$"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "本身"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-kj4b1ft",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-kj4b1ft",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-nd3hyut",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-nd3hyut",
+				"updated": "20250522040210"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "KERNEL==\"fb[0-9]*\", NAME=\"fb/%n\", SYMLINK+=\"%k\""
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-q72r0p5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-q72r0p5",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则意思是：匹配一个内核命名为fb[0-9]的设备，然后给它命名为fb/%n，符号链接为%k"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-lus2u84",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-lus2u84",
+				"updated": "20250522040341"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如有一个fb3设备，匹配成功后那么就会有一个名为fb/3,符号链接为fb3"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ff91sm6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-ff91sm6",
+				"updated": "20250522034437"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "4.2 字符串匹配"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-b7j01h6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-b7j01h6",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "不仅有字符串精确匹配, udev也允许你使用shell风格的模式匹配. 支持的3种模式为:\n"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "*"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " - 匹配任何字符, 匹配0次或多次\n? - 匹配任何字符,但只匹配一次.\n[] - 匹配任何单个字符, 这些字符在方括号里面指定, 范围是受限的.\n这里有一些例子, 注意字符串替换符的使用:\n KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"fd[0-9]"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "*"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"floppy/%n\", SYMLINK+"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"%k\"\n KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"hiddev"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "*"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"usb/%k\"\n第一条规则匹配所有软盘驱动并确保设备节点放置在/dev/floppy目录下, 也创建一个缺省名字的符号链接. 第二条规则确保hiddev设备节点放在/dev/usb目录下面."
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-0cvq1to",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-0cvq1to",
+				"updated": "20250522035749"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5. udev主要作用"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-lquzq0g",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250522034145-lquzq0g",
+				"updated": "20250522035705"
+			},
+			"Children": [
+				{
+					"ID": "20250522034145-116b1ft",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034145-116b1ft",
+						"updated": "20250522034145"
+					},
+					"Children": [
+						{
+							"ID": "20250522034145-f4x2ql2",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034145-f4x2ql2",
+								"updated": "20250522034145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重命名设备节点的缺省名字为其他名字"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250522034145-8tlja6h",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034145-8tlja6h",
+						"updated": "20250522034145"
+					},
+					"Children": [
+						{
+							"ID": "20250522034145-3hw5igi",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034145-3hw5igi",
+								"updated": "20250522034145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "通过创建符号链接到缺省设备节点来提供一个可选的固定的设备节点名字"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250522034145-vyt2ywg",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034145-vyt2ywg",
+						"updated": "20250522034145"
+					},
+					"Children": [
+						{
+							"ID": "20250522034145-1h978jq",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034145-1h978jq",
+								"updated": "20250522034145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "基于程序的输出命名设备节点"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250522034145-x0z2p42",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034145-x0z2p42",
+						"updated": "20250522034145"
+					},
+					"Children": [
+						{
+							"ID": "20250522034145-gje8smp",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034145-gje8smp",
+								"updated": "20250522034145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "改变设备节点的权限和所有权"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250522034145-r66gcms",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034145-r66gcms",
+						"updated": "20250522034145"
+					},
+					"Children": [
+						{
+							"ID": "20250522034145-lims1ds",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034145-lims1ds",
+								"updated": "20250522034145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "在设备节点被创建或删除时(通常是添加设备或拔出设备时)执行一个脚本"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250522034145-r39qs0k",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522034145-r39qs0k",
+						"updated": "20250522034145"
+					},
+					"Children": [
+						{
+							"ID": "20250522034145-4bfuzxu",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522034145-4bfuzxu",
+								"updated": "20250522034145"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重命名网络接口"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250522035656-vzr9web",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250522035656-vzr9web",
+						"updated": "20250522035705"
+					},
+					"Children": [
+						{
+							"ID": "20250522035656-otz1ge7",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250522035656-otz1ge7",
+								"updated": "20250522035705"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设备热插拔"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-nhn6dls",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-nhn6dls",
+				"updated": "20250522035749"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.1 重命名设备节点的缺省名字为其他名字"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-5wwqwob",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-5wwqwob",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "此时使用NAME赋值键，例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-8xgadap",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-8xgadap",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一个硬盘，它的设备属性KERNEL是hdb，在/dev/目录下是/dev/hdb，那么我们可以给他重命名为"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-of0qda8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-of0qda8",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"hdb\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "spare"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "disk\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-0qb7fsi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-0qb7fsi",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则意思是：匹配一个设备命名为hdb的设备,把它重新命名为my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "spare"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "disk. 设备节点出现在/dev/my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "spare"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "disk"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-jq95ijc",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-jq95ijc",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "执行以下命令：ls /dev/my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "spare"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "disk -l"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-hvylo1r",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-hvylo1r",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "/dev/my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "spare"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "disk ---"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "\u003e"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": " /dev/hdb产生一个符号链接指向/dev/hdb"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-p6zgebz",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-p6zgebz",
+				"updated": "20250522035749"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				},
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "仅仅第一行的NAME描述是有效的，后面的均忽略。即udev按顺序解析udev规则文件时，第一个NAME赋值键的名字有用，假如后面对同一个设备还有NAME赋值键，那么那个赋值的名称将被忽略。"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "如果你想使用使用两个以上的名字来访问一个设备的话，可以​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "考虑SYMLINK键"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-czhxoyn",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-czhxoyn",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果你想你命名的名字得到实现，你必须把你的规则文件命名顺序在前面。"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-e6w8yod",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-e6w8yod",
+				"updated": "20250522035836"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.2 通过创建符号链接到缺省设备节点来提供一个可选的固定的设备节点名字"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ngxj000",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ngxj000",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-yd1j92g",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-yd1j92g",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"hdb\", DRIVER"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"ide-disk\", SYMLINK+"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"sparedisk\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-xymquo2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-xymquo2",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则意思是：匹配一个内核命名为hdb以及驱动为ide-disk的设备，命名设备节点为缺省名字并创建一个指向它的sparedisk符号链接，设备节点出现在/dev/sparedisk"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-1jlrh52",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-1jlrh52",
+				"updated": "20250522035836"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "注意："
+				},
+				{
+					"Type": "NodeTextMark",
+					"Properties": {
+						"style": "background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);"
+					},
+					"TextMarkType": "strong text",
+					"TextMarkTextContent": "符号链接可以是多个，这些符号链接都指向/dev/hdb"
+				},
+				{
+					"Type": "NodeKramdownSpanIAL",
+					"Data": "{: style=\"background-color: var(--b3-card-error-background); color: var(--b3-card-error-color);\"}"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-4dt6izl",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-4dt6izl",
+				"updated": "20250522034527"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.3 基于程序的输出命名设备节点"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-fsrnq1u",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-fsrnq1u",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "某些情况下你可能要求比udev标准规则提供的更多弹性, 这种情况下你可以请求udev运行一个程序并运用程序的标准输出来提供设备命名."
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-ywj0fa9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-ywj0fa9",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "要使用这个功能,你只需简单的在PROGRAM赋值中指定要运行程序(以及任何阐述)的完整路径, 然后在NAME/SYMLINK赋值中使用一些%c替换."
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-z9wl744",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-z9wl744",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-x6qhuim",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-x6qhuim",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "引用一个位于/bin/device"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "namer的虚构程序. device"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "namer带一个表示内核名字的命令行参数, 基于内核名device"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "namer做一些变化然后输出"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-0geawdm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-0geawdm",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"hda\", PROGRAM"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"/bin/device"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "namer %k\", SYMLINK+"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"%c\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-aodqzq9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-aodqzq9",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则意思是：匹配一个内核命名为hdb的设备，然后运行一个/bin/device"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "name程序，这个程序需要带一个表示内核名字的命令行参数即%k。然后这个程序运行的结果（即输出）把它赋值给SYMLINK，这样就可以满足要求（使用外部程序来命名设备）"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-un5lb23",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-un5lb23",
+				"updated": "20250522040108"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "5"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": ".4 改变设备节点的权限和所有权"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-e8au8k3",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-e8au8k3",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "udev允许你在规则中使用另外的赋值来控制每个设备的所有权和权限属性."
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-0edxua7",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-0edxua7",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-n6067ib",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-n6067ib",
+				"updated": "20250522040108"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "KERNEL==\"fb[0-9]*\", NAME=\"fb/%n\", SYMLINK+=\"%k\", GROUP=\"video\", MODE=\"0666\""
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-e3b5t7t",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-e3b5t7t",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则意思是：匹配一个内核命名为fb[0-9]的设备，然后给它命名为fb/%n,符号链接为%k, 属于video组, 权限为0666"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-l0a06yw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-l0a06yw",
+				"updated": "20250522035935"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "比如有一个fb3设备，匹配成功后那么就有一个名为fb/3,符号链接为fb3，属组为video，权限为0666"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-z610mpw",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-z610mpw",
+				"updated": "20250522040113"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.5 在设备节点被创建或删除时(通常是添加设备或拔出设备时)执行一个脚本"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-7vzu3ps",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-7vzu3ps",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "特别针对热插拔的设备，​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "目的是为了在设备连接或者断开时运行一个特定程序"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​. 例如, 你可能想在你的数码相机连到系统时执行一个脚本来自动下载相机里面的所有照片."
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-kf23akv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-kf23akv",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-6tlov6y",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-6tlov6y",
+				"updated": "20250522040113"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "KERNEL==\"sdb\", ACTION==\"add\", RUN+=\"/usr/bin/my_program\""
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-s5c14za",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-s5c14za",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则意思是：匹配一个内核名为sdb的设备，当插入时，执行程序/usr/bin/my"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "program"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-2vknf3c",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-2vknf3c",
+				"updated": "20250522034711"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "5.6 重命名网络接口"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-4hq367k",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-4hq367k",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在规则中简单的匹配网卡MAC地址是有意义的,因为它们是唯一的."
+				}
+			]
+		},
+		{
+			"ID": "20250522034552-oq8hjw2",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034552-oq8hjw2",
+				"style": "line-height: 22px;",
+				"updated": "20250522034625"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#udevadm info -a -p /sys/class/net/eth0\n  looking at class device '/sys/class/net/eth0':\n  KERNEL\\=\\=\"eth0\"\n  ATTR{address}\\=\\=\"00:52:8b:d5:04:48\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-y75cink",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-y75cink",
+				"updated": "20250522034559"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "规则如下:KERNEL"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"eth"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "*"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\", ATTR{address}"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"00:52:8b:d5:04:48\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"lan\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-dt182ra",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-dt182ra",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样就重命名了eth"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "*"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "为lan"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-oo8fr3b",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-oo8fr3b",
+				"updated": "20250522035009"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "6 "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": ". 编写udev规则实例"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-9uhl9bi",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-9uhl9bi",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "USB打印机\n我启动我的打印机, 它就被赋予了一个设备节点/dev/lp0. 我对这样的单调的名字不满意并打算使用udevinfo帮我写一个规则来提供一个可选名字:"
+				}
+			]
+		},
+		{
+			"ID": "20250522034741-4n0vpzo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522034741-4n0vpzo",
+				"style": "line-height: 22px;",
+				"updated": "20250522034946"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#udevinfo -a -p \\$(udevinfo -q path -n /dev/lp0)\nlooking at device '/class/usb/lp0':\nKERNEL==\"lp0\"\nSUBSYSTEM==\"usb\"\nDRIVER==\"\"\nATTR{dev}==\"180:0\"\nlooking at parent device '/devices/pci0000:00/0000:00:1d.0/usb1/1-1':\nSUBSYSTEMS==\"usb\"\nATTRS{manufacturer}==\"EPSON\"\nATTRS{product}==\"USB Printer\"\nATTRS{serial}==\"L72010011070626380\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-9oq8yq6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-9oq8yq6",
+				"updated": "20250522034751"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "我的规则变成了这样:"
+				}
+			]
+		},
+		{
+			"ID": "20250522034958-urglkxm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034958-urglkxm",
+				"updated": "20250522035009"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "SUBSYSTEM==\"usb\", ATTRS{serial}==\"L72010011070626380\", SYMLINK+=\"epson_680\""
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-pzfgj5p",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522034145-pzfgj5p",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7. 难点解析"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-qn6bstv",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-qn6bstv",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.1 ATTR"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-vgh9fx1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-vgh9fx1",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ATTR{value}　　sysfs设备属性值，可以为任意值，用于匹配"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-sxknnlo",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-sxknnlo",
+				"updated": "20250522035115"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "可以利用udev的命令：比如"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "udevadm info -a -p $(udevadm info -q path -n /dev/sda4)"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​. 其中"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "udevadm info -q path -n /dev/sda4"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​返回sysfs中的设备路径；udevadm info -a -p "
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "$"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "(设备路径)，这将查询这个设备路径，把结果信息输出来：如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522035235-rg4aejj",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250522035235-rg4aejj",
+				"style": "line-height: 22px;",
+				"updated": "20250522035239"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "Udevadm info starts with the device specified by the devpath and then\nwalks up the chain of parent devices. It prints for every device\nfound, all possible attributes in the udev rules key format.\nA rule to match, can be composed by the attributes of the device\nand the attributes from one single parent device.\n\n  looking at device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0/18:0:0:0/block/sdb/sdb4':\n    KERNEL==\"sdb4\"\n    SUBSYSTEM==\"block\"\n    DRIVER==\"\"\n    ATTR{ro}==\"0\"\n    ATTR{size}==\"15177600\"\n    ATTR{stat}==\"     202      382     1562      212        0        0        0        0        0      164      212\"\n    ATTR{partition}==\"4\"\n    ATTR{start}==\"14880\"\n    ATTR{discard_alignment}==\"0\"\n    ATTR{alignment_offset}==\"0\"\n    ATTR{inflight}==\"       0        0\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0/18:0:0:0/block/sdb':\n    KERNELS==\"sdb\"\n    SUBSYSTEMS==\"block\"\n    DRIVERS==\"\"\n    ATTRS{ro}==\"0\"\n    ATTRS{size}==\"15204352\"\n    ATTRS{stat}==\"     295      382     2306     1208        0        0        0        0        0     1156     1204\"\n    ATTRS{range}==\"16\"\n    ATTRS{discard_alignment}==\"0\"\n    ATTRS{events}==\"media_change\"\n    ATTRS{ext_range}==\"256\"\n    ATTRS{events_poll_msecs}==\"2000\"\n    ATTRS{alignment_offset}==\"0\"\n    ATTRS{inflight}==\"       0        0\"\n    ATTRS{removable}==\"1\"\n    ATTRS{capability}==\"51\"\n    ATTRS{events_async}==\"\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0/18:0:0:0':\n    KERNELS==\"18:0:0:0\"\n    SUBSYSTEMS==\"scsi\"\n    DRIVERS==\"sd\"\n    ATTRS{rev}==\"1.00\"\n    ATTRS{type}==\"0\"\n    ATTRS{scsi_level}==\"3\"\n    ATTRS{model}==\"                \"\n    ATTRS{state}==\"running\"\n    ATTRS{queue_type}==\"none\"\n    ATTRS{iodone_cnt}==\"0x152\"\n    ATTRS{iorequest_cnt}==\"0x152\"\n    ATTRS{device_busy}==\"0\"\n    ATTRS{evt_capacity_change_reported}==\"0\"\n    ATTRS{timeout}==\"30\"\n    ATTRS{evt_media_change}==\"0\"\n    ATTRS{max_sectors}==\"240\"\n    ATTRS{ioerr_cnt}==\"0x1\"\n    ATTRS{queue_depth}==\"1\"\n    ATTRS{vendor}==\"        \"\n    ATTRS{evt_soft_threshold_reached}==\"0\"\n    ATTRS{device_blocked}==\"0\"\n    ATTRS{evt_mode_parameter_change_reported}==\"0\"\n    ATTRS{evt_lun_change_reported}==\"0\"\n    ATTRS{evt_inquiry_change_reported}==\"0\"\n    ATTRS{iocounterbits}==\"32\"\n    ATTRS{eh_timeout}==\"10\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18/target18:0:0':\n    KERNELS==\"target18:0:0\"\n    SUBSYSTEMS==\"scsi\"\n    DRIVERS==\"\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/host18':\n    KERNELS==\"host18\"\n    SUBSYSTEMS==\"scsi\"\n    DRIVERS==\"\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0':\n    KERNELS==\"1-8:1.0\"\n    SUBSYSTEMS==\"usb\"\n    DRIVERS==\"usb-storage\"\n    ATTRS{bInterfaceClass}==\"08\"\n    ATTRS{bInterfaceSubClass}==\"06\"\n    ATTRS{bInterfaceProtocol}==\"50\"\n    ATTRS{bNumEndpoints}==\"02\"\n    ATTRS{supports_autosuspend}==\"1\"\n    ATTRS{bAlternateSetting}==\" 0\"\n    ATTRS{bInterfaceNumber}==\"00\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1/1-8':\n    KERNELS==\"1-8\"\n    SUBSYSTEMS==\"usb\"\n    DRIVERS==\"usb\"\n    ATTRS{bDeviceSubClass}==\"00\"\n    ATTRS{bDeviceProtocol}==\"00\"\n    ATTRS{devpath}==\"8\"\n    ATTRS{idVendor}==\"1516\"\n    ATTRS{speed}==\"480\"\n    ATTRS{bNumInterfaces}==\" 1\"\n    ATTRS{bConfigurationValue}==\"1\"\n    ATTRS{bMaxPacketSize0}==\"64\"\n    ATTRS{busnum}==\"1\"\n    ATTRS{devnum}==\"17\"\n    ATTRS{configuration}==\"\"\n    ATTRS{bMaxPower}==\"500mA\"\n    ATTRS{authorized}==\"1\"\n    ATTRS{bmAttributes}==\"80\"\n    ATTRS{bNumConfigurations}==\"1\"\n    ATTRS{maxchild}==\"0\"\n    ATTRS{bcdDevice}==\"0100\"\n    ATTRS{avoid_reset_quirk}==\"0\"\n    ATTRS{quirks}==\"0x0\"\n    ATTRS{version}==\" 2.00\"\n    ATTRS{urbnum}==\"1001\"\n    ATTRS{ltm_capable}==\"no\"\n    ATTRS{manufacturer}==\"SKYMEDI\"\n    ATTRS{removable}==\"removable\"\n    ATTRS{idProduct}==\"1226\"\n    ATTRS{bDeviceClass}==\"00\"\n    ATTRS{product}==\"USB Drive\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0/usb1':\n    KERNELS==\"usb1\"\n    SUBSYSTEMS==\"usb\"\n    DRIVERS==\"usb\"\n    ATTRS{bDeviceSubClass}==\"00\"\n    ATTRS{bDeviceProtocol}==\"01\"\n    ATTRS{devpath}==\"0\"\n    ATTRS{idVendor}==\"1d6b\"\n    ATTRS{speed}==\"480\"\n    ATTRS{bNumInterfaces}==\" 1\"\n    ATTRS{bConfigurationValue}==\"1\"\n    ATTRS{bMaxPacketSize0}==\"64\"\n    ATTRS{authorized_default}==\"1\"\n    ATTRS{busnum}==\"1\"\n    ATTRS{devnum}==\"1\"\n    ATTRS{configuration}==\"\"\n    ATTRS{bMaxPower}==\"0mA\"\n    ATTRS{authorized}==\"1\"\n    ATTRS{bmAttributes}==\"e0\"\n    ATTRS{bNumConfigurations}==\"1\"\n    ATTRS{maxchild}==\"15\"\n    ATTRS{bcdDevice}==\"0402\"\n    ATTRS{avoid_reset_quirk}==\"0\"\n    ATTRS{quirks}==\"0x0\"\n    ATTRS{serial}==\"0000:00:14.0\"\n    ATTRS{version}==\" 2.00\"\n    ATTRS{urbnum}==\"348\"\n    ATTRS{ltm_capable}==\"no\"\n    ATTRS{manufacturer}==\"Linux 4.2.0-42-generic xhci-hcd\"\n    ATTRS{removable}==\"unknown\"\n    ATTRS{idProduct}==\"0002\"\n    ATTRS{bDeviceClass}==\"09\"\n    ATTRS{product}==\"xHCI Host Controller\"\n\n  looking at parent device '/devices/pci0000:00/0000:00:14.0':\n    KERNELS==\"0000:00:14.0\"\n    SUBSYSTEMS==\"pci\"\n    DRIVERS==\"xhci_hcd\"\n    ATTRS{irq}==\"27\"\n    ATTRS{subsystem_vendor}==\"0x1028\"\n    ATTRS{broken_parity_status}==\"0\"\n    ATTRS{class}==\"0x0c0330\"\n    ATTRS{driver_override}==\"(null)\"\n    ATTRS{consistent_dma_mask_bits}==\"64\"\n    ATTRS{dma_mask_bits}==\"64\"\n    ATTRS{local_cpus}==\"f\"\n    ATTRS{device}==\"0x8c31\"\n    ATTRS{enable}==\"1\"\n    ATTRS{msi_bus}==\"1\"\n    ATTRS{local_cpulist}==\"0-3\"\n    ATTRS{vendor}==\"0x8086\"\n    ATTRS{subsystem_device}==\"0x05a5\"\n    ATTRS{numa_node}==\"-1\"\n    ATTRS{d3cold_allowed}==\"1\"\n\n  looking at parent device '/devices/pci0000:00':\n    KERNELS==\"pci0000:00\"\n    SUBSYSTEMS==\"\"\n    DRIVERS==\"\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-z25sz6p",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-z25sz6p",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "查找上面信息，就可以利用ATTR任何值来匹配，比如ATTR{size}"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"15177600\", ATTR{start}"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"14880\"等等来匹配都可以"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-fmdctxx",
+			"Type": "NodeHeading",
+			"HeadingLevel": 2,
+			"Properties": {
+				"id": "20250522034145-fmdctxx",
+				"updated": "20250526085121"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "7.2 ENV"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-c1i7oz5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-c1i7oz5",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ENV{ key}　　环境变量，可以表示任意用于赋值和匹配都可以"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-m92ditm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-m92ditm",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "例子如下："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-txjzniw",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-txjzniw",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "先赋值一个ENV，然后再用它来匹配"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-npk6xsx",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-npk6xsx",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "赋值一个ENV："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-cuxttue",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-cuxttue",
+				"updated": "20250522035547"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "KERNEL==\"sda4\", ENV{test_value}=\"value\", SYMLINK+=\"udisk4\""
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-v3sbxzq",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-v3sbxzq",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "这样就赋值了一个ENV{test"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "value}为value，那么可以在别的设备匹配时引用那个ENV进行匹配"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-drsrr4q",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-drsrr4q",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "匹配ENV："
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-t7tdgqs",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-t7tdgqs",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "SUBSYSTEM"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"block\", ENV{test"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "value}"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"value\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"hda\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-9xjuanf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-9xjuanf",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "匹配ENV{test"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "value},并且匹配成功，所以会进行命名"
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-zz7i1u5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-zz7i1u5",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "若SUBSYSTEM"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"block\", ENV{test"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "value}"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"test\", NAME"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "="
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "\"hda\""
+				}
+			]
+		},
+		{
+			"ID": "20250522034145-25b3r2l",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250522034145-25b3r2l",
+				"updated": "20250522034145"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "匹配ENV{test"
+				},
+				{
+					"Type": "NodeBackslash",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeText",
+							"Data": "_"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "value},但匹配失败，所以上面这条规则不执行"
+				}
+			]
+		},
+		{
+			"ID": "20250522035449-zzxt436",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250522035449-zzxt436",
+				"updated": "20250526150202"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "8. "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "udev"
+				},
+				{
+					"Type": "NodeText",
+					"Data": " "
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "信息的测试和生效"
+				}
+			]
+		},
+		{
+			"ID": "20250526085147-zxwe9lg",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250526085147-zxwe9lg",
+				"style": "line-height: 22px;",
+				"updated": "20250526085201"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "查出来后，根据上面文件中的内容写规则后，怎么测试\nudevtest /block/sda\n\nstart_dev #命令重启 udev守护进程\n\n本操作会对所有的设备重新查询规则目录下所有的规则文件，然后执行所匹配的规则里的行为。\n通常使用该命令让新的规则文件立即生效。\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250526150155-ag9yiy4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250526150155-ag9yiy4",
+				"updated": "20250526150808"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "9. 调试工具"
+				}
+			]
+		},
+		{
+			"ID": "20250526150256-fktaz6f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250526150256-fktaz6f",
+				"style": "line-height: 22px;",
+				"updated": "20250526150656"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "udevadm 后接一个命令和命令指定选项。它控制了udev运行的行为，处理内核事件，控制事件队列，并且提供简单的调试机制。\n语法：\n\tudevadm [--debug] [--version] [--help]\n\tudevadm info [options] [devpath]\n\tudevadm trigger [options] [devpath]\n\tudevadm settle [options]\n\tudevadm control option\n\tudevadm monitor [options]\n\tudevadm test [options] devpath\n\tudevadm test-builtin [options] command devpath\n选项：\n\n--debug 打印错误信息\n\n--version 打印版本信息\n\n--help 帮助文档\n\n \n\nudevadm info options     查询udev数据库中的设备信息。也可以从sysfs文件系统中查询到设备的属性以辅助创建udev规则。\n\n--query=type　　　　　从数据库中查询指定类型的设备。需要--path和--name来指定设备。合法的查询文件是：设备名，链接，路径，属性\n\n--path=devpath　　　   设备的路径\n\n--name=file　　　　　  设备节点或者链接\n\n--attribute-walk　　　　打印指定设备的所有sysfs记录的属性，以用来udev规则匹配特殊的设备。该选项打印链上的所有设备信息，最大可能到sys目录。\n\n--device-id-of-file=file　打印主/从设备号\n\n--export-db　　　　　  输出udev数据库中的内容\n\n \n\nudevadm trigger [options]　　接收内核发送来的设备事件。主要用于重放coldplug事件信息\n\n（译者补充：内核在启动时已经检测到了系统的硬件设备，并把硬件设备信息通过sysfs内核虚拟文件系统导出。udev扫描sysfs文件系统，根据硬件设备信息生成热插拔（hotplug）事件，udev再读取这些事件，生成对应的硬件设备文件。由于没有实际的硬件插拔动作，所以这一过程被称为coldplug。）\n\n--verbose　　　　 输出将要被触发的设备列表。\n\n--dry-run 　　　　 不真的触发事件\n\n--type=type 　　　 触发一个特殊的设备。合法的类型：devices,subsystem,failed.默认是devices\n\n--action=action　　被触发的事件，默认是change\n\n--subsystem-match=subsystem　　触发匹配子系统的设备事件。这个选项可以被多次指定，并且支持shell模式匹配。\n\n--attr-match=attribute=value　　　  触发匹配sysfs属性的设备事件。如果属性值和属性一起指定，属性的值可以使用shell模式匹配。如果没有指定值，会重新确认现有属性。这个选项可以被多次指定。\n\n--attr-nomatch=attribute=value　　 不要触发匹配属性的设备事件。如果可以使用模式匹配。也可以多次指定\n\n--property-match=property=value　匹配属性吻合的设备。可以多次指定支持模式匹配\n\n--tag-match=property　　　　　　 匹配标签吻合的设备。可以多次指定。\n\n--sysname-match=name　　　　　匹配sys设备名相同的设备。可以多次指定支持模式匹配。\n\n \n\nudevadm settle [options]　　查看udev事件队列，如果所有事件全部处理完就退出。\n\n--timeout=seconds　　　　 等待事件队列空的最大时间。默认是180秒。如果是0则立即退出。\n\n--seq-start=seqnum　　　  只等待到给定的顺序号。\n\n--seq-end=seqnum　　　　只等待到给定顺序号之前。\n\n--exit-if-exists=file　　　　  如果文件存在就退出\n\n--quiet　　　　不输出任何信息\n\n \n\nudevadm monitor [options]　　监听内核事件和udev发送的events事件。打印事件发出的设备。可以通过比较内核或者udev事件的时间戳来分析事件时序。\n\n--kernel　　输出内核事件\n\n--udev　　输出udev规则执行时的udev事件\n\n--property　　输出事件的属性\n\n--subsystem-match=string　　通过子系统或者设备类型过滤事件。只有匹配了子系统值的udev设备事件通过。\n\n--tag-match=string　　通过属性过滤事件，只有匹配了标签的udev事件通过。\n\n \n\nudevadm test [options] devpath　　模拟一个udev事件，打印出debug信息。\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250526150654-vxcrgbl",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250526150654-vxcrgbl",
+				"updated": "20250526150705"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "示例"
+				}
+			]
+		},
+		{
+			"ID": "20250526150705-7arxs5f",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250526150705-7arxs5f",
+				"style": "line-height: 22px;",
+				"updated": "20250526150808"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 查询块设备 /dev/sdc1 的路径信息\n$ udevadm info -q path -n /dev/sdc1\n/devices/pci0000:00/0000:00:14.0/usb2/2-1/2-1:1.0/host4/target4:0:0/4:0:0:0/block/sdc/sdc1\n\n//查询 RTC 设备的所有信息\n$ udevadm info --query=all --name=/dev/rtc\nP: /devices/platform/i2c@4/i2c-4/4-006f/rtc/rtc0\nN: rtc0\nL: -100\nS: rtc\nE: DEVPATH=/devices/platform/i2c@4/i2c-4/4-006f/rtc/rtc0\nE: DEVNAME=/dev/rtc0\nE: MAJOR=252\nE: MINOR=0\nE: SUBSYSTEM=rtc\nE: USEC_INITIALIZED=5168933\nE: DEVLINKS=/dev/rtc\n\n//不重启设备直接 reload udev 规则\nudevadm control --reload-rules \u0026\u0026 udevadm trigger\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

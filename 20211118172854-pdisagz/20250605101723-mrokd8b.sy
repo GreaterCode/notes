@@ -1,0 +1,735 @@
+{
+	"ID": "20250605101723-mrokd8b",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250605101723-mrokd8b",
+		"title": "parted的详解及常用分区使用方法",
+		"type": "doc",
+		"updated": "20250605102044"
+	},
+	"Children": [
+		{
+			"ID": "20250605101723-pmubcui",
+			"Type": "NodeThematicBreak",
+			"Properties": {
+				"id": "20250605101723-pmubcui",
+				"updated": "20250605101723"
+			}
+		},
+		{
+			"ID": "20250605101723-adj4fc2",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250605101723-adj4fc2",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、 parted的用途及说明"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-cs1baie",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-cs1baie",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.1 MBR分区与GPT分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-gztgi3h",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-gztgi3h",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "传统的MBR分区表格式，仅支持最大四个主分区，而且不可以格式化2TB以上的磁盘，因此，大磁盘更适合使用parted工具进行GPT的分区格式。"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-clbxdw4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-clbxdw4",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.2 概要说明"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-383op37",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-383op37",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "parted用于对磁盘（或RAID磁盘）进行分区及管理，与fdisk分区工具相比，支持2TB以上的磁盘分区，并且允许调整分区的大小。"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-y2l9bn4",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-y2l9bn4",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1.3 GNU手册说明"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-dojat6o",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-dojat6o",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "parted是一个用于硬盘分区或调整分区大小的工具。使用它你可以创建、清除、调整、移动和复制ext2、ext3、linux-swap、FAT、FAT32和reiserfs分区；也能创建、调整和移动苹果系统的HFS分区；还能检测jfs、ntfs、ufs和xfs分区。该工具常用于为新安装的操作系统创建空间，重新分配硬盘使用情况，在将数据拷贝到新硬盘的时候也常常使用。"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-h9vrnx8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250605101723-h9vrnx8",
+				"updated": "20250605101821"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、parted的使用方法（交互式）"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-3zm9n1i",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-3zm9n1i",
+				"updated": "20250605101821"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.1 对磁盘进行分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-l04r05b",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-l04r05b",
+				"style": "line-height: 22px;",
+				"updated": "20250605101821"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb\n# 对/dev/sdb进行分区或管理操作\n \nGNU Parted 3.1\n使用 /dev/sdb\nWelcome to GNU Parted! Type 'help' to view a list of commands.\n \n(parted) mklabel gpt\n# 定义分区表格式（常用的有msdos和gpt分区表格式，msdos不支持2TB以上容量的磁盘，所以大于2TB的磁盘选gpt分区表格式）\n \n警告: The existing disk label on /dev/sdb will be destroyed and all data on this disk will be lost. Do you want to continue?\n# /dev/sdb上现有的磁盘标签将被销毁，该磁盘上的所有数据将丢失。你想要继续\n是/Yes/否/No? yes                                                         \n \n(parted) mkpart p1\n# 创建第一个分区，名称为p1（p1只是第一个分区的名称，用别的名称也可以，如part1）\n \n文件系统类型？  [ext2]? xfs        \n# 定义分区格式（不支持ext4，想分ext4格式的分区，可以通过mkfs.ext4格式化成ext4格式）\n                                       \n起始点？ 1       \n# 定义分区的起始位置（单位支持K,M,G,T）\n                                                         \n结束点？ 100%   \n# 定义分区的结束位置（单位支持K,M,G,T）    \n                                                      \n(parted) print   # 查看当前分区情况\nModel: VMware, VMware Virtual S (scsi)\nDisk /dev/sdb: 107GB\nSector size (logical/physical): 512B/512B\nPartition Table: gpt\nDisk Flags: \n \nNumber  Start   End    Size   File system  Name  标志\n 1      1049kB  107GB  107GB  xfs          p1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-n47pubm",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-n47pubm",
+				"updated": "20250605101843"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.2 删除分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-6cwgzyo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-6cwgzyo",
+				"style": "line-height: 22px;",
+				"updated": "20250605101843"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb\n# 对/dev/sdb进行分区或管理操作\n \n(parted) rm                \n# rm删除命令（删除之前必须确保分区没有被挂载）\n                                               \n分区编号？ 1          \n# 删除第一个分区\n                                                    \n(parted) print   # 打印当前分区情况                                                         \nModel: VMware, VMware Virtual S (scsi)\nDisk /dev/sdb: 107GB\nSector size (logical/physical): 512B/512B\nPartition Table: gpt\nDisk Flags: \n \nNumber  Start  End  Size  File system  Name  标志\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-vjw5lre",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-vjw5lre",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "在格式化几个TB的磁盘的时候，时间会非常的长，格式化6T的磁盘时间大概在一个半小时左右。（据硬盘实际情况而定）"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-9ltjia0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250605101723-9ltjia0",
+				"updated": "20250605101919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、partd分区实例"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-egg8e4m",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-egg8e4m",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "fdisk工具虽然很好用，但对于大于2T以上的硬盘分区特别慢，可能一部分容量识别不了，也不支持非交互模式。\n用parted就非常方便了，对大硬盘支持很好，也可以实现脚本分区。"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-paoxgbj",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-paoxgbj",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "parted该指令默认都已经安装过了，如果没有安装的话，使用以下命令进行安装："
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-28njt3y",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-28njt3y",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ yum install parted\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-zqdxchf",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-zqdxchf",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "parted有个不提示用户参数选项，就是通过这个选项来实现非交互！"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-p11oaiw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-p11oaiw",
+				"style": "line-height: 22px;",
+				"updated": "20250605101901"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "       -s, --script             \nnever prompts for user intervention\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-kh6y1nj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-kh6y1nj",
+				"updated": "20250605101919"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.1 定义分区类型"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-qiy8mzw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-qiy8mzw",
+				"style": "line-height: 22px;",
+				"updated": "20250605101919"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted -s /dev/sdb mklabel gpt\n# -s表示不输出提示信息\n# 如果不是用脚本执行分区操作，不建议忽略提示信息\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-om63c11",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-om63c11",
+				"updated": "20250605101929"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.2 查看磁盘分区信息"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-02gyr37",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-02gyr37",
+				"style": "line-height: 22px;",
+				"updated": "20250605101929"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb print\nModel: VMware, VMware Virtual S (scsi)\nDisk /dev/sdb: 107GB\nSector size (logical/physical): 512B/512B\nPartition Table: gpt\nDisk Flags: \n \nNumber  Start  End  Size  File system  Name  标志\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-44qltv9",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20250605101723-44qltv9",
+				"updated": "20250605102014"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3.3 创建与删除分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-i31dzuv",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-i31dzuv",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "命令格式如下："
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-2oyfmcf",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-2oyfmcf",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "parted 磁盘 mkpart 分区类型 [文件系统类型] 开始  结束\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-yzchhy8",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-yzchhy8",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "其中，分区类型有 primary、logical、extended三种，文件系统类型为可选项，一般选择为 ext4、xfs或swap等。开始与结束表示分区开始与结束的位置（默认单位为MB），也可以使用百分比表示分区位置，比如你想把整个磁盘创建一个分区，可以使用下面的命令："
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-r5q3pi6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-r5q3pi6",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "把整个磁盘/dev/sdb创建为一个主分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-usy3x7u",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-usy3x7u",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb mkpart primary xfs 0% 100%\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-dpkdko6",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-dpkdko6",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "把磁盘/dev/sdb创建为多个主分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-zca97tz",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-zca97tz",
+				"style": "line-height: 22px;",
+				"updated": "20250605101958"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb mkpart primary xfs 1G 10G\n$ parted /dev/sdb mkpart primary xfs 10G 50%\n$ parted /dev/sdb mkpart primary xfs  50% 100%\n$ parted /dev/sdb print       # 查看\nModel: VMware, VMware Virtual S (scsi)\nDisk /dev/sdb: 107GB\nSector size (logical/physical): 512B/512B\nPartition Table: gpt\nDisk Flags: \n \nNumber  Start   End     Size    File system  Name     标志\n 1      1000MB  10.0GB  9000MB               primary\n 2      10.0GB  53.7GB  43.7GB               primary\n 3      53.7GB  107GB   53.7GB               primary\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-8douzg2",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-8douzg2",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "删除分区"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-1yyw68a",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-1yyw68a",
+				"style": "line-height: 22px;",
+				"updated": "20250605102006"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb rm 1\n# 删除分区号为 1 的分区\n$ parted /dev/sdb print\nModel: VMware, VMware Virtual S (scsi)\nDisk /dev/sdb: 107GB\nSector size (logical/physical): 512B/512B\nPartition Table: gpt\nDisk Flags: \n \nNumber  Start   End     Size    File system  Name     标志\n 2      10.0GB  53.7GB  43.7GB               primary\n 3      53.7GB  107GB   53.7GB               primary\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-arvaw69",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-arvaw69",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "strong",
+					"TextMarkTextContent": "格式化并挂载"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-t2qj3yo",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-t2qj3yo",
+				"style": "line-height: 22px;",
+				"updated": "20250605102014"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ mkfs.xfs /dev/sdb2\n$ mkdir /data\n$ mount /dev/sdb2 /data\n$ df -hT /data\n文件系统                类型      容量  已用  可用 已用% 挂载点\n/dev/sdb2               xfs        41G   33M   41G    1% /data\n\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-aldqqof",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20250605101723-aldqqof",
+				"updated": "20250605102026"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、操作示例"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-vwm8esm",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250605101723-vwm8esm",
+				"updated": "20250605101723"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "需求：一块 100G的磁盘，使用parted创建一个分区（此分区包含所有磁盘空间），然后挂载到 /data 目录进行使用。过程如下:"
+				}
+			]
+		},
+		{
+			"ID": "20250605101723-za53g53",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250605101723-za53g53",
+				"style": "line-height: 22px;",
+				"updated": "20250605102026"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "c2hlbGw="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "$ parted /dev/sdb mklabel gpt\n$ parted /dev/sdb mkpart primary xfs 0% 100%\n$ mkfs.xfs /dev/sdb1\n$ mount /dev/sdb1 /data\n$ df -hT /data\n文件系统       类型  容量  已用  可用 已用% 挂载点\n/dev/sdb1      xfs   100G   33M  100G    1% /data\n$ vim /etc/fstab\n/dev/sdb1   /data   xfs   defaults   0 0\n# 实现开机自动挂载\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

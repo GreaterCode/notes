@@ -1,0 +1,48 @@
+{
+	"ID": "20250515005825-pxub83j",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250515005825-pxub83j",
+		"title": "dnf升级本地openssh漏洞",
+		"type": "doc",
+		"updated": "20250515010418"
+	},
+	"Children": [
+		{
+			"ID": "20250515005945-h411hun",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250515005945-h411hun",
+				"style": "line-height: 22px;",
+				"updated": "20250515010418"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "dnf --repo=x --repofrompath x,cve makecache\ndnf --nogpgcheck -y --repo=x --repofrompath x,cve up\nrpm -q openssl rsync curl openssh\n\n批量操作\nkubectl get nodes --no-headers -o wide | awk '$10 ~ /^5\\.15\\.131.*x86_64$/ {print $6}' \u003e ips_x86_64.txt\nfor i in $(cat ips_x86_64.txt); do scp -i private-key cve_x86.tar.gz ccadmin@$i:; done\nfor i in $(cat ips_x86_64.txt); do ssh -i private-key ccadmin@$i tar xvf cve_x86.tar.gz; done\nor i in $(cat ips_x86_64.txt); do ssh -i private-key ccadmin@$i ls cve; done\nfor i in $(cat ips_x86_64.txt); do ssh -i private-key ccadmin@$i sudo dnf --repo=x --repofrompath x,cve makecache; done\nfor i in $(cat ips_x86_64.txt); do ssh -i private-key ccadmin@$i sudo dnf --nogpgcheck -y --repo=x --repofrompath x,cve up; done\nfor i in $(cat ips_x86_64.txt); do ssh -i private-key ccadmin@$i rpm -q openssl rsync curl openssh; done\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20250515005931-fc1a1b1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250515005931-fc1a1b1",
+				"updated": "20250515005931"
+			}
+		}
+	]
+}

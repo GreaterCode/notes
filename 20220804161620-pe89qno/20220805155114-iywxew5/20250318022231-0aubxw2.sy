@@ -1,0 +1,85 @@
+{
+	"ID": "20250318022231-0aubxw2",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250318022231-0aubxw2",
+		"title": "etcdutl",
+		"type": "doc",
+		"updated": "20250318024226"
+	},
+	"Children": [
+		{
+			"ID": "20250318022243-tna75x0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250318022243-tna75x0",
+				"updated": "20250318022243"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 简介"
+				}
+			]
+		},
+		{
+			"ID": "20250318022243-g848o7w",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250318022243-g848o7w",
+				"updated": "20250318022243"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "etcdutl是一个etcd命令行适用管理工具，主要被用来直接操作etcd数据文件。如果通过网络操作，则使用etcdctl。"
+				}
+			]
+		},
+		{
+			"ID": "20250318022243-37y1nhh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250318022243-37y1nhh",
+				"updated": "20250318024226"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2.  使用示例"
+				}
+			]
+		},
+		{
+			"ID": "20250318022243-uuivwux",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250318022243-uuivwux",
+				"style": "line-height: 22px;",
+				"updated": "20250318024226"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "Y2xpa2U="
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "// 当etcd没有运行时进行碎片整理\n./etcdutl defrag --data-dir default.etcd\n# success (exit status 0)\n# Error: cannot open database at default.etcd/member/snap/db\n\n\n// 保存快照，还原到新的 3 节点集群，然后启动集群：\n\n #save snapshot\n./etcdctl snapshot save snapshot.db\n\n# restore members\n./etcdutl snapshot restore snapshot.db --initial-cluster-token etcd-cluster-1 --initial-advertise-peer-urls http://127.0.0.1:12380  --name sshot1 --initial-cluster 'sshot1=http://127.0.0.1:12380,sshot2=http://127.0.0.1:22380,sshot3=http://127.0.0.1:32380'\n./etcdutl snapshot restore snapshot.db --initial-cluster-token etcd-cluster-1 --initial-advertise-peer-urls http://127.0.0.1:22380  --name sshot2 --initial-cluster 'sshot1=http://127.0.0.1:12380,sshot2=http://127.0.0.1:22380,sshot3=http://127.0.0.1:32380'\n./etcdutl snapshot restore snapshot.db --initial-cluster-token etcd-cluster-1 --initial-advertise-peer-urls http://127.0.0.1:32380  --name sshot3 --initial-cluster 'sshot1=http://127.0.0.1:12380,sshot2=http://127.0.0.1:22380,sshot3=http://127.0.0.1:32380'\n\n# launch members\n./etcd --name sshot1 --listen-client-urls http://127.0.0.1:2379 --advertise-client-urls http://127.0.0.1:2379 --listen-peer-urls http://127.0.0.1:12380 \u0026\n./etcd --name sshot2 --listen-client-urls http://127.0.0.1:22379 --advertise-client-urls http://127.0.0.1:22379 --listen-peer-urls http://127.0.0.1:22380 \u0026\n./etcd --name sshot3 --listen-client-urls http://127.0.0.1:32379 --advertise-client-urls http://127.0.0.1:32379 --listen-peer-urls http://127.0.0.1:32380 \u0026\n\n\n//列出有关给定后端数据库快照文件的信息\n./etcdutl snapshot status file.db\n# cf1550fb, 3, 3, 25 kB\n\n\n# 打印一行 JSON 代码，对数据库哈希、修订、总键数和大小进行编码\n./etcdutl --write-out=json snapshot status file.db\n# {\"hash\":3474280699,\"revision\":3,\"totalKey\":3,\"totalSize\":24576}\n\n# 以表格形式打印数据库哈希、修订、总键数和大小\n./etcdutl --write-out=table snapshot status file.db\n+----------+----------+------------+------------+\n|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |\n+----------+----------+------------+------------+\n| cf1550fb |        3 |          3 | 25 kB      |\n+----------+----------+------------+------------+\n\n\n# 打印给定的修订版key 和 values 的哈希值\n./etcdutl hashkv file.db\n# 35c86e9b, 214, 150\n\n./etcdutl --write-out=json hashkv file.db\n# {\"hash\":902327963,\"hashRevision\":214,\"compactRevision\":150}\n\n\n./etcdutl --write-out=table hashkv file.db\n+----------+---------------+------------------+\n|   HASH   | HASH REVISION | COMPACT REVISION |\n+----------+---------------+------------------+\n| 35c86e9b |           214 |              150 |\n+----------+---------------+------------------+\n\n\n./etcdutl version\n# etcdutl version: 3.5.0\n# API version: 3.1\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

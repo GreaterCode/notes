@@ -1,0 +1,1026 @@
+{
+	"ID": "20260109031325-pajj523",
+	"Spec": "2",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20260109031325-pajj523",
+		"title": "网络设备备份",
+		"type": "doc",
+		"updated": "20260109031923"
+	},
+	"Children": [
+		{
+			"ID": "20260109031429-nncv3cp",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20260109031429-nncv3cp",
+				"updated": "20260109031502"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "一、纯内置库备份脚本（Linux 专属）"
+				}
+			]
+		},
+		{
+			"ID": "20260109031437-qofdg22",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031437-qofdg22",
+				"style": "line-height: 22px;",
+				"updated": "20260109031447"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\"\"\"\n纯Python内置库实现网络设备配置备份\n依赖：Linux系统自带的ssh/telnet命令（无需Python第三方库）\n支持：华为/H3C/思科/锐捷，SSH/Telnet协议\n\"\"\"\nimport os\nimport re\nimport sys\nimport time\nimport logging\nimport subprocess\nfrom datetime import datetime\nfrom shutil import which\n\n# ====================== 配置项（根据企业环境修改）======================\n# 设备列表文件路径（格式：设备名,IP,厂商,协议,用户名,密码,enable密码,端口）\nDEVICE_LIST = \"/data/backup/devices.csv\"\n# 备份存储根目录\nBACKUP_DIR = \"/data/backup/configs\"\n# 日志文件路径\nLOG_FILE = \"/data/backup/logs/backup.log\"\n# 重试次数\nRETRY = 3\n# 连接超时（秒）\nTIMEOUT = 30\n# 是否启用配置文件去重（保留最新版本）\nENABLE_DEDUPLICATE = True\n\n# 厂商命令映射\nVENDOR_CMDS = {\n    \"huawei\": \"display current-configuration\",\n    \"h3c\": \"display current-configuration\",\n    \"cisco\": \"show running-config\",\n    \"ruijie\": \"show running-config\",\n    \"juniper\": \"show configuration | display set\"\n}\n\n# ====================== 初始化日志 ======================\ndef init_logger():\n    \"\"\"初始化日志（仅用内置库）\"\"\"\n    logger = logging.getLogger(\"device_backup\")\n    logger.setLevel(logging.INFO)\n    # 避免重复添加处理器\n    if logger.handlers:\n        return logger\n    \n    # 文件处理器\n    fh = logging.FileHandler(LOG_FILE, encoding=\"utf-8\")\n    fh.setFormatter(logging.Formatter(\"%(asctime)s - %(levelname)s - %(message)s\"))\n    # 控制台处理器\n    ch = logging.StreamHandler()\n    ch.setFormatter(logging.Formatter(\"%(asctime)s - %(levelname)s - %(message)s\"))\n    \n    logger.addHandler(fh)\n    logger.addHandler(ch)\n    return logger\n\nlogger = init_logger()\n\n# ====================== 前置检查 ======================\ndef pre_check():\n    \"\"\"检查系统依赖和目录\"\"\"\n    # 检查SSH/Telnet命令是否存在\n    if not which(\"ssh\"):\n        logger.error(\"系统未安装ssh客户端，请先执行：yum install openssh-clients 或 apt install openssh-client\")\n        sys.exit(1)\n    if not which(\"telnet\"):\n        logger.error(\"系统未安装telnet客户端，请先执行：yum install telnet 或 apt install telnet\")\n        sys.exit(1)\n    \n    # 创建目录\n    os.makedirs(BACKUP_DIR, exist_ok=True)\n    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)\n    logger.info(\"前置检查通过，目录已初始化\")\n\n# ====================== 读取设备列表 ======================\ndef read_devices():\n    \"\"\"读取设备列表（CSV格式）\"\"\"\n    devices = []\n    if not os.path.exists(DEVICE_LIST):\n        logger.error(f\"设备列表文件不存在：{DEVICE_LIST}\")\n        return devices\n    \n    with open(DEVICE_LIST, \"r\", encoding=\"utf-8\") as f:\n        for line_num, line in enumerate(f, 1):\n            line = line.strip()\n            if not line or line.startswith(\"#\"):\n                continue\n            # 格式：设备名,IP,厂商,协议,用户名,密码,enable密码,端口\n            try:\n                dev_name, ip, vendor, proto, user, pwd, enable_pwd, port = line.split(\",\")\n                devices.append({\n                    \"name\": dev_name,\n                    \"ip\": ip,\n                    \"vendor\": vendor.lower(),\n                    \"proto\": proto.lower(),\n                    \"user\": user,\n                    \"pwd\": pwd,\n                    \"enable_pwd\": enable_pwd,\n                    \"port\": port.strip()\n                })\n            except Exception as e:\n                logger.error(f\"第{line_num}行格式错误：{line}，错误：{str(e)}\")\n    return devices\n\n# ====================== SSH备份（调用系统ssh命令）=====================\ndef backup_ssh(device):\n    \"\"\"通过系统SSH命令备份配置\"\"\"\n    cmd = VENDOR_CMDS.get(device[\"vendor\"], \"display current-configuration\")\n    enable_cmd = \"\"\n    \n    # 构造enable命令（思科/华三需要）\n    if device[\"enable_pwd\"] and device[\"enable_pwd\"].strip():\n        enable_cmd = f\"enable;echo {device['enable_pwd']};sleep 1;\"\n    \n    # 构造SSH命令（免交互，禁用主机密钥检查）\n    ssh_cmd = (\n        f\"ssh -o StrictHostKeyChecking=no -o ConnectTimeout={TIMEOUT} \"\n        f\"-p {device['port']} {device['user']}@{device['ip']} \"\n        f\"'{enable_cmd}{cmd};exit'\"\n    )\n    \n    # 处理密码（通过expect模拟交互，避免明文传密码）\n    expect_script = f\"\"\"\n    spawn {ssh_cmd}\n    expect \"Password:\"\n    send \"{device['pwd']}\\\\r\"\n    expect eof\n    \"\"\"\n    try:\n        # 调用expect执行SSH交互（Linux自带expect）\n        result = subprocess.run(\n            [\"expect\", \"-c\", expect_script],\n            capture_output=True,\n            text=True,\n            timeout=TIMEOUT\n        )\n        if result.returncode != 0:\n            logger.error(f\"SSH备份失败 {device['name']}：{result.stderr}\")\n            return \"\"\n        \n        # 过滤配置内容（去除冗余信息）\n        config = filter_config(result.stdout, device[\"vendor\"])\n        logger.info(f\"SSH备份成功：{device['name']}({device['ip']})\")\n        return config\n    except subprocess.TimeoutExpired:\n        logger.error(f\"SSH超时 {device['name']}({device['ip']})\")\n        return \"\"\n    except Exception as e:\n        logger.error(f\"SSH备份异常 {device['name']}：{str(e)}\")\n        return \"\"\n\n# ====================== Telnet备份（调用系统telnet命令）=====================\ndef backup_telnet(device):\n    \"\"\"通过系统Telnet命令备份配置\"\"\"\n    cmd = VENDOR_CMDS.get(device[\"vendor\"], \"display current-configuration\")\n    # 构造Telnet交互脚本\n    telnet_script = f\"\"\"\n    spawn telnet {device['ip']} {device['port']}\n    expect \"Username:\"\n    send \"{device['user']}\\\\r\"\n    expect \"Password:\"\n    send \"{device['pwd']}\\\\r\"\n    sleep 1\n    \"\"\"\n    # 添加enable命令\n    if device[\"enable_pwd\"] and device[\"enable_pwd\"].strip():\n        telnet_script += f\"send \\\"enable\\\\r\\\";expect \\\"Password:\\\";send \\\"{device['enable_pwd']}\\\\r\\\";sleep 1;\"\n    # 发送配置查询命令\n    telnet_script += f\"send \\\"{cmd}\\\\r\\\";sleep 3;send \\\"exit\\\\r\\\";expect eof\"\n    \n    try:\n        result = subprocess.run(\n            [\"expect\", \"-c\", telnet_script],\n            capture_output=True,\n            text=True,\n            timeout=TIMEOUT\n        )\n        if result.returncode != 0:\n            logger.error(f\"Telnet备份失败 {device['name']}：{result.stderr}\")\n            return \"\"\n        \n        config = filter_config(result.stdout, device[\"vendor\"])\n        logger.info(f\"Telnet备份成功：{device['name']}({device['ip']})\")\n        return config\n    except subprocess.TimeoutExpired:\n        logger.error(f\"Telnet超时 {device['name']}({device['ip']})\")\n        return \"\"\n    except Exception as e:\n        logger.error(f\"Telnet备份异常 {device['name']}：{str(e)}\")\n        return \"\"\n\n# ====================== 配置过滤（去冗余）=====================\ndef filter_config(raw_config, vendor):\n    \"\"\"过滤配置中的冗余信息\"\"\"\n    if not raw_config:\n        return \"\"\n    \n    # 通用过滤：去除expect交互输出、提示符、空行\n    config = re.sub(r\"spawn .+\\n\", \"\", raw_config)\n    config = re.sub(r\"Username:|Password:|enable\\r\\n\", \"\", config)\n    config = re.sub(r\"\\n\\S+[#\u003e]\\s*\", \"\\n\", config)\n    config = re.sub(r\"\\r\", \"\", config)\n    \n    # 厂商专属过滤\n    if vendor in [\"huawei\", \"h3c\"]:\n        config = re.sub(r\"Current configuration : .+\\n\", \"\", config)\n        config = re.sub(r\"!Time: .+\\n\", \"\", config)\n    elif vendor == \"cisco\":\n        config = re.sub(r\"Building configuration...\\n\", \"\", config)\n    \n    # 去除首尾空行\n    config = config.strip()\n    return config\n\n# ====================== 保存配置文件 ======================\ndef save_config(device, config):\n    \"\"\"保存配置到本地（支持去重）\"\"\"\n    if not config:\n        logger.warning(f\"{device['name']} 配置为空，不保存\")\n        return False\n    \n    # 构造文件名：厂商/设备名_日期.conf\n    vendor_dir = os.path.join(BACKUP_DIR, device[\"vendor\"])\n    os.makedirs(vendor_dir, exist_ok=True)\n    file_name = f\"{device['name']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.conf\"\n    file_path = os.path.join(vendor_dir, file_name)\n    \n    # 去重：对比最新备份，内容一致则不重复保存\n    if ENABLE_DEDUPLICATE:\n        latest_file = get_latest_config(vendor_dir, device[\"name\"])\n        if latest_file and compare_config(latest_file, config):\n            logger.info(f\"{device['name']} 配置无变更，跳过保存\")\n            return True\n    \n    # 保存文件\n    try:\n        with open(file_path, \"w\", encoding=\"utf-8\") as f:\n            f.write(config)\n        logger.info(f\"配置已保存：{file_path}\")\n        return True\n    except Exception as e:\n        logger.error(f\"保存配置失败 {device['name']}：{str(e)}\")\n        return False\n\ndef get_latest_config(vendor_dir, dev_name):\n    \"\"\"获取设备最新备份文件\"\"\"\n    try:\n        files = [f for f in os.listdir(vendor_dir) if f.startswith(dev_name) and f.endswith(\".conf\")]\n        if not files:\n            return None\n        # 按时间戳排序，取最新\n        files.sort(reverse=True)\n        return os.path.join(vendor_dir, files[0])\n    except Exception as e:\n        logger.warning(f\"获取最新配置失败：{str(e)}\")\n        return None\n\ndef compare_config(file_path, new_config):\n    \"\"\"对比配置是否一致\"\"\"\n    try:\n        with open(file_path, \"r\", encoding=\"utf-8\") as f:\n            old_config = f.read().strip()\n        return old_config == new_config\n    except Exception as e:\n        logger.warning(f\"对比配置失败：{str(e)}\")\n        return False\n\n# ====================== 主函数 ======================\ndef main():\n    logger.info(\"=\"*60 + f\" 配置备份脚本启动 {datetime.now()} \" + \"=\"*60)\n    # 前置检查\n    pre_check()\n    # 读取设备列表\n    devices = read_devices()\n    if not devices:\n        logger.error(\"无有效设备列表，脚本退出\")\n        return\n    \n    # 批量备份\n    for device in devices:\n        logger.info(f\"开始备份：{device['name']}({device['ip']})\")\n        config = \"\"\n        # 重试机制\n        for i in range(RETRY):\n            if device[\"proto\"] == \"ssh\":\n                config = backup_ssh(device)\n            elif device[\"proto\"] == \"telnet\":\n                config = backup_telnet(device)\n            else:\n                logger.error(f\"{device['name']} 不支持的协议：{device['proto']}\")\n                break\n            \n            if config:\n                break\n            logger.warning(f\"{device['name']} 第{i+1}次备份失败，重试...\")\n            time.sleep(2)\n        \n        # 保存配置\n        save_config(device, config)\n        time.sleep(1)  # 避免高频访问设备\n    \n    logger.info(\"=\"*60 + f\" 配置备份脚本结束 {datetime.now()} \" + \"=\"*60)\n\nif __name__ == \"__main__\":\n    main()\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031502-h5imgl6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20260109031502-h5imgl6",
+				"updated": "20260109031527"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "二、使用前准备（Linux 系统）"
+				}
+			]
+		},
+		{
+			"ID": "20260109031502-cdd5pdh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20260109031502-cdd5pdh",
+				"updated": "20260109031527"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 安装系统依赖（仅需系统自带工具）"
+				}
+			]
+		},
+		{
+			"ID": "20260109031509-fz5iddu",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031509-fz5iddu",
+				"style": "line-height: 22px;",
+				"updated": "20260109031516"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# CentOS/RHEL\nyum install -y openssh-clients telnet expect\n\n# Ubuntu/Debian\napt update \u0026\u0026 apt install -y openssh-client telnet expect\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031527-gn099if",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20260109031527-gn099if",
+				"updated": "20260109031527"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 创建目录和设备列表"
+				}
+			]
+		},
+		{
+			"ID": "20260109031540-icozwtl",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031540-icozwtl",
+				"style": "line-height: 22px;",
+				"updated": "20260109031544"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建备份目录\nmkdir -p /data/backup/{configs,logs}\nchmod -R 755 /data/backup\n\n# 编写设备列表文件 /data/backup/devices.csv\ncat \u003e /data/backup/devices.csv \u003c\u003c EOF\n# 格式：设备名,IP,厂商,协议,用户名,密码,enable密码,端口\ncore-huawei,192.168.1.1,huawei,ssh,admin,Admin@123,,22\ncore-cisco,192.168.1.2,cisco,ssh,admin,Admin@123,Enable@123,22\naccess-h3c,192.168.1.3,h3c,telnet,admin,Admin@123,,23\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031558-qwjlh3e",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20260109031558-qwjlh3e",
+				"updated": "20260109031722"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "三、脚本使用说明"
+				}
+			]
+		},
+		{
+			"ID": "20260109031558-ziekwvh",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20260109031558-ziekwvh",
+				"updated": "20260109031722"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 手动执行"
+				}
+			]
+		},
+		{
+			"ID": "20260109031610-dizii5i",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031610-dizii5i",
+				"style": "line-height: 22px;",
+				"updated": "20260109031615"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 赋予执行权限\nchmod +x /data/backup/backup_script.py\n\n# 直接运行\npython3 /data/backup/backup_script.py\n\n# 后台运行（避免终端关闭中断）\nnohup python3 /data/backup/backup_script.py \u003e /dev/null 2\u003e\u00261 \u0026\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031621-xg2owb5",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20260109031621-xg2owb5",
+				"updated": "20260109031621"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": ".2. 定时自动备份（Cron）"
+				}
+			]
+		},
+		{
+			"ID": "20260109031624-779t8fw",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031624-779t8fw",
+				"style": "line-height: 22px;",
+				"updated": "20260109031633"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 编辑crontab\ncrontab -e\n\n# 添加每天凌晨2点执行\n0 2 * * * /usr/bin/python3 /data/backup/backup_script.py \u003e /dev/null 2\u003e\u00261\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031732-kfw0lf6",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20260109031732-kfw0lf6",
+				"updated": "20260109031748"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "四、核心特性说明（无第三方库）"
+				}
+			]
+		},
+		{
+			"ID": "20260109031739-wh4z04y",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "||",
+				"id": "20260109031739-wh4z04y",
+				"updated": "20260109031739"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "特性"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "实现方式"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "优势"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "SSH/Telnet 交互"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "调用系统"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "expect"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​命令模拟免交互登录"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "无需 paramiko，依赖 Linux 原生工具"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "配置过滤"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "正则表达式去除冗余信息"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "适配主流厂商配置格式"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "配置去重"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "对比最新备份文件内容"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "避免重复存储相同配置"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "日志记录"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "内置"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "logging"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​模块"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "同时输出到文件和控制台"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "重试机制"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "循环重试 + 延时"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "提升备份成功率"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20260109031748-49orcum",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20260109031748-49orcum",
+				"updated": "20260109031826"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "五、企业级优化"
+				}
+			]
+		},
+		{
+			"ID": "20260109031803-wnw0ks8",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20260109031803-wnw0ks8",
+				"updated": "20260109031826"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 权限管控（避免 root 运行）"
+				}
+			]
+		},
+		{
+			"ID": "20260109031809-yr82jdc",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031809-yr82jdc",
+				"style": "line-height: 22px;",
+				"updated": "20260109031818"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建专用用户\nuseradd -r -m -s /sbin/nologin backup\nchown -R backup:backup /data/backup\n\n# 以backup用户运行脚本\nsu - backup -c \"python3 /data/backup/backup_script.py\"\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031827-6koo47r",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20260109031827-6koo47r",
+				"updated": "20260109031849"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 日志轮转"
+				}
+			]
+		},
+		{
+			"ID": "20260109031836-jh7owm0",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260109031836-jh7owm0",
+				"style": "line-height: 22px;",
+				"updated": "20260109031838"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "# 创建日志轮转配置\ncat \u003e /etc/logrotate.d/device_backup \u003c\u003c EOF\n/data/backup/logs/backup.log {\n    daily\n    rotate 7\n    compress\n    missingok\n    notifempty\n    create 0644 backup backup\n}\nEOF\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		},
+		{
+			"ID": "20260109031850-iw120oc",
+			"Type": "NodeHeading",
+			"HeadingLevel": 4,
+			"Properties": {
+				"id": "20260109031850-iw120oc",
+				"updated": "20260109031923"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "3. 故障排查"
+				}
+			]
+		},
+		{
+			"ID": "20260109031901-chudu43",
+			"Type": "NodeTable",
+			"TableAligns": [
+				0,
+				0,
+				0
+			],
+			"Properties": {
+				"colgroup": "||",
+				"id": "20260109031901-chudu43",
+				"updated": "20260109031901"
+			},
+			"Children": [
+				{
+					"Type": "NodeTableHead",
+					"Data": "thead",
+					"Children": [
+						{
+							"Type": "NodeTableRow",
+							"Data": "tr",
+							"Children": [
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "问题"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "原因"
+										}
+									]
+								},
+								{
+									"Type": "NodeTableCell",
+									"Data": "th",
+									"Children": [
+										{
+											"Type": "NodeText",
+											"Data": "解决方法"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "expect: 未找到命令"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "未安装 expect"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "执行"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "yum install expect"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​或"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "apt install expect"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "SSH 备份返回空"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设备禁用密码登录 / SSH 配置限制"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "临时开启密码登录，或添加"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "code",
+									"TextMarkTextContent": "-o PasswordAuthentication=yes"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "​到 SSH 命令"
+								}
+							]
+						}
+					]
+				},
+				{
+					"Type": "NodeTableRow",
+					"Data": "tr",
+					"Children": [
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "Telnet 超时"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "设备 Telnet 服务未开启"
+								}
+							]
+						},
+						{
+							"Type": "NodeTableCell",
+							"Data": "td",
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "检查设备 Telnet 配置，确保端口 23 放行"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20260109031923-2rj95u0",
+			"Type": "NodeHeading",
+			"HeadingLevel": 3,
+			"Properties": {
+				"id": "20260109031923-2rj95u0",
+				"updated": "20260109031923"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "总结"
+				}
+			]
+		},
+		{
+			"ID": "20260109031923-a9lmrau",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20260109031923-a9lmrau",
+				"updated": "20260109031923"
+			},
+			"Children": [
+				{
+					"ID": "20260109031923-7ybfzj7",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20260109031923-7ybfzj7",
+						"updated": "20260109031923"
+					},
+					"Children": [
+						{
+							"ID": "20260109031923-hf4bzdf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20260109031923-hf4bzdf",
+								"updated": "20260109031923"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "该脚本"
+								},
+								{
+									"Type": "NodeTextMark",
+									"TextMarkType": "strong",
+									"TextMarkTextContent": "完全基于 Python 内置库 + Linux 系统原生工具"
+								},
+								{
+									"Type": "NodeText",
+									"Data": "实现，无需安装任何 Python 第三方包，部署零依赖；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20260109031923-chmuxec",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20260109031923-chmuxec",
+						"updated": "20260109031923"
+					},
+					"Children": [
+						{
+							"ID": "20260109031923-dzp2ufe",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20260109031923-dzp2ufe",
+								"updated": "20260109031923"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "核心能力：多厂商适配、SSH/Telnet 备份、配置去重、日志记录、重试机制，满足企业级基础备份需求；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20260109031923-ra8bsnf",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "My4=",
+						"Num": 3
+					},
+					"Properties": {
+						"id": "20260109031923-ra8bsnf",
+						"updated": "20260109031923"
+					},
+					"Children": [
+						{
+							"ID": "20260109031923-zqi7kjf",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20260109031923-zqi7kjf",
+								"updated": "20260109031923"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "适用场景：无外网环境（无法安装第三方库）、轻量化部署、中小规模网络设备备份；"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20260109031923-2zbjnam",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "NC4=",
+						"Num": 4
+					},
+					"Properties": {
+						"id": "20260109031923-2zbjnam",
+						"updated": "20260109031923"
+					},
+					"Children": [
+						{
+							"ID": "20260109031923-p99oh7l",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20260109031923-p99oh7l",
+								"updated": "20260109031923"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "局限性：仅支持 Linux 系统（依赖 expect/ssh/telnet 命令），Windows 系统需适配 WSL 或替换交互方式。"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20260109031923-f9ys2l1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20260109031923-f9ys2l1",
+				"updated": "20260109031923"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "如果需要适配 Windows 系统（改用内置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "telnetlib"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​替代系统 telnet 命令），或添加备份失败邮件告警（内置"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "smtplib"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​）"
+				}
+			]
+		}
+	]
+}

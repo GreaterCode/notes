@@ -1,0 +1,185 @@
+{
+	"ID": "20250527013248-o15t1hj",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250527013248-o15t1hj",
+		"title": "网络设备巡检",
+		"type": "doc",
+		"updated": "20250527105009"
+	},
+	"Children": [
+		{
+			"ID": "20250527013317-arh6bv9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250527013317-arh6bv9",
+				"updated": "20250527013325"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "基于netmiko模块实现支持SSH or Telnet的多线程多厂商网络设备自动化巡检脚本"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250527013339-u6sexdg",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20250527013339-u6sexdg",
+				"updated": "20250527013358"
+			},
+			"Children": [
+				{
+					"ID": "20250527013341-a4lb5xn",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "MS4=",
+						"Num": 1
+					},
+					"Properties": {
+						"id": "20250527013341-a4lb5xn",
+						"updated": "20250527013358"
+					},
+					"Children": [
+						{
+							"ID": "20250527013341-e8trluo",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250527013341-e8trluo",
+								"updated": "20250527013356"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "安装netmiko、"
+								}
+							]
+						},
+						{
+							"ID": "20250527013358-txlq4kd",
+							"Type": "NodeCodeBlock",
+							"IsFencedCodeBlock": true,
+							"Properties": {
+								"id": "20250527013358-txlq4kd",
+								"updated": "20250527013358"
+							},
+							"Children": [
+								{
+									"Type": "NodeCodeBlockFenceOpenMarker",
+									"Data": "```"
+								},
+								{
+									"Type": "NodeCodeBlockFenceInfoMarker"
+								},
+								{
+									"Type": "NodeCodeBlockCode",
+									"Data": "pip install netmiko\n"
+								},
+								{
+									"Type": "NodeCodeBlockFenceCloseMarker",
+									"Data": "```"
+								}
+							]
+						},
+						{
+							"ID": "20250527013358-zn3sakg",
+							"Type": "NodeHeading",
+							"HeadingLevel": 3,
+							"Properties": {
+								"id": "20250527013358-zn3sakg",
+								"updated": "20250527013358"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250527013400-swbf4bb",
+			"Type": "NodeList",
+			"ListData": {
+				"Typ": 1
+			},
+			"Properties": {
+				"id": "20250527013400-swbf4bb",
+				"updated": "20250527013404"
+			},
+			"Children": [
+				{
+					"ID": "20250527013402-knql0bp",
+					"Type": "NodeListItem",
+					"ListData": {
+						"Typ": 1,
+						"Delimiter": 46,
+						"Marker": "Mi4=",
+						"Num": 2
+					},
+					"Properties": {
+						"id": "20250527013402-knql0bp",
+						"updated": "20250527013404"
+					},
+					"Children": [
+						{
+							"ID": "20250527013402-aa1m09b",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250527013402-aa1m09b",
+								"updated": "20250527013404"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "脚本"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250527013553-tpekpgy",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20250527013553-tpekpgy",
+				"style": "line-height: 22px;",
+				"updated": "20250527105009"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "import os\nfrom concurrent.futures import ThreadPoolExecutor\nfrom os import makedirs\nfrom netmiko import ConnectHandler\nimport csv\nimport chardet\n\ndef task(i):\n\tif i['厂商'] == '华为' and i['协议'] == 'ssh':        \n    \tdevice_type = 'huawei'\n        cmd_txt = '华为巡检命令.txt'\n    elif i['厂商'] == '华为' and i['协议'] == 'telnet': \n        device_type = 'huawei_telnet'\n        cmd_txt = '华为巡检命令.txt'    \n\telif i['厂商'] == '华三' and i['协议'] == 'ssh':        \n\t\tdevice_type = 'hp_comware'        \n\t\tcmd_txt = 'H3C巡检命令.txt'    \n\telif i['厂商'] == '华三' and i['协议'] == 'telnet':        \n\t\tdevice_type = 'hp_comware_telnet'        \n\t\tcmd_txt = 'H3C巡检命令.txt'    \n\telif i['厂商'] == '锐捷' and i['协议'] == 'ssh':        \n\t\tdevice_type = 'ruijie_os'        \n\t\tcmd_txt = '锐捷巡检命令.txt'    \n\telif i['厂商'] == '锐捷' and i['协议'] == 'telnet':        \n\t\tdevice_type = 'ruijie_os_telnet'        \n\t\tcmd_txt = '锐捷巡检命令.txt'    \n\tdevice = {        \n\t\t'device_type': device_type,        \n\t\t'host': i['ip'],        \n\t\t'username': i['username'],        \n\t\t'password': i['password'],    \n\t}\n\tif os.path.exists(path):\n        with open(dir, mode='rb') as ffile:\n            data_bs = ffile.read()\n            result_dict = chardet.detect(data_bs)\n            encoding_cmd_txt = result_dict['encoding']\n        with open(dir, mode='r', encoding=encoding_cmd_txt) as cmd_read:\n            for cmd in cmd_read:\n                stdout = conn.send_command(cmd.strip())\n                with open(f'{path}{i['ip']}的巡检记录.txt', mode='a', encoding='utf-8') as addwrite:\n                    addwrite.write(stdout)\n    else:\n        makedirs(path)\n        with open(dir, mode='rb') as ffile:\n            data_bs = ffile.read()\n            result_dict = chardet.detect(data_bs)\n            encoding_cmd_txt = result_dict['encoding']\n        with open(dir, mode='r', encoding=encoding_cmd_txt) as cmd_read:\n            for cmd in cmd_read:\n                stdout = conn.send_command(cmd.strip())\n                with open(f'{path}{i['ip']}的巡检记录.txt', mode='a', encoding='utf-8') as addwrite:\n                    addwrite.write(stdout)\n\n\n\nif __name__ == '__main__':\n\twith open('host.csv',mode='rb') as file:\n\t\traw_data = file.read()\n\t\tresult = chardet.detect(raw_data)\n \t\tencoding = result['encoding']\n    with open('host.csv',mode='r',encoding=encoding) as file:\n        reader = csv.DictReader(file)            \n\t\tmax_thread = 10            \n\t\tfor i in reader:             \n\t\t\twith ThreadPoolExecutor(max_workers=max_thread) as t: \n                t.submit(task,i)\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}

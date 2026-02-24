@@ -1,0 +1,1313 @@
+{
+	"ID": "20250530160436-f88t0q8",
+	"Spec": "1",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20250530160436-f88t0q8",
+		"title": "OVN-Kubernetes架构",
+		"type": "doc",
+		"updated": "20250530165429"
+	},
+	"Children": [
+		{
+			"ID": "20250530160923-32ec9u7",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250530160923-32ec9u7",
+				"updated": "20250530161055"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "1. 简述"
+				}
+			]
+		},
+		{
+			"ID": "20250530160436-tgczagh",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250530160436-tgczagh",
+				"updated": "20250530160546"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "ovn-kubernetes 有两种部署模式，具体取决于架构："
+				}
+			]
+		},
+		{
+			"ID": "20250530160548-0pniz9x",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250530160548-0pniz9x",
+				"updated": "20250530161055"
+			},
+			"Children": [
+				{
+					"ID": "20250530160556-wycaw53",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250530160556-wycaw53",
+						"updated": "20250530161050"
+					},
+					"Children": [
+						{
+							"ID": "20250530160556-zyqmkhs",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250530160556-zyqmkhs",
+								"updated": "20250530161050"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "默认模式（集中式控制平面架构）"
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250530160608-j37s79j",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250530160608-j37s79j",
+						"updated": "20250530161055"
+					},
+					"Children": [
+						{
+							"ID": "20250530160608-q772g3f",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250530160608-q772g3f",
+								"updated": "20250530161055"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "互联模式（分布式控制平面架构）"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250530160752-pyhcmz1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250530160752-pyhcmz1",
+				"updated": "20250530160912"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "最终用户可以根据他们的场景和选择适合他们的一种模式。让我们深入了解这两种模式，以便您能够在这两种部署模式之间进行选择。"
+				}
+			]
+		},
+		{
+			"ID": "20250530160916-2o3oyzj",
+			"Type": "NodeHeading",
+			"HeadingLevel": 1,
+			"Properties": {
+				"id": "20250530160916-2o3oyzj",
+				"updated": "20250530165429"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "2. 集中式控制平面架构"
+				}
+			]
+		},
+		{
+			"ID": "20250530161131-yddzqy1",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250530161131-yddzqy1",
+				"updated": "20250530161131"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				},
+				{
+					"Type": "NodeImage",
+					"Data": "span",
+					"Children": [
+						{
+							"Type": "NodeBang"
+						},
+						{
+							"Type": "NodeOpenBracket"
+						},
+						{
+							"Type": "NodeLinkText",
+							"Data": "image"
+						},
+						{
+							"Type": "NodeCloseBracket"
+						},
+						{
+							"Type": "NodeOpenParen"
+						},
+						{
+							"Type": "NodeLinkDest",
+							"Data": "assets/image-20250530161131-k900c9k.png"
+						},
+						{
+							"Type": "NodeCloseParen"
+						}
+					]
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​"
+				}
+			]
+		},
+		{
+			"ID": "20250530162047-0hv0wyy",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250530162047-0hv0wyy",
+				"updated": "20250530162117"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "控制平面在 ovn-kubernetes 命名空间中有 ovnkube-master pod，它仅在集群中的控制平面节点上运行。"
+				}
+			]
+		},
+		{
+			"ID": "20250530162123-i5uw1rw",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250530162123-i5uw1rw",
+				"updated": "20250530163933"
+			},
+			"Children": [
+				{
+					"ID": "20250530162134-spscqy2",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250530162134-spscqy2",
+						"updated": "20250530163933"
+					},
+					"Children": [
+						{
+							"ID": "20250530162134-dy3rzv1",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250530162134-dy3rzv1",
+								"updated": "20250530164049"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ovnkube-master pod"
+								}
+							]
+						},
+						{
+							"ID": "20250530162137-lrrc4yf",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250530162137-lrrc4yf",
+								"updated": "20250530163933"
+							},
+							"Children": [
+								{
+									"ID": "20250530162137-ds7h7ke",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530162137-ds7h7ke",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250530162137"
+									},
+									"Children": [
+										{
+											"ID": "20250530162137-rx2upq6",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530162137-rx2upq6",
+												"updated": "20250530162243"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ovnkube-master容器功能："
+												}
+											]
+										},
+										{
+											"ID": "20250530162244-xriy5dj",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250530162244-xriy5dj",
+												"updated": "20250530162246"
+											},
+											"Children": [
+												{
+													"ID": "20250530162246-27o7xl0",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162246-27o7xl0",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250530162246"
+													},
+													"Children": [
+														{
+															"ID": "20250530162246-p3ez03b",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162246-p3ez03b",
+																"updated": "20250530162258"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "OVN-Kubernetes组件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530162258-1buatsk",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162258-1buatsk",
+														"style": "--en-bullet-line-height: 76px;",
+														"updated": "20250530162258"
+													},
+													"Children": [
+														{
+															"ID": "20250530162258-3va5ph9",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162258-3va5ph9",
+																"updated": "20250530162356"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "Watch namespaces, pods, services, endpoints, network policies, CRs这些对象的k8s API"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530162356-8fbqwen",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162356-8fbqwen",
+														"style": "--en-bullet-line-height: 114px;",
+														"updated": "20250530162356"
+													},
+													"Children": [
+														{
+															"ID": "20250530162356-ckpwgor",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162356-ckpwgor",
+																"updated": "20250530163114"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "翻译K8s对象为OVN逻辑实体"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530162420-s166m69",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162420-s166m69",
+														"style": "--en-bullet-line-height: 152px;",
+														"updated": "20250530162420"
+													},
+													"Children": [
+														{
+															"ID": "20250530162420-ti5lgvj",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162420-ti5lgvj",
+																"updated": "20250530162844"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "在NBDB中存储OVN逻辑实体"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530162845-z59jpha",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162845-z59jpha",
+														"style": "--en-bullet-line-height: 190px;",
+														"updated": "20250530162845"
+													},
+													"Children": [
+														{
+															"ID": "20250530162845-l254qko",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162845-l254qko",
+																"updated": "20250530162922"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "管理节点的pod子网分配"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250530162924-11zohks",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530162924-11zohks",
+										"style": "--en-bullet-line-height: 266px;",
+										"updated": "20250530162924"
+									},
+									"Children": [
+										{
+											"ID": "20250530162924-8uertqy",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530162924-8uertqy",
+												"updated": "20250530162940"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "nbdb容器"
+												}
+											]
+										},
+										{
+											"ID": "20250530162941-0329z1r",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250530162941-0329z1r",
+												"updated": "20250530162944"
+											},
+											"Children": [
+												{
+													"ID": "20250530162944-h764d6q",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162944-h764d6q",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250530162944"
+													},
+													"Children": [
+														{
+															"ID": "20250530162944-9y90c5p",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162944-9y90c5p",
+																"updated": "20250530162950"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "原生OVN组件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530162951-o0vvl4h",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530162951-o0vvl4h",
+														"style": "--en-bullet-line-height: 76px;",
+														"updated": "20250530162951"
+													},
+													"Children": [
+														{
+															"ID": "20250530162951-8z7luqv",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530162951-8z7luqv",
+																"updated": "20250530163008"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "运行OVN NBDB数据库"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530163003-cbwg8kv",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163003-cbwg8kv",
+														"style": "--en-bullet-line-height: 114px;",
+														"updated": "20250530163003"
+													},
+													"Children": [
+														{
+															"ID": "20250530163003-iuzgozb",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163003-iuzgozb",
+																"updated": "20250530163119"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "存储 ovnkube-master创建的逻辑单元"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530163217-83x70c5",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163217-83x70c5",
+														"style": "--en-bullet-line-height: 152px;",
+														"updated": "20250530163217"
+													},
+													"Children": [
+														{
+															"ID": "20250530163217-km0xk7z",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163217-km0xk7z",
+																"updated": "20250530163341"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "3副本运行在控制节点上，使用RAFT算法实现HA"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250530163342-u18oi93",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530163342-u18oi93",
+										"style": "--en-bullet-line-height: 456px;",
+										"updated": "20250530163342"
+									},
+									"Children": [
+										{
+											"ID": "20250530163342-p19cfie",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530163342-p19cfie",
+												"updated": "20250530163352"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "northd容器"
+												}
+											]
+										},
+										{
+											"ID": "20250530163352-mdi64al",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250530163352-mdi64al",
+												"updated": "20250530163354"
+											},
+											"Children": [
+												{
+													"ID": "20250530163354-c8yr3mx",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163354-c8yr3mx",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250530163354"
+													},
+													"Children": [
+														{
+															"ID": "20250530163354-2cobqe7",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163354-2cobqe7",
+																"updated": "20250530163402"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "原生OVN组件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530163402-w3zzrp4",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163402-w3zzrp4",
+														"style": "--en-bullet-line-height: 76px;",
+														"updated": "20250530163402"
+													},
+													"Children": [
+														{
+															"ID": "20250530163402-btj59zw",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163402-btj59zw",
+																"updated": "20250530163820"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "将NBDB中的OVN逻辑单元翻译成SBDB中的OVN逻辑流"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250530163835-v8jhw64",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530163835-v8jhw64",
+										"style": "--en-bullet-line-height: 570px;",
+										"updated": "20250530163933"
+									},
+									"Children": [
+										{
+											"ID": "20250530163835-74cafj8",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530163835-74cafj8",
+												"updated": "20250530163841"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "sbdb容器"
+												}
+											]
+										},
+										{
+											"ID": "20250530163843-to9a6ip",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250530163843-to9a6ip",
+												"updated": "20250530163933"
+											},
+											"Children": [
+												{
+													"ID": "20250530163846-k9p1e9a",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163846-k9p1e9a",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250530163846"
+													},
+													"Children": [
+														{
+															"ID": "20250530163846-qwus0aj",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163846-qwus0aj",
+																"updated": "20250530163852"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "原生OVN组件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530163852-f78m77c",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163852-f78m77c",
+														"style": "--en-bullet-line-height: 76px;",
+														"updated": "20250530163852"
+													},
+													"Children": [
+														{
+															"ID": "20250530163852-exuwaaz",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163852-exuwaaz",
+																"updated": "20250530163918"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "存储 northd创建的OVN逻辑流"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530163918-lafv3ya",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530163918-lafv3ya",
+														"style": "--en-bullet-line-height: 114px;",
+														"updated": "20250530163933"
+													},
+													"Children": [
+														{
+															"ID": "20250530163918-8w1hf9g",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530163918-8w1hf9g",
+																"updated": "20250530163933"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "3副本运行在控制节点上，使用RAFT算法实现HA"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"ID": "20250530162050-z3n6vm9",
+			"Type": "NodeParagraph",
+			"Properties": {
+				"id": "20250530162050-z3n6vm9",
+				"updated": "20250530164256"
+			},
+			"Children": [
+				{
+					"Type": "NodeText",
+					"Data": "数据面包括ovnkube-node 和ovs-node pod，它们运行在集群的所有节点上的"
+				},
+				{
+					"Type": "NodeTextMark",
+					"TextMarkType": "code",
+					"TextMarkTextContent": "ovn-kubernetes"
+				},
+				{
+					"Type": "NodeText",
+					"Data": "​命名空间"
+				}
+			]
+		},
+		{
+			"ID": "20250530164302-wu23g50",
+			"Type": "NodeList",
+			"ListData": {},
+			"Properties": {
+				"id": "20250530164302-wu23g50",
+				"updated": "20250530165429"
+			},
+			"Children": [
+				{
+					"ID": "20250530164606-37nk56a",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250530164606-37nk56a",
+						"updated": "20250530165429"
+					},
+					"Children": [
+						{
+							"ID": "20250530164606-7ykeb4p",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250530164606-7ykeb4p",
+								"updated": "20250530164606"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ovnkube-node pod"
+								}
+							]
+						},
+						{
+							"ID": "20250530164610-34wb9u2",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250530164610-34wb9u2",
+								"updated": "20250530165429"
+							},
+							"Children": [
+								{
+									"ID": "20250530164612-v78ew5a",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530164612-v78ew5a",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250530165429"
+									},
+									"Children": [
+										{
+											"ID": "20250530164612-59t5pre",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530164612-59t5pre",
+												"updated": "20250530164625"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ovnkube-node容器"
+												}
+											]
+										},
+										{
+											"ID": "20250530165426-gs1xvap",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250530165426-gs1xvap",
+												"updated": "20250530165429"
+											},
+											"Children": [
+												{
+													"ID": "20250530165429-hbwdsqo",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530165429-hbwdsqo",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250530165429"
+													},
+													"Children": [
+														{
+															"ID": "20250530165429-l5rmd1d",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530165429-l5rmd1d",
+																"updated": "20250530165451"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "OVN-Kubernetes组件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530165451-99zghjj",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530165451-99zghjj",
+														"style": "--en-bullet-line-height: 76px;",
+														"updated": "20250530165451"
+													},
+													"Children": [
+														{
+															"ID": "20250530165451-1tndeev",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530165451-1tndeev",
+																"updated": "20250530165526"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "执行CNI操作（CNI ADD/DEL）"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530165530-qjsyvoz",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530165530-qjsyvoz",
+														"style": "--en-bullet-line-height: 114px;",
+														"updated": "20250530165530"
+													},
+													"Children": [
+														{
+															"ID": "20250530165530-2vdpcpp",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530165530-2vdpcpp",
+																"updated": "20250530165631"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "通过 ovnkube-master 摘要在 Pod 上设置的 IPAM 注释"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530165649-vw131vy",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530165649-vw131vy",
+														"style": "--en-bullet-line-height: 152px;",
+														"updated": "20250530165649"
+													},
+													"Children": [
+														{
+															"ID": "20250530165649-a2nqzmt",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530165649-a2nqzmt",
+																"updated": "20250530165716"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "为pod创建veth对"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530165716-nyw7btd",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530165716-nyw7btd",
+														"style": "--en-bullet-line-height: 190px;",
+														"updated": "20250530165716"
+													},
+													"Children": [
+														{
+															"ID": "20250530165716-swxf8j0",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530165716-swxf8j0",
+																"updated": "20250530165730"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "在网桥上创建ovs port"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530165731-ssop19e",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530165731-ssop19e",
+														"updated": "20250530165731"
+													},
+													"Children": [
+														{
+															"ID": "20250530165731-zu5fx43",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530165731-zu5fx43",
+																"updated": "20250530165731"
+															}
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250530164625-zhsf85i",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530164625-zhsf85i",
+										"style": "--en-bullet-line-height: 76px;",
+										"updated": "20250530164625"
+									},
+									"Children": [
+										{
+											"ID": "20250530164625-n43p3y5",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530164625-n43p3y5",
+												"updated": "20250530164642"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ovn-controller容器"
+												}
+											]
+										}
+									]
+								},
+								{
+									"ID": "20250530165424-18ke754",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530165424-18ke754",
+										"style": "--en-bullet-line-height: 114px;",
+										"updated": "20250530165424"
+									},
+									"Children": [
+										{
+											"ID": "20250530165424-cfgik6j",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530165424-cfgik6j",
+												"updated": "20250530165424"
+											}
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"ID": "20250530164711-289zpb4",
+					"Type": "NodeListItem",
+					"ListData": {
+						"BulletChar": 42,
+						"Marker": "Kg=="
+					},
+					"Properties": {
+						"id": "20250530164711-289zpb4",
+						"style": "--en-bullet-line-height: 114px;",
+						"updated": "20250530165338"
+					},
+					"Children": [
+						{
+							"ID": "20250530164711-xtu68me",
+							"Type": "NodeParagraph",
+							"Properties": {
+								"id": "20250530164711-xtu68me",
+								"updated": "20250530164719"
+							},
+							"Children": [
+								{
+									"Type": "NodeText",
+									"Data": "ovs-node pod"
+								}
+							]
+						},
+						{
+							"ID": "20250530164720-nvd0f07",
+							"Type": "NodeList",
+							"ListData": {},
+							"Properties": {
+								"id": "20250530164720-nvd0f07",
+								"updated": "20250530165338"
+							},
+							"Children": [
+								{
+									"ID": "20250530164724-nheyp58",
+									"Type": "NodeListItem",
+									"ListData": {
+										"BulletChar": 42,
+										"Marker": "Kg=="
+									},
+									"Properties": {
+										"id": "20250530164724-nheyp58",
+										"style": "--en-bullet-line-height: 38px;",
+										"updated": "20250530165338"
+									},
+									"Children": [
+										{
+											"ID": "20250530164724-5s7tkn1",
+											"Type": "NodeParagraph",
+											"Properties": {
+												"id": "20250530164724-5s7tkn1",
+												"updated": "20250530164734"
+											},
+											"Children": [
+												{
+													"Type": "NodeText",
+													"Data": "ovs-daemons容器"
+												}
+											]
+										},
+										{
+											"ID": "20250530164736-bakxu0x",
+											"Type": "NodeList",
+											"ListData": {},
+											"Properties": {
+												"id": "20250530164736-bakxu0x",
+												"updated": "20250530165338"
+											},
+											"Children": [
+												{
+													"ID": "20250530164739-zi9q79k",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530164739-zi9q79k",
+														"style": "--en-bullet-line-height: 38px;",
+														"updated": "20250530164739"
+													},
+													"Children": [
+														{
+															"ID": "20250530164739-hqth2tf",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530164739-hqth2tf",
+																"updated": "20250530164743"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "ovs原生组件"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530164744-j894y5c",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530164744-j894y5c",
+														"style": "--en-bullet-line-height: 76px;",
+														"updated": "20250530165004"
+													},
+													"Children": [
+														{
+															"ID": "20250530164744-w8f30o4",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530164744-w8f30o4",
+																"updated": "20250530165004"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "ovs守护进程和数据库以容器形式运行"
+																}
+															]
+														}
+													]
+												},
+												{
+													"ID": "20250530164909-vspefyf",
+													"Type": "NodeListItem",
+													"ListData": {
+														"BulletChar": 42,
+														"Marker": "Kg=="
+													},
+													"Properties": {
+														"id": "20250530164909-vspefyf",
+														"updated": "20250530165338"
+													},
+													"Children": [
+														{
+															"ID": "20250530164909-moqkme5",
+															"Type": "NodeParagraph",
+															"Properties": {
+																"id": "20250530164909-moqkme5",
+																"updated": "20250530165338"
+															},
+															"Children": [
+																{
+																	"Type": "NodeText",
+																	"Data": "将网络转发规则推送到节点上边缘的虚拟交换机"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
