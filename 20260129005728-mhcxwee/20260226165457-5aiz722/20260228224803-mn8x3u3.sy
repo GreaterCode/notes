@@ -1,0 +1,41 @@
+{
+	"ID": "20260228224803-mn8x3u3",
+	"Spec": "2",
+	"Type": "NodeDocument",
+	"Properties": {
+		"id": "20260228224803-mn8x3u3",
+		"title": "ollama pull慢优化脚本",
+		"type": "doc",
+		"updated": "20260228224850"
+	},
+	"Children": [
+		{
+			"ID": "20260228224841-6eag8jd",
+			"Type": "NodeCodeBlock",
+			"IsFencedCodeBlock": true,
+			"Properties": {
+				"id": "20260228224841-6eag8jd",
+				"style": "line-height: 22px;",
+				"updated": "20260228224850"
+			},
+			"Children": [
+				{
+					"Type": "NodeCodeBlockFenceOpenMarker",
+					"Data": "```"
+				},
+				{
+					"Type": "NodeCodeBlockFenceInfoMarker",
+					"CodeBlockInfo": "cHl0aG9u"
+				},
+				{
+					"Type": "NodeCodeBlockCode",
+					"Data": "[root@localhost AI]# cat ollama_pull.sh \n##!/bin/bash\n#!/usr/bin/bash\n#set -euo pipefail\n\n# ==================== 可配置参数 ====================\n# 要拉取的模型名称\n#MODEL_NAME=\"deepseek-coder-v2:16b\"\n#MODEL_NAME=\"ministral-3:8b\"\n#MODEL_NAME=\"qwen2.5:14b\"\n#MODEL_NAME=\"deepseek-r1:14b\"\n#MODEL_NAME=\"deepseek-r1:7b\"\nMODEL_NAME=\"deepseek-r1:8b\"\n\n# 单次拉取尝试的超时时间（秒），可根据网络情况调整\nPULL_TIMEOUT=120\n# 两次尝试之间的间隔时间（秒）\nRETRY_INTERVAL=3\n# 最大重试次数（0表示无限重试）\nMAX_RETRIES=0\n# ===================================================\n\n# 初始化重试计数器\nretry_count=0\n\n# 检查ollama是否已安装并可用\ncheck_ollama() {\n    if ! command -v ollama \u0026\u003e /dev/null; then\n        echo \"错误: 未找到ollama命令，请先安装Ollama并确保其在PATH中\"\n        exit 1\n    fi\n\n    # 检查ollama服务是否运行\n    if ! ollama list \u0026\u003e /dev/null; then\n        echo \"错误: Ollama服务未运行，请先执行 'ollama serve' 启动服务\"\n        exit 1\n    fi\n}\n\n# 检查模型是否已存在\ncheck_model_exists() {\n    if ollama list | grep -q \"^$MODEL_NAME\\s\"; then\n        return 0  # 模型存在\n    else\n        return 1  # 模型不存在\n    fi\n}\n\n# 主拉取逻辑\nmain() {\n    echo \"开始拉取模型: $MODEL_NAME\"\n    echo \"单次拉取超时: ${PULL_TIMEOUT}秒 | 重试间隔: ${RETRY_INTERVAL}秒 | 最大重试次数: ${MAX_RETRIES:-无限}\"\n    echo \"================================================\"\n\n    # 先检查模型是否已存在\n    if check_model_exists; then\n        echo \"✅ 模型 $MODEL_NAME 已存在，无需拉取\"\n        exit 0\n    fi\n\n    # 循环拉取\n    while true; do\n        # 检查最大重试次数\n        if [ $MAX_RETRIES -gt 0 ] \u0026\u0026 [ $retry_count -ge $MAX_RETRIES ]; then\n            echo \"❌ 达到最大重试次数($MAX_RETRIES)，停止拉取\"\n            exit 1\n        fi\n\n        retry_count=$((retry_count + 1))\n        echo \"🔄 第 $retry_count 次尝试拉取模型 $MODEL_NAME (超时: ${PULL_TIMEOUT}秒)\"\n\n        # 启动ollama run（后台运行）\n        ollama run \"$MODEL_NAME\" \u0026\n        PID=$!\n\n        # 等待指定时间或进程结束\n        timeout $PULL_TIMEOUT tail --pid=$PID -f /dev/null\n\n        # 检查进程是否还在运行，若在则终止\n        if ps -p $PID \u003e /dev/null; then\n            echo \"⏳ 超时，终止当前拉取进程 (PID: $PID)\"\n            kill $PID 2\u003e/dev/null || true\n            wait $PID 2\u003e/dev/null || true\n        fi\n\n        # 检查模型是否已下载完成\n        if check_model_exists; then\n            echo \"✅ 模型 $MODEL_NAME 拉取完成！\"\n            exit 0\n        fi\n\n        # 等待后重试\n        echo \"⌛ 等待 ${RETRY_INTERVAL} 秒后重试...\"\n        sleep $RETRY_INTERVAL\n    done\n}\n\n# 执行前置检查并启动主逻辑\ncheck_ollama\nmain\n"
+				},
+				{
+					"Type": "NodeCodeBlockFenceCloseMarker",
+					"Data": "```"
+				}
+			]
+		}
+	]
+}
